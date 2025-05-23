@@ -1,5 +1,109 @@
-.navbar navbar-expand-lg a
+.navbar
+{
+    background-color: #052418;
+}
+
+.dropdown
+{
+    margin-left: 3vh;
+}
+
+.navbar-toggler-icon
+{
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(255, 255, 255, 1)' stroke-width='2' stroke-linecap='round' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+.navbar-toggler
+{
+    border: none;
+    font-size: 1.25rem;
+}
+
+.offcanvas-header
+{
+    background-color: #F5A623;
+}
+
+.offcanvas-body
+{
+    background-color: #052418;
+}
+
+.navbar-toggler:focus .btn-close:focus
+{
+    box-shadow: none;
+    outline: none;
+}
+
+.nav-link
 {
     color: white;
+    font-weight: 300;
+    position: relative;
+}
 
+.nav-link:hover{
+    color: #F5A623;
+}
+
+.nav-link.active
+{
+    color: #F5A623 !important;
+}
+
+.login_button
+{
+    background-color: #F5A623;
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    color: white;
+    width: 130%;
+    border: none;
+    transition: 0.3s ease-in-out;
+}
+
+.login_button:hover 
+{
+    background-color: #cb8006;
+    width: 135%;
+    height: 110%;
+}
+
+
+
+@media(min-width: 991px)
+{
+    .nav-link::before
+    {
+        content: "";
+        position: absolute;
+        top: -60%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 2px;
+        background-color: white;
+        visibility: hidden;
+        transition: 0.3s ease-in-out;
+    }
+
+    .nav-link:hover::before
+    {
+        width: 100%;
+        visibility: visible;
+    }
+}
+
+@media (max-width: 400px)
+{
+    .dropdown
+    {
+        right: 10%;
+    }
+}
+
+.offcanvas.offcanvas-end {
+  width: 300px !important;
+  --bs-offcanvas-width: 300px;
 }
