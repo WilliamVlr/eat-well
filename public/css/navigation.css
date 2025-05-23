@@ -35,7 +35,7 @@
     outline: none;
 }
 
-.nav-link
+/* .nav-link
 {
     color: white;
     font-weight: 300;
@@ -49,7 +49,23 @@
 .nav-link.active
 {
     color: #F5A623 !important;
+} */
+
+.nav-link,
+.nav-link:visited,
+.nav-link:focus,
+.nav-link:active {
+    color: white;
 }
+
+.nav-link:hover {
+    color: #F5A623;
+}
+
+.nav-link.active {
+    color: #F5A623 !important;
+}
+
 
 .login_button
 {
