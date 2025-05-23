@@ -1,0 +1,44 @@
+/* var warna */
+:root{
+    --bg: #123F2F;
+}
+
+body{
+    background-color: var(--bg);
+}
+
+.lexend {
+    font-family: 'Lexend', sans-serif;
+    font-style: normal;
+}
+
+.font-thin{
+    font-weight: 100;
+}
+
+.font-light{
+    font-weight: 300;
+}
+
+.font-regular{
+    font-weight: 400;
+}
+
+.font-medium{
+    font-weight: 500;
+}
+
+.font-semibold{
+    font-weight: 600;
+}
+
+.font-bold{
+    font-weight: 700;
+}
+
+h1{
+    font-size: 50px;
+}
+
+.jalan{
+}
