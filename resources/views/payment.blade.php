@@ -23,6 +23,24 @@
         <p class= "jalan">
             <span class="lexend font-regular text-white"> Jalan Mangga Rumah Maya Selendang</span>
         </p>
+        <div class="container-sm isi">
+            <div class="orderdet">
+                <p class="lexend font-semi-bold text-white judul">Order Detail</p>
+            </div>
+            <div class="detail">
+                <div class="active">
+                    <p class="lexend font-medium text-black que">Active Period:</p>
+                    <p class="lexend font-bold text-black ans">3 May 2025- 10 May 2025</p>
+                </div>
+            </div>
+            <div class="detail">
+                <div class="active">
+                    <p class="lexend font-medium text-black que">Order Date & Time:</p>
+                    <p class="lexend font-bold text-black ans">06:00 AM Sat, 01 May 2025</p>
+                </div>
+            </div>
+            <hr>
+        </div>
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
