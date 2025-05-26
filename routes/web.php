@@ -12,6 +12,7 @@ Route::get('/test', function () {
 
 Route::get('/payment', function () {
     return view('payment');
+});
 
 Route::get('/catering-detail', function () {
     return view('cateringDetail');
