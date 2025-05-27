@@ -1,0 +1,69 @@
+/* var warna */
+:root{
+    --bg: #123F2F;
+    --button: #E77133;
+    --midbg: #DDDFDE;
+}
+
+body{
+    background-color: var(--bg);
+}
+
+.lexend {
+    font-family: 'Lexend', sans-serif;
+    font-style: normal;
+}
+
+.font-thin{
+    font-weight: 100;
+}
+
+.font-light{
+    font-weight: 300;
+}
+
+.font-regular{
+    font-weight: 400;
+}
+
+.font-medium{
+    font-weight: 500;
+}
+
+.font-semibold{
+    font-weight: 600;
+}
+
+.font-bold{
+    font-weight: 700;
+}
+
+h1{
+    font-size: 50px;
+}
+
+.isi{
+    width: 1295px;
+    height: 400px;
+    background-color: var(--midbg);
+    padding-top: 8px;
+    border-radius: 20px;
+}
+.isi .orderdet{
+    background-color: var(--button);
+    padding: 5px;
+    width: 35%;
+    height: auto;
+    border-radius: 27.5px;
+}
+
+.isi .orderdet .judul{
+    margin-bottom: 0px;
+    text-align: center;
+}
+
+.isi .detail .que{
+    opacity: 70%;
+    margin-top: 20px;
+    margin-bottom:1px;
+}
