@@ -49,10 +49,12 @@
                     </div>
 
                     <div class="rating-and-number-sold-wrapper">
-                        <div class="rating-container">
-                            <span class="material-symbols-outlined star-icon">star</span>
-                            <span class="inter rating-and-sold">4.5</span>
-                        </div>
+                        <a href="{{ route("rate-and-review") }}" class="rate-review-button">
+                            <div class="rating-container">
+                                <span class="material-symbols-outlined star-icon">star</span>
+                                <span class="inter rating-and-sold">4.5</span>
+                            </div>
+                        </a>
                         <div class="number-sold-container">
                             {{-- <span class="inter rating-and-sold">10k+</span>
                             <span class="inter sold-text">sold</span> --}}

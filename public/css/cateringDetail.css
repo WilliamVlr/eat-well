@@ -194,6 +194,10 @@ body {
     transform: rotate(-36deg);
 }
 
+.rate-review-button{
+    text-decoration: none;
+}
+
 .daun-container{
     position: relative;
     display: flex;
@@ -725,10 +729,6 @@ body {
 .package-count {
   text-align: left;
   font-weight: bold;
-}
-
-.item-count {
-  /* font-weight: bold; */
 }
 
 .price-total {
@@ -1536,6 +1536,11 @@ body {
         font-size: 20px;
     }
 
+    .dropdown{
+        right: 0% !important;
+        margin-left: 0vh !important;
+    }
+
     .weekly-price-wrapper,
     .shipping-wrapper{
         width: 75%;
@@ -1562,7 +1567,7 @@ body {
     }
 
     .price-bulet h1{
-        font-size: 40px;
+        font-size: 35px;
     }
 
     #dropdownMenuButton {
