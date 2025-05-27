@@ -669,6 +669,12 @@ body {
     justify-content: space-between;
     align-items: center;
     color: white;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+input, button, select, optgroup, textarea{
+    line-height: normal !important;
 }
 
 .item-row span:first-child {
@@ -1671,4 +1677,6 @@ body {
     .download-icon{
         font-size: 20px !important;
     }
+
+
 }
