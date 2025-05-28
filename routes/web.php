@@ -37,3 +37,7 @@ Route::get('/aboutUs', function(){
 Route::get('/catering-detail/rating-and-review', function(){
     return view('ratingAndReview');
 })->name('rate-and-review');
+
+Route::get('/home', function (){
+    return view('customer.home');
+})->name('home');
