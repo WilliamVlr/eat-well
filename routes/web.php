@@ -14,8 +14,8 @@ Route::get('/cateringHomePage', function() {
     return view('cateringHomePage');
 });
 
-Route::get('/manageCatering', function(){
-    return view('manageCatering');
+Route::get('/manageCateringPackage', function(){
+    return view('manageCateringPackage');
 });
 
 Route::get('/payment', function () {
@@ -28,6 +28,9 @@ Route::get('/catering-detail', function () {
 
 Route::get('/', function () {
     return view('landingPage');
+});
+Route::get('/manageOrder', function(){
+    return view('manageOrder');
 });
 
 Route::get('/aboutUs', function(){

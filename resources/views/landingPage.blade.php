@@ -108,7 +108,7 @@
             <div class="col-sm-3 kotakKedua">
                 <img src="{{ asset('asset/landing_page/2.png') }}" alt="Our Client" class="img-fluid" width="130px">
             </div>
-            
+
        </div> --}}
 
         <div class="row info-section text-white rounded-4 overflow-hidden">
