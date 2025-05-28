@@ -100,7 +100,7 @@
         @yield('content')
     </div>
 
-    <footer class="bg-dark text-white py-0" style="margin-top: 50px;">
+    <footer class="bg-dark text-white py-0">
         <div class="container text-center footer-page" style="margin-top: 10px; padding: 10px;">
 
             <div class="mb-2">

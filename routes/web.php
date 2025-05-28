@@ -30,3 +30,6 @@ Route::get('/', function () {
     return view('landingPage');
 });
 
+route::get('/aboutUs', function(){
+    return view('aboutUs');
+});
