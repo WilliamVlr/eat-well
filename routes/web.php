@@ -30,6 +30,10 @@ Route::get('/', function () {
     return view('landingPage');
 });
 
+Route::get('/aboutUs', function(){
+    return view('aboutUs');
+});
+
 Route::get('/catering-detail/rating-and-review', function(){
     return view('ratingAndReview');
 })->name('rate-and-review');

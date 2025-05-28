@@ -1,0 +1,36 @@
+body {
+  background: linear-gradient(to right,
+      #123F2F 0%,
+      #2C6F4A 48%,
+      #9FCD9E 100%);
+}
+
+
+.about-us {
+    min-height: 100vh;
+  color: #fff;
+  margin-top: 50px;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  color: #FDB935; /* orange accent */
+  letter-spacing: 2px;
+}
+
+.about-us h3 {
+  font-weight: bold;
+}
+
+.about-us p {
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.about-us ul {
+  padding-left: 1.2rem;
+}
+
+.bi-check-circle-fill {
+  font-size: 1.1rem;
+}
