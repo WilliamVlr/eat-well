@@ -24,7 +24,7 @@ Route::get('/payment', function () {
 
 Route::get('/catering-detail', function () {
     return view('cateringDetail');
-});
+})->name('catering-detail');
 
 Route::get('/', function () {
     return view('landingPage');
@@ -32,3 +32,11 @@ Route::get('/', function () {
 Route::get('/manageOrder', function(){
     return view('manageOrder');
 });
+
+Route::get('/aboutUs', function(){
+    return view('aboutUs');
+});
+
+Route::get('/catering-detail/rating-and-review', function(){
+    return view('ratingAndReview');
+})->name('rate-and-review');

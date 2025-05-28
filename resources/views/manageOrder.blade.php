@@ -143,7 +143,6 @@
   </style>
 </head>
 <body class="p-4">
-    <x-navigation></x-navigation>
 
   <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
     <h1 class="mb-3 mb-md-0">Manage Orders</h1>
@@ -166,7 +165,6 @@
 
   <div class="row g-4" id="order-container"></div>
 
-      <x-footer></x-footer>
 
   <script>
     const orders = [

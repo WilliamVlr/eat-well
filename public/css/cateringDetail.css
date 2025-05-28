@@ -99,6 +99,11 @@ body {
     font-size: 20px;
 }
 
+.schedule-dipake{
+    margin-bottom: 0px;
+    font-size: 20px;
+}
+
 .location-icon{
     color: #411111;
     font-size: 45px !important;
@@ -113,6 +118,7 @@ body {
 
 .rating-container{
     background-color: var(--bg-contrast);
+    background-color: #ff9d00;
     width: 120px;
     height: 50px;
     border-radius: 100px;
@@ -120,6 +126,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor:  pointer;
 }
 
 .star-icon{
@@ -137,20 +144,23 @@ body {
 
 .number-sold-container{
     background-color: var(--bg-contrast);
-    width: 170px;
+    width: 200px;
     height: 50px;
     border-radius: 100px;
     box-shadow: var(--box-shadow);
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
 .sold-text{
-    color: white;
+    color: var(--bg-tertiary);
     font-size: 25px;
-    margin-left: 5px;
+    margin: 0px;
     font-weight: 550;
+    margin-bottom: -10px;
+    margin-top: -10px;
 }
 
 .hijau-luar{
@@ -182,6 +192,10 @@ body {
     height: 440px;
     border-radius: 1000px;
     transform: rotate(-36deg);
+}
+
+.rate-review-button{
+    text-decoration: none;
 }
 
 .daun-container{
@@ -438,7 +452,7 @@ body {
     box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.2) !important;
 }
 
-.packages-container{
+/* .packages-container{
     width: 100%;
     background-color: var(--bg-primary);
     height: auto;
@@ -455,11 +469,321 @@ body {
     font-size: 50px;
     color: white;
     margin-bottom: 30px;
+} */
+
+/* .accordionn-wrapper{
+    width: 80%;
+} */
+
+#packages {
+    width: 100%;
+    background-color: var(--bg-primary);
+    height: auto;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
-.accordionn-wrapper{
-    width: 80%;
+#packages h1{
+    font-size: 50px;
+    text-align: center;
+    color: white;
 }
+
+.accordions{
+    width: 100%;
+    margin: 10px auto;
+}
+
+.accordions h4{
+    /* text-align: center; */
+    font-weight: bold;
+}
+
+.accordion-item{
+    background-color: #E9EBEA !important;
+    margin-bottom: 20px;
+    /* border: 1px solid #E9EBEA !important; */
+    border-radius: 12px !important;
+    color: var(--bg-tertiary) !important;
+}
+
+.accordion-item .accordion-title{
+    /* cursor: pointer; */
+    padding: 20px;
+    /* transition: transform 0.4s ease-in-out; */
+    /* transition: transform 0.4s ease-in-out; */
+    transition: none !important;
+
+    display: flex;
+    /* flex-direction: column; */
+    justify-content: space-between;
+}
+
+.accordion-item .accordion-title.active-title{
+    background-color: #E9EBEA !important;
+    color: var(--bg-tertiary);
+}
+
+.accordion-item .accordion-title h4{
+    font-weight: 700;
+    /* margin-bottom: 10px; */
+    margin-bottom: 0px;
+    font-size: 18px;
+    display: flex;
+    /* justify-content: space-between; */
+}
+
+.accordion-item .accordion-title p{
+    margin: 0px;
+}
+
+.category-cuisine-wrapper{
+    color: rgb(58, 58, 58);
+}
+
+.category-cuisine-bold{
+    font-weight: bold;
+}
+
+.left-card-wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.nama-package-dan-download-wrapper{
+    display: flex;
+    flex-direction: row;
+    /* justify-content: center; */
+    align-items: center;
+}
+
+.download-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    padding: 2px;
+    border-radius: 5px;
+    background-color: #cccccc;
+    cursor: pointer;
+}
+
+.download-icon{
+    font-size: 25px !important;
+    margin: 0px !important;
+    color: #707070;
+}
+
+.package-image{
+    width: 80px;
+    height: 80px;
+    border-radius: 1000px;
+    margin-right: 10px;
+}
+
+.right-card-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: end;
+}
+
+.right-card-wrapper p{
+    margin-right: 10px;
+}
+
+.view-menu-text{
+    margin-bottom: 20px !important;
+    text-decoration-line: underline;
+    text-align: right;
+    margin-right: 10px !important;
+    cursor: pointer;
+}
+
+.add-button-wrapper{
+    width: 100%;
+    background-color: red;
+    /* margin-top: -30px; */
+}
+
+.add-button{
+    width: 100px;
+    height: auto;
+    padding: 5px;
+    background-color: var(--bg-contrast);
+    border-radius: 100px;
+    float: right;
+    margin-bottom: -25px;
+    margin-right: 3%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.add-button .add-text{
+    margin: 0px;
+    color: white;
+    font-weight: bold;
+}
+
+.accordion-item .accordion-content{
+    display: none;
+    line-height: 1.7;
+    padding: 10px;
+    /* background-color: white; */
+    background-color: var(--bg-contrast);
+    border-radius: 0 0 5px 5px;
+    color: white;
+}
+
+.accordion-item .accordion-content.active{
+    display: block;
+}
+
+.accordion-item .accordion-content p{
+    margin: 0;
+    font-size: 16px;   
+}
+
+.menu-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.item-row {
+    background-color: rgba(255, 255, 255, 0.1);
+    height: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+input, button, select, optgroup, textarea{
+    line-height: normal !important;
+}
+
+.item-row span:first-child {
+  flex: 1;
+}
+
+.item-row .price {
+  flex: 0 0 140px;
+  text-align: left;
+}
+
+.qty-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.qty-control button {
+    /* padding: 5px 10px; */
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 18px;
+    background-color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.qty-control .qty {
+    min-width: 20px;
+    text-align: center;
+    display: inline-block;
+}
+
+.button-order {
+  width: 60%;
+  margin-top: 0px;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  color: white;
+  border-radius: 100px;
+  background-color: var(--bg-contrast);
+}
+
+.button-order span {
+  flex: 1;
+  text-align: center;
+}
+
+.order-message {
+  width: 100%;
+  text-align: center;
+}
+
+.package-count {
+  text-align: left;
+  font-weight: bold;
+}
+
+.price-total {
+  text-align: right;
+  font-weight: bold;
+}
+
+/* utk per-pdf-an: */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+    margin: 5% auto;
+    padding: 20px;
+    background: white;
+    width: 80%;
+    max-width: 900px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 5px;
+    background-color: red;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+}
+
+
 
 @media screen and (max-width: 1201px){
     .daun1{
@@ -557,6 +881,10 @@ body {
         font-size: 18px;
     }
 
+    .schedule-dipake{
+        font-size: 18px;
+    }
+
     .call-icon {
         font-size: 20px !important;
     }
@@ -603,6 +931,9 @@ body {
 
     .sold-text{
         font-size: 18px;
+        margin-bottom: -15px;
+        margin-top: 5px;
+        margin-left: 5px;
     }
 
     .food-preview-container{
@@ -719,6 +1050,10 @@ body {
         margin-bottom: 0px;
         font-size: 14px;
     }
+
+    #packages h1{
+        font-size: 35px;
+    }
 }
 
 @media screen and (max-width: 912px) {
@@ -776,6 +1111,10 @@ body {
     .schedule {
         font-size: 15px;
         margin-left: 0px;
+    }
+
+    .schedule-dipake{
+        font-size: 15px;
     }
 
     .call-icon {
@@ -888,8 +1227,8 @@ body {
     }
 
     .price-and-shipping-container{
-        padding-top: 100px;
-        padding-bottom: 100px;
+        padding-top: 70px;
+        padding-bottom: 70px;
         gap: 7%;
     }
 
@@ -960,6 +1299,27 @@ body {
     .section-makan p{
         font-size: 12px;
     }
+    
+    #packages{
+        padding-top: 70px;
+        padding-bottom: 70px;
+    }
+
+    #packages h1{
+        font-size: 25px;
+    }
+
+    .accordion-title h4{
+        font-size: 17px !important;
+    }
+
+    .category-cuisine-wrapper{
+        font-size: 13px;
+    }
+
+    .button-order{
+        font-size: 15px;
+    }
 }
 
 @media screen and (max-width: 426px) {
@@ -984,7 +1344,7 @@ body {
         border-radius: 1000px;
         transform: rotate(0deg);
         box-shadow: none;
-        margin-top: -370px;
+        margin-top: -245px;
     }
 
     .cokelat-lingkaran {
@@ -996,8 +1356,8 @@ body {
     }
 
     .logo-catering {
-        width: 100px;
-        height: 100px;
+        width: 85px;
+        height: 85px;
         transform: rotate(0deg);
         border-style: solid;
         border-width: 5px;
@@ -1018,45 +1378,46 @@ body {
 
     .all-profile-wrapper {
         flex-direction: column;
-        gap: 30px;
-        margin-top: 70px;
+        gap: 10px;
+        margin-top: 40px;
     }
 
     .profile-container h1 {
         margin-right: 0px;
-        margin-left: 120px;
+        margin-left: 110px;
         font-size: 30px;
-        margin-bottom: 0px;
+        margin-bottom: 10px;
         letter-spacing: 0px;
     }
 
     .phone-number-container{
-        width: 200px;
-        height: 30px;
-        margin-top: 20px;
+        width: 160px;
+        height: 25px;
+        margin-top: 10px;
         margin-left: 10px;
     }
 
     .phone-number {
-        font-size: 16px;
-        margin-left: 5px;
+        font-size: 14px;
+        margin-left: 3px;
     }
 
     .rating-and-number-sold-wrapper {
-        margin-top: 30px;
-        gap: 15px
+        margin-top: 10px;
+        gap: 10px
     }
 
     .location-wrapper{
-        gap: 20px;
-        margin-top: 30px;
+        gap: 10px;
+        margin-top: 10px;
         align-items: start;
     }
 
     .phone-number-and-schedule-wrapper{
-        flex-direction: column;
+        /* flex-direction: column; */
         justify-content: left;
         align-items: first baseline;
+        margin-top: 0px;
     }
 
    .address {
@@ -1065,7 +1426,7 @@ body {
     }
 
     .schedule {
-        font-size: 18px;
+        font-size: 15px;
         font-weight: bold;
         margin-left: 0px;
         margin-bottom: 0px;
@@ -1073,7 +1434,7 @@ body {
     }
 
     .call-icon {
-        font-size: 20px !important;
+        font-size: 15px !important;
     }
 
     .location-icon {
@@ -1082,32 +1443,39 @@ body {
 
     .rating-container,
     .number-sold-container {
-        height: 40px;
+        height: 30px;
     }
 
     .rating-container{
-        width: 90px;
+        width: 80px;
     }
 
     .number-sold-container {
-        width: 120px;
+        width: 140px;
     }
 
     .rating-and-sold {
-        font-size: 20px;
+        font-size: 18px;
     }
 
     .star-icon {
-        font-size: 28px !important;
+        font-size: 23px !important;
+    }
+
+    .sold-text{
+        font-size: 15px;
     }
 
     .sold-text{
         font-size: 18px;
+        margin-bottom: -10px;
+        margin-top: 5px;
+        margin-left: 10px;
     }
 
     .food-preview-container{
         padding-top: 60px;
-        padding-bottom: 50px;
+        padding-bottom: 35px;
     }
 
     .food-preview-container h1{
@@ -1159,18 +1527,24 @@ body {
 
     
     .price-and-shipping-container{
-        padding-top: 65px;
+        padding-top: 0px;
         padding-bottom: 65px;
         flex-direction: column;
         gap: 0%;
         align-items: center;
         /* border-top-left-radius: 30px;
         border-top-right-radius: 30px; */
-        box-shadow: var(--box-shadow);
+        /* box-shadow: var(--box-shadow); */
+        background-color: #13392A;
     }
 
     .price-and-shipping-container h1{
         font-size: 20px;
+    }
+
+    .dropdown{
+        right: 0% !important;
+        margin-left: 0vh !important;
     }
 
     .weekly-price-wrapper,
@@ -1199,7 +1573,7 @@ body {
     }
 
     .price-bulet h1{
-        font-size: 40px;
+        font-size: 35px;
     }
 
     #dropdownMenuButton {
@@ -1253,4 +1627,56 @@ body {
         margin-left: 15px;
         font-size: 14px;
     }
+
+     #packages{
+        padding-top: 0px;
+        padding-bottom: 70px;
+    }
+
+    #packages h1{
+        font-size: 20px;
+    }
+
+    .package-image{
+        width: 50px;
+        height: 50px;
+        margin-right: 5px;
+    }
+
+    .accordion-title{
+        padding: 10px !important;
+    }
+
+    .accordion-title h4{
+        font-size: 17px !important;
+    }
+
+    .view-menu-text{
+        margin-bottom: 0px !important;
+        font-size: 12px;
+        margin-top: -20px !important;
+    }
+
+    .add-text{
+        font-size: 13px !important;
+    }
+
+    .add-button{
+        margin-top: 20px;
+    }
+
+    .category-cuisine-wrapper{
+        font-size: 13px;
+    }
+
+    .button-order{
+        width: 85%;
+        font-size: 15px;
+    }
+
+    .download-icon{
+        font-size: 20px !important;
+    }
+
+
 }
