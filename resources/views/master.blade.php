@@ -4,14 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <title>@yield('title')</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
     @yield('css')
     <link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
+
     
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand me-auto" href="#">
@@ -61,6 +67,7 @@
                     <button type="button" class="login_button">Log In</button>
                 </a>
             </div>
+            
 
             {{-- @auth
           <!-- Jika sudah login -->
@@ -89,26 +96,26 @@
         </div>
     </nav>
 
-    <div>
+    <div class="flex-grow-1">
         @yield('content')
     </div>
 
-    <footer class="bg-dark text-white py-5">
-        <div class="container text-center">
+    <footer class="bg-dark text-white py-0" style="margin-top: 50px;">
+        <div class="container text-center footer-page" style="margin-top: 10px; padding: 10px;">
 
-            <div class="mb-4">
+            <div class="mb-2">
                 <img src="{{ asset('asset/navigation/eatwellLogo.png') }}" alt="logo" style="width: 7vh;">
                 <h5 class="mt-2 fw-semibold">EAT WELL</h5>
             </div>
 
-            <div class="mb-4">
+            <div class="mb-0">
                 <a href="/home" class="text-white mx-4 text-decoration-none">Home</a>
                 <a href="/login" class="text-white mx-4 text-decoration-none">About Us</a>
                 <a href="/catering" class="text-white mx-4 text-decoration-none">Contact</a>
             </div>
 
             <!-- Sosial Media -->
-            <div class="mb-4">
+            <div class="mb-2">
                 <a href="#" class="text-white mx-3 fs-4"><i class="bi bi-facebook"></i></a>
                 <a href="#" class="text-white mx-3 fs-4"><i class="bi bi-instagram"></i></a>
                 <a href="#" class="text-white mx-3 fs-4"><i class="bi bi-whatsapp"></i></a>
@@ -121,7 +128,7 @@
 
             <!-- Alamat -->
             <div>
-                <p class="text-white-50 small">
+                <p class="text-white-50 small" style="margin-bottom: 0px">
                     Jl. Pakuan No.3, Sumur Batu, Kec. Babakan Madang, Kabupaten Bogor, Jawa Barat 16810
                 </p>
             </div>
