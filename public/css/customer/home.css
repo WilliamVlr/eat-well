@@ -50,22 +50,22 @@
   background-color: #ffffff;
   border: 2px solid;
   border-color: transparent;
+  border-radius: 15px;
 }
 
 .subscription-card .subscription-header {
   align-items: flex-end;
   justify-content: flex-end;
+  display: flex;
+  position: relative;
   align-self: stretch;
   width: 100%;
   flex: 0 0 auto;
-  display: flex;
-  position: relative;
 }
 
 .subscription-card .text-wrapper {
   position: relative;
   flex: 1;
-  margin-top: -1.00px;
   font-family: "Lexend", Helvetica;
   font-weight: 500;
   color: #13392a;
@@ -74,7 +74,7 @@
   line-height: normal;
 }
 
-.subscription-card .div {
+.subscription-card .view-all-wrapper {
   position: relative;
   width: fit-content;
   font-family: "Lexend", Helvetica;
@@ -90,7 +90,7 @@
   align-items: center;
   gap: 20px;
   padding: 10px 0px 0px;
-  position: relative;
+  /* position: relative; */
   align-self: stretch;
   width: 100%;
   flex: 0 0 auto;
@@ -106,19 +106,18 @@
   position: relative;
 }
 
-.subscription-card .text-wrapper-2 {
+.subscription-card .head-wrapper-2 {
   position: relative;
   width: fit-content;
-  margin-top: -1.00px;
   font-family: "Lexend", Helvetica;
   font-weight: 300;
   color: #383838;
-  font-size: 20px;
+  font-size: 16px;
   letter-spacing: 0;
   line-height: normal;
 }
 
-.subscription-card .date-frame {
+.subscription-card .sub-frame {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -130,14 +129,13 @@
   flex: 0 0 auto;
 }
 
-.subscription-card .text-wrapper-3 {
+.subscription-card .content-wrapper-3 {
   position: relative;
   flex: 1;
-  margin-top: -1.00px;
   font-family: "Lexend", Helvetica;
-  font-weight: 400;
+  font-weight: 500;
   color: #383838;
-  font-size: 24px;
+  font-size: 20px;
   letter-spacing: 0;
   line-height: normal;
 }
@@ -145,11 +143,11 @@
 .subscription-card .subscription-header-3 {
   align-items: center;
   gap: 20px;
+  display: flex;
+  position: relative;
   align-self: stretch;
   width: 100%;
   flex: 0 0 auto;
-  display: flex;
-  position: relative;
 }
 
 .subscription-card .subscription-content-2 {
@@ -163,19 +161,7 @@
   flex-grow: 1;
 }
 
-.subscription-card .p {
-  position: relative;
-  flex: 1;
-  margin-top: -1.00px;
-  font-family: "Lexend", Helvetica;
-  font-weight: 300;
-  color: #383838;
-  font-size: 24px;
-  letter-spacing: 0;
-  line-height: normal;
-}
-
-.subscription-card .text-wrapper-4 {
+.subscription-card .catering-name {
   position: relative;
   width: fit-content;
   margin-top: -1.00px;
@@ -187,7 +173,7 @@
   line-height: normal;
 }
 
-.subscription-card .frame {
+.subscription-card .order-details {
   display: flex;
   align-items: flex-start;
   gap: 20px;
@@ -197,141 +183,155 @@
   flex: 0 0 auto;
 }
 
-.subscription-card .subscription-content-wrapper {
-  width: 300px;
-  align-items: center;
-  gap: 20px;
-  padding: 10px 35px;
-  border-radius: 5px;
-  border: 1px solid;
-  border-color: #000000;
+.subscription-card .time-slot-container {
   display: flex;
+  flex-direction: column;
+  width: 400px;
+  height: 150px;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 20px;
   position: relative;
+  background-color: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid;
+  border-color: #e14e00;
+}
+
+.subscription-card .header {
+  display: flex;
+  height: 25px;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
 }
 
 .subscription-card .text-wrapper-5 {
   position: relative;
-  align-self: stretch;
+  flex: 1;
   margin-top: -1.00px;
   font-family: "Lexend", Helvetica;
   font-weight: 400;
-  color: #383838;
+  color: #000000;
   font-size: 24px;
-  text-align: center;
   letter-spacing: 0;
-  line-height: normal;
+  line-height: 25px;
 }
 
-.subscription-card .paket-n-qty {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  position: relative;
-  align-self: stretch;
-  width: 100%;
-  flex: 0 0 auto;
-}
-
-.subscription-card .paket {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-  position: relative;
-  flex: 1;
-  flex-grow: 1;
-}
-
-.subscription-card .text-wrapper-6 {
-  position: relative;
-  align-self: stretch;
-  margin-top: -1.00px;
-  font-family: "Lexend", Helvetica;
-  font-weight: 300;
-  color: #383838;
-  font-size: 20px;
-  letter-spacing: 0;
-  line-height: normal;
-}
-
-.subscription-card .text-wrapper-7 {
-  position: relative;
-  align-self: stretch;
-  font-family: "Lexend", Helvetica;
-  font-weight: 300;
-  color: #383838;
-  font-size: 20px;
-  letter-spacing: 0;
-  line-height: normal;
-}
-
-.subscription-card .paket-2 {
-  display: flex;
-  flex-direction: column;
-  width: 50px;
-  align-items: flex-start;
-  gap: 2px;
-  position: relative;
-}
-
-.subscription-card .text-wrapper-8 {
-  position: relative;
-  align-self: stretch;
-  margin-top: -1.00px;
-  font-family: "Lexend", Helvetica;
-  font-weight: 300;
-  color: #383838;
-  font-size: 20px;
-  text-align: right;
-  letter-spacing: 0;
-  line-height: normal;
-}
-
-.subscription-card .text-wrapper-9 {
-  position: relative;
-  align-self: stretch;
-  font-family: "Lexend-Light", Helvetica;
-  font-weight: 300;
-  color: #383838;
-  font-size: 20px;
-  text-align: right;
-  letter-spacing: 0;
-  line-height: normal;
-}
-
-.subscription-card .paket-wrapper {
-  display: flex;
+.subscription-card .text-frame {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 10px 0px 0px;
-  position: relative;
-  align-self: stretch;
-  width: 100%;
-  flex: 0 0 auto;
-}
-
-.subscription-card .div-wrapper {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  padding: 5px 10px;
+  padding: 2px 5px;
   position: relative;
   flex: 0 0 auto;
+  margin-top: -2.00px;
+  margin-bottom: -2.00px;
   background-color: #f57937;
   border-radius: 5px;
 }
 
-.subscription-card .text-wrapper-10 {
+.subscription-card .text-wrapper-6 {
   position: relative;
   width: fit-content;
   margin-top: -1.00px;
-  font-family: "Lexend-Light", Helvetica;
-  font-weight: 300;
+  font-family: "Lexend", Helvetica;
+  font-weight: 400;
   color: #ffffff;
-  font-size: 20px;
-  text-align: center;
+  font-size: 18px;
   letter-spacing: 0;
-  line-height: normal;
+  line-height: 25px;
+  white-space: nowrap;
+}
+
+.subscription-card .paket-list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 0px 0px 0px 10px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+.subscription-card .paket-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+.subscription-card .text-wrapper-7 {
+  position: relative;
+  width: 289px;
+  margin-top: -1.00px;
+  font-family: "Lexend", Helvetica;
+  font-weight: 300;
+  color: #000000;
+  font-size: 18px;
+  letter-spacing: 0;
+  line-height: 25px;
+}
+
+.subscription-card .text-wrapper-8 {
+  position: relative;
+  width: 35px;
+  margin-top: -1.00px;
+  font-family: "Lexend", Helvetica;
+  font-weight: 300;
+  color: #000000;
+  font-size: 18px;
+  text-align: right;
+  letter-spacing: 0;
+  line-height: 25px;
+}
+
+.subscription-card .time-slot-container-2 {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  height: 150px;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 20px;
+  position: relative;
+  background-color: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid;
+  border-color: #000000;
+}
+
+.subscription-card .paket-list-container-2 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 0px 0px 0px 10px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  flex: 0 0 auto;
+  margin-bottom: -6.00px;
+}
+
+.subscription-card .text-wrapper-9 {
+  position: relative;
+  width: 35px;
+  font-family: "Lexend", Helvetica;
+  font-weight: 300;
+  color: #000000;
+  font-size: 18px;
+  text-align: right;
+  letter-spacing: 0;
+  line-height: 25px;
 }
