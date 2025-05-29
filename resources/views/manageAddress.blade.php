@@ -24,12 +24,12 @@
         <div class="main-address text-start mb-3">
             <span class="badge mb-2">Main Address</span>
             <div class="fw-semibold">dvn Alviano <span class="text-muted">| (+62) 861-1272-1289</span></div>
-            <div class="fw-semibold mt-2">
+            <div class="fw-semibold mt-2 detail-alamat">
                 Rumah Talenta BCA, Loker A99982, Jl. Pakuan Nomor 3, Sumur Batu, Babakan Madang, Kabupaten Bogor, Jawa
                 Barat, 16810
             </div>
 
-            <div class="note-text mt-2">
+            <div class="note-text mt-2 detail-note">
                 <strong>Notes:</strong><br>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
                 dolore magna aliqua. Ut enim ad minim veniam.
@@ -37,9 +37,10 @@
 
             <div class="d-flex justify-content-end align-items-center mt-3 gap-4">
                 <div class="action-icons d-flex gap-3">
-                    <span><i class="bi bi-pencil"></i>✏️ Ubah</span>
-                    <span class="text-muted"><i class="bi bi-trash"></i>🗑️ Hapus</span>
+                    <span><button class="button-ubah" style="border: none; background-color: transparent"><a href="add-address" style="text-decoration: none; color:black">✏️ Ubah</button></span>
+                    <span class="text-muted"><button class="button ubah" style="border: none; background-color: transparent">🗑️ Hapus</button></span>
                 </div>
+ 
                 <div class="form-check form-switch toggle-switch">
                     <input class="form-check-input" type="checkbox" role="switch" id="toggleSwitch" checked>
                 </div>
@@ -48,7 +49,9 @@
         </div>
 
         <div class="add-address mt-3 text-start">
-            <i class="bi bi-plus-lg me-1"></i>Tambah Alamat
+            <button class="button-tambah-alamat" style="border: none; background-color: transparent">
+                <a href="add-address" style="text-decoration: none; color: black">+ Tambah Alamat</a>
+            </button>
         </div>
     </div>
 @endsection

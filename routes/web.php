@@ -41,6 +41,10 @@ Route::get('/manage-address', function(){
     return view('ManageAddress');
 });
 
+Route::get('/add-address', function(){
+    return view('addAddress');
+});
+
 
 Route::get('/catering-detail/rating-and-review', function(){
     return view('ratingAndReview');
