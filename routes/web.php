@@ -30,6 +30,10 @@ Route::get('/', function () {
     return view('landingPage');
 });
 
-route::get('/aboutUs', function(){
+route::get('/about-us', function(){
     return view('aboutUs');
+});
+
+route::get('/manage-address', function(){
+    return view('manageAddress');
 });

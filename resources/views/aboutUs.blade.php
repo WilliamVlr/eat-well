@@ -39,10 +39,10 @@
             <div class="col-lg-6">
                 <h3 class="mb-3 text-warning">Why Choose Eat Well?</h3>
                 <ul class="list-unstyled">
-                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Fresh & 100% natural ingredients</li>
-                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Easy-to-use platform</li>
-                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Trusted meal providers</li>
-                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Portion-controlled, balanced meals</li>
+                    <li class="mb-2">Fresh & 100% natural ingredients</li>
+                    <li class="mb-2">Easy-to-use platform</li>
+                    <li class="mb-2">Trusted meal providers</li>
+                    <li class="mb-2">Portion-controlled, balanced meals</li>
                 </ul>
             </div>
         </div>
