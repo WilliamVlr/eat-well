@@ -59,11 +59,10 @@
     }
 
     .meal-box {
-      border: 2px solid #14532d;
       border-radius: 0.5rem;
       padding: 0.8rem 1rem;
       margin-bottom: 1rem;
-      background-color: #f0fdf4;
+      background-color: #ebf5ee;
       color: #14532d;
     }
 
