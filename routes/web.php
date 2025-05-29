@@ -24,16 +24,21 @@ Route::get('/payment', function () {
 
 Route::get('/catering-detail', function () {
     return view('cateringDetail');
-});
+})->name('catering-detail');
 
 Route::get('/', function () {
     return view('landingPage');
 });
 
-route::get('/about-us', function(){
+Route::get('/about-us', function(){
     return view('aboutUs');
 });
 
-route::get('/manage-address', function(){
-    return view('manageAddress');
+Route::get('/manage-address', function(){
+    return view('ManageAddress');
 });
+
+
+Route::get('/catering-detail/rating-and-review', function(){
+    return view('ratingAndReview');
+})->name('rate-and-review');
