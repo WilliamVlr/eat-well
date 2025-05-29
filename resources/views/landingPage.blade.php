@@ -84,7 +84,7 @@
                     place.</p>
 
                 <button type="button" class="btn btn-outline-warning registerButtonLandingPage" style="margin-top: 30px">
-                    <a href="/register" class="text-white textButtonLandingPage text-decoration-none">Register now</a>
+                    <a href="/register" class="text-white textButtonLandingPage text-decoration-none fw-bold">Register now</a>
                     <div class="buttonpanah"><img src="{{ asset('asset/landing_page/panah.png') }}" alt="panah"
                             class="img-fluid" width="50px"></div>
                 </button>
