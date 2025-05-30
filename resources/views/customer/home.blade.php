@@ -9,6 +9,39 @@
 
 @section('content')
     <main class="container pt-3 pb-3 lexend">
+        {{-- Carousel --}}
+        <section id = "carouselIklan" class="carousel slide mb-4 mb-md-5" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{{ asset('asset/customer/home/iklan 1.jpg') }}" class="object-fit-cover" alt="Iklan 1">
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ asset('asset/customer/home/iklan 2.jpg') }}" alt="Iklan 2">
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ asset('asset/customer/home/iklan 3.jpg') }}" alt="Iklan 3">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselIklan" data-bs-slide="prev">
+                <div class="carousel-btn-container btn-prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </div>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselIklan" data-bs-slide="next">
+                <div class="carousel-btn-container btn-next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </div>
+            </button>
+            {{-- Carousel indicators --}}
+            <div class="carousel-indicators mt-2">
+                <button type="button" data-bs-target="#carouselIklan" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselIklan" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselIklan" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+        </section>
+        {{-- Active Subscription Card --}}
         <section class="w-100 h-auto subscription-card p-4">
             <div class="row mb-2 justify-content-between align-content-end">
                 <div class="title font-400 w-auto">My Subscription</div>
