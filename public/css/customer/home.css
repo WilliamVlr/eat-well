@@ -1,9 +1,17 @@
 :root {
   --bg-primary: #13392A;
-  --bg-secondary: #CFE6B0;
+  --bg-secondary: #ffffff;
   --bg-tertiary: #185640;
   --bg-contrast: #E77133;
   --box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Lexend', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--bg-secondary);
 }
 
 .lexend {
@@ -11,27 +19,27 @@
     font-style: normal;
 }
 
-.font-thin{
+.font-100{
     font-weight: 100;
 }
 
-.font-light{
+.font-300{
     font-weight: 300;
 }
 
-.font-regular{
+.font-300{
     font-weight: 400;
 }
 
-.font-medium{
+.font-400{
     font-weight: 500;
 }
 
-.font-semibold{
+.font-600{
     font-weight: 600;
 }
 
-.font-bold{
+.font-700{
     font-weight: 700;
 }
 
@@ -40,298 +48,95 @@
     color: var(--bg-secondary);
 }
 
-.subscription-card {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 25px;
-  position: relative;
-  background-color: #ffffff;
-  border: 2px solid;
-  border-color: transparent;
-  border-radius: 15px;
+.row{
+  margin-left: 0;
+  margin-right: 0;
 }
 
-.subscription-card .subscription-header {
-  align-items: flex-end;
-  justify-content: flex-end;
-  display: flex;
-  position: relative;
-  align-self: stretch;
-  width: 100%;
-  flex: 0 0 auto;
-}
-
-.subscription-card .text-wrapper {
-  position: relative;
-  flex: 1;
-  font-family: "Lexend", Helvetica;
-  font-weight: 500;
-  color: #13392a;
-  font-size: 20px;
-  letter-spacing: 0;
-  line-height: normal;
-}
-
-.subscription-card .view-all-wrapper {
-  position: relative;
+.hug-content {
   width: fit-content;
-  font-family: "Lexend", Helvetica;
-  font-weight: 400;
-  color: #13392a;
-  font-size: 16px;
-  letter-spacing: 0;
-  line-height: normal;
 }
 
-.subscription-card .subscription-header-2 {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 10px 0px 0px;
-  /* position: relative; */
-  align-self: stretch;
-  width: 100%;
-  flex: 0 0 auto;
-}
-
-.subscription-card .subscription-content {
-  display: flex;
-  flex-direction: column;
-  width: 300px;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 2px;
-  position: relative;
-}
-
-.subscription-card .head-wrapper-2 {
-  position: relative;
-  width: fit-content;
-  font-family: "Lexend", Helvetica;
-  font-weight: 300;
-  color: #383838;
-  font-size: 16px;
-  letter-spacing: 0;
-  line-height: normal;
-}
-
-.subscription-card .sub-frame {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 0px 8px;
-  position: relative;
-  align-self: stretch;
-  width: 100%;
-  flex: 0 0 auto;
-}
-
-.subscription-card .content-wrapper-3 {
-  position: relative;
-  flex: 1;
-  font-family: "Lexend", Helvetica;
-  font-weight: 500;
-  color: #383838;
-  font-size: 20px;
-  letter-spacing: 0;
-  line-height: normal;
-}
-
-.subscription-card .subscription-header-3 {
-  align-items: center;
-  gap: 20px;
-  display: flex;
-  position: relative;
-  align-self: stretch;
-  width: 100%;
-  flex: 0 0 auto;
-}
-
-.subscription-card .subscription-content-2 {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 2px;
-  position: relative;
-  flex: 1;
-  flex-grow: 1;
-}
-
-.subscription-card .catering-name {
-  position: relative;
-  width: fit-content;
-  margin-top: -1.00px;
-  font-family: "Lexend", Helvetica;
-  font-weight: 400;
-  color: #383838;
-  font-size: 32px;
-  letter-spacing: 0;
-  line-height: normal;
-}
-
-.subscription-card .order-details {
-  display: flex;
-  align-items: flex-start;
-  gap: 20px;
-  position: relative;
-  align-self: stretch;
-  width: 100%;
-  flex: 0 0 auto;
-}
-
-.subscription-card .time-slot-container {
-  display: flex;
-  flex-direction: column;
-  width: 400px;
-  height: 150px;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 20px;
-  position: relative;
-  background-color: #ffffff;
+.subscription-card{
+  background-color: var(--bg-secondary);
   border-radius: 10px;
-  overflow: hidden;
-  border: 2px solid;
-  border-color: #e14e00;
+  color: black;
+  .title {
+    font-size: 18px;
+  }
+  .detail{
+    font-size: 14px;
+    line-height: 28px;
+  }
+  .subscription-detail{
+    .sub-title{
+      font-size: 18px;
+      font-weight: 400;
+      opacity: 0.8;
+      line-height: 20px;
+    }
+    .content {
+      font-size: 20px;
+      line-height: auto;
+    }
+  }
+  .catering-name {
+    font-size: 24px;
+  }
+  .order-details{
+    column-gap: 20px;
+    row-gap: 10px;
+    .time-slot{
+      border: black 1.5px solid;
+      border-radius: 8px;
+      min-height: 110px;
+
+      &.active {
+        border-color: var(--bg-contrast);
+      }
+
+      .time-slot-type{
+        font-size: 20px;
+      }
+      
+      .delivery-status {
+        background-color: var(--bg-contrast);
+        border-radius: 5px;
+        color: var(--bg-secondary);
+        font-size: 16px;
+        font-weight: 350;
+        padding: 2px 8px 2px 8px;
+      }
+    }
+    .package {
+      font-size: 16px;
+      font-weight: 350;
+      line-height: 18px;
+      .package-name{
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
+  }
 }
 
-.subscription-card .header {
-  display: flex;
-  height: 25px;
-  align-items: center;
-  gap: 10px;
-  position: relative;
-  align-self: stretch;
-  width: 100%;
+@media screen and (max-width: 395px) {
+  .subscription-card {
+    .subscription-detail{
+      .sub-title{
+        font-size: 16px;
+      }
+      .content {
+        font-size: 18px;
+        line-height: 24px;
+      }
+    }
+  }
 }
 
-.subscription-card .text-wrapper-5 {
-  position: relative;
-  flex: 1;
-  margin-top: -1.00px;
-  font-family: "Lexend", Helvetica;
-  font-weight: 400;
-  color: #000000;
-  font-size: 24px;
-  letter-spacing: 0;
-  line-height: 25px;
-}
-
-.subscription-card .text-frame {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 2px 5px;
-  position: relative;
-  flex: 0 0 auto;
-  margin-top: -2.00px;
-  margin-bottom: -2.00px;
-  background-color: #f57937;
-  border-radius: 5px;
-}
-
-.subscription-card .text-wrapper-6 {
-  position: relative;
-  width: fit-content;
-  margin-top: -1.00px;
-  font-family: "Lexend", Helvetica;
-  font-weight: 400;
-  color: #ffffff;
-  font-size: 18px;
-  letter-spacing: 0;
-  line-height: 25px;
-  white-space: nowrap;
-}
-
-.subscription-card .paket-list-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-  padding: 0px 0px 0px 10px;
-  position: relative;
-  align-self: stretch;
-  width: 100%;
-  flex: 0 0 auto;
-}
-
-.subscription-card .paket-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-  align-self: stretch;
-  width: 100%;
-  flex: 0 0 auto;
-}
-
-.subscription-card .text-wrapper-7 {
-  position: relative;
-  width: 289px;
-  margin-top: -1.00px;
-  font-family: "Lexend", Helvetica;
-  font-weight: 300;
-  color: #000000;
-  font-size: 18px;
-  letter-spacing: 0;
-  line-height: 25px;
-}
-
-.subscription-card .text-wrapper-8 {
-  position: relative;
-  width: 35px;
-  margin-top: -1.00px;
-  font-family: "Lexend", Helvetica;
-  font-weight: 300;
-  color: #000000;
-  font-size: 18px;
-  text-align: right;
-  letter-spacing: 0;
-  line-height: 25px;
-}
-
-.subscription-card .time-slot-container-2 {
-  display: flex;
-  flex-direction: column;
-  width: 400px;
-  height: 150px;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 20px;
-  position: relative;
-  background-color: #ffffff;
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid;
-  border-color: #000000;
-}
-
-.subscription-card .paket-list-container-2 {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-  padding: 0px 0px 0px 10px;
-  position: relative;
-  align-self: stretch;
-  width: 100%;
-  flex: 0 0 auto;
-  margin-bottom: -6.00px;
-}
-
-.subscription-card .text-wrapper-9 {
-  position: relative;
-  width: 35px;
-  font-family: "Lexend", Helvetica;
-  font-weight: 300;
-  color: #000000;
-  font-size: 18px;
-  text-align: right;
-  letter-spacing: 0;
-  line-height: 25px;
+.detail-link{
+  text-decoration: none;
+  color: black;
 }

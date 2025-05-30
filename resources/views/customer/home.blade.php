@@ -8,93 +8,86 @@
 @endsection
 
 @section('content')
-    <div class="dark-bg mt-5 p-5">
-        <div class="subscription-card">
-            <div class="subscription-header">
-                <div class="text-wrapper">My Subscription</div>
-                <div class="view-all-wrapper">View All</div>
-            </div>
-            <div class="subscription-header-2">
-                <div class="subscription-content">
-                    <div class="head-wrapper-2">Active From</div>
-                    <div class="sub-frame">
-                        <div class="content-wrapper-3">DD/MM/YYYY</div>
-                    </div>
-                </div>
-                <div class="subscription-content">
-                    <div class="head-wrapper-2">Active Until</div>
-                    <div class="sub-frame">
-                        <div class="content-wrapper-3">DD/MM/YYYY</div>
-                    </div>
+    <main class="container pt-3 pb-3 lexend">
+        <section class="w-100 h-auto subscription-card p-4">
+            <div class="row mb-2 justify-content-between align-content-end">
+                <div class="title font-400 w-auto">My Subscription</div>
+                <div class="hug-content detail d-flex align-self-end">
+                    <a href="#" class="detail-link">View all</a>
                 </div>
             </div>
-            <div class="subscription-header-3">
-                <div class="subscription-content">
-                    <div class="head-wrapper-2">Nama Penerima</div>
-                    <div class="sub-frame">
-                        <div class="content-wrapper-3">Adit Tolongin Dit</div>
-                    </div>
+            <div class="row mb-2 gy-1">
+                <div class="col-6 col-sm-3 subscription-detail">
+                    <div class="row sub-title">Active From</div>
+                    <div class="row content ps-3">19/02/2025</div>
                 </div>
-                <div class="subscription-content-2">
-                    <div class="head-wrapper-2">Alamat Pengiriman</div>
-                    <div class="sub-frame">
-                        <div class="content-wrapper-3">Jl. Pegangsaan Timur No. 56, Jakarta</div>
-                    </div>
+                <div class="col-6 col-sm-9 subscription-detail">
+                    <div class="row sub-title">Active Until</div>
+                    <div class="row content ps-3">26/02/2025</div>
                 </div>
+                <div class="col-sm-3 subscription-detail">
+                    <div class="row sub-title">Recipient Name</div>
+                    <div class="row content ps-3">Adit tolongin Dit</div>
+                </div>
+                <div class="col subscription-detail">
+                    <div class="row sub-title">Delivery Address</div>
+                    <div class="row content ps-3">Jalan Mangga Barat No. 17 Blok D5, Bekasi</div>
+                </div>
+                
             </div>
-            <div class="subscription-header-2">
-                <div class="subscription-content-2">
-                    <div class="catering-name">Catering XYZ Lorem</div>
-                </div>
+            <div class="row catering-name font-400">
+                Catering XYZ Lorem
             </div>
-            <div class="order-details">
-                <div class="time-slot-container">
-                    <div class="header">
-                        <div class="text-wrapper-5">Breakfast</div>
-                        <div class="text-frame">
-                            <div class="text-wrapper-6">Preparing</div>
+            <div class="row order-details">
+                <div class="col-lg p-2 time-slot active">
+                    <div class="row mb-1 justify-content-between align-content-center">
+                        <div class="time-slot-type font-300 w-auto p-0 ps-1">Breakfast</div>
+                        <div class="delivery-status hug-content align-self-center me-1">
+                            Preparing
                         </div>
                     </div>
-                    <div class="paket-list-container">
-                        <div class="paket-container">
-                            <div class="text-wrapper-7">Paket Lorem Ipsum Dolor</div>
-                            <div class="text-wrapper-8">10x</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="time-slot-container-2">
-                    <div class="header">
-                        <div class="text-wrapper-5">Lunch</div>
-                        <div class="text-frame">
-                            <div class="text-wrapper-6">Preparing</div>
-                        </div>
-                    </div>
-                    <div class="paket-list-container-2">
-                        <div class="paket-container">
-                            <p class="text-wrapper-7">Paket Dolor Amet Situ Mang</p>
-                            <div class="text-wrapper-8">2x</div>
-                        </div>
-                        <div class="paket-container">
-                            <p class="text-wrapper-7">Paket Cing Cong Fan Amet Lorem Ipsum</p>
-                            <div class="text-wrapper-9">1x</div>
+                    <div class="row p-0 package justify-content-between align-content-center">
+                        <div class="w-75 mb-1 p-0 ps-1 package-name">Paket Lorem Ipsum Dolor Amethyst Dolorosa Megamendung</div>
+                        <div class="w-auto align-self-center me-1 quantity">
+                            x 1
                         </div>
                     </div>
                 </div>
-                <div class="time-slot-container-2">
-                    <div class="header">
-                        <div class="text-wrapper-5">Dinner</div>
-                        <div class="text-frame">
-                            <div class="text-wrapper-6">Preparing</div>
+                <div class="col-lg p-2 time-slot">
+                    <div class="row mb-1 justify-content-between align-content-center">
+                        <div class="time-slot-type font-300 w-auto p-0 ps-1">Lunch</div>
+                        {{-- <div class="delivery-status hug-content align-self-center me-1">
+                            Preparing
+                        </div> --}}
+                    </div>
+                    <div class="row mb-1 p-0 package justify-content-between align-content-center">
+                        <div class="w-75 p-0 ps-1 package-name">Paket Lorem Ipsum Dolor Amethyst Dolorosa Megamendung</div>
+                        <div class="w-auto align-self-center me-1 quantity">
+                            x 1
                         </div>
                     </div>
-                    <div class="paket-list-container">
-                        <div class="paket-container">
-                            <p class="text-wrapper-7">Paket Amet Dolorosa Situtu Puranang</p>
-                            <div class="text-wrapper-9">3x</div>
+                    <div class="row p-0 package justify-content-between align-content-center">
+                        <div class="w-75 p-0 ps-1 package-name">Paket LaTex Lajex</div>
+                        <div class="w-auto align-self-center me-1 quantity">
+                            x 1
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg p-2 time-slot">
+                    <div class="row mb-1 justify-content-between align-content-center">
+                        <div class="time-slot-type font-300 w-auto p-0 ps-1">Dinner</div>
+                        {{-- <div class="delivery-status hug-content align-self-center me-1">
+                            Preparing
+                        </div> --}}
+                    </div>
+                    <div class="row p-0 package justify-content-between align-content-center">
+                        <div class="w-75 mb-1 p-0 ps-1 package-name">Paket Lorem Ipsum Dolor Amethyst Dolorosa Megamendung</div>
+                        <div class="w-auto align-self-center me-1 quantity">
+                            x 1
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
 @endsection
