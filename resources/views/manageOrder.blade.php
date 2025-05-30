@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Manage Orders</title>
+  <title>Manage Orders with Meal Boxes</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
     body {
       background-color: #0b3d2e;
-      color: #ffffff;
+      color: #fff;
       margin-top: 80px;
     }
 
@@ -17,22 +17,21 @@
     }
 
     .tab-btn {
-      color: #ffffff;
-      border-color: #ffffff;
+      color: #fff;
+      border-color: #fff;
     }
 
     .tab-btn.active {
-      background-color: #ffffff;
+      background-color: #fff;
       color: #14532d;
       font-weight: bold;
     }
 
     .card {
-      background-color: #ffffff;
+      background-color: #fff;
       color: #000;
-      border: 1px solid #e5e7eb;
       border-radius: 0.75rem;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       height: 100%;
       display: flex;
       flex-direction: column;
@@ -50,14 +49,7 @@
       font-weight: 600;
       font-size: 0.95rem;
       margin-bottom: 0.5rem;
-    }
-
-    .package-box {
-      border: 1px solid #dddcdc; /* soft grey */
-      border-radius: 0.5rem;
-      padding: 1rem 1.25rem;
-      margin-bottom: 1.5rem;
-      background-color: #edf6f1;
+      color: #14532d;
     }
 
     .card-title {
@@ -66,21 +58,35 @@
       margin-bottom: 0.5rem;
     }
 
+    .meal-box {
+      border-radius: 0.5rem;
+      padding: 0.8rem 1rem;
+      margin-bottom: 1rem;
+      background-color: #ebf5ee;
+      color: #14532d;
+    }
+
+    .meal-box-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .meal-entries {
+      padding-left: 10px;
+    }
+
     .meal-entry {
-      position: relative;
-      padding-right: 150px; /* ruang lebih buat kotak status */
-      margin-bottom: 1.2rem;
       font-weight: 600;
-      font-size: 1rem;
-      color: #222;
-      padding-left: 15px; /* indent ke dalam */
+      font-size: 0.95rem;
+      margin-bottom: 0.3rem;
     }
 
     .meal-select {
-      position: absolute;
-      top: 2px;
-      right: 0;
-      width: 140px; /* lebih lebar */
+      width: 140px;
       height: 32px;
       padding: 4px 12px;
       font-size: 0.9rem;
@@ -94,7 +100,6 @@
       transition: background-color 0.3s, border-color 0.3s, color 0.3s;
     }
 
-    /* preparing - gold-ish soft */
     .meal-select.preparing {
       background-color: #fff7e6;
       color: #8a6d0b;
@@ -102,7 +107,6 @@
       box-shadow: 0 0 6px #f9d71c88;
     }
 
-    /* delivering - blue calm */
     .meal-select.delivering {
       background-color: #dbefff;
       color: #0b3d91;
@@ -110,7 +114,6 @@
       box-shadow: 0 0 6px #4a90e288;
     }
 
-    /* received - green fresh */
     .meal-select.received {
       background-color: #d9f7e4;
       color: #1f6f3a;
@@ -118,7 +121,6 @@
       box-shadow: 0 0 6px #44bb4488;
     }
 
-    /* Header search & package label */
     .header-search-group {
       display: flex;
       align-items: center;
@@ -134,7 +136,6 @@
       max-width: 140px;
     }
 
-    /* Make No. Order and Package select on same line */
     @media (min-width: 768px) {
       .header-search-group {
         gap: 12px;
@@ -143,7 +144,6 @@
   </style>
 </head>
 <body class="p-4">
-
   <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
     <h1 class="mb-3 mb-md-0">Manage Orders</h1>
     <div class="header-search-group">
@@ -164,8 +164,6 @@
   </div>
 
   <div class="row g-4" id="order-container"></div>
-
-
 
   <script>
     const orders = [
@@ -203,32 +201,49 @@
       }
     ];
 
+    const mealTypes = ['Breakfast', 'Lunch', 'Dinner'];
     const orderContainer = document.getElementById("order-container");
 
+    function updateMealStatus(select) {
+      const status = select.value;
+      select.classList.remove("preparing", "delivering", "received");
+      if (status === "Preparing") select.classList.add("preparing");
+      else if (status === "Delivering") select.classList.add("delivering");
+      else if (status === "Received") select.classList.add("received");
+    }
+
+    function switchTab(button) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+    }
+
     orders.forEach(order => {
-      const packageHTML = order.packages.map(pkg => {
-        const mealTypes = ['Breakfast', 'Lunch', 'Dinner'];
-        const meals = pkg.qty.map((qty, idx) => {
-          if (qty === 0) return '';
-          return `
-            <div class="meal-entry">
-              <span>${mealTypes[idx]} (${qty}x)</span>
-              <select class="form-select form-select-sm meal-select preparing" onchange="updateMealStatus(this)">
-                <option>Preparing</option>
-                <option>Delivering</option>
-                <option>Received</option>
-              </select>
+      let mealSections = '';
+
+      mealTypes.forEach((meal, mealIdx) => {
+        // Filter paket yang qty > 0 untuk meal ini
+        const filteredPkgs = order.packages.filter(pkg => pkg.qty[mealIdx] > 0);
+
+        if (filteredPkgs.length > 0) {
+          const paketList = filteredPkgs.map(pkg => {
+            return `<div class="meal-entry">${pkg.paket} (${pkg.qty[mealIdx]}x)</div>`;
+          }).join("");
+
+          mealSections += `
+            <div class="meal-box">
+              <div class="meal-box-header">
+                <span>${meal}</span>
+                <select class="form-select form-select-sm meal-select preparing" onchange="updateMealStatus(this)">
+                  <option>Preparing</option>
+                  <option>Delivering</option>
+                  <option>Received</option>
+                </select>
+              </div>
+              <div class="meal-entries">${paketList}</div>
             </div>
           `;
-        }).join('');
-
-        return `
-          <div class="package-box">
-            <div class="card-title">${pkg.paket}</div>
-            ${meals}
-          </div>
-        `;
-      }).join('');
+        }
+      });
 
       orderContainer.innerHTML += `
         <div class="col-12 col-md-6 col-lg-4 d-flex">
@@ -240,25 +255,12 @@
               <p class="mb-1">${order.phone}</p>
               <p class="mb-1">${order.address}</p>
               <p class="mb-2 text-muted"><i>${order.notes}</i></p>
-              ${packageHTML}
+              ${mealSections}
             </div>
           </div>
         </div>
       `;
     });
-
-    function switchTab(button) {
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      button.classList.add('active');
-    }
-
-    function updateMealStatus(select) {
-      const status = select.value;
-      select.classList.remove("preparing", "delivering", "received");
-      if (status === "Preparing") select.classList.add("preparing");
-      else if (status === "Delivering") select.classList.add("delivering");
-      else if (status === "Received") select.classList.add("received");
-    }
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

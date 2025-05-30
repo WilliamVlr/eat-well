@@ -33,9 +33,18 @@ Route::get('/manageOrder', function(){
     return view('manageOrder');
 });
 
-Route::get('/aboutUs', function(){
+Route::get('/about-us', function(){
     return view('aboutUs');
 });
+
+Route::get('/manage-address', function(){
+    return view('ManageAddress');
+});
+
+Route::get('/add-address', function(){
+    return view('addAddress');
+});
+
 
 Route::get('/catering-detail/rating-and-review', function(){
     return view('ratingAndReview');
