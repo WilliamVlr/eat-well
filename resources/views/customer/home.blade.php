@@ -55,19 +55,19 @@
             <div class="row mb-2 gy-1">
                 <div class="col-6 col-sm-3 subscription-detail">
                     <div class="row sub-title">Active From</div>
-                    <div class="row content ps-3">19/02/2025</div>
+                    <div class="row content ps-sm-3">19/02/2025</div>
                 </div>
                 <div class="col-6 col-sm-9 subscription-detail">
                     <div class="row sub-title">Active Until</div>
-                    <div class="row content ps-3">26/02/2025</div>
+                    <div class="row content ps-sm-3">26/02/2025</div>
                 </div>
                 <div class="col-sm-3 subscription-detail">
                     <div class="row sub-title">Recipient Name</div>
-                    <div class="row content ps-3">Adit tolongin Dit</div>
+                    <div class="row content ps-sm-3">Adit tolongin Dit</div>
                 </div>
                 <div class="col subscription-detail">
                     <div class="row sub-title">Delivery Address</div>
-                    <div class="row content ps-3">Jalan Mangga Barat No. 17 Blok D5, Bekasi</div>
+                    <div class="row content ps-sm-3">Jalan Mangga Barat No. 17 Blok D5, Bekasi</div>
                 </div>
 
             </div>
@@ -76,52 +76,65 @@
             </div>
             <div class="row order-details">
                 <div class="col-lg p-2 time-slot active">
-                    <div class="row mb-1 justify-content-between align-content-center">
-                        <div class="time-slot-type font-300 w-auto p-0 ps-1">Breakfast</div>
+                    <div class="row mb-1 justify-content-between align-content-center" data-bs-toggle="collapse"
+                        data-bs-target="#breakfast-packages" role="button" aria-expanded="true"
+                        aria-controls="breakfast-packages">
+                        <div class="time-slot-type font-400 w-auto p-0 ps-1">Breakfast</div>
                         <div class="delivery-status hug-content align-self-center me-1">
                             Preparing
                         </div>
                     </div>
-                    <div class="row p-0 package justify-content-between align-content-center">
-                        <div class="w-75 mb-1 p-0 ps-1 package-name">Paket Lorem Ipsum Dolor Amethyst Dolorosa Megamendung
-                        </div>
-                        <div class="w-auto align-self-center me-1 quantity">
-                            x 1
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg p-2 time-slot">
-                    <div class="row mb-1 justify-content-between align-content-center">
-                        <div class="time-slot-type font-300 w-auto p-0 ps-1">Lunch</div>
-                        {{-- <div class="delivery-status hug-content align-self-center me-1">
-                            Preparing
-                        </div> --}}
-                    </div>
-                    <div class="row mb-1 p-0 package justify-content-between align-content-center">
-                        <div class="w-75 p-0 ps-1 package-name">Paket Lorem Ipsum Dolor Amethyst Dolorosa Megamendung</div>
-                        <div class="w-auto align-self-center me-1 quantity">
-                            x 1
-                        </div>
-                    </div>
-                    <div class="row p-0 package justify-content-between align-content-center">
-                        <div class="w-75 p-0 ps-1 package-name">Paket LaTex Lajex</div>
-                        <div class="w-auto align-self-center me-1 quantity">
-                            x 1
+                    <div class="collapse" id="breakfast-packages">
+                        <div class="row p-0 package justify-content-between align-content-center">
+                            <div class="w-75 mb-1 p-0 ps-1 package-name">Paket Lorem Ipsum Dolor Amethyst Dolorosa
+                                Megamendung
+                            </div>
+                            <div class="w-auto align-self-center me-1 quantity">
+                                x 1
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg p-2 time-slot">
-                    <div class="row mb-1 justify-content-between align-content-center">
-                        <div class="time-slot-type font-300 w-auto p-0 ps-1">Dinner</div>
+                    <div class="row mb-1 justify-content-between align-content-center"  data-bs-toggle="collapse"
+                        data-bs-target="#lunch-packages" role="button" aria-expanded="true"
+                        aria-controls="breakfast-packages">
+                        <div class="time-slot-type font-400 w-auto p-0 ps-1">Lunch</div>
                         {{-- <div class="delivery-status hug-content align-self-center me-1">
                             Preparing
                         </div> --}}
                     </div>
-                    <div class="row p-0 package justify-content-between align-content-center">
-                        <div class="w-75 mb-1 p-0 ps-1 package-name">Paket Lorem Ipsum Dolor Amethyst Dolorosa Megamendung
+                    <div class="collapse" id="lunch-packages">
+                        <div class="row mb-1 p-0 package justify-content-between align-content-center">
+                            <div class="w-75 p-0 ps-1 package-name">Paket Lorem Ipsum Dolor Amethyst Dolorosa Megamendung</div>
+                            <div class="w-auto align-self-center me-1 quantity">
+                                x 1
+                            </div>
                         </div>
-                        <div class="w-auto align-self-center me-1 quantity">
-                            x 1
+                        <div class="row p-0 package justify-content-between align-content-center">
+                            <div class="w-75 p-0 ps-1 package-name">Paket LaTex Lajex</div>
+                            <div class="w-auto align-self-center me-1 quantity">
+                                x 1
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg p-2 time-slot">
+                    <div class="row mb-1 justify-content-between align-content-center" data-bs-toggle="collapse"
+                        data-bs-target="#dinner-packages" role="button" aria-expanded="true"
+                        aria-controls="breakfast-packages">
+                        <div class="time-slot-type font-400 w-auto p-0 ps-1">Dinner</div>
+                        {{-- <div class="delivery-status hug-content align-self-center me-1">
+                            Preparing
+                        </div> --}}
+                    </div>
+                    <div class="collapse" id="dinner-packages">
+                        <div class="row p-0 package justify-content-between align-content-center">
+                            <div class="w-75 mb-1 p-0 ps-1 package-name">Paket Lorem Ipsum Dolor Amethyst Dolorosa Megamendung
+                            </div>
+                            <div class="w-auto align-self-center me-1 quantity">
+                                x 1
+                            </div>
                         </div>
                     </div>
                 </div>
