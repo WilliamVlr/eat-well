@@ -6,6 +6,7 @@
   <title>Catering Manage Menu</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <style>
     body {
       font-family: sans-serif;
@@ -178,8 +179,6 @@
   <div class="text-muted-subheading">You can edit our previous and add your new package to your catering.</div>
 
   <div class="container mt-5">
-    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#packageModal" onclick="openAddModal()">Add Package</button>
-
     <div class="table-responsive">
       <table class="table table-bordered">
         <thead class="table-dark">
@@ -214,13 +213,20 @@
             <td><a href="#">menu_healthy.pdf</a></td>
             <td><a href="#">packageA.png</a></td>
             <td>
-              <button class="btn btn-warning btn-sm" onclick="openEditModal()">Edit</button>
-              <button class="btn btn-danger btn-sm">Delete</button>
+                <div class="d-flex justify-content-end gap-2">
+                    <button class="btn btn-warning btn-sm" onclick="openEditModal()" title="Edit">
+                        <i class="bi bi-pencil-fill"></i>
+                    </button>
+                    <button class="btn btn-danger btn-sm" title="Delete">
+                        <i class="bi bi-trash-fill"></i>
+                    </button>
+                </div>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#packageModal" onclick="openAddModal()">Add Package</button>
   </div>
 
   <!-- Modal -->

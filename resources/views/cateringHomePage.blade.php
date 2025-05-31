@@ -11,6 +11,7 @@
     integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT"
     crossorigin="anonymous"
   />
+  <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
   <style>
     body {
         background-color: #064e3b; /* hijau tua */
@@ -26,7 +27,11 @@
         border-bottom: 1px solid #ddd;
     }
 
-    .card-title,
+    .card-title{
+        font-family: 'Lexend', sans-serif;
+        text-align: center;
+    },
+
     .card-footer small {
         text-align: center;
         color: #065f46;
@@ -107,7 +112,7 @@
         border-radius: 20px;
         padding: 5px 10px;
         max-width: 800px;
-        margin: 30px auto 0 -7px; /* center align */
+        margin: 30px auto 0 -14px; /* center align */
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         color: #103f0b; /* teks jadi hijau tua agar kontras */
     }
