@@ -250,8 +250,9 @@
           <div class="card w-100">
             <div class="card-body">
               <div class="order-header">
-                <span>Order #${order.id} - ${order.name}</span>
+                <span>Order #${order.id}</span>
               </div>
+              <p class="mb-1">${order.name}</p>
               <p class="mb-1">${order.phone}</p>
               <p class="mb-1">${order.address}</p>
               <p class="mb-2 text-muted"><i>${order.notes}</i></p>
