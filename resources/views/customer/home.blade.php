@@ -126,10 +126,10 @@
         {{-- Popular Caterings --}}
         <section class="popular-catering-container w-100 h-auto mb-md-5 mb-4">
             <div class="row title-1">Popular Catering Near You</div>
-            @for ($i = 0; $i < 3; $i++)
+            @for ($i = 0; $i < 5; $i++)
             <div class="row list-container mb-3">
                 <div class="col-lg card-medium">
-                    <div class="row">
+                    <a href="#" class="row">
                         <div class="col-3 col-md-2 col-lg-3 col-xl-3 p-0">
                             <div class="image-container">
                                 <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}" alt="">
@@ -163,10 +163,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-lg card-medium">
-                    <div class="row">
+                    <a href="#" class="row">
                         <div class="col-3 col-md-2 col-lg-3 col-xl-3 p-0">
                             <div class="image-container">
                                 <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}" alt="">
@@ -200,10 +200,108 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
             @endfor
+        </section>
+        {{-- Favorited Catering or Recently Viewed? --}}
+        <section class="fav-catering-container w-100 h-auto mb-md-5 mb-4">
+            {{-- Kasih if gaada --}}
+            <div class="section-title-wrap d-flex flex-row justify-content-between align-items-center">
+                <h3 class="title-1">Your Favorites</h3>
+                <a href="#" class="detail-link">View all</a>
+            </div>
+            <div class="carousel-slider-wrap carousel-style-1 mt-10 align-self-center">
+                {{-- <button class="arrow-btn button-slider-shadow" id="prev">&lt;</button> --}}
+                <ul class="carousel-product-list">
+                    <li>
+                        <a href="#" class="card-vertical" draggable="false">
+                            <div class="image-container">
+                                <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}" alt="">
+                            </div>
+                            <div class="card-info pt-2">
+                                <div class="row detail mb-1 mb-lg-2 justify-content-between">
+                                <div class="left-contents">
+                                    <div class="kota">
+                                        Kota Kembangan Rupa
+                                    </div>
+                                </div>
+                                <div class="right-content pe-2">
+                                    <div class="logo-container">
+                                        <i class="fa-regular fa-heart" style="color: #000000;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                                <div class="catering-name">Catering Naga Sakti Duar</div>
+                                <div class="time-slot-list mb-1">Breakfast, Lunch, Dinner</div>
+                                <div class="rate-sold-container">
+                                    <span class="rating">4.9</span>
+                                    <div class="circle"></div>
+                                    <span class="sold">10k+ Sold</span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="card-vertical" draggable="false">
+                            <div class="image-container">
+                                <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}" alt="">
+                            </div>
+                            <div class="card-info pt-2">
+                                <div class="row detail mb-1 mb-lg-2 justify-content-between">
+                                <div class="left-contents">
+                                    <div class="kota">
+                                        Kota Kembangan Rupa
+                                    </div>
+                                </div>
+                                <div class="right-content pe-2">
+                                    <div class="logo-container">
+                                        <i class="fa-regular fa-heart" style="color: #000000;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                                <div class="catering-name">Catering Naga Sakti Duar</div>
+                                <div class="time-slot-list mb-1">Breakfast, Lunch, Dinner</div>
+                                <div class="rate-sold-container">
+                                    <span class="rating">4.9</span>
+                                    <div class="circle"></div>
+                                    <span class="sold">10k+ Sold</span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="card-vertical" draggable="false">
+                            <div class="image-container">
+                                <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}" alt="">
+                            </div>
+                            <div class="card-info pt-2">
+                                <div class="row detail mb-1 mb-lg-2 justify-content-between">
+                                <div class="left-contents">
+                                    <div class="kota">
+                                        Kota Kembangan Rupa
+                                    </div>
+                                </div>
+                                <div class="right-content pe-2">
+                                    <div class="logo-container">
+                                        <i class="fa-regular fa-heart" style="color: #000000;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                                <div class="catering-name">Catering Naga Sakti Duar</div>
+                                <div class="time-slot-list mb-1">Breakfast, Lunch, Dinner</div>
+                                <div class="rate-sold-container">
+                                    <span class="rating">4.9</span>
+                                    <div class="circle"></div>
+                                    <span class="sold">10k+ Sold</span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                {{-- <button class="arrow-btn button-slider-shadow" id="next">&gt;</button> --}}
+            </div>
         </section>
     </main>
 @endsection
