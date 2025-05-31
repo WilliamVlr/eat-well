@@ -25,7 +25,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             // $table->enum('role', ['customer', 'vendor', 'admin']);
-            $table->string('role');
+            $table->string('role')->default('Customer');
             $table->boolean('enabled2FA')->default(false);
             $table->string('remember_token', 100);
             $table->dateTime('dateOfBirth')->nullable();

@@ -19,7 +19,7 @@ class Vendor extends Model
         'breakfast_delivery',
         'lunch_delivery',
         'dinner_delivery',
-        'description',
+        // 'description',
         'logo',
         'phone_number', // Added based on your migration
         'rating', // Added based on your migration

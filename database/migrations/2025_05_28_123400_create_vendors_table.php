@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('breakfast_delivery');
             $table->string('lunch_delivery');
             $table->string('dinner_delivery');
-            $table->string('description');
+            // $table->string('description');
             $table->string('logo');
             $table->string('phone_number', 20);
             $table->decimal('rating', 2, 1);
