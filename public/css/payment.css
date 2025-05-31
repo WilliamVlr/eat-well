@@ -3,6 +3,7 @@
     --bg: #123F2F;
     --button: #E77133;
     --midbg: #DDDFDE;
+    --notebg: #c9c9c9;
 }
 
 body{
@@ -14,7 +15,12 @@ body{
     font-style: normal;
 }
 
-.font-thin{
+.inter {
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+}
+
+.formnt-thin{
     font-weight: 100;
 }
 
@@ -44,22 +50,29 @@ h1{
 
 .isi{
     width: 1295px;
-    height: 400px;
+    height: 100%;
     background-color: var(--midbg);
-    padding-top: 8px;
+    padding-top: 20px;
     border-radius: 20px;
+    padding-bottom: 20px;
 }
 .isi .orderdet{
     background-color: var(--button);
     padding: 5px;
-    width: 35%;
+    width: 28%;
     height: auto;
     border-radius: 27.5px;
 }
 
+
 .isi .orderdet .judul{
     margin-bottom: 0px;
     text-align: center;
+    font-size: 22px;
+}
+
+.isi .detail{
+    margin-left: 30px;
 }
 
 .isi .detail .que{
@@ -67,3 +80,75 @@ h1{
     margin-top: 20px;
     margin-bottom:1px;
 }
+
+.fullord p
+{
+    margin-bottom: -2px;
+}
+
+.pack-name{
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.fullord .pack-list{
+    margin-left: 50px;
+    font-size: 18px;
+    opacity: 70%;
+}
+
+.pack-price{
+    font-size: 18px;
+    margin-left: 750px;
+    opacity: 70%;
+}
+
+.note-order{
+    width: 90%;
+    background-color: var(--notebg);
+    border-radius: 20px;
+    margin-top: 20px;
+    padding-top:10px;
+    padding-bottom: 10px;
+}
+
+.note-order p{
+    margin-left: 20px;
+}
+
+.button-payment{
+    margin-left:40px;
+    font-size: 20px;
+}
+
+.button-payment label{
+    opacity: 70%;
+}
+
+.total{
+    font-size: 22px;
+}
+
+.nominal{
+    margin-left: 950px;
+}
+
+.pay-button{
+    margin-top:10px;
+    margin-left:1000px;
+    margin-bottom: 100px;
+}
+
+.pay-btn{
+    width: 250px;
+    height: 38px;
+    border-radius: 10px;
+    background-color: var(--button);
+    border: none;
+    font-size: 18px;
+}
+
+.pay-btn:hover{
+    background-color: #fba679;
+}
+

@@ -25,21 +25,79 @@
         </p>
         <div class="container-sm isi">
             <div class="orderdet">
-                <p class="lexend font-semi-bold text-white judul">Order Detail</p>
+                <p class="lexend font-semibold text-white judul">Order Detail</p>
             </div>
             <div class="detail">
-                <div class="active">
-                    <p class="lexend font-medium text-black que">Active Period:</p>
-                    <p class="lexend font-bold text-black ans">3 May 2025- 10 May 2025</p>
-                </div>
+                <p class="lexend font-medium text-black que">Active Period:</p>
+                <p class="lexend font-bold text-black ans">3 May 2025- 10 May 2025</p>
             </div>
             <div class="detail">
-                <div class="active">
-                    <p class="lexend font-medium text-black que">Order Date & Time:</p>
-                    <p class="lexend font-bold text-black ans">06:00 AM Sat, 01 May 2025</p>
+                <p class="lexend font-medium text-black que">Order Date & Time:</p>
+                <p class="lexend font-bold text-black ans">06:00 AM Sat, 01 May 2025</p>
+            </div>
+            <hr style="height: 1.5px; background-color:black; opacity:100%; border: none; margin-left: 20px; margin-right: 20px;">
+            <div class="fullord">
+                <p class="inter font-bold text-black detail pack-name">Package A</p>
+                <div class="container lexend font-regular text-black">
+                    <div class="row align-items-start">
+                        <div class="col text-left pack-list">
+                            <p>2
+                                <span>x</span>
+                                Breakfast
+                            </p>
+                            <p>1 
+                                <span>x</span>
+                                Lunch
+                            </p>
+                            <p>3
+                                <span>x</span>
+                                Dinner
+                            </p>
+                        </div>
+                        <div class="col pack-price text-right">
+                            <p>Rp. 200.000,-</p>
+                            <p>Rp. 250.000,-</p>
+                            <p>Rp. 280.000,-</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="detail note-order lexend">
+                    <p class="font-medium" style="opacity: 0.7">Note:</p>
+                    <p class="font-bold">taro makanan nya di loker aja pak.</p>
                 </div>
             </div>
-            <hr>
+            <hr style="height: 1.5px; background-color:black; opacity:100%; border: none; margin-left: 20px; margin-right: 20px;">
+            <div class="payment-meth">
+                <p class="inter font-semibold text-black detail pack-name">Payment Method<p>
+                <div class="button-payment lexend font-medium text-black">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="payment-button" id="wellpay">
+                        <label class="form-check-label" for="wellpay">
+                            Wellpay
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input radioButtonPayment" type="radio" name="payment-button" id="qris">
+                        <label class="form-check-label" for="qris">
+                            QRIS
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="payment-button" id="bva">
+                        <label class="form-check-label" for="bva">
+                            BCA Virtual Account
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <hr style="height: 3px; background-color:black; opacity:100%; border: none; margin-left: 20px; margin-right: 20px;">
+            <div class="inter font-medium text-black total">
+                <span class="detail">Total</span>
+                <span class="nominal">Rp. 730.000,-</span>
+            </div>
+        </div>
+        <div class="pay-button">
+            <button type="button" class="inter font-semibold text-white pay-btn">Pay</button>
         </div>
     </div>
 </body>
