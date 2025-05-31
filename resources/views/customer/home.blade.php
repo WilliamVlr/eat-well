@@ -126,16 +126,17 @@
         {{-- Popular Caterings --}}
         <section class="popular-catering-container w-100 h-auto mb-md-5 mb-4">
             <div class="row title-1">Popular Catering Near You</div>
-            <div class="row list-container">
-                <div class="col-md card-medium">
+            @for ($i = 0; $i < 3; $i++)
+            <div class="row list-container mb-3">
+                <div class="col-lg card-medium">
                     <div class="row">
-                        <div class="col-md-4 col-lg-4 col-xl-3 p-0">
+                        <div class="col-3 col-md-2 col-lg-3 col-xl-3 p-0">
                             <div class="image-container">
                                 <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}" alt="">
                             </div>
                         </div>
-                        <div class="col-md-8 col-lg-8 col-xl-9 pe-0 ps-4 card-info pt-2 pb-2">
-                            <div class="row detail mb-2 justify-content-between">
+                        <div class="col-9 col-md-10 col-lg-9 col-xl-9 pe-0 ps-2 ps-xl-4 card-info pt-1 pt-xl-2 pb-md-2">
+                            <div class="row detail mb-1 mb-lg-2 mb-xl-3 justify-content-between">
                                 <div class="left-contents">
                                     <div class="kota">
                                         Kota Kembangan Rupa
@@ -147,8 +148,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row nama-catering">Catering Naga Sakti Duar</div>
-                            <div class="row time-slot-list mb-2">Breakfast, Lunch, Dinner</div>
+                            <div class="row nama-catering mb-xl-1">Catering Naga Sakti Duar</div>
+                            <div class="row time-slot-list mb-sm-1 mb-xl-2">Breakfast, Lunch, Dinner</div>
                             <div class="row rate-sold-container justify-content-start align-items-center">
                                 <div class="rating-container">
                                     <div class="logo-container">
@@ -164,8 +165,45 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md p-0">test</div>
+                <div class="col-lg card-medium">
+                    <div class="row">
+                        <div class="col-3 col-md-2 col-lg-3 col-xl-3 p-0">
+                            <div class="image-container">
+                                <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}" alt="">
+                            </div>
+                        </div>
+                        <div class="col-9 col-md-10 col-lg-9 col-xl-9 pe-0 ps-2 ps-xl-4 card-info pt-1 pt-xl-2 pb-md-2">
+                            <div class="row detail mb-1 mb-lg-2 mb-xl-3 justify-content-between">
+                                <div class="left-contents">
+                                    <div class="kota">
+                                        Kota Kembangan Rupa
+                                    </div>
+                                </div>
+                                <div class="right-content pe-2">
+                                    <div class="logo-container">
+                                        <i class="fa-regular fa-heart" style="color: #000000;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row nama-catering mb-xl-1">Catering Naga Sakti Duar</div>
+                            <div class="row time-slot-list mb-sm-1 mb-xl-2">Breakfast, Lunch, Dinner</div>
+                            <div class="row rate-sold-container justify-content-start align-items-center">
+                                <div class="rating-container">
+                                    <div class="logo-container">
+                                        {{-- logo bintang --}}
+                                    </div>
+                                    4.9
+                                </div>
+                                <div class="circle"></div>
+                                <div class="sold-container">
+                                    10k+ Sold
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            @endfor
         </section>
     </main>
 @endsection

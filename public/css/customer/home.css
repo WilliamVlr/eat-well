@@ -264,6 +264,7 @@ body {
     .rate-sold-container {
       gap: 5px;
       font-size: 18px;
+      line-height: 24px;
 
       * {
         width: fit-content;
@@ -281,6 +282,73 @@ body {
   }
 }
 
-@media screen and (max-width: 1024px) {
-  
+@media screen and (max-width: 1400px){
+  .card-medium {
+    .card-info {
+      .nama-catering {
+        font-size: 22px;
+      }
+      .detail {
+        font-size: 14px;
+      }
+      .time-slot-list {
+        font-size: 16px;
+      }
+      .rate-sold-container {
+        font-size: 16px;
+        line-height: 20px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .card-medium {
+    .card-info {
+      .kota {
+        font-size: 12px;
+      }
+      .nama-catering {
+        font-size: 20px;
+      }
+      .detail {
+        font-size: 12px;
+      }
+      .time-slot-list {
+        font-size: 14px;
+      }
+      .rate-sold-container {
+        font-size: 14px;
+        line-height: 18px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 440px) {
+  .title-1{
+    font-size: 20px;
+  }
+  .card-medium {
+    .card-info {
+      .kota {
+        font-size: 10px;
+        padding: 2px 5px !important;
+      }
+      .nama-catering {
+        font-size: 16px;
+        line-height: 20px;
+      }
+      .detail {
+        font-size: 12px;
+      }
+      .time-slot-list {
+        font-size: 12px;
+      }
+      .rate-sold-container {
+        font-size: 12px;
+        line-height: 16px;
+      }
+    }
+  }
 }
