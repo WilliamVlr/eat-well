@@ -23,35 +23,23 @@
 
         <div class="row justify-content-center mb-4">
             <div class="col-sm-3">
-                <select class="form-select form-select-sm" aria-label="Small select example">
+                <select id="provinsi" class="form-select form-select-sm" aria-label="Small select example">
                     <option selected>Provinsi</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
                 </select>
             </div>
             <div class="col-sm-3">
-                <select class="form-select form-select-sm" aria-label="Small select example">
+                <select id="kota" class="form-select form-select-sm" aria-label="Small select example">
                     <option selected>Kota</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
                 </select>
             </div>
             <div class="col-sm-3">
-                <select class="form-select form-select-sm" aria-label="Small select example">
+                <select id="kecamatan" class="form-select form-select-sm" aria-label="Small select example">
                     <option selected>Kecamatan</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
                 </select>
             </div>
             <div class="col-sm-3">
-                <select class="form-select form-select-sm" aria-label="Small select example">
+                <select id="kelurahan" class="form-select form-select-sm" aria-label="Small select example">
                     <option selected>Kelurahan</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
                 </select>
             </div>
         </div>
@@ -63,12 +51,7 @@
                 </div>
             </div>
             <div class="col-sm-3">
-                <select class="form-select form-select-sm" aria-label="Small select example">
-                    <option selected>Kode Pos</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
+                <input class="form-control form-control-sm" type="text" placeholder="Kode pos" aria-label=".form-control-sm example">
             </div>
 
         </div>
@@ -114,5 +97,58 @@
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous">
+    </script>
+
+    <script>
+        const API_KEY = '543d80b3b490190006f5a670ce47292b0ebe9a3da6a097a0efc32b87096de8e4';
+
+        async function fetchData(url)
+        {
+            const res = await fetch(url);
+            const data = await res.json();
+            return data.value
+        }
+
+        // load provinsi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', async() => {
+            const provinsiSelect = document.getElementById('provinsi');
+            const data = await fetchData(`https://api.binderbyte.com/wilayah/provinsi?api_key=${API_KEY}`);
+            data.forEach(prov=>{
+                provinsiSelect.innerHTML += `<option value="${prov.id}">${prov.name}</option>`;
+            });
+        });
+
+        // Load Kota saat Provinsi dipilih
+    document.getElementById('provinsi').addEventListener('change', async function() {
+        const kotaSelect = document.getElementById('kota');
+        kotaSelect.innerHTML = '<option selected>Kota</option>';
+        const provID = this.value;
+        const data = await fetchData(`https://api.binderbyte.com/wilayah/kabupaten?api_key=${API_KEY}&id_provinsi=${provID}`);
+        data.forEach(kota => {
+            kotaSelect.innerHTML += `<option value="${kota.id}">${kota.name}</option>`;
+        });
+    });
+
+    // Load Kecamatan saat Kota dipilih
+    document.getElementById('kota').addEventListener('change', async function() {
+        const kecSelect = document.getElementById('kecamatan');
+        kecSelect.innerHTML = '<option selected>Kecamatan</option>';
+        const kotaID = this.value;
+        const data = await fetchData(`https://api.binderbyte.com/wilayah/kecamatan?api_key=${API_KEY}&id_kabupaten=${kotaID}`);
+        data.forEach(kec => {
+            kecSelect.innerHTML += `<option value="${kec.id}">${kec.name}</option>`;
+        });
+    });
+
+    // Load Kelurahan saat Kecamatan dipilih
+    document.getElementById('kecamatan').addEventListener('change', async function() {
+        const kelSelect = document.getElementById('kelurahan');
+        kelSelect.innerHTML = '<option selected>Kelurahan</option>';
+        const kecID = this.value;
+        const data = await fetchData(`https://api.binderbyte.com/wilayah/kelurahan?api_key=${API_KEY}&id_kecamatan=${kecID}`);
+        data.forEach(kel => {
+            kelSelect.innerHTML += `<option value="${kel.id}">${kel.name}</option>`;
+        });
+    });
     </script>
 @endsection

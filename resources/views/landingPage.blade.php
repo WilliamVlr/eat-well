@@ -225,7 +225,7 @@
         <h1 class="text-center mt-5 bold text-light">Why Choose Us</h1>
         <p class="text-center fw-normal text-light" style="margin-top: 30px">We offer you a good platform to find a good
             catering</p>
-        <div class="row justify-content-center">
+        <div class="row justify-content-center" style="margin-bottom: 40px">
             <div class="row justify-content-center text-center mt-5">
                 <div class="col-4 col-sm-4 mb-4">
                     <img src="{{ asset('asset/landing_page/eat1.png') }}" class="rounded-circle img-fluid mx-auto d-block"
