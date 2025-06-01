@@ -9,7 +9,7 @@
 @section('content')
     <div class="address-container text-center">
         <div class="text-start mb-3">
-            <i class="bi bi-arrow-left fs-4"></i>
+            <i class="bi bi-arrow-left fs-4"><a href="add-address" style="text-decoration: none; color: black">←</a></i>
         </div>
 
         <div class="divider"></div>
