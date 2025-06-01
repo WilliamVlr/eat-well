@@ -9,4 +9,14 @@ body {
     max-width: 850px;
     margin: 40px auto;
     font-family: 'Lexend', sans-serif;
+    position: relative;
+    overflow: visible !important;
+
 }
+
+select.form-select-sm {
+    min-height: 36px;
+    z-index: 10;
+    position: relative;
+}
+
