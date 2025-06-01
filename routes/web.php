@@ -29,6 +29,11 @@ Route::get('/home', function (){
     return view('customer.home');
 })->name('home');
 
+// Search
+Route::get('/search', function(){
+    return view('customer.search');
+});
+
 // Catering Details
 Route::get('/catering-detail', function () {
     return view('cateringDetail');

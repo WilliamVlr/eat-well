@@ -1,0 +1,109 @@
+/* Define Adjusted Color Variables */
+:root {
+  --primary-color: #E77133; 
+  --secondary-color: #ffffff; 
+  --accent-color: #F5A623; 
+  --background-color: #13392A; 
+  --neutral-color: #e4e7ed; 
+  --text-color: #0b0b0b;
+  --title-color: #fffbfb;
+  --link-color-1: #1f1f1f;
+  --link-color-1-hover: #000000;
+  --box-shadow-light: 0 2px 4px rgba(255, 255, 255, 0.2);
+  --box-shadow-light-hover: 0 2px 4px rgba(255, 255, 255, 0.6);
+}
+
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+ol, ul, li {
+  list-style: none;
+}
+
+img, svg {
+    max-width: 100%;
+    height: auto;
+}
+
+a {
+    color: var(--link-color-1);
+}
+
+a:hover {
+    color: var(--link-color-1-hover);
+}
+
+/* TYPOGRAPHY */
+body {
+  font-family: 'Lexend', sans-serif;
+  font-style: normal;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Lexend', sans-serif;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+p {
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 16px;
+    margin-bottom: 5px;
+    color: var(--text-color);
+}
+
+p:last-child{
+    margin-bottom: 0;
+}
+
+a, button {
+    font-family: 'Lexend', sans-serif;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+}
+
+/* SECTION LAYOUT */
+.section-wrap {
+  width: 100%;
+}
+
+/* ICON LAYOUT */
+.icon-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.icon-sm {
+    font-size: 20px;
+}
+
+.icon-md {
+    font-size: 24px;
+}
+
+.icon-lg {
+    font-size: 28px;
+}
+
+.icon-fill {
+  font-variation-settings: 'FILL' 1;
+}
+
+@media screen and (max-width: 440px) {
+    .icon-lg {
+        font-size: 24px;
+    }
+    .icon-md {
+        font-size: 20px;
+    }
+    .icon-sm {
+        font-size: 16px;
+    }
+}
+
+/* CARD LAYOUTS */
