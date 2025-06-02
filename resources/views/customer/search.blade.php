@@ -176,7 +176,7 @@
                     {{-- Sort and Results Section --}}
                     <div class="col-lg-8 p-0">
                         {{-- Sort Section --}}
-                        <div class="mb-4 sort-slider">
+                        <div class="mb-2 sort-slider">
                             <div class="d-flex align-items-center flex-wrap gap-2 ">
                                 <h4 class="mb-0 d-none d-lg-block pe-3">Sort</h4>
                                 <div class="custom-rating-radio">
@@ -209,7 +209,96 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- Results Section (to be implemented) --}}
+                        <div class="catering-results d-flex flex-wrap gap-3">
+                            @for ($i = 0; $i < 2; $i++)
+                            <a href="{{ url('/catering/1') }}" class="catering-card-link">
+                                <div class="catering-card">
+                                    <div class="catering-card-img-wrapper">
+                                        <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}" alt="Catering Picture" class="catering-card-img">
+                                    </div>
+                                    <div class="catering-card-body d-flex flex-column flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <span class="catering-city small text-muted">Jakarta</span>
+                                            <button class="btn btn-light btn-fav p-1" title="Favorite" type="button" onclick="event.stopPropagation();">
+                                                <span class="material-symbols-outlined icon-sm">favorite</span>
+                                            </button>
+                                        </div>
+                                        <div class="card-details-wrapper">
+                                            <span class="catering-name">Delicious Catering</span>
+                                        </div>
+                                        <div class="catering-slots mb-1">
+                                            <span class="badge badge-breakfast">Breakfast</span>
+                                            <span class="badge badge-lunch">Lunch</span>
+                                            <span class="badge badge-dinner">Dinner</span>
+                                        </div>
+                                        <div class="catering-rating d-flex align-items-center">
+                                            <span class="material-symbols-outlined star-icon me-1">star</span>
+                                            <span class="fw-semibold">4.7</span>
+                                            <span class="text-muted ms-1 small">(120 reviews)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            @endfor
+                            <a href="{{ url('/catering/1') }}" class="catering-card-link">
+                                <div class="catering-card">
+                                    <div class="catering-card-img-wrapper">
+                                        <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}" alt="Catering Picture" class="catering-card-img">
+                                    </div>
+                                    <div class="catering-card-body d-flex flex-column flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <span class="catering-city small text-muted">Jakarta</span>
+                                            <button class="btn btn-light btn-fav p-1" title="Favorite" type="button" onclick="event.stopPropagation();">
+                                                <span class="material-symbols-outlined icon-sm">favorite</span>
+                                            </button>
+                                        </div>
+                                        <div class="card-details-wrapper">
+                                            <span class="catering-name">Delicious Catering Lorem ipsum XYZ Duar</span>
+                                        </div>
+                                        <div class="catering-slots mb-1">
+                                            <span class="badge bg-warning text-dark me-1">Breakfast</span>
+                                            <span class="badge bg-success me-1">Lunch</span>
+                                            <span class="badge bg-primary">Dinner</span>
+                                        </div>
+                                        <div class="catering-rating d-flex align-items-center">
+                                            <span class="material-symbols-outlined star-icon me-1">star</span>
+                                            <span class="fw-semibold">4.7</span>
+                                            <span class="text-muted ms-1 small">(120 reviews)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            @for ($i = 0; $i < 2; $i++)
+                            <a href="{{ url('/catering/1') }}" class="catering-card-link">
+                                <div class="catering-card">
+                                    <div class="catering-card-img-wrapper">
+                                        <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}" alt="Catering Picture" class="catering-card-img">
+                                    </div>
+                                    <div class="catering-card-body d-flex flex-column flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <span class="catering-city small text-muted">Jakarta</span>
+                                            <button class="btn btn-light btn-fav p-1" title="Favorite" type="button" onclick="event.stopPropagation();">
+                                                <span class="material-symbols-outlined icon-sm">favorite</span>
+                                            </button>
+                                        </div>
+                                        <div class="card-details-wrapper">
+                                            <span class="catering-name">Delicious Catering</span>
+                                        </div>
+                                        <div class="catering-slots mb-1">
+                                            <span class="badge bg-warning text-dark me-1">Breakfast</span>
+                                            <span class="badge bg-success me-1">Lunch</span>
+                                            <span class="badge bg-primary">Dinner</span>
+                                        </div>
+                                        <div class="catering-rating d-flex align-items-center">
+                                            <span class="material-symbols-outlined star-icon me-1">star</span>
+                                            <span class="fw-semibold">4.7</span>
+                                            <span class="text-muted ms-1 small">(120 reviews)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            @endfor
+                        </div>
                     </div>
             </div>
         </section>
