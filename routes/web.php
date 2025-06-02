@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\VendorController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -35,9 +36,11 @@ Route::get('/search', function(){
 });
 
 // Catering Details
-Route::get('/catering-detail', function () {
-    return view('cateringDetail');
-})->name('catering-detail');
+// Route::get('/catering-detail', function () {
+//     return view('cateringDetail');
+// })->name('catering-detail');
+
+Route::get('/catering-detail/{vendor}', [VendorController::class, 'show'])->name('catering-detail');
 
 Route::get('/catering-detail/rating-and-review', function(){
     return view('ratingAndReview');
