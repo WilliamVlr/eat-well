@@ -56,6 +56,98 @@
                 </div>
             </div>
         </section>
+
+        {{-- Refine and Result Section --}}
+        <section class="refine-result">
+            <div class="container">
+                <div class="row">
+                    {{-- Filter Section --}}
+                    <div class="col-lg-4 mb-4">
+                        <h5 class="mb-4 fw-bold">Filter</h5>
+                        <form>
+                            {{-- Price Range --}}
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">Price Range</label>
+                                <div class="row g-2">
+                                    <div class="col">
+                                        <input type="number" class="form-control" placeholder="Min" min="0" name="min_price">
+                                    </div>
+                                    <div class="col-auto d-flex align-items-center">
+                                        <span>to</span>
+                                    </div>
+                                    <div class="col">
+                                        <input type="number" class="form-control" placeholder="Max" min="0" name="max_price">
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- Rating Filter --}}
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">Rating</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="rating" id="rating4" value="4">
+                                    <label class="form-check-label" for="rating4">
+                                        4+ Stars
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="rating" id="rating45" value="4.5">
+                                    <label class="form-check-label" for="rating45">
+                                        4.5+ Stars
+                                    </label>
+                                </div>
+                            </div>
+                            {{-- Category Filter --}}
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">Category</label>
+                                <div class="row row-cols-2">
+                                    <div class="col">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="Indonesian" id="catIndo" name="category[]">
+                                            <label class="form-check-label" for="catIndo">
+                                                Indonesian
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="Western" id="catWest" name="category[]">
+                                            <label class="form-check-label" for="catWest">
+                                                Western
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="Asian" id="catAsian" name="category[]">
+                                            <label class="form-check-label" for="catAsian">
+                                                Asian
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="Healthy" id="catHealthy" name="category[]">
+                                            <label class="form-check-label" for="catHealthy">
+                                                Healthy
+                                            </label>
+                                        </div>
+                                    </div>
+                                    {{-- Add more categories as needed --}}
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary">Apply Filter</button>
+                            </div>
+                        </form>
+                    </div>
+                    {{-- Sort and Results Section --}}
+                    <div class="col-lg-8">
+                        {{-- Sort and Results --}}
+                    </div>
+                </div>
+            </div>
+        </section>
+        
     </main>
 @endsection
 
