@@ -167,7 +167,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 18px;
+  padding: 5px 8px;
   border-radius: 18px;
   background: #fff;
   cursor: pointer;
@@ -263,9 +263,27 @@ body {
     transform: translateY(0) translateY(-50%);
 }
 
-@media (min-width: 580px) {
+@media (min-width: 990px) {
     .filter-popup,
     #openFilterBtn {
         display: none !important;
     }
+}
+
+/* SORT */
+@media (max-width: 440px) {
+  .sort-slider {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+  }
+  .sort-slider::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+  .sort-slider > * {
+    flex: 0 0 auto;
+  }
 }

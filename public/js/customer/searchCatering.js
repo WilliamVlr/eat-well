@@ -45,3 +45,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// Allow unchecking sort radio button when clicked again
+document.querySelectorAll('input[name="sort"]').forEach(function(radio) {
+    radio.addEventListener('mousedown', function(e) {
+        if (this.checked) {
+            this.wasChecked = true;
+        } else {
+            this.wasChecked = false;
+        }
+    });
+    radio.addEventListener('click', function(e) {
+        if (this.wasChecked) {
+            this.checked = false;
+            this.dispatchEvent(new Event('change'));
+        }
+    });
+});

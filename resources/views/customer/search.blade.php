@@ -66,7 +66,7 @@
             <div class="container mb-4">
                 <div class="row m-1 m-sm-0 refine-result-wrapper">
                     {{-- Filter Section --}}
-                    <div class="col-lg-4 mb-4 filter-wrapper d-none d-sm-block">
+                    <div class="col-lg-4 mb-4 filter-wrapper d-none d-lg-block">
                         <h4 class="mb-1">Filter</h4>
                         <form>
                             {{-- Price Range --}}
@@ -89,7 +89,7 @@
                             {{-- Rating Filter --}}
                             <div class="mb-4">
                                 <label class="form-label label-filter">Rating</label>
-                                <div class="d-sm-flex gap-2">
+                                <div class="d-xl-flex gap-2">
                                     <div class="custom-rating-radio mb-1 mb-sm-0">
                                         <input class="form-check-input" type="radio" name="rating" id="rating4"
                                             value="4">
@@ -168,15 +168,49 @@
                     </div>
 
                     {{-- Filter Button for Mobile --}}
-                    <button class="btn btn-orange d-sm-none w-100 mb-3 d-flex align-items-center" id="openFilterBtn"
+                    <button class="btn btn-orange d-lg-none w-100 mb-3 d-flex align-items-center" id="openFilterBtn"
                         type="button">
                         <span class="material-symbols-outlined me-1">tune</span> Filter
                     </button>
+
                     {{-- Sort and Results Section --}}
-                    <div class="col-lg-8">
-                        {{-- Sort and Results --}}
+                    <div class="col-lg-8 p-0">
+                        {{-- Sort Section --}}
+                        <div class="mb-4 sort-slider">
+                            <div class="d-flex align-items-center flex-wrap gap-2 ">
+                                <h4 class="mb-0 d-none d-lg-block pe-3">Sort</h4>
+                                <div class="custom-rating-radio">
+                                    <input class="form-check-input" type="radio" name="sort" id="sortClosest" value="closest">
+                                    <label class="form-check-label border d-flex align-items-center justify-content-center" for="sortClosest">
+                                        <span class="material-symbols-outlined me-1 mb-lg-1 mb-0">location_on</span>
+                                        Closest
+                                    </label>
+                                </div>
+                                <div class="custom-rating-radio">
+                                    <input class="form-check-input" type="radio" name="sort" id="sortCheapest" value="cheapest">
+                                    <label class="form-check-label border d-flex align-items-center justify-content-center" for="sortCheapest">
+                                        <span class="material-symbols-outlined me-1">attach_money</span>
+                                        Cheapest
+                                    </label>
+                                </div>
+                                <div class="custom-rating-radio">
+                                    <input class="form-check-input" type="radio" name="sort" id="sortLatest" value="latest">
+                                    <label class="form-check-label border d-flex align-items-center justify-content-center" for="sortLatest">
+                                        <span class="material-symbols-outlined me-1">schedule</span>
+                                        Latest
+                                    </label>
+                                </div>
+                                <div class="custom-rating-radio">
+                                    <input class="form-check-input" type="radio" name="sort" id="sortBestSeller" value="best_seller">
+                                    <label class="form-check-label border d-flex align-items-center justify-content-center" for="sortBestSeller">
+                                        <span class="material-symbols-outlined me-1">star</span>
+                                        Best Seller
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- Results Section (to be implemented) --}}
                     </div>
-                </div>
             </div>
         </section>
 
