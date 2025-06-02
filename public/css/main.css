@@ -106,4 +106,23 @@ a, button {
     }
 }
 
+/* BUTTON STYLE */
+.btn-orange {
+    background-color: var(--primary-color) !important;
+    color: var(--secondary-color) !important;
+    border: none !important;
+    box-shadow: none !important;
+    transition: 0.3s ease;
+}
+
+.btn-orange:hover,
+.btn-orange:active,
+.btn-orange:focus,
+.btn-orange:focus-visible {
+    background-color: #da6d32 !important;
+    color: var(--secondary-color) !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
 /* CARD LAYOUTS */

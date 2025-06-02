@@ -11,3 +11,37 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+document.querySelectorAll('input[name="rating"]').forEach(function(radio) {
+    radio.addEventListener('mousedown', function(e) {
+        if (this.checked) {
+            // Allow unchecking by clearing after click
+            this.wasChecked = true;
+        } else {
+            this.wasChecked = false;
+        }
+    });
+    radio.addEventListener('click', function(e) {
+        if (this.wasChecked) {
+            this.checked = false;
+            // Optional: trigger change event if you rely on it
+            this.dispatchEvent(new Event('change'));
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    var openBtn = document.getElementById('openFilterBtn');
+    var closeBtn = document.getElementById('closeFilterBtn');
+    var popup = document.getElementById('filterPopup');
+    if(openBtn && closeBtn && popup) {
+        openBtn.addEventListener('click', function() {
+            popup.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        closeBtn.addEventListener('click', function() {
+            popup.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    }
+});
