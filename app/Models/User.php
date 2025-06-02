@@ -2,14 +2,19 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Enums\UserRole; 
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
+
+    protected $table = 'users'; // Matches your migration
+
+    protected $primaryKey = 'userId'; // Matches your migration
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +24,13 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'email_verified_at',
         'password',
+        'role',
+        'enabled2FA', // Matches your migration
+        'remember_token',
+        'dateOfBirth', // Matches your migration
+        'genderMale', // Matches your migration
     ];
 
     /**
@@ -37,11 +48,76 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
+    // protected function casts(): array
+    // {
+    //     return [
+    //         'email_verified_at' => 'datetime',
+    //         'password' => 'hashed',
+    //     ];
+    // }
+    
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'enabled2FA' => 'boolean', // Matches your migration
+        'dateOfBirth' => 'datetime', // Matches your migration
+        'genderMale' => 'boolean', // Matches your migration
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'role' => UserRole::class,
+    ];
+
+    // public function addresses()
+    // {
+    //     return $this->hasMany(Address::class, 'userId', 'userId'); // Foreign key and local key
+    // }
+
+    public function carts()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasOne(Cart::class, 'userId', 'userId');
+    }
+
+    public function favoriteVendors()
+    {
+        return $this->hasMany(FavoriteVendor::class, 'userId', 'userId');
+    }
+
+    // Renamed from cuisineReviews to match ERD if any, but ERD shows 'cuisine_reviews' having 'cuisineId' and 'userId'
+    // It's a Many-to-Many through 'package_cuisine', so a User wouldn't directly have cuisine reviews in this structure.
+    // If 'cuisine_reviews' is meant for user reviews of cuisine types, then the ERD doesn't show a direct link from user.
+    // Assuming 'cuisine_reviews' from ERD is 'package_cuisine' in migrations for now.
+    // If 'cuisine_reviews' table exists for user reviews, you'd need a model for it and link it.
+    // Based on your provided 'cuisine_reviews' table in the ERD with `cuisineId` and `userId` only,
+    // and no corresponding migration for it, I'll omit a direct `cuisineReviews` relationship on User.
+    // If the 'package_cuisine' table in your migration was meant to be 'cuisine_reviews', please clarify.
+
+    public function relationCustomerAddresses()
+    {
+        return $this->hasMany(RelationCustomerAddress::class, 'customerId', 'userId'); // customerId in relation_customer_addresses links to userId in users
+    }
+
+    public function vendor()
+    {
+        return $this->hasMany(Vendor::class, 'userId', 'userId');
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'userId', 'userId');
+    }
+
+    public function payments()
+    {
+        // ERD shows payments linked to userId. Your payment migration only has orderId and methodId, no userId directly.
+        // If payments should be directly linked to user, you need to add userId to payments migration.
+        // Based on current payment migration, user has many payments via order, but not directly.
+        // I'll add this assuming you might add userId to payments table later.
+        // For now, removing direct user->payments relationship based on your migrations.
+        // If a userId column is added to 'payments' table, uncomment and adjust:
+        // return $this->hasMany(Payment::class, 'userId', 'userId');
+    }
+
+    public function vendorReviews()
+    {
+        return $this->hasMany(VendorReview::class, 'userId', 'userId');
     }
 }
