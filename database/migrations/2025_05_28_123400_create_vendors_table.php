@@ -16,9 +16,9 @@ return new class extends Migration
             $table->unsignedBigInteger('userId')->nullable(false);
             $table->unsignedBigInteger('addressId')->nullable(false);
             $table->string('name')->nullable(false);
-            $table->string('breakfast_delivery');
-            $table->string('lunch_delivery');
-            $table->string('dinner_delivery');
+            $table->string('breakfast_delivery')->nullable();
+            $table->string('lunch_delivery')->nullable();
+            $table->string('dinner_delivery')->nullable();
             // $table->string('description');
             $table->string('logo');
             $table->string('phone_number', 20);

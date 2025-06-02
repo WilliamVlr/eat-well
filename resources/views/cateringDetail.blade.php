@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Catering Detail</title>
+    <title>{{ $vendor->name }}</title>
     {{-- CSS --}}
     <link rel="stylesheet" href="{{ asset('css/cateringDetail.css') }}">
     <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
@@ -29,13 +29,13 @@
             <img src="{{ asset('asset/catering-detail/daun2.png') }}" alt="Catering Image" class="daun2">
             <div class="container all-profile-wrapper">
                 <div class="catering-info-left-wrapper">
-                    <h1 class="lexend">Aldenaire Catering</h1>
+                    <h1 class="lexend">{{ $vendor->name }}</h1>
                     {{-- <p class="inter sold-text">10k+ sold</p> --}}
 
                     <div class="phone-number-and-schedule-wrapper">
                         <div class="phone-number-container">
                             <span class="material-symbols-outlined call-icon">call</span>
-                            <span class="inter phone-number">+62 812 3456 7890</span>
+                            <span class="inter phone-number">{{ $vendor->phone_number }}</span>
                         </div>
                         <div class="schedule-container">
                             {{-- <span class="inter schedule">Monday - Sunday</span> --}}
@@ -45,14 +45,14 @@
 
                     <div class="location-wrapper">
                         <span class="material-symbols-outlined location-icon">pin_drop</span>
-                        <span class="inter address">Jl. Pakuan No.3, Sumur Batu, Kec. Babakan Madang, Kabupaten Bogor, Jawa Barat 16810</span>
+                        <span class="inter address">{{ $vendor->address->jalan }}</span>
                     </div>
 
                     <div class="rating-and-number-sold-wrapper">
                         <a href="{{ route("rate-and-review") }}" class="rate-review-button">
                             <div class="rating-container">
                                 <span class="material-symbols-outlined star-icon">star</span>
-                                <span class="inter rating-and-sold">4.5</span>
+                                <span class="inter rating-and-sold">{{ $vendor->rating }}</span>
                             </div>
                         </a>
                         <div class="number-sold-container">
@@ -68,6 +68,7 @@
                         <div class="cokelat-lingkaran">
                             <div>
                                 <img src="{{ asset('asset/catering-detail/logo-aldenaire-catering.jpg') }}" alt="Catering Image" class="logo-catering">
+                                {{-- <img src="{{ $vendor->logo }}" alt="Catering Image" class="logo-catering"> --}}
                             </div>
                         </div>
                     </div>
@@ -156,18 +157,24 @@
         <div class="shipping-wrapper">
             <h1 class="lexend">Shipping Time</h1>
             <p class="inter text-white schedule-dipake">Monday - Sunday</p>
-            <div class="section-makan">
-                <h3 class="inter">Breakfast</h3>
-                <p class="inter">07.00 AM - 09.00 AM</p>
-            </div>
-            <div class="section-makan">
-                <h3 class="inter">Lunch</h3>
-                <p class="inter">11.00 AM - 13.00 PM</p>
-            </div>
-            <div class="section-makan">
-                <h3 class="inter">Dinner</h3>
-                <p class="inter">05.00 PM - 07.00 PM</p>
-            </div>
+            @if ($vendor->breakfast_delivery)
+                <div class="section-makan">
+                    <h3 class="inter">Breakfast</h3>
+                    <p class="inter">{{ $vendor->breakfast_delivery }}</p>
+                </div> 
+            @endif
+            @if ($vendor->lunch_delivery)
+                <div class="section-makan">
+                    <h3 class="inter">Lunch</h3>
+                    <p class="inter">{{ $vendor->lunch_delivery }}</p>
+                </div>
+            @endif
+            @if ($vendor->dinner_delivery)
+                <div class="section-makan">
+                    <h3 class="inter">Dinner</h3>
+                    <p class="inter">{{ $vendor->dinner_delivery }}</p>
+                </div>
+            @endif
         </div>
     </div>
 
