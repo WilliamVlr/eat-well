@@ -22,10 +22,15 @@ body {
 }
 
 /* LOCATION */
+.location-search > .container > .row{
+  margin-left: 0;
+  margin-right: 0;
+}
 .location-container {
     /* width: 20%; */
     min-width: 200px;
     max-width: 275px;
+    padding-left: 0;
     height: 40px;
     .btn.show, .btn:hover {
       background-color: #cacdca;
@@ -92,6 +97,9 @@ body {
 }
 
 /* SEARCH BAR */
+.search-container {
+  padding-right: 0;
+}
 .search-wrapper {
   padding: 5px 15px;
 }
@@ -112,4 +120,56 @@ body {
   background-color: var(--secondary-color);
   border-color: transparent;
   box-shadow: none;
+}
+
+@media screen and (max-width: 550px) {
+  .search-container {
+    padding-left: 0;
+  }
+  
+}
+
+/* FILTER */
+/* Custom rating radio button */
+.custom-rating-radio {
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.custom-rating-radio .form-check-input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
+
+.custom-rating-radio .form-check-label {
+  padding: 8px 16px;
+  border-radius: 18px;
+  transition: background 0.2s;
+  cursor: pointer;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.custom-rating-radio .star-icon {
+  color: #FFD600;
+  font-variation-settings: 'FILL' 1;
+  font-size: 20px;
+  margin-right: 2px;
+}
+
+.custom-rating-radio .form-check-input:checked + .form-check-label {
+  background-color: var(--accent-color);
+  color: #fff;
+  border-radius: 18px;
+}
+
+.custom-rating-radio .form-check-input:focus + .form-check-label {
+  box-shadow: 0 0 0 2px var(--primary-color, #E77133);
 }

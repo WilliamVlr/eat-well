@@ -60,10 +60,10 @@
         {{-- Refine and Result Section --}}
         <section class="refine-result">
             <div class="container">
-                <div class="row">
+                <div class="row bg-white m-1 m-sm-0">
                     {{-- Filter Section --}}
                     <div class="col-lg-4 mb-4">
-                        <h5 class="mb-4 fw-bold">Filter</h5>
+                        <h5 class="mb-1 fw-bold">Filter</h5>
                         <form>
                             {{-- Price Range --}}
                             <div class="mb-4">
@@ -85,14 +85,23 @@
                                 <label class="form-label fw-semibold">Rating</label>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="rating" id="rating4" value="4">
-                                    <label class="form-check-label" for="rating4">
-                                        4+ Stars
+                                    <label class="form-check-label d-flex align-items-center" for="rating4">
+                                        <span class="material-symbols-outlined star-icon">star</span>
+                                        <span class="material-symbols-outlined star-icon">star</span>
+                                        <span class="material-symbols-outlined star-icon">star</span>
+                                        <span class="material-symbols-outlined star-icon">star</span>
+                                        <span class="ms-2">4+ Stars</span>
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="rating" id="rating45" value="4.5">
-                                    <label class="form-check-label" for="rating45">
-                                        4.5+ Stars
+                                    <label class="form-check-label d-flex align-items-center" for="rating45">
+                                        <span class="material-symbols-outlined star-icon">star</span>
+                                        <span class="material-symbols-outlined star-icon">star</span>
+                                        <span class="material-symbols-outlined star-icon">star</span>
+                                        <span class="material-symbols-outlined star-icon">star</span>
+                                        <span class="material-symbols-outlined star-icon">star_half</span>
+                                        <span class="ms-2">4.5+ Stars</span>
                                     </label>
                                 </div>
                             </div>
@@ -135,7 +144,7 @@
                                     {{-- Add more categories as needed --}}
                                 </div>
                             </div>
-                            <div class="text-end">
+                            <div class="text-start">
                                 <button type="submit" class="btn btn-primary">Apply Filter</button>
                             </div>
                         </form>
