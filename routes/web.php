@@ -31,9 +31,10 @@ Route::get('/home', function (){
 })->name('home');
 
 // Search
-Route::get('/search', function(){
-    return view('customer.search');
-});
+// Route::get('/search', function(){
+//     return view('customer.search');
+// });
+Route::get('/search', [VendorController::class, 'search'])->name('search');
 
 // Catering Details
 // Route::get('/catering-detail', function () {

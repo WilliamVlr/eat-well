@@ -219,116 +219,76 @@
                         </div>
                         {{-- Result Section --}}
                         <div class="catering-results d-flex flex-wrap gap-3">
-                            @for ($i = 0; $i < 2; $i++)
-                                <a href="{{ url('/catering/1') }}" class="catering-card-link">
+                            @foreach ($vendors as $vendor)
+                                <a href="{{ route('catering-detail', $vendor->vendorId) }}" class="catering-card-link">
                                     <div class="catering-card">
                                         <div class="catering-card-img-wrapper">
-                                            <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}"
+                                            {{-- <img src="{{ $vendor->logo ? asset($vendor->logo) : asset('asset/customer/home/Iklan 2.jpg') }}"
+                                                alt="Catering Picture" class="catering-card-img"> --}}
+                                                <img src="{{asset('asset/customer/home/Iklan 2.jpg') }}"
                                                 alt="Catering Picture" class="catering-card-img">
                                         </div>
                                         <div class="catering-card-body d-flex flex-column flex-grow-1">
-                                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                                <span class="catering-city small text-muted">Jakarta</span>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="catering-city small text-muted">{{ $vendor->address->kota ?? '-' }}</span>
                                                 <button class="btn btn-light btn-fav p-1" title="Favorite" type="button"
                                                     onclick="event.stopPropagation();">
                                                     <span class="material-symbols-outlined icon-sm">favorite</span>
                                                 </button>
                                             </div>
                                             <div class="card-details-wrapper">
-                                                <span class="catering-name">Delicious Catering</span>
+                                                <span class="catering-name">{{ $vendor->name }}</span>
                                             </div>
                                             <div class="catering-slots mb-1">
-                                                <span class="badge badge-breakfast">Breakfast</span>
-                                                <span class="badge badge-lunch">Lunch</span>
-                                                <span class="badge badge-dinner">Dinner</span>
+                                                @if($vendor->breakfast_delivery ?? false)
+                                                    <span class="badge badge-breakfast">Breakfast</span>
+                                                @endif
+                                                @if($vendor->lunch_delivery ?? false)
+                                                    <span class="badge badge-lunch">Lunch</span>
+                                                @endif
+                                                @if($vendor->dinner_delivery ?? false)
+                                                    <span class="badge badge-dinner">Dinner</span>
+                                                @endif
                                             </div>
                                             <div class="catering-rating d-flex align-items-center">
                                                 <span class="material-symbols-outlined star-icon me-1">star</span>
-                                                <span class="fw-semibold">4.7</span>
-                                                <span class="text-muted ms-1 small">(120 reviews)</span>
+                                                <span class="fw-semibold">{{ $vendor->rating ?? '-' }}</span>
+                                                {{-- Add review count if available --}}
                                             </div>
                                         </div>
                                     </div>
                                 </a>
-                            @endfor
-                            <a href="{{ url('/catering/1') }}" class="catering-card-link">
-                                <div class="catering-card">
-                                    <div class="catering-card-img-wrapper">
-                                        <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}" alt="Catering Picture"
-                                            class="catering-card-img">
-                                    </div>
-                                    <div class="catering-card-body d-flex flex-column flex-grow-1">
-                                        <div class="d-flex justify-content-between align-items-center mb-1">
-                                            <span class="catering-city small text-muted">Jakarta</span>
-                                            <button class="btn btn-light btn-fav p-1" title="Favorite" type="button"
-                                                onclick="event.stopPropagation();">
-                                                <span class="material-symbols-outlined icon-sm">favorite</span>
-                                            </button>
-                                        </div>
-                                        <div class="card-details-wrapper">
-                                            <span class="catering-name">Delicious Catering Lorem Ipsum Dolor Sit Amet Duar
-                                                Tralala Trilili</span>
-                                        </div>
-                                        <div class="catering-slots mb-1">
-                                            <span class="badge badge-breakfast">Breakfast</span>
-                                            <span class="badge badge-lunch">Lunch</span>
-                                            <span class="badge badge-dinner">Dinner</span>
-                                        </div>
-                                        <div class="catering-rating d-flex align-items-center">
-                                            <span class="material-symbols-outlined star-icon me-1">star</span>
-                                            <span class="fw-semibold">4.7</span>
-                                            <span class="text-muted ms-1 small">(120 reviews)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                            @for ($i = 0; $i < 2; $i++)
-                                <a href="{{ url('/catering/1') }}" class="catering-card-link">
-                                    <div class="catering-card">
-                                        <div class="catering-card-img-wrapper">
-                                            <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}"
-                                                alt="Catering Picture" class="catering-card-img">
-                                        </div>
-                                        <div class="catering-card-body d-flex flex-column flex-grow-1">
-                                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                                <span class="catering-city small text-muted">Jakarta</span>
-                                                <button class="btn btn-light btn-fav p-1" title="Favorite" type="button"
-                                                    onclick="event.stopPropagation();">
-                                                    <span class="material-symbols-outlined icon-sm">favorite</span>
-                                                </button>
-                                            </div>
-                                            <div class="card-details-wrapper">
-                                                <span class="catering-name">Delicious Catering</span>
-                                            </div>
-                                            <div class="catering-slots mb-1">
-                                                <span class="badge badge-breakfast">Breakfast</span>
-                                                <span class="badge badge-lunch">Lunch</span>
-                                                <span class="badge badge-dinner">Dinner</span>
-                                            </div>
-                                            <div class="catering-rating d-flex align-items-center">
-                                                <span class="material-symbols-outlined star-icon me-1">star</span>
-                                                <span class="fw-semibold">4.7</span>
-                                                <span class="text-muted ms-1 small">(120 reviews)</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            @endfor
+                            @endforeach
                         </div>
                         {{-- Pagination (visible only on laptop L and laptop) --}}
                         <nav class="catering-pagination-wrapper d-none d-md-flex justify-content-end mt-4 me-1 me-xl-3">
-                            <ul class="pagination catering-pagination mb-0">
-                                <li class="page-item disabled">
-                                    <span class="page-link">&laquo;</span>
-                                </li>
-                                <li class="page-item active"><span class="page-link">1</span></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">&raquo;</a>
-                                </li>
-                            </ul>
+                            @if ($vendors->lastPage() > 1)
+                                <ul class="catering-pagination pagination mb-0">
+                                    {{-- Previous Page Link --}}
+                                    <li class="page-item {{ $vendors->onFirstPage() ? 'disabled' : '' }}">
+                                        <a class="page-link" href="{{ $vendors->previousPageUrl() ?? '#' }}" tabindex="-1">&laquo;</a>
+                                    </li>
+                                    {{-- Pagination Elements --}}
+                                    @for ($i = 1; $i <= $vendors->lastPage(); $i++)
+                                        <li class="page-item {{ $vendors->currentPage() == $i ? 'active' : '' }}">
+                                            <a class="page-link" href="{{ $vendors->url($i) }}">{{ $i }}</a>
+                                        </li>
+                                    @endfor
+                                    {{-- Next Page Link --}}
+                                    <li class="page-item {{ !$vendors->hasMorePages() ? 'disabled' : '' }}">
+                                        <a class="page-link" href="{{ $vendors->nextPageUrl() ?? '#' }}">&raquo;</a>
+                                    </li>
+                                </ul>
+                            @endif
                         </nav>
+
+                        {{-- No Results Message (visible only when no results found) --}}
+                        @if ($vendors->isEmpty())
+                            <div class="no-results text-center mt-5">
+                                <h5 class="text-muted">No results found</h5>
+                                <p class="text-muted">Try adjusting your search or filter options.</p>
+                            </div>
+                        @endif
                     </div>
                 </div>
         </section>
