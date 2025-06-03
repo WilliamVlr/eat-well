@@ -1,0 +1,111 @@
+body {
+    background-color: #0d3f30;
+
+}
+
+.address-container {
+    background-color: white;
+    border-radius: 20px;
+    padding: 40px 30px;
+    max-width: 850px;
+    margin: 40px auto;
+    font-family: 'Lexend', sans-serif;
+}
+
+.main-address {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    position: relative;
+}
+
+.main-address .badge {
+    background-color: #D96323;
+    color: white;
+    font-weight: 500;
+}
+
+.note-text {
+    font-size: 0.75rem;
+    color: #444;
+}
+
+.toggle-switch {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.action-icons i {
+    font-size: 1rem;
+}
+
+.add-address {
+    color: #0d3f30;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.section-title {
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
+.divider {
+    width: 70px;
+    height: 2px;
+    background-color: black;
+    margin: 0 auto 20px;
+}
+
+@media (max-width: 568px) {
+    .address-container {
+        padding: 20px 15px;
+        border-radius: 10px;
+    }
+
+    .section-title {
+        font-size: 1rem;
+    }
+
+    .main-address {
+        padding: 15px;
+        font-size: 0.9rem;
+    }
+
+    .main-address .badge {
+        font-size: 0.65rem;
+        padding: 0.25em 0.5em;
+    }
+
+    .note-text {
+        font-size: 0.7rem;
+    }
+
+    .toggle-switch {
+        top: 15px;
+        right: 15px;
+        transform: scale(0.9);
+    }
+
+    .action-icons {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .action-icons span {
+        font-size: 0.85rem;
+    }
+
+    .add-address {
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .divider {
+        width: 50px;
+        margin: 0 auto 15px;
+    }
+}
