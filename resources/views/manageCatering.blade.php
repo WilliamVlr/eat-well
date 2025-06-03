@@ -29,7 +29,7 @@
 
     .text-muted-subheading {
       font-family: 'Roboto', sans-serif;
-      color: #c8e6c9;
+      color: #ffffff;
       font-size: 1rem;
       text-align: center;
       padding: 0 10px;
@@ -127,7 +127,6 @@
       display: none;
     }
 
-    /* Style umum untuk semua dropzone */
     .dropzone {
         border: 2px dashed #aaa !important;
         background-color: #fafafa;
@@ -363,9 +362,9 @@
     const MAX_IMAGES = 5;
 
     const dummyImages = [
-      "https://via.placeholder.com/180x120?text=Foto+1",
-      "https://via.placeholder.com/180x120?text=Foto+2",
-      "https://via.placeholder.com/180x120?text=Foto+3"
+      "asset/catering/homePage/breakfastPreview.png",
+      "asset/catering/homePage/lunchPreview.png",
+      "asset/catering/homePage/dinnerPreview.png"
     ];
 
     function createImageItem(src) {
