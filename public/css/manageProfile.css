@@ -1,0 +1,145 @@
+:root{
+    --bg: #123F2F;
+    --button: #E77133;
+    --midbg: #DDDFDE;
+    --notebg: #c9c9c9;
+}
+
+
+.lexend {
+    font-family: 'Lexend', sans-serif;
+    font-style: normal;
+}
+
+.inter {
+    font-family: "Inter", sans-serif;
+    font-style: normal;
+}
+
+.font-regular{
+    font-weight: 400;
+}
+
+.font-medium{
+    font-weight: 500;
+}
+
+.font-bold{
+    font-weight: 700;
+}
+
+body{
+    background-color: var(--bg);
+}
+
+.container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.manage-profile{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 20%;
+}
+
+.right-panel-in{
+    width:100%;
+    height:100%;
+}
+
+.profile-picture{
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+}
+
+.profile-name{
+    font-size:20px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.profile-status{
+    color: var(--button);
+    font-size: 14px;
+}
+
+ .data-prof{
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+} 
+
+.joined-date{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-right: 30px;
+    font-size: 13px;
+    margin-top: -20px;
+}
+
+.menu{
+    margin-top: 20px;
+}
+
+.active{
+    text-decoration: underline;
+}
+
+.outer-box{
+    width:909px;
+    height: 609px;
+    border-color: black;
+    border-radius: 25px;
+    background-color: white;
+    margin-top: 80px;
+}
+
+.profile-manage .title, .description{
+    font-size: 22px;
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+    margin-bottom: 10px;
+}
+
+.profile-manage .description{
+    font-size: 16px;
+    padding-top: 0px;
+}
+
+.manage-profile-in{
+    width: 700px;
+    height: 300px;
+    border-radius: 20px;
+    border: 2px solid rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 60px;
+    margin-left: 100px;
+    padding-top: 20px;
+}
+
+.manage-profile-in .data{
+    width: 80%;
+    padding-left: 50px;
+}
+
+.data .data-title{
+    font-size: 18px;;
+}
+
+.manage-profile-in .photo-data{
+    width: 20%;
+    display: flex;
+    justify-content: right;
+    margin-right: 50px;
+    
+}

@@ -30,3 +30,7 @@ Route::get('/', function () {
     return view('landingPage');
 });
 
+Route::get('/manageProfile', function () {
+    return view('manageProfile');
+});
+

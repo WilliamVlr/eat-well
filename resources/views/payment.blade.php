@@ -14,11 +14,7 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="lexend font-semi-bold text-white">Your Order</h1>
-        <p> 
-            <span class="lexend font-medium text-white">Order ID:</span>
-            <span class="lexend font-medium text-white">2702363304</span>
-        </p>
+        <h1 class="lexend font-semi-bold text-white your-order">Your Order</h1>
         <i class="fa-solid fa-location-dot"></i>
         <p class= "jalan">
             <span class="lexend font-regular text-white"> Jalan Mangga Rumah Maya Selendang</span>
@@ -71,19 +67,19 @@
                 <p class="inter font-semibold text-black detail pack-name">Payment Method<p>
                 <div class="button-payment lexend font-medium text-black">
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="payment-button" id="wellpay">
+                        <input class="form-check-input radio-custom" type="radio" name="payment-button" id="wellpay">
                         <label class="form-check-label" for="wellpay">
                             Wellpay
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input radioButtonPayment" type="radio" name="payment-button" id="qris">
+                        <input class="form-check-input radioButtonPayment radio-custom" type="radio" name="payment-button" id="qris">
                         <label class="form-check-label" for="qris">
                             QRIS
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="payment-button" id="bva">
+                        <input class="form-check-input radio-custom" type="radio" name="payment-button" id="bva">
                         <label class="form-check-label" for="bva">
                             BCA Virtual Account
                         </label>
@@ -93,13 +89,55 @@
             <hr style="height: 3px; background-color:black; opacity:100%; border: none; margin-left: 20px; margin-right: 20px;">
             <div class="inter font-medium text-black total">
                 <span class="detail">Total</span>
-                <span class="nominal">Rp. 730.000,-</span>
+                <span class="font-bold nominal">Rp. 730.000,-</span>
             </div>
         </div>
         <div class="pay-button">
-            <button type="button" class="inter font-semibold text-white pay-btn">Pay</button>
+            <button type="button" class="inter font-semibold text-white pay-btn" id="mainPayButton">Pay</button>
         </div>
     </div>
+   <div id="qrisPopup" class="popup-overlay">
+        <div class="popup-content">
+            <h2>Pay Now</h2>
+            <div class="qr-code-container">
+                <img src="" alt="QR Code" id="qrCodeImage">
+            </div>
+            <p class="timer">Expires in <span id="countdownTimer">00:59</span></p>
+            <button class="popup-button download-qris" id="downloadQrisBtn">Download QRIS</button>
+            <button class="popup-button done" id="doneBtn">Done</button>
+        </div>
+    </div>
+
+    <div id="confirmationPopup" class="popup-overlay">
+    <div class="popup-content">
+        <p>Warning</p>
+        <p style="font-weight:600; color:#222; text-align:center; margin-bottom:24px;">
+            Are you sure you want to proceed with this payment? 
+        </p>
+        <button id="confirmBtn" class="popup-button" style="background:#E77133; color:white; border:none; border-radius:24px; padding:12px 32px; font-size:18px; font-weight:500; box-shadow:0 2px 6px #0001;">
+            Confirm Payment
+        </button>
+    </div>
+    </div>
+
+    <div id="successPopup" class="popup-overlay">
+    <div class="popup-content">
+        <p style="font-weight:600; color:#222; text-align:center; margin-bottom:24px;">
+            Successfully added to your subscription. Thank you for your purchase.
+        </p>
+        <button id="backHomeBtn" class="popup-button" style="background:#E77133; color:white; border:none; border-radius:24px; padding:12px 32px; font-size:18px; font-weight:500; box-shadow:0 2px 6px #0001;">
+            Back to Homepage
+        </button>
+    </div>
+    </div>
+
+    <div id="customMessageBox" class="message-box-overlay">
+        <div class="message-box-content">
+            <p id="messageBoxText">Please select a payment method.</p>
+            <button id="messageBoxOkBtn">OK</button>
+        </div>
+    </div>
+    <script src="{{ asset('js/payment.js')}}"></script>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 </html>
