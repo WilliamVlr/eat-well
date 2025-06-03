@@ -22,6 +22,11 @@ body {
 }
 
 /* LOCATION */
+.location-search {
+  padding-top: 100px;
+  background-color: var(--background-color);
+  z-index: 2 !important;
+}
 .location-search > .container > .row{
   margin-left: 0;
   margin-right: 0;
@@ -140,6 +145,18 @@ body {
     padding: 12px 15px;
   }
 }
+
+/* REFINE RESULT SECTION */
+.refine-result {
+  margin-top: 60px;
+}
+
+@media screen and (max-width: 550px) {
+  .refine-result {
+    margin-top: 92px;
+  }
+}
+
 /* FILTER */
 /* .filter-wrapper{
   border-right: 1px solid black;
@@ -302,6 +319,7 @@ body {
 
 .catering-card {
     display: flex;
+    height: 100%;
     gap: 8px;
     flex-direction: column;
     border: 1px solid #000;
@@ -316,7 +334,7 @@ body {
 
 .catering-card:hover {
     box-shadow: 0 6px 24px rgba(0,0,0,0.14);
-    z-index: 2;
+    z-index: 0 !important;
 }
 
 .catering-card-img-wrapper {
@@ -372,12 +390,6 @@ body {
   flex-wrap: wrap;
   gap: 1.5rem;
   align-items: stretch; /* This makes all cards the same height */
-}
-
-.catering-card {
-  display: flex;
-  flex-direction: column;
-  height: 100%; /* Take full height of the flex row */
 }
 
 .btn-fav {
@@ -566,4 +578,37 @@ body {
     width: 100px;
     height: 100%;
   }
+}
+
+/* Pagination theme */
+.catering-pagination .page-link {
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    background: #fff;
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
+}
+
+.catering-pagination .page-link:hover,
+.catering-pagination .page-item.active .page-link {
+    background: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+}
+
+.catering-pagination .page-item .page-link:focus {
+  box-shadow: none;
+}
+
+.catering-pagination .page-item.disabled .page-link {
+    color: #bbb;
+    background: #f8f8f8;
+    border-color: #eee;
+}
+
+/* Hide pagination on tablet and mobile */
+@media (max-width: 768px) {
+    .catering-pagination-wrapper {
+        display: none !important;
+    }
 }

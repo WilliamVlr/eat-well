@@ -13,7 +13,7 @@
 @section('content')
     <main>
         {{-- Location and Search --}}
-        <section class="location-search mb-3">
+        <section class="location-search mb-3 fixed-top">
             <div class="container">
                 <div class="row mb-3 gy-2 gy-sm-0">
                     <div class="location-container col-sm-3">
@@ -180,51 +180,94 @@
                             <div class="d-flex align-items-center flex-wrap gap-2 ">
                                 <h4 class="mb-0 d-none d-lg-block pe-3">Sort</h4>
                                 <div class="custom-rating-radio">
-                                    <input class="form-check-input" type="radio" name="sort" id="sortClosest" value="closest">
-                                    <label class="form-check-label border d-flex align-items-center justify-content-center" for="sortClosest">
+                                    <input class="form-check-input" type="radio" name="sort" id="sortClosest"
+                                        value="closest">
+                                    <label class="form-check-label border d-flex align-items-center justify-content-center"
+                                        for="sortClosest">
                                         <span class="material-symbols-outlined me-1 mb-lg-1 mb-0">location_on</span>
                                         Closest
                                     </label>
                                 </div>
                                 <div class="custom-rating-radio">
-                                    <input class="form-check-input" type="radio" name="sort" id="sortCheapest" value="cheapest">
-                                    <label class="form-check-label border d-flex align-items-center justify-content-center" for="sortCheapest">
+                                    <input class="form-check-input" type="radio" name="sort" id="sortCheapest"
+                                        value="cheapest">
+                                    <label class="form-check-label border d-flex align-items-center justify-content-center"
+                                        for="sortCheapest">
                                         <span class="material-symbols-outlined me-1">attach_money</span>
                                         Cheapest
                                     </label>
                                 </div>
                                 <div class="custom-rating-radio">
-                                    <input class="form-check-input" type="radio" name="sort" id="sortLatest" value="latest">
-                                    <label class="form-check-label border d-flex align-items-center justify-content-center" for="sortLatest">
+                                    <input class="form-check-input" type="radio" name="sort" id="sortLatest"
+                                        value="latest">
+                                    <label class="form-check-label border d-flex align-items-center justify-content-center"
+                                        for="sortLatest">
                                         <span class="material-symbols-outlined me-1">schedule</span>
                                         Latest
                                     </label>
                                 </div>
                                 <div class="custom-rating-radio">
-                                    <input class="form-check-input" type="radio" name="sort" id="sortBestSeller" value="best_seller">
-                                    <label class="form-check-label border d-flex align-items-center justify-content-center" for="sortBestSeller">
+                                    <input class="form-check-input" type="radio" name="sort" id="sortBestSeller"
+                                        value="best_seller">
+                                    <label class="form-check-label border d-flex align-items-center justify-content-center"
+                                        for="sortBestSeller">
                                         <span class="material-symbols-outlined me-1">star</span>
                                         Best Seller
                                     </label>
                                 </div>
                             </div>
                         </div>
+                        {{-- Result Section --}}
                         <div class="catering-results d-flex flex-wrap gap-3">
                             @for ($i = 0; $i < 2; $i++)
+                                <a href="{{ url('/catering/1') }}" class="catering-card-link">
+                                    <div class="catering-card">
+                                        <div class="catering-card-img-wrapper">
+                                            <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}"
+                                                alt="Catering Picture" class="catering-card-img">
+                                        </div>
+                                        <div class="catering-card-body d-flex flex-column flex-grow-1">
+                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                <span class="catering-city small text-muted">Jakarta</span>
+                                                <button class="btn btn-light btn-fav p-1" title="Favorite" type="button"
+                                                    onclick="event.stopPropagation();">
+                                                    <span class="material-symbols-outlined icon-sm">favorite</span>
+                                                </button>
+                                            </div>
+                                            <div class="card-details-wrapper">
+                                                <span class="catering-name">Delicious Catering</span>
+                                            </div>
+                                            <div class="catering-slots mb-1">
+                                                <span class="badge badge-breakfast">Breakfast</span>
+                                                <span class="badge badge-lunch">Lunch</span>
+                                                <span class="badge badge-dinner">Dinner</span>
+                                            </div>
+                                            <div class="catering-rating d-flex align-items-center">
+                                                <span class="material-symbols-outlined star-icon me-1">star</span>
+                                                <span class="fw-semibold">4.7</span>
+                                                <span class="text-muted ms-1 small">(120 reviews)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            @endfor
                             <a href="{{ url('/catering/1') }}" class="catering-card-link">
                                 <div class="catering-card">
                                     <div class="catering-card-img-wrapper">
-                                        <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}" alt="Catering Picture" class="catering-card-img">
+                                        <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}" alt="Catering Picture"
+                                            class="catering-card-img">
                                     </div>
                                     <div class="catering-card-body d-flex flex-column flex-grow-1">
                                         <div class="d-flex justify-content-between align-items-center mb-1">
                                             <span class="catering-city small text-muted">Jakarta</span>
-                                            <button class="btn btn-light btn-fav p-1" title="Favorite" type="button" onclick="event.stopPropagation();">
+                                            <button class="btn btn-light btn-fav p-1" title="Favorite" type="button"
+                                                onclick="event.stopPropagation();">
                                                 <span class="material-symbols-outlined icon-sm">favorite</span>
                                             </button>
                                         </div>
                                         <div class="card-details-wrapper">
-                                            <span class="catering-name">Delicious Catering</span>
+                                            <span class="catering-name">Delicious Catering Lorem Ipsum Dolor Sit Amet Duar
+                                                Tralala Trilili</span>
                                         </div>
                                         <div class="catering-slots mb-1">
                                             <span class="badge badge-breakfast">Breakfast</span>
@@ -239,68 +282,55 @@
                                     </div>
                                 </div>
                             </a>
-                            @endfor
-                            <a href="{{ url('/catering/1') }}" class="catering-card-link">
-                                <div class="catering-card">
-                                    <div class="catering-card-img-wrapper">
-                                        <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}" alt="Catering Picture" class="catering-card-img">
-                                    </div>
-                                    <div class="catering-card-body d-flex flex-column flex-grow-1">
-                                        <div class="d-flex justify-content-between align-items-center mb-1">
-                                            <span class="catering-city small text-muted">Jakarta</span>
-                                            <button class="btn btn-light btn-fav p-1" title="Favorite" type="button" onclick="event.stopPropagation();">
-                                                <span class="material-symbols-outlined icon-sm">favorite</span>
-                                            </button>
-                                        </div>
-                                        <div class="card-details-wrapper">
-                                            <span class="catering-name">Delicious Catering Lorem ipsum XYZ Duar</span>
-                                        </div>
-                                        <div class="catering-slots mb-1">
-                                            <span class="badge bg-warning text-dark me-1">Breakfast</span>
-                                            <span class="badge bg-success me-1">Lunch</span>
-                                            <span class="badge bg-primary">Dinner</span>
-                                        </div>
-                                        <div class="catering-rating d-flex align-items-center">
-                                            <span class="material-symbols-outlined star-icon me-1">star</span>
-                                            <span class="fw-semibold">4.7</span>
-                                            <span class="text-muted ms-1 small">(120 reviews)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
                             @for ($i = 0; $i < 2; $i++)
-                            <a href="{{ url('/catering/1') }}" class="catering-card-link">
-                                <div class="catering-card">
-                                    <div class="catering-card-img-wrapper">
-                                        <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}" alt="Catering Picture" class="catering-card-img">
+                                <a href="{{ url('/catering/1') }}" class="catering-card-link">
+                                    <div class="catering-card">
+                                        <div class="catering-card-img-wrapper">
+                                            <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}"
+                                                alt="Catering Picture" class="catering-card-img">
+                                        </div>
+                                        <div class="catering-card-body d-flex flex-column flex-grow-1">
+                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                <span class="catering-city small text-muted">Jakarta</span>
+                                                <button class="btn btn-light btn-fav p-1" title="Favorite" type="button"
+                                                    onclick="event.stopPropagation();">
+                                                    <span class="material-symbols-outlined icon-sm">favorite</span>
+                                                </button>
+                                            </div>
+                                            <div class="card-details-wrapper">
+                                                <span class="catering-name">Delicious Catering</span>
+                                            </div>
+                                            <div class="catering-slots mb-1">
+                                                <span class="badge badge-breakfast">Breakfast</span>
+                                                <span class="badge badge-lunch">Lunch</span>
+                                                <span class="badge badge-dinner">Dinner</span>
+                                            </div>
+                                            <div class="catering-rating d-flex align-items-center">
+                                                <span class="material-symbols-outlined star-icon me-1">star</span>
+                                                <span class="fw-semibold">4.7</span>
+                                                <span class="text-muted ms-1 small">(120 reviews)</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="catering-card-body d-flex flex-column flex-grow-1">
-                                        <div class="d-flex justify-content-between align-items-center mb-1">
-                                            <span class="catering-city small text-muted">Jakarta</span>
-                                            <button class="btn btn-light btn-fav p-1" title="Favorite" type="button" onclick="event.stopPropagation();">
-                                                <span class="material-symbols-outlined icon-sm">favorite</span>
-                                            </button>
-                                        </div>
-                                        <div class="card-details-wrapper">
-                                            <span class="catering-name">Delicious Catering</span>
-                                        </div>
-                                        <div class="catering-slots mb-1">
-                                            <span class="badge bg-warning text-dark me-1">Breakfast</span>
-                                            <span class="badge bg-success me-1">Lunch</span>
-                                            <span class="badge bg-primary">Dinner</span>
-                                        </div>
-                                        <div class="catering-rating d-flex align-items-center">
-                                            <span class="material-symbols-outlined star-icon me-1">star</span>
-                                            <span class="fw-semibold">4.7</span>
-                                            <span class="text-muted ms-1 small">(120 reviews)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
+                                </a>
                             @endfor
                         </div>
+                        {{-- Pagination (visible only on laptop L and laptop) --}}
+                        <nav class="catering-pagination-wrapper d-none d-md-flex justify-content-end mt-4 me-1 me-xl-3">
+                            <ul class="pagination catering-pagination mb-0">
+                                <li class="page-item disabled">
+                                    <span class="page-link">&laquo;</span>
+                                </li>
+                                <li class="page-item active"><span class="page-link">1</span></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">&raquo;</a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
-            </div>
+                </div>
         </section>
 
         {{-- Filter Popup (hidden by default, visible on mobile when active) --}}
@@ -310,7 +340,7 @@
                     <h4 class="w-auto ps-0">Filter</h4>
                     <button type="button" class="btn-close mb-3 ms-5 d-block" id="closeFilterBtn"
                         aria-label="Close"></button>
-                </div>  
+                </div>
                 <form>
                     {{-- Price Range --}}
                     <div class="mb-4">
