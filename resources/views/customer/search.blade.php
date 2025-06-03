@@ -45,8 +45,7 @@
                             <form action="#" class="d-flex align-items-center w-100 h-100">
                                 @csrf
                                 <div class="input-group">
-                                    <button type="submit" class="input-group-text bg-white border-end-0 p-0"
-                                        style="border:none; background:transparent;" title="Search">
+                                    <button type="submit" class="input-group-text search-button border-end-0 p-0" title="Search">
                                         <span class="material-symbols-outlined">search</span>
                                     </button>
                                     <input type="text" name="query"
@@ -93,7 +92,7 @@
                                     <div class="custom-rating-radio mb-1 mb-sm-0">
                                         <input class="form-check-input" type="radio" name="rating" id="rating4"
                                             value="4">
-                                        <label class="form-check-label d-flex align-items-center justify-content-center"
+                                        <label class="form-check-label rating-label d-flex align-items-center justify-content-center"
                                             for="rating4">
                                             <span class="material-symbols-outlined star-icon">star</span>
                                             <span class="material-symbols-outlined star-icon">star</span>
@@ -105,7 +104,7 @@
                                     <div class="custom-rating-radio">
                                         <input class="form-check-input" type="radio" name="rating" id="rating45"
                                             value="4.5">
-                                        <label class="form-check-label d-flex align-items-center justify-content-center"
+                                        <label class="form-check-label rating-label d-flex align-items-center justify-content-center"
                                             for="rating45">
                                             <span class="material-symbols-outlined star-icon">star</span>
                                             <span class="material-symbols-outlined star-icon">star</span>
@@ -402,5 +401,5 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('js/customer/searchCatering.js') }}"></script>p
+    <script src="{{ asset('js/customer/searchCatering.js') }}"></script>
 @endsection
