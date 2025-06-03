@@ -38,7 +38,10 @@ body {
     padding-left: 0;
     height: 40px;
     .btn.show, .btn:hover {
-      background-color: #cacdca;
+      /* background-color: #cacdca; */
+      background-color: var(--primary-color);
+      color: var(--neutral-color);
+      box-shadow: var(--box-shadow-light);
     }
 }
 
@@ -73,9 +76,10 @@ body {
     justify-content: start;
     padding: 5px 15px;
     border-radius: 25px;
-    background-color: var(--neutral-color);
+    color: var(--neutral-color);
+    background-color: var(--primary-color);
     border: var(--primary-color) 1px solid;
-    box-shadow: var(--box-shadow-light);
+    box-shadow: none;
 }
 
 .location-text {
@@ -87,6 +91,9 @@ body {
 }
 
 @media (max-width: 440px) {
+    .location-search {
+      padding-top: 80px;
+    }
     .location-container {
       max-width: 225px;
       height: 30px;
@@ -110,9 +117,16 @@ body {
 }
 
 .search-style-1 {
-  background-color: var(--secondary-color);
+  /* background-color: var(--secondary-color); */
+  /* background-color: var(--neutral-color); */
+  background-color: #f5f5f5 ;
   border-radius: 25px;
   height: 40px;
+}
+
+.search-button{
+  background-color: transparent;
+  border: none;
 }
 
 .input-text-style-1 {
@@ -135,7 +149,7 @@ body {
 
 /* REFINE AND RESULT */
 .refine-result-wrapper {
-  background-color: white;
+  background-color: rgb(249, 249, 249);
   border-radius: 8px;
   padding: 12px 5px;
 }
@@ -151,9 +165,15 @@ body {
   margin-top: 60px;
 }
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 580px) {
   .refine-result {
-    margin-top: 92px;
+    margin-top: 105px;
+  }
+}
+
+@media screen and (max-width: 440px) {
+  .refine-result {
+    margin-top: 75px;
   }
 }
 
@@ -198,6 +218,10 @@ body {
   min-width: 90px;
   font-weight: 500;
   z-index: 1;
+
+  &.rating-label{
+    background-color: transparent;
+  }
 }
 
 .custom-rating-radio .star-icon {
@@ -208,7 +232,7 @@ body {
 }
 
 .custom-rating-radio .form-check-input:checked + .form-check-label {
-  background-color: var(--accent-color, #F5A623);
+  background-color: #ef8044;
   /* background-color: rgba(155, 155, 155, 0.676); */
   color: #ffff;
 }
@@ -273,7 +297,7 @@ body {
     box-shadow: 0 -2px 16px rgba(0,0,0,0.08);
     /* Center vertically: */
     position: relative;
-    top: -25%;
+    top: -5%;
     transform: translateY(100%) translateY(-50%);
     transition: transform 0.35s cubic-bezier(.4,0,.2,1);
     .row {
