@@ -34,11 +34,3 @@ body{
 #remember{
   border: 1px solid black;
 }
-@media(max-width: 768px) {
-  .fruits-img{
-    visibility: hidden;
-  }
-  .temp-col{
-    visibility: hidden;
-  }
-}
