@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    @vite(["resources/sass/app.scss", "resources/js/app.js"])
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous"> --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{asset('css/manageProfile.css')}}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,18 +30,18 @@
                         Joined Since: <span class="date">05/27/2025</span>
                     </p>
                 </div>
-            <hr style="height: 1.5px; background-color:black; opacity:100%; border: none; margin-left: 20px; margin-right: 20px;">
+            <hr style="height: 1.5px; background-color:rgb(121, 13, 13); opacity:100%; border: none; margin-left: 20px; margin-right: 20px;">
             </div>
             <div class="menu">
-                <ul class="nav flex-column">
+                <ul class="nav flex-column sidebar-menu">
                     <li class="nav-item">
-                        <a class="nav-link active lexend font-regular">Profile Management</a>
+                        <a class="menu-link active lexend font-regular tetx-white">Profile Management</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link lexend font-regular">Manage Security</a>
+                        <a class="menu-link lexend font-regular text-white">Manage Security</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link lexend font-regular">Manage Addresses</a>
+                        <a class="enu-link lexend font-regular text-white">Manage Addresses</a>
                     </li>
                 </ul>
             </div>
@@ -67,7 +68,8 @@
             </div>
         </div>
     </div>
+        <script src="{{ asset('js/manageProdile.js')}}"></script>
 </body>
 {{-- <x-footer></x-footer> --}}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script> --}}
 </html>

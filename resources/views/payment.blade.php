@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    @vite(["resources/sass/app.scss", "resources/js/app.js"])
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous"> --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{asset('css/payment.css')}}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -110,7 +111,7 @@
 
     <div id="confirmationPopup" class="popup-overlay">
     <div class="popup-content">
-        <p>Warning</p>
+        <p class="inter font-semibold", style="color: red; font-size:20px">Warning</p>
         <p style="font-weight:600; color:#222; text-align:center; margin-bottom:24px;">
             Are you sure you want to proceed with this payment? 
         </p>

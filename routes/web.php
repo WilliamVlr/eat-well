@@ -18,10 +18,6 @@ Route::get('/', function () {
     return view('landingPage');
 });
 
-Route::get('/manageProfile', function () {
-    return view('manageProfile');
-});
-
 Route::get('/about-us', function(){
     return view('aboutUs');
 });
@@ -33,6 +29,10 @@ Route::get('/about-us', function(){
 Route::get('/home', function (){
     return view('customer.home');
 })->name('home');
+
+Route::get('/manage-profile', function () {
+    return view('manageProfile');
+})->name('manage-profile');
 
 // Catering Details
 // Route::get('/catering-detail', function () {

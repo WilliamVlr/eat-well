@@ -140,6 +140,39 @@ body{
     width: 20%;
     display: flex;
     justify-content: right;
-    margin-right: 50px;
-    
+    margin-right: 50px;   
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-link {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    text-decoration: none;
+    font-family: 'Lexend', sans-serif;
+    font-size: 1.1rem;
+    padding: 12px 0;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.menu-link i {
+    margin-right: 10px;
+}
+
+.menu-link.active {
+    border-bottom: 2px solid #fff; /* White underline for active */
+    font-weight: 200;
+    width: 100px
+}
+
+.menu-link:hover {
+    color: #E77133;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #E77133;
 }
