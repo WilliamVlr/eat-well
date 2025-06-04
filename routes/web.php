@@ -23,6 +23,11 @@ Route::get('/about-us', function(){
     return view('aboutUs');
 });
 
+Route::get('/login', function () {
+    return view('login');
+});
+
+
 /* ---------------------
      CUSTOMER ROUTES
 ---------------------- */
