@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\VendorController;
 use Illuminate\Support\Facades\Route;
 
@@ -46,6 +47,9 @@ Route::get('/catering-detail/{vendor}', [VendorController::class, 'show'])->name
 Route::get('/catering-detail/rating-and-review', function(){
     return view('ratingAndReview');
 })->name('rate-and-review');
+
+// Order History
+Route::get('/order-history', [OrderController::class, 'index'])->name('order-history');
 
 // Order Payment
 Route::get('/payment', function () {
