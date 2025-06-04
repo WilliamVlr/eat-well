@@ -27,7 +27,8 @@ class VendorController extends Controller
 
         // Memuat relasi User dan Address secara efisien jika Anda ingin menampilkannya
         $vendor->load(['user', 'address']);
+        $packages = $vendor->packages;
 
-        return view('cateringDetail', compact('vendor'));
+        return view('cateringDetail', compact('vendor', 'packages'));
     }
 }

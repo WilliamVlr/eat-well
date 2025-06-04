@@ -21,8 +21,6 @@
     <link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
 </head>
 <body>
-    {{-- <x-navigation></x-navigation> --}}
-    
     <div class="profile-container">
         <div class="container daun-container">
             <img src="{{ asset('asset/catering-detail/daun1.png') }}" alt="Catering Image" class="daun1">
@@ -45,7 +43,7 @@
 
                     <div class="location-wrapper">
                         <span class="material-symbols-outlined location-icon">pin_drop</span>
-                        <span class="inter address">{{ $vendor->address->jalan }}</span>
+                        <span class="inter address">{{ $vendor->address->jalan }}, {{  $vendor->address->kelurahan }}, {{  $vendor->address->kecamatan }}, {{  $vendor->address->kabupaten }}, {{  $vendor->address->provinsi }}, {{  $vendor->address->kode_pos }}</span>
                     </div>
 
                     <div class="rating-and-number-sold-wrapper">
@@ -120,24 +118,38 @@
             <h1 class="lexend">Weekly Price</h1>
             <div class="price-container">
                 <div class="price-bulet">
-                    <h1 class="lexend">625k</h1>
+                    {{-- <h1 class="lexend">625k</h1> --}}
+                    <h1 class="lexend" id="displayedPrice"></h1>
                 </div>
                 <div class="price-kanan">
                     <div class="dropdown">
                         <button id="dropdownMenuButton" class="btn btn-secondary dropdown-toggle inter" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Package A
+                            {{ $packages[0]->name }}
                         </button>
                         <ul class="dropdown-menu">
-                            <li class="dropdown-item inter">Package A</li>
+                            @foreach ($packages as $package)
+                                {{-- <li class="dropdown-item inter">{{ $package->name }}</li> --}}
+                                <li class="dropdown-item inter" data-package-id="{{ $package->packageId }}"
+                                    data-breakfast-price="{{ $package->breakfastPrice ?? 'null' }}"
+                                    data-lunch-price="{{ $package->lunchPrice ?? 'null' }}"
+                                    data-dinner-price="{{ $package->dinnerPrice ?? 'null' }}"> 
+                                    {{ $package->name }}
+                                </li>
+                            @endforeach
+                            {{-- <li class="dropdown-item inter">Package A</li>
                             <li class="dropdown-item inter">Package B</li>
-                            <li class="dropdown-item inter">Package C</li>
+                            <li class="dropdown-item inter">Package C</li> --}}
                         </ul>
                     </div>
 
                     <!-- Hidden input to hold selected value for form submission -->
                     <input type="hidden" name="selected_package" id="selectedPackage" value="Package A">
-                    
-                    <ul class="list-group inter">
+
+                    <ul class="list-group inter" id="mealOptions">
+                        {{-- These will be dynamically populated by JavaScript --}}
+                    </ul>
+
+                    {{-- <ul class="list-group inter">
                         <li class="list-group-item">
                             <input class="form-check-input me-1" type="checkbox" value="" id="firstCheckboxStretched" checked>
                             <label class="form-check-label stretched-link" for="firstCheckboxStretched">Breakfast</label>
@@ -150,7 +162,7 @@
                             <input class="form-check-input me-1" type="checkbox" value="" id="thirdCheckboxStretched" checked>
                             <label class="form-check-label stretched-link" for="thirdCheckboxStretched">Dinner</label>
                         </li>
-                    </ul>
+                    </ul> --}}
                 </div>
             </div>
         </div>
