@@ -88,10 +88,6 @@ body{
     margin-top: 20px;
 }
 
-.active{
-    text-decoration: underline;
-}
-
 .outer-box{
     width:909px;
     height: 609px;
@@ -154,11 +150,12 @@ body{
     align-items: center;
     color: #fff;
     text-decoration: none;
-    font-family: 'Lexend', sans-serif;
-    font-size: 1.1rem;
-    padding: 12px 0;
+    font-size: 18px;
+    padding: 4px 0 2px 0;
     border-bottom: 2px solid transparent;
     transition: border-color 0.2s, color 0.2s;
+    line-height: 1.2;
+    margin-bottom: 18px;
 }
 
 .menu-link i {
@@ -167,8 +164,7 @@ body{
 
 .menu-link.active {
     border-bottom: 2px solid #fff; /* White underline for active */
-    font-weight: 200;
-    width: 100px
+    width: 150px;
 }
 
 .menu-link:hover {

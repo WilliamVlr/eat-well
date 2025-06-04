@@ -1,24 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+@extends('master')
+
+@section('title', 'Payment')
+
+@section('css')
     @vite(["resources/sass/app.scss", "resources/js/app.js"])
-    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous"> --}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{asset('css/payment.css')}}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
-</head>
-<body>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@1" rel="stylesheet" />
+@endsection
+
+@section('content')
     <div class="container">
         <h1 class="lexend font-semi-bold text-white your-order">Your Order</h1>
-        <i class="fa-solid fa-location-dot"></i>
         <p class= "jalan">
-            <span class="lexend font-regular text-white"> Jalan Mangga Rumah Maya Selendang</span>
+            <span class="material-symbols-outlined location-icon">pin_drop</span>
+            <span class="lexend font-regular text-white">Jalan Mangga Rumah Maya Selendang</span>
         </p>
         <div class="container-sm isi">
             <div class="orderdet">
@@ -138,7 +133,8 @@
             <button id="messageBoxOkBtn">OK</button>
         </div>
     </div>
+@endsection
+
+@section('scripts')
     <script src="{{ asset('js/payment.js')}}"></script>
-</body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
-</html>
+@endsection

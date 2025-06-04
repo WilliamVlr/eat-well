@@ -44,6 +44,15 @@ body{
     font-weight: 700;
 }
 
+.jalan{
+    color: white;
+    display: flex;
+}
+
+.location-icon{
+    margin-right: 5px;
+}
+
 h1{
     font-size: 50px;
 }
@@ -124,53 +133,51 @@ h1{
     opacity: 70%;
 }
 
+.form-check-input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 22px; /* Size of the radio button */
+    height: 22px;
+    border: 2px solid #adb5bd; /* Default border color (Bootstrap's gray) */
+    border-radius: 50%; /* Makes it circular */
+    display: inline-block;
+    position: relative;
+    margin-right: 8px; /* Space between radio and label */
+    cursor: pointer;
+    vertical-align: middle; /* Align with label text */
+    background-color: transparent; /* Ensure no Bootstrap background interferes */
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
 
-        /* Custom Radio Button Styling for Bootstrap's .form-check-input */
-        .form-check-input[type="radio"] {
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            width: 22px; /* Size of the radio button */
-            height: 22px;
-            border: 2px solid #adb5bd; /* Default border color (Bootstrap's gray) */
-            border-radius: 50%; /* Makes it circular */
-            display: inline-block;
-            position: relative;
-            margin-right: 8px; /* Space between radio and label */
-            cursor: pointer;
-            vertical-align: middle; /* Align with label text */
-            background-color: transparent; /* Ensure no Bootstrap background interferes */
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        }
+.form-check-input[type="radio"]:checked {
+    background-color: transparent; /* Overriding Bootstrap's default check */
+    border-color: var(--button); /* Orange border when checked */
+}
 
-        .form-check-input[type="radio"]:checked {
-            background-color: transparent; /* Overriding Bootstrap's default check */
-            border-color: var(--button); /* Orange border when checked */
-        }
+.form-check-input[type="radio"]:checked::before {
+    content: '';
+    display: block;
+    width: 12px; /* Size of the inner dot */
+    height: 12px;
+    background-color: var(--button); /* Orange inner dot */
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 
-        .form-check-input[type="radio"]:checked::before {
-            content: '';
-            display: block;
-            width: 12px; /* Size of the inner dot */
-            height: 12px;
-            background-color: var(--button); /* Orange inner dot */
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .form-check-input[type="radio"]:focus {
-            border-color: var(--button);
-            outline: 0;
-            box-shadow: 0 0 0 0.25rem rgba(231, 113, 51, 0.35); /* Focus ring with theme color */
-        }
-        /* Ensure label is clickable and aligned */
-        .form-check-label {
-            cursor: pointer;
-            vertical-align: middle;
-        }
+.form-check-input[type="radio"]:focus {
+    border-color: var(--button);
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(231, 113, 51, 0.35); /* Focus ring with theme color */
+}
+/* Ensure label is clickable and aligned */
+.form-check-label {
+    cursor: pointer;
+    vertical-align: middle;
+}
 
 .total{
     display: flex;
@@ -223,30 +230,42 @@ h1{
     opacity: 0; transition: opacity 0.3s ease-in-out;
     font-family: 'Lexend', sans-serif;    
 }
-.popup-overlay.active { display: flex; opacity: 1; }
+
+.popup-overlay.active { 
+    display: flex; opacity: 1; 
+}
+
 .popup-content {
     background-color: #ffffff; color: #333333; padding: 2rem 2.5rem;
     border-radius: 12px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     text-align: center; width: 90%; max-width: 400px;
     transform: scale(0.95); transition: transform 0.3s ease-in-out;
 }
-.popup-overlay.active .popup-content { transform: scale(1); }
+
+.popup-overlay.active .popup-content { 
+    transform: scale(1); 
+}
+
 .popup-content h2 {
     font-family: 'Lexend', sans-serif; font-size: 1.7rem; font-weight: 600;
     color: #1f2937; margin-bottom: 1.5rem;
 }
+
 .popup-content .qr-code-container {
     margin-bottom: 1.5rem; padding: 1rem; border: 1px solid #e0e0e0;
     border-radius: 8px; background-color: #f8f9fa;
 }
+
 .popup-content .qr-code-container img {
     max-width: 180px; height: auto; display: block;
     margin: 0 auto; border-radius: 4px;
 }
+
 .popup-content .timer {
     font-family: 'Inter', sans-serif; font-size: 0.9rem; color: #dc3545;
     margin-bottom: 1.5rem; font-weight: 500;
 }
+
 .popup-button {
     display: block; width: 100%; padding: 0.8rem 1.5rem;
     border-radius: 8px; font-family: 'Lexend', sans-serif;
@@ -396,8 +415,8 @@ h1{
     }
     
     .jalan{
-        font-size: 15px;
-        margin-top: -15px;
+        font-size: 13px;
+        margin-top: -8px;
     }
 
     .isi .orderdet{

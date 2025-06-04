@@ -35,13 +35,13 @@
             <div class="menu">
                 <ul class="nav flex-column sidebar-menu">
                     <li class="nav-item">
-                        <a class="menu-link active lexend font-regular tetx-white">Profile Management</a>
+                        <a class="menu-link active inter font-regular text-white">Manage Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="menu-link lexend font-regular text-white">Manage Security</a>
+                        <a class="menu-link inter font-regular text-white">Manage Security</a>
                     </li>
                     <li class="nav-item">
-                        <a class="enu-link lexend font-regular text-white">Manage Addresses</a>
+                        <a class="menu-link inter font-regular text-white">Manage Address</a>
                     </li>
                 </ul>
             </div>
