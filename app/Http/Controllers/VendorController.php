@@ -27,7 +27,11 @@ class VendorController extends Controller
 
         // Memuat relasi User dan Address secara efisien jika Anda ingin menampilkannya
         $vendor->load(['user', 'address']);
-        $packages = $vendor->packages;
+        // $packages = $vendor->packages;
+        // MEMUAT PAKET DENGAN RELASI CATEGORY DAN CUISINE_TYPES SECARA EFFICIENT
+        // Pastikan Anda telah mendefinisikan relasi 'packages' di model Vendor
+        // dan relasi 'category' serta 'cuisineTypes' di model Package.
+        $packages = $vendor->packages()->with(['category', 'cuisineTypes'])->get();
 
         return view('cateringDetail', compact('vendor', 'packages'));
     }
