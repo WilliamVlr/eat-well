@@ -22,6 +22,11 @@ Route::get('/about-us', function(){
     return view('aboutUs');
 });
 
+Route::get('/login', function () {
+    return view('login');
+});
+
+
 /* ---------------------
      CUSTOMER ROUTES
 ---------------------- */
@@ -29,6 +34,12 @@ Route::get('/about-us', function(){
 Route::get('/home', function (){
     return view('customer.home');
 })->name('home');
+
+// Search
+// Route::get('/search', function(){
+//     return view('customer.search');
+// });
+Route::get('/search', [VendorController::class, 'search'])->name('search');
 
 // Catering Details
 // Route::get('/catering-detail', function () {

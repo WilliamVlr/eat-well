@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
 </head>
 <body>
-    <div class="profile-container">
+    ~<div class="profile-container">
         <div class="container daun-container">
             <img src="{{ asset('asset/catering-detail/daun1.png') }}" alt="Catering Image" class="daun1">
             <img src="{{ asset('asset/catering-detail/daun2.png') }}" alt="Catering Image" class="daun2">
