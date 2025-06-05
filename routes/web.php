@@ -40,6 +40,9 @@ Route::get('/manage-profile', function () {
     return view('manageProfile');
 })->name('manage-profile');
 
+// Search
+Route::get('/search', [VendorController::class, 'search'])->name('search');
+
 // Catering Details
 // Route::get('/catering-detail', function () {
 //     return view('cateringDetail');
