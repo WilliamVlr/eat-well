@@ -43,25 +43,20 @@
                     <div class="card-body p-5">
                         <h5 class="card-title text-center p-3">Join EatWell</h5>
                         <form action="#" class="needs-validation" novalidate>
-                            @csrf
                             <div class="form-floating mb-3 ">
-                                <input type="text" class="form-control m-0" placeholder="DVN" id="name" required>
+                                <input type="text" class="form-control m-0" placeholder="DVN" name="name" required>
                                 <label class="form-label m-0" for="name">Name</label>
                                 <div class="invalid-feedback">Please enter your name</div>
                             </div>
                             <div class="form-floating mb-3 ">
-                                <input type="email" class="form-control m-0" placeholder="example@gmail.com" id="email" required>
+                                <input type="email" class="form-control m-0" placeholder="example@gmail.com" name="email" required>
                                 <label class="form-label m-0" for="email">Email</label>
                                 <div class="invalid-feedback">Please choose a valid email</div>
                             </div>
-                            <div class="form-floating mb-1">
-                                <input type="password" class="form-control m-0" placeholder="" id="password" required>
+                            <div class="form-floating mb-5">
+                                <input type="password" class="form-control m-0" placeholder="" name="password" required>
                                 <label class="form-label m-0" for="password">Password</label>
                                 <div class="invalid-feedback">Please enter a correct password</div>
-                            </div>
-                            <div class="form-check mb-5">
-                                <input type="checkbox" class="form-check-input" id="remember">
-                                <label class="form-check-label" for="remember">Remember me</label>
                             </div>
 
                             <span class="placeholder col-4 placeholder-lg"></span>
