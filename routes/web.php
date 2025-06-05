@@ -23,9 +23,8 @@ Route::get('/about-us', function(){
     return view('aboutUs');
 });
 
-Route::get('/login-register', function () {
-    return view('login-register');
-});
+Route::get('/login-register', [AuthManager::class, 'loginRegister'])->name('login-register');
+Route::post('/login-register', [AuthManager::class, 'registerPost'])->name('register.post');
 
 /* ---------------------
      CUSTOMER ROUTES
