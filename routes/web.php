@@ -35,11 +35,9 @@ Route::get('/home', function (){
     return view('customer.home');
 })->name('home');
 
-// Search
-// Route::get('/search', function(){
-//     return view('customer.search');
-// });
-Route::get('/search', [VendorController::class, 'search'])->name('search');
+Route::get('/manage-profile', function () {
+    return view('manageProfile');
+})->name('manage-profile');
 
 // Catering Details
 // Route::get('/catering-detail', function () {
