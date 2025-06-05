@@ -11,4 +11,11 @@
       form.classList.add('was-validated')
     }, false)
   })
-})()
+})();
+
+var loginCard = document.getElementById("login-card");
+var cresgisterCard = document.getElementById("cregister-card");
+function loginCregister() {
+  loginCard.classList.toggle("d-none");
+  cresgisterCard.classList.toggle("d-none");
+} 
