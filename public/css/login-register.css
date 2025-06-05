@@ -5,7 +5,7 @@ body{
   margin-top: -28px;
 }
 .check-border{
-    border: 2px solid black;
+  border: 2px solid black;
 }
 .card-title{
   font-family: "Roboto";
@@ -15,9 +15,11 @@ body{
   font-variation-settings: "wdth" 110;
   font-size: 2rem;
 }
-.card p{
-  font-family: "Roboto";
-  font-size: 0.7rem;
+.change-card-link{
+  color: black;
+  font-family: "Roboto" !important;
+  font-size: 0.7rem !important;
+  text-decoration: none;
 }
 .form-floating input{
   font-size: 0.9rem !important;
