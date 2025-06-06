@@ -22,6 +22,10 @@ Route::get('/about-us', function(){
     return view('aboutUs');
 });
 
+Route::get('/login-register', function () {
+    return view('login-register');
+});
+
 /* ---------------------
      CUSTOMER ROUTES
 ---------------------- */

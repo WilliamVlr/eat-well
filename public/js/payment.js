@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const backHomeBtn = document.getElementById('backHomeBtn');
     if (backHomeBtn) {
         backHomeBtn.addEventListener('click', function() {
-            window.location.href = '/'; // Change to your homepage route if needed
+            window.location.href = '/home'; // Change to your homepage route if needed
         });
     }  
 });
