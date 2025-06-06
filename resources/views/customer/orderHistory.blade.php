@@ -23,7 +23,7 @@
 @section('content')
     <main>
         {{-- TAB CONTROL --}}
-        <section class="tab-control mb-3 mt-1">
+        <section class="tab-control mb-3 mt-4">
             <div class="container">
                 <div class="row tab-control-wrapper">
                     @foreach ($tabs as $key => $label)
@@ -41,7 +41,7 @@
             <div class="container">
                 <div class="search-container col-sm">
                     <div class="search-wrapper search-style-1 d-flex align-items-center">
-                        <form action="#" class="d-flex align-items-center w-100 h-100">
+                        <form action="{{route('order-history')}}" method="GET" class="d-flex align-items-center w-100 h-100">
                             @csrf
                             <div class="input-group">
                                 <button type="submit" class="input-group-text search-button border-end-0 p-0"
@@ -49,8 +49,9 @@
                                     <span class="material-symbols-outlined search-icon-1">search</span>
                                 </button>
                                 <input type="text" name="query" class="form-control border-start-0 input-text-style-1"
-                                    placeholder="Search for food, drinks, etc." aria-label="Search for food, drinks, etc."
-                                    required>
+                                    placeholder="Search order by order ID or vendor name" aria-label="Search for food, drinks, etc."
+                                    value="{{request('query')}}">
+                                <input type="hidden" name="status" value="{{ $status }}">
                             </div>
                         </form>
                     </div>
@@ -59,7 +60,7 @@
         </section>
 
         {{-- ORDER LIST --}}
-        <section class="order-list mb-3">
+        <section class="order-list mb-4">
             <div class="container d-flex flex-column gap-3">
                 @forelse ($orders as $order)
                     <div class="card-order">

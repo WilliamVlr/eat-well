@@ -26,21 +26,30 @@ class OrderController extends Controller
         // For now, use userId = 8
         $userId = 8; // Replace with Auth::id() when ready
         $status = $request->query('status', 'all');
+        $query = $request->query('query');
         $now = Carbon::now();
         
         $orders = Order::with(['orderItems.package', 'vendor'])
             ->where('userId', $userId)
-            ->when($status === 'active', function ($query) use ($now){
-                $query->where('isCancelled', 0)
+            ->when($status === 'active', function ($q) use ($now){
+                $q->where('isCancelled', 0)
                 ->whereDate('startDate', '<=', $now)
                 ->whereDate('endDate', '>=', $now);
             })
-            ->when($status === 'finished', function ($query) use ($now){
-                $query->where('isCancelled', 0)
+            ->when($status === 'finished', function ($q) use ($now){
+                $q->where('isCancelled', 0)
                 ->whereDate('endDate', '<', $now);
             })
-            ->when($status === 'cancelled', function ($query) use ($now){
-                $query->where('isCancelled', 1);
+            ->when($status === 'cancelled', function ($q) use ($now){
+                $q->where('isCancelled', 1);
+            })
+            ->when($query, function ($q) use ($query) {
+                $q->where(function ($sub) use ($query) {
+                    $sub->where('orderId', 'like', "%$query%")
+                    ->orWhereHas('vendor', function ($vendorQ) use ($query) {
+                        $vendorQ->where('name', 'like', "%$query%");
+                    });
+                });
             })
             ->orderByDesc('endDate')
             ->get();
