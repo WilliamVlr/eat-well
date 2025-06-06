@@ -4,12 +4,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/manageAddress.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 @endsection
 
 @section('content')
     <div class="address-container text-center">
         <div class="text-start mb-3">
-            <i class="bi bi-arrow-left fs-4"><a href="add-address" style="text-decoration: none; color: black">←</a></i>
+            <a href="/manage-profile" style="text-decoration: none; color: black">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </a>
         </div>
 
         <div class="divider"></div>

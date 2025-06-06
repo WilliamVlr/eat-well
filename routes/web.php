@@ -77,7 +77,6 @@ Route::get('/manageOrder', function(){
     return view('manageOrder');
 });
 
-
 /* ---------------------
      ADMIN ROUTES
 ---------------------- */
