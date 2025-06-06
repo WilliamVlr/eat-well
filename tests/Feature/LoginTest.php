@@ -98,7 +98,7 @@ class LoginTest extends TestCase
     public function tc9_register_link_exists()
     {
         $response = $this->get('/login-register');
-        $response->assertSee('Register now');
+        $response->assertSee("Register now!");
     }
 }
 
