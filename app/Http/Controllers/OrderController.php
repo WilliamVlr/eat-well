@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use Carbon\Carbon;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
 
@@ -11,7 +12,7 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         // Get the currently authenticated user
         // $user = Auth::user();
@@ -23,12 +24,28 @@ class OrderController extends Controller
         // ->get();
 
         // For now, use userId = 8
-        $orders = Order::with(['orderItems.package'])
-            ->where('userId', 8)
-            ->orderByDesc('created_at')
+        $userId = 8; // Replace with Auth::id() when ready
+        $status = $request->query('status', 'all');
+        $now = Carbon::now();
+        
+        $orders = Order::with(['orderItems.package', 'vendor'])
+            ->where('userId', $userId)
+            ->when($status === 'active', function ($query) use ($now){
+                $query->where('isCancelled', 0)
+                ->whereDate('startDate', '<=', $now)
+                ->whereDate('endDate', '>=', $now);
+            })
+            ->when($status === 'finished', function ($query) use ($now){
+                $query->where('isCancelled', 0)
+                ->whereDate('endDate', '<', $now);
+            })
+            ->when($status === 'cancelled', function ($query) use ($now){
+                $query->where('isCancelled', 1);
+            })
+            ->orderByDesc('endDate')
             ->get();
 
-        return view('customer.orderHistory', compact('orders'));
+        return view('customer.orderHistory', compact('orders', 'status'));
     }
 
     /**
