@@ -11,8 +11,8 @@
 
 @section('content')
     <div class="position-fixed bg-black w-100 h-100 content opacity-50 disabled-area"></div>
-    <div class="container-fluid content content-1 h-100">
-        <div class="row align-items-center justify-content-center h-100 px-0 py-5">
+    <div class="container-fluid content content-1 min-vh-100">
+        <div class="row align-items-center justify-content-center px-0 py-5">
             <div class="col-auto col-sm-10 col-md-9 z-3">
                 <div class="card p-5 rounded-4">
                     <form>
@@ -62,9 +62,7 @@
                             </div>
                             <div class="col-12 col-md-4">
                                 <label for="zipCode" class="form-label">Zip Code</label>
-                                <select id="zipCode" class="form-select">
-                                <option selected>Choose...</option>
-                                <option>...</option>
+                                <input type="text" class="form-control" id="zipCode" placeholder="28162">
                                 </select>
                             </div>
                             <div class="col-12">
@@ -82,7 +80,7 @@
                                 <input type="tel" class="form-control" id="recipientTel" placeholder="0812-1239-3219">
                             </div>
                             <div class="col-12 col-md-4 align-self-center mx-auto mt-5">
-                                <button type="submit" class="btn btn-success check-border" id='submit-button'>Continue</button>
+                                <button type="submit" class="btn btn-success" id='submit-button'>Continue</button>
                             </div>
                         </div>
                     </form>
