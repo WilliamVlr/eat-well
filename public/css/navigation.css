@@ -1,18 +1,19 @@
 
 
-.navbar
+.custNavigation
 {
     background-color: #052418;
 }
 
-.dropdown
+.dropdown-bahasa
 {
     margin-left: 3vh;
 }
 
-.navbar-toggler-icon
-{
-    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(255, 255, 255, 1)' stroke-width='2' stroke-linecap='round' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+/* Pastikan hamburger menu putih */
+.navbar-toggler .navbar-toggler-icon,
+.toggleiconnav {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22' /%3e%3c/svg%3e") !important;
 }
 
 .navbar-toggler
@@ -37,36 +38,37 @@
     outline: none;
 }
 
-.nav-link
+.navigationcustlink
 {
     color: white;
     font-weight: 300;
     position: relative;
 }
 
-.nav-link:hover{
-    color: #F5A623;
+.navigationcustlink {
+    color: #f0f0f0; /* Warna default tidak aktif */
 }
 
-.nav-link.active
-{
-    color: #F5A623 !important;
-}
 
-.nav-link,
-.nav-link:visited,
-.nav-link:focus,
-.nav-link:active {
+
+.navigationcustlink,
+.navigationcustlink:visited,
+.navigationcustlink:focus,
+.navigationcustlink:active {
     color: white;
 }
 
-.nav-link:hover {
-    color: #F5A623;
+.navigationcustlink:hover{
+    color: #F5A623 !important;
+    
 }
 
-.nav-link.active {
-    color: #F5A623 !important;
+.navigationcustlink.active {
+    color: #FFD700 !important; /* atau warna lain yang kamu mau */
+    font-weight: bold;
+    /* text-decoration: underline; opsional */
 }
+
 
 
 .login_button
@@ -92,7 +94,7 @@
 
 @media(min-width: 991px)
 {
-    .nav-link::before
+    .navigationcustlink::before
     {
         content: "";
         position: absolute;
@@ -106,7 +108,7 @@
         transition: 0.3s ease-in-out;
     }
 
-    .nav-link:hover::before
+    .navigationcustlink:hover::before
     {
         width: 100%;
         visibility: visible;
@@ -115,7 +117,7 @@
 
 @media (max-width: 400px)
 {
-    .dropdown
+    .dropdown-bahasa
     {
         right: 10%;
     }
@@ -125,3 +127,10 @@
   width: 300px !important;
   --bs-offcanvas-width: 300px;
 }
+
+
+.dropdown-bahasa
+{
+    width: 60px;
+}
+
