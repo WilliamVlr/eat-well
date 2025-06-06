@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             PackageCategorySeeder::class,
             CuisineTypeSeeder::class,
             PackageSeeder::class,
+            OrderSeeder::class
         ]);
 
     }
