@@ -47,7 +47,7 @@ class Order extends Model
 
     public function orderItems()
     {
-        return $this->hasMany(OrderItem::class, 'orderId', 'orderId');
+        return $this->hasMany(OrderItem::class, 'orderId', 'orderId')->orderBy('updated_at', 'asc');
     }
 
     public function deliveryStatuses()
