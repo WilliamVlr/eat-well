@@ -60,7 +60,7 @@
 
         {{-- ORDER LIST --}}
         <section class="order-list mb-3">
-            <div class="container">
+            <div class="container d-flex flex-column gap-3">
                 <div class="card-order text-decoration-none">
                     <div class="card-header">
                         <div class="left-container">
@@ -73,8 +73,12 @@
                         </div>
                         <div class="right-container">
                             <div class="text-wrapper order-date">
-                                <p class="date">Active Until:</p>
+                                <p class="date">19/06/2025</p>
+                                <p class="date">-</p>
                                 <p class="date">19/07/2025</p>
+                            </div>
+                            <div class="text-wrapper label-status status-active">
+                                Active
                             </div>
                         </div>
                     </div>
@@ -94,7 +98,6 @@
                                             x2
                                         </div>
                                     </div>
-                                    {{-- <div class="text-container detail-secondary">x2</div> --}}
                                 </div>
                                 <div class="price-wrapper">
                                     <div class="text-wrapper">

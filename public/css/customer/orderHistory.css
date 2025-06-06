@@ -129,6 +129,7 @@ body {
 
 /* CARD ORDER */
 .card-order {
+  width: 100%;
   background-color: var(--white-1);
   border-radius: 3px;
   padding: 25px;
@@ -192,6 +193,10 @@ body {
     }
 
     .right-container {
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
+      align-items: center;
       .order-date {
         display: flex;
         flex-direction: row;
@@ -318,6 +323,29 @@ body {
   }
 }
 
+.label-status {
+  padding: 3px 8px;
+  font-size: 14px;
+  font-weight: 350;
+  border-radius: 5px;
+  /* border: 1px solid; */
+  box-shadow: 0px 1px 2px #0b0b0b15;
+  transition: 0.2s ease-in-out;
+}
+
+.label-status.status-active {
+  /* border-color: var(--primary-color); */
+  background-color: var(--accent-color);
+}
+
+.label-status.status-cancelled {
+  background-color: #f15858;
+}
+
+.label-status.status-finished {
+  background-color: #adf4ba;
+}
+
 .star-icon {
   font-size: 28px;
   color: #4d4d4d;
@@ -359,6 +387,7 @@ body {
       }
 
       .right-container {
+        flex-direction: row-reverse;
         .order-date {
           gap: 2px;
         }
@@ -372,10 +401,12 @@ body {
           gap: 0px;
         }
       }
-      .right-container{
+
+      .right-container {
         .total-container {
           flex-direction: column;
           justify-content: end;
+
           * {
             text-align: end;
           }
@@ -429,6 +460,7 @@ body {
 
     .card-bottom {
       padding-top: 5px;
+
       .detail-primary {
         font-size: 14px;
       }
@@ -447,6 +479,7 @@ body {
         .total-container {
           gap: 0;
           justify-content: end;
+
           .detail-highlight {
             font-size: 18px;
             line-height: 20px;
