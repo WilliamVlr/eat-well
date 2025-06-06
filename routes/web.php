@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\AuthManager;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -22,13 +23,17 @@ Route::get('/about-us', function(){
     return view('aboutUs');
 });
 
-Route::get('/login-register', function () {
-    return view('login-register');
-});
+Route::get('/login-register', [AuthManager::class, 'loginRegister'])->name('login-register');
+Route::post('/login-register', [AuthManager::class, 'registerPost'])->name('register.post');
 
 /* ---------------------
      CUSTOMER ROUTES
 ---------------------- */
+// Customer Account Setup
+Route::get('/customer-first-page', function(){
+    return view('customer.customerFirstPage');
+});
+
 // Customer Home
 Route::get('/home', function (){
     return view('customer.home');
