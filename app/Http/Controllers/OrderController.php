@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -11,8 +13,22 @@ class OrderController extends Controller
      */
     public function index()
     {
-        // Get all order history from the database
-        return view('customer.orderHistory');
+        // Get the currently authenticated user
+        // $user = Auth::user();
+
+        // Get all orders for this user
+        // $orders = Order::with(['orderItems.package'])
+        // ->where('user_id', auth()->user()->id)
+        // ->orderBy('created_at','desc')
+        // ->get();
+
+        // For now, use userId = 8
+        $orders = Order::with(['orderItems.package'])
+            ->where('userId', 8)
+            ->orderByDesc('created_at')
+            ->get();
+
+        return view('customer.orderHistory', compact('orders'));
     }
 
     /**

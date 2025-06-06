@@ -23,10 +23,23 @@ class OrderSeeder extends Seeder
                     ->forVendor($order->vendorId)
                     ->make(['orderId' => $order->orderId]);
 
-                $order->orderItems()->saveMany($items);
+                // Group by packageId and packageTimeSlot, sum quantities
+                $grouped = [];
+                foreach ($items as $item) {
+                    // Always use the enum's value
+                    $slot = $item->packageTimeSlot->value;
+                    $key = $item->packageId . '-' . $slot;
+                    if (!isset($grouped[$key])) {
+                        $grouped[$key] = $item;
+                    } else {
+                        $grouped[$key]->quantity += $item->quantity;
+                    }
+                }
+
+                $order->orderItems()->saveMany($grouped);
 
                 // Calculate total price
-                $total = $order->orderItems->sum(function($item){
+                $total = $order->orderItems->sum(function ($item) {
                     return $item->price * $item->quantity;
                 });
 

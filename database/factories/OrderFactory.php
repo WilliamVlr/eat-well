@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Address;
 use App\Models\Package;
 use App\Models\User;
 use App\Models\Vendor;
@@ -31,6 +32,7 @@ class OrderFactory extends Factory
         return [
             'userId' => User::inRandomOrder()->first()?->userId,
             'vendorId' => $vendorId,
+            'addressId' => Address::inRandomOrder()->first()?->addressId,
             'totalPrice' => 0,
             'startDate' => $start,
             'endDate' => $end,

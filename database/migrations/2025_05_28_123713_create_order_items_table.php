@@ -23,6 +23,7 @@ return new class extends Migration
 
             $table->foreign('orderId')->references('orderId')->on('orders')->onDelete('cascade');
             $table->foreign('packageId')->references('packageId')->on('packages')->onDelete('cascade');
+            $table->unique(['orderId', 'packageId', 'packageTimeSlot'], 'order_package_slot_unique');
         });
     }
 

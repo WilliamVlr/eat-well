@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('orderId');
             $table->unsignedBigInteger('userId');
             $table->unsignedBigInteger('vendorId');
+            $table->unsignedBigInteger('addressId');
             $table->decimal('totalPrice', 10, 2)->nullable(false);
             $table->dateTime('startDate');
             $table->dateTime('endDate');
@@ -23,6 +24,7 @@ return new class extends Migration
 
             $table->foreign('userId')->references('userId')->on('users')->onDelete('cascade');
             $table->foreign('vendorId')->references('vendorId')->on('vendors')->onDelete('cascade');
+            $table->foreign('addressId')->references('addressId')->on('addresses');
         });
     }
 
