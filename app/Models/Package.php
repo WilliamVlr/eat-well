@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory; // Opsional tapi sangat direkomendasikan
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Package extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'packages';
     protected $primaryKey = 'packageId'; // Matches your migration
@@ -27,7 +28,7 @@ class Package extends Model
     protected $casts = [
         'averageCalories' => 'decimal:2', // Matches your migration
         'breakfastPrice' => 'decimal:2', // Matches your migration
-        'lunchPrice' => 'decimal:2', // Matches your migration
+        'lunchPrice' => 'decimal:2', // Matches your migrationz
         'dinnerPrice' => 'decimal:2', // Matches your migration
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
@@ -58,4 +59,5 @@ class Package extends Model
         // This is a many-to-many relationship with CuisineType through 'package_cuisine'
         return $this->belongsToMany(CuisineType::class, 'package_cuisine', 'packageId', 'cuisineId');
     }
+
 }
