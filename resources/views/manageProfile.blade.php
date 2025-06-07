@@ -1,24 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    @vite(["resources/sass/app.scss", "resources/js/app.js"])
-    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous"> --}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{{asset('css/manageProfile.css')}}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel= "stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+@extends('master')
 
-    <link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
-</head>
-<body>
-    {{-- <x-navigation></x-navigation> --}}
+@section('title', 'Manage Profile')
+@section('css')
+    @vite(["resources/sass/app.scss", "resources/js/app.js"])
+    <link rel="stylesheet" href="{{asset('css/manageProfile.css')}}">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+@endsection
+
+@section('content')
     <div class="container container-custom">
         <div class="left-panel outer-panel">
             <div class="lexend font-medium manage-profile">
@@ -185,8 +174,8 @@
             </div>
         </div>
     </div>
-        <script src="{{ asset('js/customer/manageProfile.js')}}"></script>
-</body>
-{{-- <x-footer></x-footer> --}}
-{{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script> --}}
-</html>
+@endsection
+
+@section('scripts')
+    <script src="{{ asset('js/customer/manageProfile.js')}}"></script>
+@endsection
