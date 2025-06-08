@@ -17,7 +17,7 @@
                 {{-- Card Header --}}
                 <section class="card-header">
                     <div class="left-container">
-                        <button onclick="" class="btn-back">
+                        <button onclick="window.history.back()" class="btn-back">
                             <span class="icon">&lt;</span>
                             <span class="">Back</span>
                         </button>
