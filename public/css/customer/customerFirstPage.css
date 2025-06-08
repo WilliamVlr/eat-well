@@ -7,6 +7,13 @@
 .content{
   margin-top: -28px;
 }
+.fix-margin {
+  margin-top: 0px;
+  top: 0;
+  left: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+}
 .content-1{
   background-image: url(../../asset/customer/customer-first-page/fruitVegs.png);
   background-repeat: no-repeat;

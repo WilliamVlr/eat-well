@@ -10,7 +10,7 @@
 
 
 @section('content')
-    <div class="position-fixed bg-black w-100 h-100 content opacity-50 disabled-area"></div>
+    <div class="position-fixed bg-black w-100 h-100 content opacity-50 disabled-area fix-margin"></div>
     <div class="container-fluid content content-1 min-vh-100">
         <div class="row align-items-center justify-content-center px-0 py-5">
             <div class="col-auto col-sm-10 col-md-9 z-3">
