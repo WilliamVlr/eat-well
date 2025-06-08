@@ -30,4 +30,13 @@ class VendorController extends Controller
 
         return view('cateringDetail', compact('vendor'));
     }
+
+    public function search(Request $request)
+    {
+        // Get all vendors, 9 per page
+        $vendors = Vendor::paginate(9);
+
+        // Pass paginated vendors to the view
+        return view('customer.search', compact('vendors'));
+    }
 }

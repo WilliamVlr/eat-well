@@ -146,7 +146,7 @@
             @for ($i = 0; $i < 5; $i++)
                 <div class="row list-container mb-3">
                     <div class="col-lg card-medium mb-lg-1 me-lg-1 ms-lg-1">
-                        <a href="{{ route('catering-detail') }}" class="row">
+                        <a href="#" class="row">
                             <div class="col-3 col-md-2 col-lg-3 col-xl-3 p-0">
                                 <div class="image-container">
                                     <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}" alt="">
@@ -188,7 +188,7 @@
                         </a>
                     </div>
                     <div class="col-lg card-medium mb-lg-1 me-lg-1 ms-lg-1">
-                        <a href="{{ route('catering-detail') }}" class="row">
+                        <a href="#" class="row">
                             <div class="col-3 col-md-2 col-lg-3 col-xl-3 p-0">
                                 <div class="image-container">
                                     <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}" alt="">
@@ -244,7 +244,7 @@
                 <ul class="carousel-product-list">
                     @for ($i = 0; $i < 3; $i++)
                         <li>
-                            <a href="{{ route('catering-detail') }}" class="card-vertical" draggable="false">
+                            <a href="#" class="card-vertical" draggable="false">
                                 <div class="image-container">
                                     <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}" alt="">
                                 </div>

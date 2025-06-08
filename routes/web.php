@@ -23,6 +23,10 @@ Route::get('/about-us', function(){
     return view('aboutUs');
 });
 
+Route::get('/login-register', function () {
+    return view('login-register');
+});
+
 /* ---------------------
      CUSTOMER ROUTES
 ---------------------- */
@@ -30,6 +34,10 @@ Route::get('/about-us', function(){
 Route::get('/home', function (){
     return view('customer.home');
 })->name('home');
+
+Route::get('/manage-profile', function () {
+    return view('manageProfile');
+})->name('manage-profile');
 
 // Catering Details
 // Route::get('/catering-detail', function () {
@@ -75,7 +83,6 @@ Route::put('/manageCateringPackage/{package}', [PackageController::class, 'updat
 Route::get('/manageOrder', function(){
     return view('manageOrder');
 });
-
 
 /* ---------------------
      ADMIN ROUTES
