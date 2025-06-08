@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PackageController;
 use App\Http\Controllers\VendorController;
 use Illuminate\Support\Facades\Route;
 
@@ -72,9 +73,11 @@ Route::get('/cateringHomePage', function() {
 });
 
 // Manage Packages
-Route::get('/manageCateringPackage', function(){
-    return view('manageCateringPackage');
-});
+Route::get('/manageCateringPackage', [PackageController::class, 'index'])->name('manageCateringPackage');
+Route::delete('/packages/{id}', [PackageController::class, 'destroy'])->name('packages.destroy');
+// Route::post('/packages', [PackageController::class, 'store'])->name('packages.store');
+Route::post('/manageCateringPackage', [PackageController::class, 'store'])->name('packages.store');
+Route::put('/manageCateringPackage/{package}', [PackageController::class, 'update'])->name('packages.update');
 
 // Manage Order
 Route::get('/manageOrder', function(){
