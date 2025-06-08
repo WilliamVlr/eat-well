@@ -20,6 +20,7 @@
 
 <body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-md custNavigation">
+        <div class="h-100 w-100 invisible position-absolute bg-black opacity-50 z-3 nav-visibility"></div>
         <div class="container-fluid">
             <a class="navbar-brand me-auto" href="#">
                 <img src="/asset/navigation/eatwellLogo.png" alt="logo" style="width: 6vh;">

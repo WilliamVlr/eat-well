@@ -12,19 +12,20 @@
                 <div class="card text-bg-light rounded-5 d-block" id="login-card">
                     <div class="card-body p-5">
                         <h5 class="card-title text-center p-3">Sign in to EatWell</h5>
-                        <form action="#" class="needs-validation" novalidate>
+                        <form class="needs-validation" novalidate>
+                            @csrf
                             <div class="form-floating mb-3 ">
-                                <input type="email" class="form-control m-0" placeholder="example@gmail.com" id="login-email" required>
+                                <input type="email" class="form-control m-0" placeholder="example@gmail.com" name="email" required>
                                 <label class="form-label m-0" for="login-email">Email</label>
                                 <div class="invalid-feedback">Please choose a valid email</div>
                             </div>
                             <div class="form-floating mb-1">
-                                <input type="password" class="form-control m-0" placeholder="" id="login-password" required>
+                                <input type="password" class="form-control m-0" placeholder="" name="password" required>
                                 <label class="form-label m-0" for="login-password">Password</label>
                                 <div class="invalid-feedback">Please enter a correct password</div>
                             </div>
                             <div class="form-check mb-5">
-                                <input type="checkbox" class="form-check-input" id="login-remember">
+                                <input type="checkbox" class="form-check-input" name="token_remember">
                                 <label class="form-check-label" for="login-remember">Remember me</label>
                             </div>
 
@@ -39,11 +40,13 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="card text-bg-light rounded-5 d-none" id="cregister-card">
                     <div class="card-body p-5">
                         <h5 class="card-title text-center p-3">Join EatWell</h5>
-                        <form action="#" class="needs-validation" novalidate>
-                            <div class="form-floating mb-3 ">
+                        <form action="{{ route('register.post') }}" method="POST" class="needs-validation" novalidate>
+                            @csrf
+                            <div class="form-floating mb-3">
                                 <input type="text" class="form-control m-0" placeholder="DVN" name="name" required>
                                 <label class="form-label m-0" for="name">Name</label>
                                 <div class="invalid-feedback">Please enter your name</div>
@@ -60,7 +63,7 @@
                             </div>
 
                             <span class="placeholder col-4 placeholder-lg"></span>
-                            <button type="submit" class="btn btn-dark my-2 login">Sign in</button>
+                            <button type="submit" class="btn btn-dark my-2 login">Register</button>
                         </form>
                         <span class="placeholder col-12 placeholder-lg"></span>
                         <div class="row justify-content-center p-2">
