@@ -26,7 +26,7 @@ return new class extends Migration
 
             $table->foreign('categoryId')->references('categoryId')->on('package_categories')->onDelete('cascade');
             $table->foreign('vendorId')->references('vendorId')->on('vendors')->onDelete('cascade');
-            $table->$table->softDeletes();
+            $table->softDeletes();
         });
     }
 
