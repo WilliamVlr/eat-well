@@ -56,6 +56,11 @@ Route::get('/catering-detail/rating-and-review', function(){
 // Order History
 Route::get('/order-history', [OrderController::class, 'index'])->name('order-history');
 
+Route::get('/order-detail', function () {
+    return view('customer.orderDetail');
+});
+// Route::get('/order-detail', [OrderController::class, 'show'])->name('order-detail');
+
 // Order Payment
 Route::get('/payment', function () {
     return view('payment');

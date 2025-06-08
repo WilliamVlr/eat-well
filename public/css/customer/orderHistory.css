@@ -496,3 +496,20 @@ body {
     }
   }
 }
+
+/* ORDER DETAIL CARD */
+.order-detail-card {
+  width: 100%;
+  height: auto;
+  margin-top: 25px;
+  padding: 15px 25px;
+  border-radius: 3px;
+  background-color: var(--white-1);
+
+  .card-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    
+  }
+}
