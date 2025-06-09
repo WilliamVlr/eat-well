@@ -202,6 +202,7 @@ body {
       flex-direction: row;
       gap: 5px;
       align-items: center;
+
       .order-date {
         display: flex;
         flex-direction: row;
@@ -395,6 +396,7 @@ body {
 
       .right-container {
         flex-direction: row-reverse;
+
         .order-date {
           gap: 2px;
         }
@@ -494,81 +496,5 @@ body {
         }
       }
     }
-  }
-}
-
-/* ORDER DETAIL CARD */
-.order-detail-card {
-  width: 100%;
-  height: auto;
-  margin-top: 25px;
-  padding: 15px 25px;
-  border-radius: 3px;
-  background-color: var(--white-1);
-}
-
-/* Encapsulate styles for order detail card header only */
-.order-detail-card .card-header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 10px;
-  border-bottom: 2px solid var(--background-color);
-}
-
-.order-detail-card .card-header .left-container {
-  width: fit-content;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-.order-detail-card .card-header .btn-back {
-  display: flex;
-  align-items: center;
-  background: none;
-  border: none;
-  font-size: 16px;
-  color: var(--background-color);
-  cursor: pointer;
-  padding: 0;
-}
-
-.order-detail-card .card-header .icon {
-  font-size: 20px;
-  margin-right: 4px;
-}
-
-.order-detail-card .card-header .right-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 10px;
-}
-
-.order-detail-card .card-header .label-status {
-  min-width: 82px;
-  text-align: center;
-  padding: 3px 8px;
-  font-size: 14px;
-  font-weight: 350;
-  border-radius: 5px;
-  box-shadow: 0px 1px 2px #0b0b0b15;
-  transition: 0.2s ease-in-out;
-}
-
-/* Center align the icon and text in the back button */
-.order-detail-card .card-header .btn-back .icon {
-  font-size: 20px;
-  margin-right: 4px;
-  margin-bottom: 2px; /* Adjust this value as needed for perfect alignment */
-}
-
-/* Responsive: Make back text smaller on mobile */
-@media screen and (max-width: 440px) {
-  .order-detail-card .card-header .btn-back span {
-    font-size: 13px;
   }
 }

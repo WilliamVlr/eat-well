@@ -81,7 +81,9 @@ class OrderController extends Controller
      */
     public function show(string $id)
     {
-        return view('customer.order-detail');
+        $order = Order::findOrFail($id);
+
+        return view('customer.orderDetail', compact('order'));
     }
 
     /**
