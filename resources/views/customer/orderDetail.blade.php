@@ -88,9 +88,9 @@
                 @endphp
 
                 <section class="card-delivery-status mt-4">
-                    <div class="cds-status-flex d-flex flex-row flex-wrap">
+                    <div class="cds-status-flex">
                         {{-- LEFT: Delivery Address --}}
-                        <div class="cds-status-left-container flex-grow-1 pe-md-5 mb-3 mb-md-0">
+                        <div class="cds-status-left-container flex-grow-1 pe-xl-5 mb-3 mb-lg-0">
                             <div class="cds-address-title">Delivery Address</div>
                             <div class="cds-address-recipient">
                                 <h5 class="recipient-name">William Vlr</h5>
@@ -99,7 +99,7 @@
                             </div>
                         </div>
                         {{-- RIGHT: Day Filter, Date, Carousel/Slider --}}
-                        <div class="cds-status-right-container flex-grow-2" style="min-width:260px;">
+                        <div class="cds-status-right-container flex-grow-2">
                             <div class="cds-delivery-days d-flex justify-content-center mb-3">
                                 @foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as $i => $day)
                                     <button class="cds-day-circle{{ $i === 0 ? ' active' : '' }}">
@@ -156,12 +156,12 @@
                             <div class="cds-delivery-slider-wrapper d-none d-md-block">
                                 <div class="cds-delivery-slider d-flex justify-content-center align-items-end">
                                     @foreach ($timeSlots as $slot)
-                                        <div class="cds-delivery-slot-card">
+                                        <div class="cds-delivery-slot-card {{ $slot === 0 ? 'active' : '' }}">
                                             <div class="cds-slot-title text-center mb-2">{{ $slot['label'] }}</div>
                                             <div class="cds-slot-status-list">
                                                 @foreach ($statuses as $sIdx => $status)
                                                     <div
-                                                        class="cds-slot-status-row{{ $sIdx <= $activeStatus ? ' active' : '' }}">
+                                                        class="cds-slot-status-row {{ $sIdx <= $activeStatus ? ' active' : '' }}">
                                                         <div
                                                             class="cds-circle-icon d-flex align-items-center justify-content-center">
                                                             <span
