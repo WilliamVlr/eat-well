@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\PackageController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\AuthManager;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -22,13 +24,17 @@ Route::get('/about-us', function(){
     return view('aboutUs');
 });
 
-Route::get('/login-register', function () {
-    return view('login-register');
-});
+Route::get('/login-register', [AuthManager::class, 'loginRegister'])->name('login-register');
+Route::post('/login-register', [AuthManager::class, 'registerPost'])->name('register.post');
 
 /* ---------------------
      CUSTOMER ROUTES
 ---------------------- */
+// Customer Account Setup
+Route::get('/customer-first-page', function(){
+    return view('customer.customerFirstPage');
+});
+
 // Customer Home
 Route::get('/home', function (){
     return view('customer.home');
@@ -72,15 +78,16 @@ Route::get('/cateringHomePage', function() {
 });
 
 // Manage Packages
-Route::get('/manageCateringPackage', function(){
-    return view('manageCateringPackage');
-});
+Route::get('/manageCateringPackage', [PackageController::class, 'index'])->name('manageCateringPackage');
+Route::delete('/packages/{id}', [PackageController::class, 'destroy'])->name('packages.destroy');
+// Route::post('/packages', [PackageController::class, 'store'])->name('packages.store');
+Route::post('/manageCateringPackage', [PackageController::class, 'store'])->name('packages.store');
+Route::put('/manageCateringPackage/{package}', [PackageController::class, 'update'])->name('packages.update');
 
 // Manage Order
 Route::get('/manageOrder', function(){
     return view('manageOrder');
 });
-
 
 /* ---------------------
      ADMIN ROUTES
