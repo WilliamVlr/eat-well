@@ -65,8 +65,8 @@ xa<!DOCTYPE html>
                     <div class="hijau-luar">
                         <div class="cokelat-lingkaran">
                             <div>
-                                <img src="{{ asset('asset/catering-detail/logo-aldenaire-catering.jpg') }}" alt="Catering Image" class="logo-catering">
-                                {{-- <img src="{{ $vendor->logo }}" alt="Catering Image" class="logo-catering"> --}}
+                                {{-- <img src="{{ asset('asset/catering-detail/logo-aldenaire-catering.jpg') }}" alt="Catering Image" class="logo-catering"> --}}
+                                <img src="{{ $vendor->logo }}" alt="Catering Image" class="logo-catering">
                             </div>
                         </div>
                     </div>
