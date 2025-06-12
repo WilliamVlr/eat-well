@@ -30,9 +30,12 @@ body{
 .form-floating .invalid-feedback{
   font-size: 0.9rem !important;
 }
+.form-check-label{
+  font-size: 0.9rem;
+}
 .login{
   width: 100% !important;
 }
 #remember{
-  border: 1px solid black;
+    border: 1px solid black;
 }
