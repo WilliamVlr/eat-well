@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\VendorController;
-use App\Http\Controllers\AuthManager;
+use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Socialite\ProviderCallbackController;
+use App\Http\Controllers\Socialite\ProviderRedirectController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -24,8 +26,11 @@ Route::get('/about-us', function(){
     return view('aboutUs');
 });
 
-Route::get('/login-register', [AuthManager::class, 'loginRegister'])->name('login-register');
-Route::post('/login-register', [AuthManager::class, 'registerPost'])->name('register.post');
+Route::get('/login', [SessionController::class, 'create']);
+Route::post('/login', [SessionController::class, 'store']);
+
+Route::get('/auth/{provider}/redirect', ProviderRedirectController::class)->name('auth.redirect');
+Route::get('/auth/{provider}/callback', ProviderCallbackController::class)->name('auth.callback');
 
 /* ---------------------
      CUSTOMER ROUTES
