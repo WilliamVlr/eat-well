@@ -30,9 +30,20 @@ body{
 .form-floating .invalid-feedback{
   font-size: 0.9rem !important;
 }
+button{
+    font-size: 0.9rem !important;
+}
 .login{
   width: 100% !important;
 }
+.google-button{
+    background-color: #131314;
+    width: 100% !important;
+}
 #remember{
   border: 1px solid black;
+}
+
+svg{
+    width: 23px;
 }
