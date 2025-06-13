@@ -1,13 +1,13 @@
-xa<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $vendor->name }}</title>
     {{-- CSS --}}
     <link rel="stylesheet" href="{{ asset('css/cateringDetail.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
     {{-- bootstrap --}}
     @vite(["resources/sass/app.scss", "resources/js/app.js"])
     {{-- Lexend & Inter --}}
@@ -17,8 +17,6 @@ xa<!DOCTYPE html>
     {{-- Icon call, location, star --}}
     {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=call,pin_drop,star" /> --}}
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@1" rel="stylesheet" />
-
-    <link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
 </head>
 <body>
     <div class="profile-container">

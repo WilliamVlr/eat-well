@@ -41,5 +41,7 @@ class PackageSeeder extends Seeder
         foreach ($packages as $package) {
             Package::firstOrCreate(['name' => $package['name']], $package);
         }
+
+        Package::factory()->count(100)->create();
     }
 }

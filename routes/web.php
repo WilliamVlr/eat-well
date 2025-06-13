@@ -50,6 +50,7 @@ Route::get('/manage-profile', function () {
 // })->name('catering-detail');
 
 Route::get('/catering-detail/{vendor}', [VendorController::class, 'show'])->name('catering-detail');
+Route::post('/update-order-summary', [VendorController::class, 'updateOrderSummary']);
 
 Route::get('/catering-detail/rating-and-review', function(){
     return view('ratingAndReview');

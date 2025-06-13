@@ -41,92 +41,141 @@ $(document).ready(function() {
 })
 
 $(document).ready(function () {
-  const summary = {
-    totalItems: 0,
-    totalPrice: 0,
-    packages: {}
-  };
+    const summary = {
+        totalItems: 0,
+        totalPrice: 0,
+        packages: {}
+    };
 
-  function updateSummaryDisplay() {
-    const pkgCount = Object.keys(summary.packages).length;
+    function updateSummaryDisplay() {
+        const pkgCount = Object.keys(summary.packages).length;
 
-    if (pkgCount === 0) {
-      $(".order-message").show().text("No Package Selected Yet.");
-      $(".package-count, .item-count, .price-total").hide();
-    } else {
-      $(".order-message").hide();
-      $(".package-count").show().text(`${pkgCount} Packages`);
-      $(".item-count").show().text(`${summary.totalItems} Items`);
-      $(".price-total").show().text(`Rp. ${summary.totalPrice.toLocaleString("id-ID")},-`);
-    }
-  }
-
-
-
-  $(".add-button").click(function () {
-    const tabId = $(this).attr("data-tab");
-    const content = $("#" + tabId);
-
-    $(".add-button").not(this).removeClass("active");
-  });
-
-  $(".accordion-content").on("click", ".increment, .decrement", function () {
-    const isInc = $(this).hasClass("increment");
-    const qtySpan = $(this).siblings(".qty");
-    let qty = parseInt(qtySpan.text());
-    const price = parseInt($(this).closest(".item-row").find(".price").data("price"));
-    const pkg = $(this).closest(".accordion-content").attr("id");
-
-    if (isInc) qty++;
-    else if (qty > 0) qty--;
-
-    qtySpan.text(qty);
-
-    if (!summary.packages[pkg]) summary.packages[pkg] = { items: {}, total: 0 };
-
-    const itemName = $(this).closest(".item-row").find("span:first").text();
-    summary.packages[pkg].items[itemName] = qty;
-
-    // Remove item if qty is 0
-    if (qty === 0) delete summary.packages[pkg].items[itemName];
-    if (Object.keys(summary.packages[pkg].items).length === 0) delete summary.packages[pkg];
-
-    // Recalculate totals
-    summary.totalItems = 0;
-    summary.totalPrice = 0;
-    for (let key in summary.packages) {
-      let items = summary.packages[key].items;
-      for (let item in items) {
-        let itemQty = items[item];
-        let itemPrice = $(`#${key} .item-row:contains(${item}) .price`).data("price");
-        summary.totalItems += itemQty;
-        summary.totalPrice += itemQty * itemPrice;
-      }
+        if (pkgCount === 0) {
+            $(".order-message").show().text("No Package Selected Yet.");
+            $(".package-count, .item-count, .price-total").hide();
+        } 
+        else if (pkgCount === 1){
+            $(".order-message").hide();
+            $(".package-count").show().text(`${pkgCount} Package`);
+            if(summary.totalItems === 1){
+                $(".item-count").show().text(`${summary.totalItems} Item`);
+            }
+            else{
+                $(".item-count").show().text(`${summary.totalItems} Items`);
+            }
+            $(".price-total").show().text(`Rp. ${summary.totalPrice.toLocaleString("id-ID")},-`);
+        }
+        else {
+            $(".order-message").hide();
+            $(".package-count").show().text(`${pkgCount} Packages`); // Sesuaikan teks
+            $(".item-count").show().text(`${summary.totalItems} Items`); // Sesuaikan teks
+            $(".price-total").show().text(`Rp. ${summary.totalPrice.toLocaleString("id-ID")},-`);
+        }
     }
 
-    // Update "Add" button label
-    const itemCount = Object.keys(summary.packages[pkg]?.items || {}).reduce((acc, key) => {
-      return acc + summary.packages[pkg].items[key];
-    }, 0);
+    // Fungsi untuk mengirim data ke server melalui AJAX
+    function sendOrderUpdateToServer() {
+        $.ajax({
+            url: '/update-order-summary', // Ini akan menjadi rute Laravel baru Anda
+            method: 'POST',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content'), // Token CSRF Laravel
+                packages: summary.packages
+            },
+            success: function (response) {
+                // Perbarui summary sisi klien dengan data dari server
+                summary.totalItems = response.totalItems;
+                summary.totalPrice = response.totalPrice;
+                // Anda juga mungkin ingin memperbarui total per paket individual jika Anda memilikinya
+                // di objek summary sisi klien, tetapi untuk saat ini, kita hanya peduli dengan total keseluruhan.
 
-    const addButton = $(`.add-button[data-tab="${pkg}"]`);
-    const addText = addButton.find(".add-text");
-
-    if (itemCount === 0) {
-      addText.text("Add");
-      addButton.removeClass("active");
-    } else {
-      addText.text(`${itemCount} Items`);
-      addButton.addClass("active");
+                updateSummaryDisplay(); // Perbarui tampilan dengan total yang dihitung server
+            },
+            error: function (xhr, status, error) {
+                console.error("Kesalahan saat memperbarui ringkasan pesanan:", error);
+                // Opsional, tampilkan pesan kesalahan kepada pengguna
+            }
+        });
     }
 
+    $(".add-button").click(function () {
+        const tabId = $(this).attr("data-tab");
+        const content = $("#" + tabId);
 
+        $(".add-button").not(this).removeClass("active");
+    });
+
+    $(".accordion-content").on("click", ".increment, .decrement", function () {
+        const isInc = $(this).hasClass("increment");
+        const qtySpan = $(this).siblings(".qty");
+        let qty = parseInt(qtySpan.text());
+        const price = parseFloat($(this).closest(".item-row").find(".price").data("price"));
+        const pkgId = $(this).closest(".accordion-item").find(".accordion-title").data("package-id");
+        const pkgAccordionContentId = $(this).closest(".accordion-content").attr("id"); // Ambil ID dari accordion-content
+        
+        if (isInc) qty++;
+        else if (qty > 0) qty--;
+
+        qtySpan.text(qty);
+
+        if (!summary.packages[pkgId]) {
+            summary.packages[pkgId] = {
+                id: pkgId,
+                items: {},
+                total: 0 // Total ini akan dihitung di server
+            };
+        }
+
+        const itemName = $(this).closest(".item-row").find("span:first").text();
+        summary.packages[pkgId].items[itemName] = qty;
+
+        // console.log("DEBUG: pkgId saat ini:", pkgId);
+        // console.log("DEBUG: itemName saat ini:", itemName);
+        // console.log("DEBUG: qty saat ini:", qty);
+        // console.log("DEBUG: price dari data-price:", price);
+        // console.log("DEBUG: Struktur summary.packages saat ini:", JSON.stringify(summary.packages, null, 2));
+
+        // Hapus item jika qty adalah 0
+        if (qty === 0) delete summary.packages[pkgId].items[itemName];
+
+        // Jika sebuah paket tidak memiliki item yang dipilih, hapus dari summary
+        if (Object.keys(summary.packages[pkgId]?.items || {}).length === 0) { // Gunakan optional chaining
+            delete summary.packages[pkgId];
+        }
+
+        // Perbarui label tombol "Add" (bagian ini masih bisa di sisi klien)
+        // Temukan 'add-button' yang benar yang terkait dengan paket yang sedang dimodifikasi.
+        const addButton = $(`.add-button[data-tab="${pkgAccordionContentId}"]`);
+        const addText = addButton.find(".add-text");
+
+        let currentPackageItemCount = 0;
+        if (summary.packages[pkgId]) {
+             for (let item in summary.packages[pkgId].items) {
+                 currentPackageItemCount += summary.packages[pkgId].items[item];
+             }
+        }
+
+
+        if (currentPackageItemCount === 0) {
+            addText.text("Add");
+            addButton.removeClass("active");
+        }
+        else if (currentPackageItemCount === 1) {
+            addText.text(`${currentPackageItemCount} Item`);
+            addButton.addClass("active");
+        }
+        else {
+            addText.text(`${currentPackageItemCount} Items`); // Sesuaikan teks
+            addButton.addClass("active");
+        }
+
+        // Kirim summary yang diperbarui ke server
+        sendOrderUpdateToServer();
+    });
+
+    // Keadaan awal
     updateSummaryDisplay();
-  });
-
-  // Initial state
-  updateSummaryDisplay();
-  });
+});
 
   
 
