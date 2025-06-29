@@ -13,7 +13,7 @@
 @section('content')
     <main>
         {{-- Location and Search --}}
-        <section class="location-search mb-3 fixed-top">
+        <section class="location-search mb-3 pt-3">
             <div class="container">
                 <div class="row mb-3 gy-2 gy-sm-0">
                     <div class="location-container col-sm-3">
