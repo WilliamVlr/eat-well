@@ -21,10 +21,6 @@ class VendorController extends Controller
      */
     public function show(Vendor $vendor)
     {
-        // Laravel secara otomatis akan menemukan vendor berdasarkan ID dari URL ({vendor})
-        // dan menyediakannya sebagai objek $vendor.
-        // Jika tidak ditemukan, Laravel akan otomatis melempar 404 Not Found.
-
         // Memuat relasi User dan Address secara efisien jika Anda ingin menampilkannya
         $vendor->load(['user', 'address']);
 

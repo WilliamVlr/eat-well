@@ -15,16 +15,27 @@ return new class extends Migration
             $table->id('orderId');
             $table->unsignedBigInteger('userId');
             $table->unsignedBigInteger('vendorId');
-            $table->unsignedBigInteger('addressId');
+            // $table->unsignedBigInteger('addressId');
             $table->decimal('totalPrice', 10, 2)->nullable(false);
             $table->dateTime('startDate');
             $table->dateTime('endDate');
             $table->boolean('isCancelled')->default(false);
+            $table->string('provinsi');
+            $table->string('kota');
+            $table->string('kabupaten');
+            $table->string('kecamatan');
+            $table->string('kelurahan');
+            $table->string('kode_pos');
+            $table->string('jalan');
+            $table->string('recepient_name');
+            $table->string('recepient_phone');
+            $table->string('notes')->nullable();
+
             $table->timestamps();
 
             $table->foreign('userId')->references('userId')->on('users')->onDelete('cascade');
             $table->foreign('vendorId')->references('vendorId')->on('vendors')->onDelete('cascade');
-            $table->foreign('addressId')->references('addressId')->on('addresses');
+            // $table->foreign('addressId')->references('addressId')->on('addresses');
         });
     }
 
