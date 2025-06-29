@@ -16,6 +16,8 @@ class AddressSeeder extends Seeder
     {
         Address::factory(5)
         ->recycle(User::factory(3)->create())
-        ->create();
+        ->create([
+            'notes' => fake()->sentence(),
+        ]);
     }
 }

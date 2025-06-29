@@ -19,8 +19,8 @@ return new class extends Migration {
             $table->string('kelurahan');
             $table->string('kode_pos');
             $table->string('jalan');
-            $table->string('recepient_name');
-            $table->string('recepient_phone');
+            $table->string('recipient_name');
+            $table->string('recipient_phone');
             $table->boolean('is_default')->default(true);
             $table->string('notes')->nullable();
             

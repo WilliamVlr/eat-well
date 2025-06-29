@@ -26,17 +26,27 @@ class OrderFactory extends Factory
         // Only pick vendors who have at least one package
         $vendorId = Package::query()
             ->inRandomOrder()
-            ->first()
-                ?->vendorId;
+            ->first()?->vendorId;
+
+        $address = Address::inRandomOrder()->first();
 
         return [
-            'userId' => User::inRandomOrder()->first()?->userId,
+            'userId' => $address->userId,
             'vendorId' => $vendorId,
-            'addressId' => Address::inRandomOrder()->first()?->addressId,
             'totalPrice' => 0,
             'startDate' => $start,
             'endDate' => $end,
             'isCancelled' => $this->faker->boolean(10),
+            'provinsi' => $address->provinsi,
+            'kota' => $address->kota,
+            'kabupaten' => $address->kabupaten,
+            'kecamatan' => $address->kecamatan,
+            'kelurahan' => $address->kelurahan,
+            'kode_pos' => $address->kode_pos,
+            'jalan' => $address->jalan,
+            'recipient_name' => $address->recipient_name,
+            'recipient_phone' => $address->recipient_phone,
+            'notes' => $address->notes,
         ];
     }
 }
