@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('vendors', function (Blueprint $table) {
             $table->id('vendorId');
-            $table->unsignedBigInteger('userId')->nullable(false);
-            $table->unsignedBigInteger('addressId')->nullable(false);
-            $table->string('name')->nullable(false);
+            $table->unsignedBigInteger('userId');
+            // $table->unsignedBigInteger('addressId');
+            $table->string('name');
             $table->string('breakfast_delivery')->nullable();
             $table->string('lunch_delivery')->nullable();
             $table->string('dinner_delivery')->nullable();
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('userId')->references('userId')->on('users')->onDelete('cascade');
-            $table->foreign('addressId')->references('addressId')->on('addresses')->onDelete('cascade');
+            // $table->foreign('addressId')->references('addressId')->on('addresses')->onDelete('cascade');
         });
     }
 

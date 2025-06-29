@@ -29,18 +29,8 @@ class Address extends Model
     ];
 
     // If address belongs to user, uncomment and adjust:
-    // public function user()
-    // {
-    //     return $this->belongsTo(User::class, 'userId', 'userId');
-    // }
-
-    public function relationCustomerAddresses()
+    public function user()
     {
-        return $this->hasMany(RelationCustomerAddress::class, 'addressId', 'addressId');
-    }
-
-    public function vendors()
-    {
-        return $this->belongsTo(Vendor::class, 'addressId', 'addressId');
+        return $this->belongsTo(User::class, 'userId', 'userId');
     }
 }

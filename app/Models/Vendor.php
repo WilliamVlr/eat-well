@@ -14,7 +14,7 @@ class Vendor extends Model
 
     protected $fillable = [
         'userId',
-        'addressId',
+        // 'addressId',
         'name', // Added based on your migration
         'breakfast_delivery',
         'lunch_delivery',
@@ -36,10 +36,10 @@ class Vendor extends Model
         return $this->belongsTo(User::class, 'userId', 'userId');
     }
 
-    public function address()
-    {
-        return $this->hasOne(Address::class, 'addressId', 'addressId');
-    }
+    // public function address()
+    // {
+    //     return $this->hasOne(Address::class, 'addressId', 'addressId');
+    // }
 
     public function packages()
     {
