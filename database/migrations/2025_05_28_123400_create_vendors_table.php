@@ -25,6 +25,7 @@ return new class extends Migration
             $table->decimal('rating', 2, 1);
             $table->timestamps();
 
+            $table->softDeletes();
             $table->foreign('userId')->references('userId')->on('users')->onDelete('cascade');
             // $table->foreign('addressId')->references('addressId')->on('addresses')->onDelete('cascade');
         });

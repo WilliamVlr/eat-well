@@ -31,6 +31,8 @@ return new class extends Migration
             $table->string('remember_token', 100);
             $table->dateTime('dateOfBirth')->nullable();
             $table->boolean('genderMale')->default(false);
+
+            $table->softDeletes();
             $table->timestamps();
         });
 

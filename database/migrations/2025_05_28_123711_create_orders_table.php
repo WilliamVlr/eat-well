@@ -33,6 +33,7 @@ return new class extends Migration
 
             $table->timestamps();
 
+            $table->softDeletes();
             $table->foreign('userId')->references('userId')->on('users')->onDelete('cascade');
             $table->foreign('vendorId')->references('vendorId')->on('vendors')->onDelete('cascade');
             // $table->foreign('addressId')->references('addressId')->on('addresses');
