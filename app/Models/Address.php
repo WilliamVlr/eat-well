@@ -21,6 +21,10 @@ class Address extends Model
         'kelurahan',
         'kode_pos',
         'jalan',
+        'recipient_name', // Matches your migration
+        'recipient_phone', // Matches your migration
+        'is_default', // Matches your migration
+        'notes',
     ];
 
     protected $casts = [
