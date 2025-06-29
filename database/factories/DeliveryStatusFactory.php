@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\DeliveryStatuses;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,9 +20,9 @@ class DeliveryStatusFactory extends Factory
     {
         return [
             'orderId' => Order::factory(),
-            'deliveryDate' => fake()->dateTime(),
+            'deliveryDate' => fake()->dateTimeBetween('-1 month', 'now'),
             'slot' => fake()->randomElement(['Morning', 'Afternoon', 'Evening']),
-            'status' => 'Prepared',
+            'status' => DeliveryStatuses::Prepared,
         ];
     }
 }

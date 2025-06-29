@@ -2,8 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\DeliveryStatus;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Payment;
+use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,7 +18,7 @@ class OrderSeeder extends Seeder
     public function run(): void
     {
         Order::factory()
-            ->count(20)
+            ->count(9)
             ->create()
             ->each(function ($order) {
                 $items = OrderItem::factory()
@@ -45,6 +48,34 @@ class OrderSeeder extends Seeder
 
                 $order->totalPrice = $total;
                 $order->save();
+
+                if(rand(1, 2) == 1){
+                    Payment::factory()->create([
+                        'orderId' => $order->orderId,
+                    ]);
+                } else {
+                    Payment::factory()->create([
+                        'orderId' => $order->orderId,
+                        'paid_at' => fake()->dateTimeBetween('-7 days', '-1 days'),
+                    ]);
+                }
+
+                // Get unique time slots from orderItems
+                $slots = $order->orderItems->pluck('packageTimeSlot')->unique()->toArray();
+
+                // Use order startDate or today if not set
+                $startDate = $order->startDate ? Carbon::parse($order->startDate) : now();
+
+                for ($i = 0; $i < 7; $i++) {
+                    $date = (clone $startDate)->addDays($i);
+                    foreach ($slots as $slot) {
+                        DeliveryStatus::factory()->create([
+                            'orderId' => $order->orderId,
+                            'deliveryDate' => $date,
+                            'slot' => $slot,
+                        ]);
+                    }
+                }
             });
     }
 }

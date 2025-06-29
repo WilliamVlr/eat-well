@@ -19,9 +19,9 @@ class PaymentFactory extends Factory
     public function definition(): array
     {
         return [
-            'methodId' => PaymentMethod::factory(),
-            'orderId' => Order::factory(),
-            'paid_at' => fake()->dateTime(),
+            'methodId' => PaymentMethod::inRandomOrder()->first()?->methodId,
+            'orderId' => Order::inRandomOrder()->first()?->orderId,
+            // 'paid_at' => fake()->dateTime(),
         ];
     }
 }
