@@ -16,14 +16,10 @@ class Cart extends Model
         'userId',
         'vendorId', // Added based on your migration
         'totalPrice', // Matches your migration
-        'createdAt', // Matches your migration
-        'updatedAt', // Matches your migration
     ];
 
     protected $casts = [
         'totalPrice' => 'decimal:2',
-        'createdAt' => 'datetime', // Matches your migration
-        'updatedAt' => 'datetime', // Matches your migration
     ];
 
     public function user()

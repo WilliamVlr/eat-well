@@ -3,6 +3,7 @@
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AuthManager;
 use Illuminate\Support\Facades\Route;
 
@@ -25,9 +26,8 @@ Route::get('/about-us', function(){
     return view('aboutUs');
 });
 
-Route::get('/login-register', [AuthManager::class, 'loginRegister'])->name('login-register');
-Route::post('/login-register', [AuthManager::class, 'registerPost'])->name('register.post');
-
+Route::get('/login', [SessionController::class, 'create']);
+Route::post('/login', [SessionController::class, 'store']);
 /* ---------------------
      CUSTOMER ROUTES
 ---------------------- */
@@ -54,6 +54,7 @@ Route::get('/search', [VendorController::class, 'search'])->name('search');
 // })->name('catering-detail');
 
 Route::get('/catering-detail/{vendor}', [VendorController::class, 'show'])->name('catering-detail');
+Route::post('/update-order-summary', [VendorController::class, 'updateOrderSummary']);
 
 Route::get('/catering-detail/rating-and-review', function(){
     return view('ratingAndReview');

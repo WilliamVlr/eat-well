@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Address;
+use App\Models\Package;
 use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -77,5 +78,20 @@ class VendorFactory extends Factory
             'kode_pos' => fake()->postcode(),
             'jalan' => fake()->streetAddress()
         ];
+    }
+
+    public function configure()
+    {
+        // Pastikan setiap Vendor memiliki minimal 1 Package setelah dibuat
+        return $this->afterCreating(function (Vendor $vendor) {
+            // Buat 1 Package dan kaitkan dengan Vendor yang baru dibuat
+            // 'for($vendor)' akan otomatis mengisi vendorId pada Package
+            Package::factory()->for($vendor)->create();
+
+            // Opsional: Anda bisa membuat lebih dari 1 package secara acak
+            if ($this->faker->boolean(70)) { // 70% kemungkinan akan ada package tambahan
+                Package::factory()->count($this->faker->numberBetween(1, 3))->for($vendor)->create();
+            }
+        });
     }
 }
