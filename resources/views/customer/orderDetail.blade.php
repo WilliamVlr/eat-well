@@ -29,11 +29,22 @@
                     </div>
                     <div class="right-container">
                         <div class="text-wrapper">
-                            <span class="">Order ID. 237373</span>
+                            <span class="">Order ID. {{ $order->orderId }}</span>
                         </div>
-                        <div class="text-wrapper label-status status-cancelled">
-                            Cancelled
-                        </div>
+                        @if ($order->isCancelled)
+                            <div class="text-wrapper label-status status-cancelled">
+                                Cancelled
+                            </div>
+                        @elseif(now()->between(Carbon::parse($order->startDate), $order->endDate))
+                            <div class="text-wrapper label-status status-active">
+                                Active
+                            </div>
+                        @else
+                            <div class="text-wrapper label-status status-finished">
+                                Finished
+                            </div>
+                        @endif
+
                     </div>
                 </section>
                 <section class="card-order-status">
@@ -45,25 +56,25 @@
                             </div>
                             <div class="label">Order Placed</div>
                         </div>
-                        <div class="status-line active"></div>
+                        <div class="status-line {{ $order->payment && $order->payment->paid_at ? 'active' : '' }}"></div>
                         {{-- Order Paid --}}
-                        <div class="status-step active">
+                        <div class="status-step {{ $order->payment && $order->payment->paid_at ? 'active' : '' }}">
                             <div class="circle">
                                 <span class="material-symbols-outlined">payments</span>
                             </div>
                             <div class="label">Order Paid</div>
                         </div>
-                        <div class="status-line "></div>
+                        <div class="status-line {{ now()->gt($order->startDate) ? 'active' : '' }}"></div>
                         {{-- Subscription Active --}}
-                        <div class="status-step ">
+                        <div class="status-step {{ now()->gt($order->startDate) ? 'active' : '' }}">
                             <div class="circle">
                                 <span class="material-symbols-outlined">autorenew</span>
                             </div>
                             <div class="label">Subscription Active</div>
                         </div>
-                        <div class="status-line "></div>
+                        <div class="status-line {{ now()->gt($order->endDate) ? 'active' : '' }}"></div>
                         {{-- Subscription Finished --}}
-                        <div class="status-step ">
+                        <div class="status-step {{ now()->gt($order->endDate) ? 'active' : '' }}">
                             <div class="circle">
                                 <span class="material-symbols-outlined">check_circle</span>
                             </div>
@@ -73,108 +84,116 @@
                 </section>
 
                 {{-- card-delivery-status section --}}
-                @php
-                    $timeSlots = [
-                        ['key' => 'morning', 'label' => 'Morning', 'icon' => 'partly_cloudy_day'],
-                        ['key' => 'afternoon', 'label' => 'Afternoon', 'icon' => 'wb_sunny'],
-                        ['key' => 'evening', 'label' => 'Evening', 'icon' => 'nights_stay'],
-                    ];
-                    $statuses = [
-                        ['key' => 'preparing', 'icon' => 'restaurant'],
-                        ['key' => 'delivering', 'icon' => 'local_shipping'],
-                        ['key' => 'arrived', 'icon' => 'check_circle'],
-                    ];
-                    $activeStatus = 1; // Example: up to delivering
-                @endphp
 
                 <section class="card-delivery-status mt-4">
                     <div class="cds-status-flex">
-                        {{-- LEFT: Delivery Address --}}
+                        {{-- LEFT: Delivery Address (unchanged) --}}
                         <div class="cds-status-left-container flex-grow-1 pe-xl-5 mb-3 mb-lg-0">
                             <div class="cds-address-title">Delivery Address</div>
                             <div class="cds-address-recipient">
-                                <h5 class="recipient-name">William Vlr</h5>
-                                <p class="recipient-phone">+62 819876678987</p>
-                                <p class="recipient-address">Addressnya bang</p>
+                                <h5 class="recipient-name">{{ $order->recipient_name }}</h5>
+                                <p class="recipient-phone">{{ $order->recipient_phone }}</p>
+                                <p class="recipient-address">
+                                    {{ $order->jalan . ', ' . $order->kelurahan . ', ' . $order->kecamatan . ', ' . $order->kabupaten . ', ' . $order->provinsi . ', ' . $order->kode_pos }}
+                                </p>
+                                <p class="recipient-address">
+                                    Notes: {{ $order->notes }}
+                                </p>
                             </div>
                         </div>
                         {{-- RIGHT: Day Filter, Date, Carousel/Slider --}}
                         <div class="cds-status-right-container flex-grow-2">
-                            <div class="cds-delivery-days d-flex justify-content-center mb-3">
-                                @foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as $i => $day)
-                                    <button class="cds-day-circle{{ $i === 0 ? ' active' : '' }}">
-                                        {{ $day }}
-                                    </button>
-                                @endforeach
-                            </div>
-                            <div class="text-center mb-4">
-                                <h4 class="cds-delivery-date">Monday, 10 June 2025</h4>
-                            </div>
                             {{-- MOBILE: Carousel with indicators --}}
-                            <div class="cds-delivery-carousel d-block d-md-none">
+                            <div class="cds-delivery-carousel d-block d-lg-none">
                                 <div id="cdsCarousel" class="carousel slide">
                                     <div class="carousel-indicators cds-carousel-indicators">
-                                        @foreach ($timeSlots as $idx => $slot)
-                                            <button type="button" data-bs-target="#cdsCarousel"
-                                                data-bs-slide-to="{{ $idx }}"
-                                                class="cds-carousel-indicator-btn {{ $idx === 0 ? 'active' : '' }}"
-                                                aria-current="{{ $idx === 0 ? 'true' : 'false' }}"
-                                                aria-label="{{ $slot['label'] }}">
-                                                <span class="material-symbols-outlined">{{ $slot['icon'] }}</span>
-                                            </button>
+                                        @foreach ($slots as $slotKey => $slot)
+                                            @if (!empty($statusesBySlot[$slot['key']]))
+                                                <button type="button" data-bs-target="#cdsCarousel"
+                                                    data-bs-slide-to="{{ $loop->index }}"
+                                                    class="cds-carousel-indicator-btn {{ $loop->first ? 'active' : '' }}"
+                                                    aria-current="{{ $loop->first ? 'true' : 'false' }}"
+                                                    aria-label="{{ $slot['label'] }}">
+                                                    <span class="material-symbols-outlined">{{ $slot['icon'] }}</span>
+                                                </button>
+                                            @endif
                                         @endforeach
                                     </div>
                                     <div class="carousel-inner">
-                                        @foreach ($timeSlots as $idx => $slot)
-                                            <div class="carousel-item {{ $idx === 0 ? 'active' : '' }}">
-                                                <div class="cds-delivery-slot-card mx-auto">
-                                                    <div class="cds-slot-title text-center mb-2">{{ $slot['label'] }}</div>
-                                                    <div class="cds-slot-status-list">
-                                                        @foreach ($statuses as $sIdx => $status)
-                                                            <div
-                                                                class="cds-slot-status-row{{ $sIdx <= $activeStatus ? ' active' : '' }}">
+                                        @php $slotIdx = 0; @endphp
+                                        @foreach ($slots as $slotKey => $slot)
+                                            @if (!empty($statusesBySlot[$slot['key']]))
+                                                <div class="carousel-item {{ $slotIdx === 0 ? 'active' : '' }}">
+                                                    <div class="cds-delivery-slot-card mx-auto">
+                                                        <div class="cds-slot-title text-center mb-2">{{ $slot['label'] }}
+                                                        </div>
+                                                        <div class="cds-slot-status-list">
+                                                            @foreach ($statusesBySlot[$slot['key']] as $date => $status)
                                                                 <div
-                                                                    class="cds-circle-icon d-flex align-items-center justify-content-center">
-                                                                    <span
-                                                                        class="material-symbols-outlined status-icon-sm">{{ $status['icon'] }}</span>
+                                                                    class="cds-slot-status-row {{ $status->status->value ?? $status->status }}">
+                                                                    <div
+                                                                        class="cds-circle-icon d-flex align-items-center justify-content-center">
+                                                                        {{-- Choose icon based on status --}}
+                                                                        <span
+                                                                            class="material-symbols-outlined status-icon-sm">
+                                                                            @if ($status->status->value ?? $status->status === 'preparing')
+                                                                                restaurant
+                                                                            @elseif ($status->status->value ?? $status->status === 'delivering')
+                                                                                local_shipping
+                                                                            @elseif ($status->status->value ?? $status->status === 'arrived')
+                                                                                check_circle
+                                                                            @endif
+                                                                        </span>
+                                                                    </div>
+                                                                    <div class="cds-status-label">
+                                                                        {{ ucfirst($status->status->value ?? $status->status) }}
+                                                                        <span
+                                                                            class="ms-2 small text-muted">{{ $date }}</span>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="cds-status-label">{{ ucfirst($status['key']) }}
-                                                                </div>
-                                                                @if ($sIdx < 2)
-                                                                    <div class="cds-status-vline"></div>
-                                                                @endif
-                                                            </div>
-                                                        @endforeach
+                                                            @endforeach
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                                @php $slotIdx++; @endphp
+                                            @endif
                                         @endforeach
                                     </div>
                                 </div>
                             </div>
                             {{-- DESKTOP: Row of cards --}}
-                            <div class="cds-delivery-slider-wrapper d-none d-md-block">
+                            <div class="cds-delivery-slider-wrapper d-none d-lg-block">
                                 <div class="cds-delivery-slider d-flex justify-content-center align-items-end">
-                                    @foreach ($timeSlots as $slot)
-                                        <div class="cds-delivery-slot-card {{ $slot === 0 ? 'active' : '' }}">
-                                            <div class="cds-slot-title text-center mb-2">{{ $slot['label'] }}</div>
-                                            <div class="cds-slot-status-list">
-                                                @foreach ($statuses as $sIdx => $status)
-                                                    <div
-                                                        class="cds-slot-status-row {{ $sIdx <= $activeStatus ? ' active' : '' }}">
+                                    @foreach ($slots as $slotKey => $slot)
+                                        @if (!empty($statusesBySlot[$slot['key']]))
+                                            <div class="cds-delivery-slot-card">
+                                                <div class="cds-slot-title text-center mb-2">{{ $slot['label'] }}</div>
+                                                <div class="cds-slot-status-list">
+                                                    @foreach ($statusesBySlot[$slot['key']] as $date => $status)
                                                         <div
-                                                            class="cds-circle-icon d-flex align-items-center justify-content-center">
-                                                            <span
-                                                                class="material-symbols-outlined status-icon-sm">{{ $status['icon'] }}</span>
+                                                            class="cds-slot-status-row {{ $status->status->value }}">
+                                                            <div
+                                                                class="cds-circle-icon d-flex align-items-center justify-content-center">
+                                                                <span class="material-symbols-outlined status-icon-sm">
+                                                                    @if ($status->status->value === "Prepared")
+                                                                        restaurant
+                                                                    @elseif ($status->status->value === "Delivered")
+                                                                        local_shipping
+                                                                    @elseif ($status->status->value === "Arrived")
+                                                                        check_circle
+                                                                    @endif
+                                                                </span>
+                                                            </div>
+                                                            <div class="cds-status-label">
+                                                                {{ ucfirst($status->status->value) }}
+                                                                <span
+                                                                    class="ms-2 small text-muted">{{ $date }}</span>
+                                                            </div>
                                                         </div>
-                                                        <div class="cds-status-label">{{ ucfirst($status['key']) }}</div>
-                                                        @if ($sIdx < 2)
-                                                            <div class="cds-status-vline"></div>
-                                                        @endif
-                                                    </div>
-                                                @endforeach
+                                                    @endforeach
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>
@@ -190,9 +209,9 @@
                             <div class="text-wrapper vendor-name-wrapper">
                                 <h5 class="">{{ $order->vendor->name }}</h5>
                             </div>
-                            <button onclick="" class="text-wrapper btn-view">
+                            <a href="{{route('catering-detail', $order->vendorId)}}" class="text-wrapper btn-view">
                                 <p>View Catering</p>
-                            </button>
+                            </a>
                         </div>
                         <div class="right-container">
                             <div class="text-wrapper order-date">
@@ -204,7 +223,7 @@
                     </div>
 
                     {{-- Redirect ke catering pagenya langsung scroll ke packagenya --}}
-                    <a href="#" class="card-content-wrapper text-decoration-none">
+                    <a href="{{route('catering-detail', $order->vendorId)}}" class="card-content-wrapper text-decoration-none">
                         @foreach ($order->orderItems as $item)
                             <div class="card-content">
                                 <div class="image-wrapper">
@@ -247,7 +266,7 @@
                                 </div>
                                 <div class="total-row d-flex justify-content-between align-items-center">
                                     <span class="total-label">Payment method</span>
-                                    <span class="total-value">{{ $order->paymentMethod->name ?? '-' }}</span>
+                                    <span class="total-value">{{ $paymentMethod->name }}</span>
                                 </div>
                             </div>
                         </div>

@@ -19,6 +19,16 @@ class Order extends Model
         'startDate', // Matches your migration
         'endDate', // Matches your migration
         'isCancelled', // Matches your migration
+        'provinsi', // Added based on your migration
+        'kota',
+        'kabupaten', // Added based on your migration
+        'kecamatan',
+        'kelurahan',
+        'kode_pos',
+        'jalan',
+        'recipient_name', // Matches your migration
+        'recipient_phone', // Matches your migration
+        'notes',
     ];
 
     protected $casts = [
@@ -40,7 +50,7 @@ class Order extends Model
         return $this->belongsTo(Vendor::class, 'vendorId', 'vendorId');
     }
 
-    public function payments()
+    public function payment()
     {
         return $this->hasOne(Payment::class, 'orderId', 'orderId');
     }

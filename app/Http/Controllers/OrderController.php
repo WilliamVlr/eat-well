@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\PaymentMethod;
 use Carbon\Carbon;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ class OrderController extends Controller
         // ->get();
 
         // For now, use userId = 8
-        $userId = 8; // Replace with Auth::id() when ready
+        $userId = 5; // Replace with Auth::id() when ready
         $status = $request->query('status', 'all');
         $query = $request->query('query');
         $now = Carbon::now();
@@ -81,9 +82,28 @@ class OrderController extends Controller
      */
     public function show(string $id)
     {
-        $order = Order::findOrFail($id);
+        $order = Order::findOrFail($id)
+            ->load(['payment', 'deliveryStatuses', 'orderItems.package', 'vendor']);
 
-        return view('customer.orderDetail', compact('order'));
+        $paymentMethod = $order->payment ? PaymentMethod::find($order->payment->methodId) : null;
+
+        // Define slots
+        $slots = [
+            ['key' => 'morning', 'label' => 'Morning', 'icon' => 'partly_cloudy_day'],
+            ['key' => 'afternoon', 'label' => 'Afternoon', 'icon' => 'wb_sunny'],
+            ['key' => 'evening', 'label' => 'Evening', 'icon' => 'nights_stay'],
+        ];
+
+        // Group delivery statuses by slot and date
+        $statusesBySlot = [];
+        foreach ($order->deliveryStatuses as $status) {
+            $slotKey = strtolower($status->slot->value ?? $status->slot);
+            $dateKey = Carbon::parse($status->deliveryDate)->format('l, d M Y');
+            $statusesBySlot[$slotKey][$dateKey] = $status;
+        }
+        // dd($statusesBySlot);
+
+        return view('customer.orderDetail', compact('order', 'paymentMethod', 'slots', 'statusesBySlot'));
     }
 
     /**

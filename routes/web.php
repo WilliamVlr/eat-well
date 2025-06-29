@@ -61,9 +61,9 @@ Route::get('/catering-detail/rating-and-review', function(){
 })->name('rate-and-review');
 
 // Order History
-Route::get('/order-history', [OrderController::class, 'index'])->name('order-history');
+Route::get('/orders', [OrderController::class, 'index'])->name('order-history');
 
-Route::get('/order-detail/{id}', [OrderController::class, 'show'])->name('order-detail');
+Route::get('/orders/{id}', [OrderController::class, 'show'])->name('order-detail');
 // Route::get('/order-detail', [OrderController::class, 'show'])->name('order-detail');
 
 // Order Payment
