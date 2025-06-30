@@ -50,8 +50,8 @@ Route::get('/caterings', [VendorController::class, 'search'])->name('search');
 Route::get('/catering/{vendor}', [VendorController::class, 'show'])->name('catering-detail');
 
 // Favorite
-Route::post('favorite/{vendor}', [FavoriteController::class, 'favorite'])->name('favorite');
-Route::post('unfavorite/{vendor}', [FavoriteController::class, 'unfavorite'])->name('unfavorite');
+Route::post('favorite/{vendorId}', [FavoriteController::class, 'favorite'])->name('favorite');
+Route::post('unfavorite/{vendorId}', [FavoriteController::class, 'unfavorite'])->name('unfavorite');
 
 // Catering Details
 // Route::get('/catering-detail', function () {

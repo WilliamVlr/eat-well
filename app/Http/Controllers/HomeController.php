@@ -37,7 +37,7 @@ class HomeController extends Controller
         if ($countNear < 6) {
             // Get extra vendors not in same provinsi
             $extraVendors = Vendor::where('provinsi', '!=', $address->provinsi)
-                ->inRandomOrder()
+                ->orderBy('created_at')
                 ->take(6 - $countNear)
                 ->get();
 
@@ -47,6 +47,10 @@ class HomeController extends Controller
             $vendors = $nearVendors;
         }
 
-        return view('customer.home', compact('vendors'));
+        // Get favorited vendors from this user
+        $favVendors = $user->favoriteVendors()->limit(8)->get();
+        // dd($favVendors);
+
+        return view('customer.home', compact('vendors', 'favVendors'));
     }
 }

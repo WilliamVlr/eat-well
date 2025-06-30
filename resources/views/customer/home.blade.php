@@ -6,8 +6,9 @@
     @vite(['resources/js/app.js', 'resources/sass/app.scss'])
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-        <link rel="stylesheet" href="{{ asset('css/cardVendor.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/customer/home.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/cardVendor.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/customer/home.css') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 
 @section('content')
@@ -148,7 +149,7 @@
             <div class="row title-1">Popular Catering Near You</div>
             <div class="row">
                 @foreach ($vendors as $vendor)
-                    <div class="col-md-6 col-lg-4 p-2">
+                    <div class="col-md-6 col-xl-4 p-2">
                         <x-card-vendor :vendor="$vendor"></x-card-vendor>
                     </div>
                 @endforeach
@@ -164,49 +165,11 @@
             <div class="carousel-slider-wrap carousel-style-1 mt-10 align-self-center">
                 {{-- <button class="arrow-btn button-slider-shadow" id="prev">&lt;</button> --}}
                 <ul class="carousel-product-list">
-                    @for ($i = 0; $i < 3; $i++)
+                    @foreach($favVendors as $vendor)
                         <li>
-                            <a href="{{ route('catering-detail', $vendors[$i]) }}" class="catering-card-link">
-                                <div class="catering-card">
-                                    <div class="catering-card-img-wrapper">
-                                        {{-- <img src="{{ $vendors[$i]->logo ? asset($vendors[$i]->logo) : asset('asset/customer/home/Iklan 2.jpg') }}"
-                                                alt="Catering Picture" class="catering-card-img"> --}}
-                                        <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}" alt="Catering Picture"
-                                            class="catering-card-img">
-                                    </div>
-                                    <div class="catering-card-body d-flex flex-column flex-grow-1">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span
-                                                class="catering-city small text-muted">{{ $vendors[$i]->kota ?? '-' }}</span>
-                                            <button class="btn btn-light btn-fav p-1" title="Favorite" type="button"
-                                                onclick="event.stopPropagation();">
-                                                <span class="material-symbols-outlined icon-sm">favorite</span>
-                                            </button>
-                                        </div>
-                                        <div class="card-details-wrapper">
-                                            <span class="catering-name">{{ $vendors[$i]->name }}</span>
-                                        </div>
-                                        <div class="catering-slots mb-1">
-                                            @if ($vendors[$i]->breakfast_delivery ?? false)
-                                                <span class="badge badge-breakfast">Breakfast</span>
-                                            @endif
-                                            @if ($vendors[$i]->lunch_delivery ?? false)
-                                                <span class="badge badge-lunch">Lunch</span>
-                                            @endif
-                                            @if ($vendors[$i]->dinner_delivery ?? false)
-                                                <span class="badge badge-dinner">Dinner</span>
-                                            @endif
-                                        </div>
-                                        <div class="catering-rating d-flex align-items-center">
-                                            <span class="material-symbols-outlined star-icon me-1">star</span>
-                                            <span class="fw-semibold">{{ $vendors[$i]->rating ?? '-' }}</span>
-                                            {{-- Add review count if available --}}
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
+                            <x-card-vendor :vendor="$vendor"></x-card-vendor>
                         </li>
-                    @endfor
+                    @endforeach
                 </ul>
                 {{-- <button class="arrow-btn button-slider-shadow" id="next">&gt;</button> --}}
             </div>
@@ -214,6 +177,6 @@
     </main>
 @endsection
 
-@section('scripts')
+@section('script')
     <script src="{{ asset('js/customer/favoriteCatering.js') }}"></script>
 @endsection

@@ -9,17 +9,22 @@ use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
 {
-    public function favorite(Vendor $vendor)
+    public function favorite(String $id)
     {
-        $user = Auth::check() ? Auth::user() : User::where('id', '=', '5')->inRandomOrder()->first();
-        $user->favoriteVendors()->attach($vendor->id);
-        return redirect()->back();
+        // dd("DUAR");
+        $user = Auth::check() ? Auth::user() : User::where('userId', '=', '5')->inRandomOrder()->first();
+        // Ensure relation exists and not duplicated
+        if (!$user->favoriteVendors()->where('vendors.vendorId', '=', $id)->exists()) {
+            $user->favoriteVendors()->attach($id);
+        }
+
+        return response()->json(['favorited' => true]);
     }
 
-    public function unfavorite(Vendor $vendor)
+    public function unfavorite(String $id)
     {
-        $user = Auth::check() ? Auth::user() : User::where('id', '=', '5')->inRandomOrder()->first();
-        $user->favoriteVendors()->detach($vendor->id);
-        return redirect()->back();
+        $user = Auth::check() ? Auth::user() : User::where('userId', '=', '5')->inRandomOrder()->first();
+        $user->favoriteVendors()->detach($id);
+        return response()->json(['favorited' => false]);
     }
 }

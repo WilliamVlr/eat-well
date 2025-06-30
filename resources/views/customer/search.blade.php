@@ -7,8 +7,9 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/customer/search.css') }}">
     <link rel="stylesheet" href="{{ asset('css/cardVendor.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/customer/search.css') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 
 @section('content')
@@ -284,4 +285,5 @@
 
 @section('scripts')
     <script src="{{ asset('js/customer/searchCatering.js') }}"></script>
+    <script src="{{ asset('js/customer/favoriteCatering.js') }}"></script>
 @endsection

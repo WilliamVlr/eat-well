@@ -62,14 +62,19 @@ class Vendor extends Model
 
     public function favoriteVendors()
     {
-        return $this->hasMany(FavoriteVendor::class, 'vendorId', 'vendorId');
+        return $this->belongsToMany(User::class, 'favorite_vendors', 'vendorId', 'userId')->withTimestamps();
     }
 
     public function favorited()
     {
-        return (bool) FavoriteVendor::where('user_id', Auth::id())
-                            ->where('post_id', $this->id)
-                            ->first();
+        return (bool) FavoriteVendor::where('userId', Auth::id())
+            ->where('vendorId', $this->id)
+            ->first();
+    }
+
+    public function isFavoritedBy($userId)
+    {
+        return $this->favoriteVendors()->where('userId', $userId)->exists();
     }
 
     public function orders()

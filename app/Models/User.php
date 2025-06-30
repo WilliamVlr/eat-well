@@ -79,7 +79,7 @@ class User extends Authenticatable
 
     public function favoriteVendors()
     {
-        return $this->belongsToMany(FavoriteVendor::class, 'userId', 'userId')->withTimestamps();
+        return $this->belongsToMany(Vendor::class, 'favorite_vendors','userId', 'vendorId')->withTimestamps();
     }
 
     // Renamed from cuisineReviews to match ERD if any, but ERD shows 'cuisine_reviews' having 'cuisineId' and 'userId'

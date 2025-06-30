@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\PaymentMethod;
 use Carbon\Carbon;
-use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -24,8 +24,8 @@ class OrderController extends Controller
         // ->orderBy('created_at','desc')
         // ->get();
 
-        // For now, use userId = 8
-        $userId = 5; // Replace with Auth::id() when ready
+        $userId = Auth::check() ? Auth::user()->userId : 5;
+
         $status = $request->query('status', 'all');
         $query = $request->query('query');
         $now = Carbon::now();
