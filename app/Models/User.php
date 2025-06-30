@@ -31,6 +31,10 @@ class User extends Authenticatable
         'remember_token',
         'dateOfBirth', // Matches your migration
         'genderMale', // Matches your migration
+        'provider_id',
+        'provider_name',
+        'provider_token',
+        'provider_refresh_token'
     ];
 
     /**
