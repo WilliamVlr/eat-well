@@ -45,8 +45,9 @@ Route::get('/manage-profile', function () {
     return view('manageProfile');
 })->name('manage-profile');
 
-// Search
-Route::get('/search', [VendorController::class, 'search'])->name('search');
+// Caterings
+Route::get('/caterings', [VendorController::class, 'search'])->name('search');
+Route::get('/catering/{vendor}', [VendorController::class, 'show'])->name('catering-detail');
 
 // Favorite
 Route::post('favorite/{vendor}', [FavoriteController::class, 'favorite'])->name('favorite');
@@ -57,7 +58,7 @@ Route::post('unfavorite/{vendor}', [FavoriteController::class, 'unfavorite'])->n
 //     return view('cateringDetail');
 // })->name('catering-detail');
 
-Route::get('/catering-detail/{vendor}', [VendorController::class, 'show'])->name('catering-detail');
+
 Route::post('/update-order-summary', [VendorController::class, 'updateOrderSummary']);
 
 Route::get('/catering-detail/rating-and-review', function(){
