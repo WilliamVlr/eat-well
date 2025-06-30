@@ -9,53 +9,53 @@
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Lexend', sans-serif;
-    background-color: var(--bg-primary);
-    color: var(--bg-secondary);
+  margin: 0;
+  padding: 0;
+  font-family: 'Lexend', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--bg-secondary);
 }
 
 .lexend {
-    font-family: 'Lexend', sans-serif;
-    font-style: normal;
+  font-family: 'Lexend', sans-serif;
+  font-style: normal;
 }
 
-.font-100{
-    font-weight: 100;
+.font-100 {
+  font-weight: 100;
 }
 
-.font-300{
-    font-weight: 300;
+.font-300 {
+  font-weight: 300;
 }
 
-.font-400{
-    font-weight: 400;
+.font-400 {
+  font-weight: 400;
 }
 
-.font-500{
-    font-weight: 500;
+.font-500 {
+  font-weight: 500;
 }
 
-.font-600{
-    font-weight: 600;
+.font-600 {
+  font-weight: 600;
 }
 
-.font-700{
-    font-weight: 700;
+.font-700 {
+  font-weight: 700;
 }
 
 .dark-bg {
-    background-color: var(--bg-primary);
-    color: var(--bg-secondary);
+  background-color: var(--bg-primary);
+  color: var(--bg-secondary);
 }
 
 a {
-    text-decoration: none;
-    color: black;
+  text-decoration: none;
+  color: black;
 }
 
-.row{
+.row {
   margin-left: 0;
   margin-right: 0;
 }
@@ -71,14 +71,14 @@ a {
   color: black;
   font-size: 24px;
   font-variation-settings: 'FILL' 0,
-  'wght' 500, 'GRAD' 0;
+    'wght' 500, 'GRAD' 0;
 }
 
 .favorite-icon.active {
   color: var(--bg-contrast);
   font-size: 24px;
   font-variation-settings: 'FILL' 1,
-  'wght' 500, 'GRAD' 0;
+    'wght' 500, 'GRAD' 0;
 }
 
 .star-icon {
@@ -90,7 +90,7 @@ a {
 /* --------------
     CAROUSEL
 ---------------*/
-.carousel-inner{
+.carousel-inner {
   width: 100%;
   height: 50vh;
   border-radius: 10px;
@@ -108,7 +108,7 @@ a {
   border-bottom: 0;
 }
 
-.carousel-item > img {
+.carousel-item>img {
   width: 100%;
   height: 100%;
 }
@@ -121,80 +121,93 @@ a {
   background-color: black;
   opacity: 0.8;
 
-  &.btn-next{
+  &.btn-next {
     padding: 10px 6px 8px 10px;
   }
 
-  &.btn-prev{
+  &.btn-prev {
     padding: 10px 10px 8px 6px;
   }
 }
 
-.carousel-control-prev-icon, .carousel-control-next-icon {
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
   width: 100%;
   height: 100%;
 }
 
 /* Mobile responsive for Carousel */
 @media screen and (max-width: 440px) {
-  .carousel-inner{
+  .carousel-inner {
     height: 20vh;
   }
+
   .carousel-indicators [data-bs-target] {
-  width: 8px;
-  height: 8px;
+    width: 8px;
+    height: 8px;
   }
+
   .carousel-btn-container {
-  width: 30px;
-  height: 30px;
+    width: 30px;
+    height: 30px;
   }
 }
 
-.subscription-card{
+.subscription-card {
   background-color: var(--bg-secondary);
   border-radius: 10px;
   color: black;
+
   .title {
     font-size: 18px;
   }
-  .row > * {
+
+  .row>* {
     padding: 0px;
   }
-  .detail{
+
+  .detail {
     font-size: 14px;
     line-height: 28px;
   }
-  .subscription-detail{
-    .sub-title{
+
+  .subscription-detail {
+    .sub-title {
       font-size: 18px;
       font-weight: 400;
       opacity: 0.8;
       line-height: 20px;
     }
+
     .content {
       font-size: 20px;
       line-height: auto;
     }
   }
+
   .catering-name {
     font-size: 24px;
   }
-  .order-details{
+
+  .order-details {
     column-gap: 20px;
     row-gap: 10px;
-    .time-slot{
+
+    .time-slot {
       border: black 1.5px solid;
       border-radius: 8px;
       min-height: 110px;
+      width: 100%;
+      max-width: 270px;
 
       &.active {
         border-color: var(--bg-contrast);
       }
 
-      .time-slot-type{
+      .time-slot-type {
         font-size: 20px;
       }
-      
+
       .delivery-status {
         background-color: var(--bg-contrast);
         border-radius: 5px;
@@ -204,11 +217,13 @@ a {
         padding: 2px 8px 2px 8px;
       }
     }
+
     .package {
       font-size: 16px;
       font-weight: 350;
       line-height: 18px;
-      .package-name{
+
+      .package-name {
         display: -webkit-box;
         -webkit-line-clamp: 2;
         line-clamp: 2;
@@ -220,10 +235,22 @@ a {
 }
 
 @media screen and (max-width: 800px) {
-  .subscription-card{
-    .order-details{
+  .subscription-card {
+    .order-details {
       .time-slot {
         min-height: 90px;
+      }
+    }
+  }
+
+  .subscription-card {
+    .subscription-detail {
+      .sub-title {
+        font-size: 14px;
+      }
+
+      .content {
+        font-size: 16px;
       }
     }
   }
@@ -232,30 +259,37 @@ a {
 /* Mobile responsive for Subscription card */
 @media screen and (max-width: 440px) {
   .subscription-card {
-    .subscription-detail{
-      .sub-title{
+    .subscription-detail {
+      .sub-title {
         font-size: 12px;
       }
+
       .content {
         font-size: 14px;
         line-height: 16px;
       }
     }
+
     .catering-name {
       font-size: 20px;
     }
-    .order-details{
+
+    .order-details {
       row-gap: 8px;
-      .time-slot{
+
+      .time-slot {
         min-height: 40px;
-        .time-slot-type{
+        max-width: 400px;
+
+        .time-slot-type {
           font-size: 16px;
         }
-        
+
         .delivery-status {
           font-size: 11px;
         }
       }
+
       .package {
         font-size: 14px;
       }
@@ -263,22 +297,24 @@ a {
   }
 }
 
-@media (min-width: 441px){
-  .subscription-card{
-    .order-details{
+@media (min-width: 441px) {
+  .subscription-card {
+    .order-details {
       .collapse:not(.show) {
-        display: block !important; /* force tampil jika bukan collapsed */
+        display: block !important;
+        /* force tampil jika bukan collapsed */
       }
 
       [data-bs-toggle="collapse"] {
-        pointer-events: none; /* biar tidak bisa diklik */
+        pointer-events: none;
+        /* biar tidak bisa diklik */
         cursor: default;
       }
     }
   }
 }
 
-.detail-link{
+.detail-link {
   text-decoration: none;
   color: black;
 }
@@ -297,179 +333,9 @@ a {
   gap: 15px;
 }
 
-.card-medium {
-  background-color: var(--bg-secondary);
-  border-radius: 10px;
-  box-shadow: var(--box-shadow-light);
-  padding: 10px;
-  color: black;
-  transition: 0.4s ease-in;
-
-  .image-container{
-    width: 100%;
-    img {
-      width: 100%;
-      height: 100%;
-      border-radius: 10px;
-    }
-  }
-
-  .card-info > .row > * {
-    padding: 0px;
-  }
-
-  .rating-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 2px;
-    
-    .logo-container{
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      height: fit-content;
-    }
-
-    .star-icon {
-      font-size: 24px;
-      color: var(--bg-contrast);
-    }
-  }
-
-  .card-info {
-    .detail {
-      font-size: 14px;
-
-      * {
-        width: fit-content;
-      }
-
-      .kota {
-        background-color: var(--bg-contrast);
-        border-radius: 5px;
-        padding: 2px 10px;
-        color: white;
-        font-weight: 300;
-      }
-    }
-    .nama-catering {
-      font-size: 24px;
-      font-weight: 400;
-      line-height: 28px;
-    }
-
-    .time-slot-list {
-      font-size: 18px;
-      font-weight: 300;
-    }
-
-    .rate-sold-container {
-      gap: 8px;
-      font-size: 18px;
-      line-height: 24px;
-
-      * {
-        width: fit-content;
-      }
-
-      .circle {
-        width: 6px;
-        height: 6px;
-        margin-top: 1px;
-        border-radius: 50%;
-        background-color: grey;
-        opacity: 0.8;
-      }
-    }
-  }
-}
-
-.card-medium:hover{
-  box-shadow: var(--box-shadow-light-hover);
-}
-
-@media screen and (max-width: 1400px){
-  .card-medium {
-    .card-info {
-      .nama-catering {
-        font-size: 22px;
-      }
-      .detail {
-        font-size: 14px;
-      }
-      .time-slot-list {
-        font-size: 16px;
-      }
-      .rate-sold-container {
-        font-size: 16px;
-        line-height: 20px;
-      }
-    }
-  }
-}
-
-@media screen and (max-width: 1200px) {
-  .card-medium {
-    .card-info {
-      .kota {
-        font-size: 12px;
-      }
-      .nama-catering {
-        font-size: 20px;
-      }
-      .detail {
-        font-size: 12px;
-      }
-      .time-slot-list {
-        font-size: 14px;
-      }
-      .rate-sold-container {
-        font-size: 14px;
-        line-height: 18px;
-      }
-    }
-  }
-}
-
 @media screen and (max-width: 440px) {
-  .title-1{
+  .title-1 {
     font-size: 20px;
-  }
-  .card-medium {
-    box-shadow: none;
-    .card-info {
-      .kota {
-        font-size: 10px;
-        padding: 2px 5px !important;
-      }
-      .nama-catering {
-        font-size: 16px;
-        line-height: 20px;
-      }
-      .detail {
-        font-size: 12px;
-      }
-      .time-slot-list {
-        font-size: 12px;
-      }
-      .rate-sold-container {
-        font-size: 12px;
-        line-height: 16px;
-        gap: 5px;
-        .circle {
-          width: 4.5px;
-          height: 4.5px;
-          margin-left: 1px;
-          margin-top: 0;
-        }
-      }
-      .rating-container {
-        .star-icon {
-          font-size: 16px;
-        }
-      }
-    }
   }
 }
 
@@ -480,10 +346,12 @@ a {
   h3 {
     margin-bottom: 0;
   }
-  .detail-link{
+
+  .detail-link {
     color: var(--bg-secondary);
   }
 }
+
 .catering-list {
   width: fit-content;
 }
@@ -517,6 +385,7 @@ a {
 .carousel-product-list::-webkit-scrollbar {
   display: none;
 }
+
 .carousel-slider-wrap .carousel-product-list.dragging {
   scroll-snap-type: none;
   scroll-behavior: auto;
@@ -539,23 +408,29 @@ a {
   top: 50%;
   transform: translateY(-50%);
 }
+
 .carousel-slider-wrap .arrow-btn:first-child {
   left: -22px;
 }
+
 .carousel-slider-wrap .arrow-btn:last-child {
   right: -10px;
 }
+
 .carousel-slider-wrap:hover .arrow-btn {
   opacity: 1;
   visibility: visible;
 }
+
 .carousel-slider-wrap .carousel-product-list.dragging .product-card {
   cursor: grab;
   user-select: none;
 }
+
 .carousel-slider-wrap .carousel-product-list .product-card {
   scroll-snap-align: start;
 }
+
 .carousel-slider-wrap .carousel-product-list li:last-child {
   padding-right: 12px;
 }
@@ -563,11 +438,8 @@ a {
 .popular-catering-container .catering-card {
   flex-direction: row;
   width: 100%;
+
   .catering-card-img-wrapper {
     max-width: 120px;
   }
 }
-
-/* .catering-card {
-  width: 300px;
-} */
