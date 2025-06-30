@@ -3,6 +3,7 @@
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\AuthManager;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -50,7 +51,18 @@ Route::get('/manage-profile', function () {
 // })->name('catering-detail');
 
 Route::get('/catering-detail/{vendor}', [VendorController::class, 'show'])->name('catering-detail');
-Route::post('/update-order-summary', [VendorController::class, 'updateOrderSummary']);
+Route::post('/update-order-summary', [CartController::class, 'updateOrderSummary'])->name('update.order.summary');
+Route::get('/load-cart', [CartController::class, 'loadCart'])->name('load.cart');
+// Route::post('/update-order-summary', [VendorController::class, 'updateOrderSummary']);
+
+// For authenticated users
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('/catering-detail/{vendor}', [VendorController::class, 'show'])->name('catering-detail');
+//     Route::post('/update-order-summary', [VendorController::class, 'updateOrderSummary'])->name('update.order.summary');
+//     Route::get('/load-cart', [VendorController::class, 'loadCart'])->name('load.cart');
+// });
+
+// Assuming you have other routes for showing catering pages etc.
 
 Route::get('/catering-detail/rating-and-review', function(){
     return view('ratingAndReview');
