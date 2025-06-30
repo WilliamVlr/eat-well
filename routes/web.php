@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AuthManager;
@@ -44,6 +45,9 @@ Route::get('/manage-profile', function () {
     return view('manageProfile');
 })->name('manage-profile');
 
+// Search
+Route::get('/search', [VendorController::class, 'search'])->name('search');
+
 // Catering Details
 // Route::get('/catering-detail', function () {
 //     return view('cateringDetail');
@@ -55,6 +59,12 @@ Route::post('/update-order-summary', [VendorController::class, 'updateOrderSumma
 Route::get('/catering-detail/rating-and-review', function(){
     return view('ratingAndReview');
 })->name('rate-and-review');
+
+// Order History
+Route::get('/orders', [OrderController::class, 'index'])->name('order-history');
+
+Route::get('/orders/{id}', [OrderController::class, 'show'])->name('order-detail');
+// Route::get('/order-detail', [OrderController::class, 'show'])->name('order-detail');
 
 // Order Payment
 Route::get('/payment', function () {

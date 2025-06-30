@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Address;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -28,6 +29,10 @@ class AddressFactory extends Factory
             'kelurahan' => fake()->streetName(),
             'kode_pos' => fake()->postcode(),
             'jalan' => fake()->streetAddress(),
+            'recipient_name' => fake()->name(),
+            'recipient_phone' => fake()->phoneNumber(),
+            'is_default' => fake()->boolean(),
+            'userId' => User::factory(),
         ];
     }
 }

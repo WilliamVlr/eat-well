@@ -23,7 +23,6 @@ body {
 
 /* LOCATION */
 .location-search {
-  padding-top: 100px;
   background-color: var(--background-color);
   z-index: 2 !important;
 }
@@ -162,10 +161,10 @@ body {
 
 /* REFINE RESULT SECTION */
 .refine-result {
-  margin-top: 60px;
+  margin-top: 20px;
 }
 
-@media screen and (max-width: 580px) {
+/* @media screen and (max-width: 580px) {
   .refine-result {
     margin-top: 105px;
   }
@@ -175,7 +174,7 @@ body {
   .refine-result {
     margin-top: 75px;
   }
-}
+} */
 
 /* FILTER */
 /* .filter-wrapper{

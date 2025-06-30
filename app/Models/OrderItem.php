@@ -5,10 +5,11 @@ namespace App\Models;
 use App\Enums\TimeSlot;
 use Illuminate\Database\Eloquent\Factories\HasFactory; // Opsional tapi sangat direkomendasikan
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class OrderItem extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'order_items';
     protected $primaryKey = 'orderItemId'; // Matches your migration

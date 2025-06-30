@@ -18,6 +18,7 @@ return new class extends Migration
 
             $table->primary(['packageId', 'cuisineId']);
 
+            $table->softDeletes();
             $table->foreign('packageId')->references('packageId')->on('packages')->onDelete('cascade');
             $table->foreign('cuisineId')->references('cuisineId')->on('cuisine_types')->onDelete('cascade');
         });

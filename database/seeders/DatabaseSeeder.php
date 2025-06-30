@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\CuisineType;
 use App\Models\Package;
 use App\Models\PackageCategory;
+use App\Models\PaymentMethod;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -28,8 +29,10 @@ class DatabaseSeeder extends Seeder
             AddressSeeder::class,
             PackageCategorySeeder::class,
             CuisineTypeSeeder::class,
+            PaymentMethodSeeder::class,
             VendorSeeder::class,
             PackageSeeder::class,
+            OrderSeeder::class,
         ]);
 
     }
