@@ -156,48 +156,6 @@
 
                     {{-- Sort and Results Section --}}
                     <div class="col-lg-8 p-0">
-                        {{-- Sort Section --}}
-                        <div class="mb-2 sort-slider">
-                            <div class="d-flex align-items-center flex-wrap gap-2 ">
-                                <h4 class="mb-0 d-none d-lg-block pe-3">Sort</h4>
-                                <div class="custom-rating-radio">
-                                    <input class="form-check-input" type="radio" name="sort" id="sortClosest"
-                                        value="closest">
-                                    <label class="form-check-label border d-flex align-items-center justify-content-center"
-                                        for="sortClosest">
-                                        <span class="material-symbols-outlined me-1 mb-lg-1 mb-0">location_on</span>
-                                        Closest
-                                    </label>
-                                </div>
-                                <div class="custom-rating-radio">
-                                    <input class="form-check-input" type="radio" name="sort" id="sortCheapest"
-                                        value="cheapest">
-                                    <label class="form-check-label border d-flex align-items-center justify-content-center"
-                                        for="sortCheapest">
-                                        <span class="material-symbols-outlined me-1">attach_money</span>
-                                        Cheapest
-                                    </label>
-                                </div>
-                                <div class="custom-rating-radio">
-                                    <input class="form-check-input" type="radio" name="sort" id="sortLatest"
-                                        value="latest">
-                                    <label class="form-check-label border d-flex align-items-center justify-content-center"
-                                        for="sortLatest">
-                                        <span class="material-symbols-outlined me-1">schedule</span>
-                                        Latest
-                                    </label>
-                                </div>
-                                <div class="custom-rating-radio">
-                                    <input class="form-check-input" type="radio" name="sort" id="sortBestSeller"
-                                        value="best_seller">
-                                    <label class="form-check-label border d-flex align-items-center justify-content-center"
-                                        for="sortBestSeller">
-                                        <span class="material-symbols-outlined me-1">star</span>
-                                        Best Seller
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
                         {{-- Result Section --}}
                         <div class="catering-results d-flex flex-wrap gap-3">
                             @foreach ($vendors as $vendor)
