@@ -8,9 +8,9 @@
             <div class="text-wrapper vendor-name-wrapper">
                 <h5 class="">{{ $order->vendor->name }}</h5>
             </div>
-            <button onclick="" class="text-wrapper btn-view">
+            <a href="{{route('catering-detail', $order->vendor)}}" class="text-wrapper btn-view">
                 <p>View Catering</p>
-            </button>
+            </a>
         </div>
         <div class="right-container">
             <div class="text-wrapper order-date">
@@ -35,7 +35,7 @@
     </div>
 
 
-    <a href="#" class="card-content-wrapper text-decoration-none">
+    <a href="{{route('order-detail', $order)}}" class="card-content-wrapper text-decoration-none">
         @foreach ($order->orderItems as $item)
             <div class="card-content">
                 <div class="image-wrapper">
