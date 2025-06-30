@@ -26,8 +26,10 @@ class PackageFactory extends Factory
             'name' => fake()->words(rand(1, 3), true),
             // 'menuPDFPath' => fake()->filePath('public', 'pdfs', false),
             // 'imgPath' => fake()->filePath('public', 'images', false),
-            'menuPDFPath' => 'menus/' . fake()->slug() . '.pdf',
-            'imgPath' => 'images/' . fake()->slug() . '.jpg',
+            // 'menuPDFPath' => 'menus/' . fake()->slug() . '.pdf',
+            'menuPDFPath' => fake()->randomElement(['asset/catering-detail/pdf/vegetarian-package-menu.pdf', 'asset/catering-detail/pdf/meal_package_1.pdf', 'asset/catering-detail/pdf/meal_package_2.pdf', 'asset/catering-detail/pdf/meal_package_3.pdf']),
+            // 'imgPath' => 'images/' . fake()->slug() . '.jpg',
+            'imgPath' => fake()->randomElement(['asset/catering-detail/logo-packages.png', 'asset/catering-detail/meat logo.png', 'asset/catering-detail/other logo.png', 'asset/catering-detail/vegetarian logo.png']),
             'averageCalories' => fake()->randomFloat(2, 100, 1000), // Contoh: 150.00
             'breakfastPrice' => fake()->randomElement([fake()->randomFloat(2, 100000, 1000000), null]),
             'lunchPrice' => fake()->randomElement([fake()->randomFloat(2, 100000, 1000000), null]),

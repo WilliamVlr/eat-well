@@ -1,25 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+@extends('master')
+
+@section('title', 'Catering Detail')
+
+@section('css')
     <meta name="vendor-id" content="{{ $vendor->vendorId }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $vendor->name }}</title>
     {{-- CSS --}}
     <link rel="stylesheet" href="{{ asset('css/cateringDetail.css') }}">
     {{-- bootstrap --}}
     @vite(["resources/sass/app.scss", "resources/js/app.js"])
-    {{-- Lexend & Inter --}}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
-    {{-- Icon call, location, star --}}
-    {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=call,pin_drop,star" /> --}}
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@1" rel="stylesheet" />
-</head>
-<body>
+@endsection
+
+@section('content')
     <div class="profile-container">
         <div class="container daun-container">
             <img src="{{ asset('asset/catering-detail/daun1.png') }}" alt="Catering Image" class="daun1">
@@ -65,7 +58,7 @@
                         <div class="cokelat-lingkaran">
                             <div>
                                 {{-- <img src="{{ asset('asset/catering-detail/logo-aldenaire-catering.jpg') }}" alt="Catering Image" class="logo-catering"> --}}
-                                <img src="{{ asset($vendor->logo) }}" alt="Catering Image" class="logo-catering">
+                                <img src="{{ $vendor->logo }}" alt="Catering Image" class="logo-catering">
                             </div>
                         </div>
                     </div>
@@ -364,6 +357,8 @@
             <span class="item-count" style="display:none;"></span>
             <span class="price-total" style="display:none;"></span>
         </div>
+
+
     </section>
 
     <!-- Modal PDF Viewer -->
@@ -373,10 +368,9 @@
             <iframe id="pdfFrame" src="" width="100%" height="600px" frameborder="0"></iframe>
         </div>
     </div>
-    
-</body>
+@endsection
+
+@section('scripts')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{{ asset('js/catering detail/modalPdf-cateDetail.js') }}"></script>
-<script src="{{ asset('js/catering detail/dropdown-cateDetail.js') }}"></script>
-<script src="{{ asset('js/catering detail/package-cateDetail.js') }}"></script>
-</html>
+<script src="{{ asset('js/cateringDetail.js') }}"></script>
+@endsection

@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cart_items', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('cartId');
             $table->unsignedBigInteger('packageId');
             $table->integer('breakfastQty')->default(0);
@@ -19,7 +20,8 @@ return new class extends Migration
             $table->integer('dinnerQty')->default(0);
             $table->timestamps();
 
-            $table->primary(['cartId', 'packageId']);
+            // $table->primary(['cartId', 'packageId']);
+            $table->unique(['cartId', 'packageId']);
 
             $table->foreign('packageId')->references('packageId')->on('packages')->onDelete('cascade');
             $table->foreign('cartId')->references('cartId')->on('cart')->onDelete('cascade');
