@@ -67,10 +67,10 @@ class User extends Authenticatable
         'role' => UserRole::class,
     ];
 
-    // public function addresses()
-    // {
-    //     return $this->hasMany(Address::class, 'userId', 'userId'); // Foreign key and local key
-    // }
+    public function addresses()
+    {
+        return $this->hasMany(Address::class, 'userId', 'userId'); // Foreign key and local key
+    }
 
     public function carts()
     {
@@ -79,7 +79,7 @@ class User extends Authenticatable
 
     public function favoriteVendors()
     {
-        return $this->hasMany(FavoriteVendor::class, 'userId', 'userId');
+        return $this->belongsToMany(FavoriteVendor::class, 'userId', 'userId')->withTimestamps();
     }
 
     // Renamed from cuisineReviews to match ERD if any, but ERD shows 'cuisine_reviews' having 'cuisineId' and 'userId'
@@ -91,10 +91,11 @@ class User extends Authenticatable
     // and no corresponding migration for it, I'll omit a direct `cuisineReviews` relationship on User.
     // If the 'package_cuisine' table in your migration was meant to be 'cuisine_reviews', please clarify.
 
-    public function relationCustomerAddresses()
-    {
-        return $this->hasMany(RelationCustomerAddress::class, 'customerId', 'userId'); // customerId in relation_customer_addresses links to userId in users
-    }
+    // INI UDAH GA DIPAKE
+    // public function relationCustomerAddresses()
+    // {
+    //     return $this->hasMany(RelationCustomerAddress::class, 'customerId', 'userId'); // customerId in relation_customer_addresses links to userId in users
+    // }
 
     public function vendor()
     {

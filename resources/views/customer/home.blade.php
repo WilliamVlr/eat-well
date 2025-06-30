@@ -7,6 +7,7 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="{{ asset('css/customer/home.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/customer/search.css') }}">
 @endsection
 
 @section('content')
@@ -96,7 +97,7 @@
                     </div>
                 </div>
                 <div class="col-lg p-2 time-slot">
-                    <div class="row mb-1 justify-content-between align-content-center"  data-bs-toggle="collapse"
+                    <div class="row mb-1 justify-content-between align-content-center" data-bs-toggle="collapse"
                         data-bs-target="#lunch-packages" role="button" aria-expanded="true"
                         aria-controls="breakfast-packages">
                         <div class="time-slot-type font-400 w-auto p-0 ps-1">Lunch</div>
@@ -106,7 +107,8 @@
                     </div>
                     <div class="collapse" id="lunch-packages">
                         <div class="row mb-1 p-0 package justify-content-between align-content-center">
-                            <div class="w-75 p-0 ps-1 package-name">Paket Lorem Ipsum Dolor Amethyst Dolorosa Megamendung</div>
+                            <div class="w-75 p-0 ps-1 package-name">Paket Lorem Ipsum Dolor Amethyst Dolorosa Megamendung
+                            </div>
                             <div class="w-auto align-self-center me-1 quantity">
                                 x 1
                             </div>
@@ -130,7 +132,8 @@
                     </div>
                     <div class="collapse" id="dinner-packages">
                         <div class="row p-0 package justify-content-between align-content-center">
-                            <div class="w-75 mb-1 p-0 ps-1 package-name">Paket Lorem Ipsum Dolor Amethyst Dolorosa Megamendung
+                            <div class="w-75 mb-1 p-0 ps-1 package-name">Paket Lorem Ipsum Dolor Amethyst Dolorosa
+                                Megamendung
                             </div>
                             <div class="w-auto align-self-center me-1 quantity">
                                 x 1
@@ -143,94 +146,49 @@
         {{-- Popular Caterings --}}
         <section class="popular-catering-container w-100 h-auto mb-md-5 mb-4">
             <div class="row title-1">Popular Catering Near You</div>
-            @for ($i = 0; $i < 5; $i++)
-                <div class="row list-container mb-3">
-                    <div class="col-lg card-medium mb-lg-1 me-lg-1 ms-lg-1">
-                        <a href="#" class="row">
-                            <div class="col-3 col-md-2 col-lg-3 col-xl-3 p-0">
-                                <div class="image-container">
-                                    <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}" alt="">
+            <div class="row">
+                @foreach ($vendors as $vendor)
+                <div class="col-md-6 col-lg-4 p-2">
+                    <a href="{{ route('catering-detail', $vendor->vendorId) }}" class="catering-card-link">
+                        <div class="catering-card horizontal">
+                            <div class="catering-card-img-wrapper">
+                                {{-- <img src="{{ $vendor->logo ? asset($vendor->logo) : asset('asset/customer/home/Iklan 2.jpg') }}"
+                                                    alt="Catering Picture" class="catering-card-img"> --}}
+                                <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}" alt="Catering Picture"
+                                    class="catering-card-img">
+                            </div>
+                            <div class="catering-card-body d-flex flex-column flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="catering-city small text-muted">{{ $vendor->provinsi .', '. $vendor->kota ?? '-' }}</span>
+                                    <button class="btn btn-light btn-fav p-1" title="Favorite" type="button"
+                                        onclick="event.stopPropagation();">
+                                        <span class="material-symbols-outlined icon-sm">favorite</span>
+                                    </button>
+                                </div>
+                                <div class="card-details-wrapper">
+                                    <span class="catering-name">{{ $vendor->name }}</span>
+                                </div>
+                                <div class="catering-slots mb-1">
+                                    @if ($vendor->breakfast_delivery ?? false)
+                                        <span class="badge badge-breakfast">Breakfast</span>
+                                    @endif
+                                    @if ($vendor->lunch_delivery ?? false)
+                                        <span class="badge badge-lunch">Lunch</span>
+                                    @endif
+                                    @if ($vendor->dinner_delivery ?? false)
+                                        <span class="badge badge-dinner">Dinner</span>
+                                    @endif
+                                </div>
+                                <div class="catering-rating d-flex align-items-center">
+                                    <span class="material-symbols-outlined star-icon me-1">star</span>
+                                    <span class="fw-semibold">{{ $vendor->rating ?? '-' }}</span>
                                 </div>
                             </div>
-                            <div
-                                class="col-9 col-md-10 col-lg-9 col-xl-9 pe-0 ps-2 ps-xl-4 card-info pt-1 pt-xl-2 pb-md-2">
-                                <div class="row detail mb-1 mb-lg-2 mb-xl-3 justify-content-between">
-                                    <div class="left-contents">
-                                        <div class="kota">
-                                            Kota Kembangan Rupa
-                                        </div>
-                                    </div>
-                                    <div class="right-content pe-2">
-                                        <div class="logo-container">
-                                            <span class="material-symbols-outlined favorite-icon">
-                                                favorite
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row nama-catering mb-xl-1">Catering Naga Sakti Duar</div>
-                                <div class="row time-slot-list mb-sm-1 mb-xl-2">Breakfast, Lunch, Dinner</div>
-                                <div class="row rate-sold-container justify-content-start align-items-center">
-                                    <div class="rating-container">
-                                        <div class="logo-container">
-                                            <span class="material-symbols-outlined star-icon">
-                                                star
-                                            </span>
-                                        </div>
-                                        4.9
-                                    </div>
-                                    <div class="circle"></div>
-                                    <div class="sold-container">
-                                        10k+ Sold
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg card-medium mb-lg-1 me-lg-1 ms-lg-1">
-                        <a href="#" class="row">
-                            <div class="col-3 col-md-2 col-lg-3 col-xl-3 p-0">
-                                <div class="image-container">
-                                    <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}" alt="">
-                                </div>
-                            </div>
-                            <div
-                                class="col-9 col-md-10 col-lg-9 col-xl-9 pe-0 ps-2 ps-xl-4 card-info pt-1 pt-xl-2 pb-md-2">
-                                <div class="row detail mb-1 mb-lg-2 mb-xl-3 justify-content-between">
-                                    <div class="left-contents">
-                                        <div class="kota">
-                                            Kota Kembangan Rupa
-                                        </div>
-                                    </div>
-                                    <div class="right-content pe-2">
-                                        <div class="logo-container">
-                                            <span class="material-symbols-outlined favorite-icon">
-                                                favorite
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row nama-catering mb-xl-1">Catering Naga Sakti Duar</div>
-                                <div class="row time-slot-list mb-sm-1 mb-xl-2">Breakfast, Lunch, Dinner</div>
-                                <div class="row rate-sold-container justify-content-start align-items-center">
-                                    <div class="rating-container">
-                                        <div class="logo-container">
-                                            <span class="material-symbols-outlined star-icon">
-                                                star
-                                            </span>
-                                        </div>
-                                        4.9
-                                    </div>
-                                    <div class="circle"></div>
-                                    <div class="sold-container">
-                                        10k+ Sold
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 </div>
-            @endfor
+                @endforeach
+            </div>
         </section>
         {{-- Favorited Catering or Recently Viewed? --}}
         <section class="fav-catering-container w-100 h-auto mb-md-5 mb-4">

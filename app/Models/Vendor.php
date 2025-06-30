@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory; // Opsional tapi sangat direkomendasikan
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Vendor extends Model
 {
@@ -62,6 +63,13 @@ class Vendor extends Model
     public function favoriteVendors()
     {
         return $this->hasMany(FavoriteVendor::class, 'vendorId', 'vendorId');
+    }
+
+    public function favorited()
+    {
+        return (bool) FavoriteVendor::where('user_id', Auth::id())
+                            ->where('post_id', $this->id)
+                            ->first();
     }
 
     public function orders()

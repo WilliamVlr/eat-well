@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\VendorController;
@@ -37,9 +39,7 @@ Route::get('/customer-first-page', function(){
 });
 
 // Customer Home
-Route::get('/home', function (){
-    return view('customer.home');
-})->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/manage-profile', function () {
     return view('manageProfile');
@@ -47,6 +47,10 @@ Route::get('/manage-profile', function () {
 
 // Search
 Route::get('/search', [VendorController::class, 'search'])->name('search');
+
+// Favorite
+Route::post('favorite/{vendor}', [FavoriteController::class, 'favorite'])->name('favorite');
+Route::post('unfavorite/{vendor}', [FavoriteController::class, 'unfavorite'])->name('unfavorite');
 
 // Catering Details
 // Route::get('/catering-detail', function () {
