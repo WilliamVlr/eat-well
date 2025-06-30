@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AuthManager;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
@@ -25,9 +26,8 @@ Route::get('/about-us', function(){
     return view('aboutUs');
 });
 
-Route::get('/login-register', [AuthManager::class, 'loginRegister'])->name('login-register');
-Route::post('/login-register', [AuthManager::class, 'registerPost'])->name('register.post');
-
+Route::get('/login', [SessionController::class, 'create']);
+Route::post('/login', [SessionController::class, 'store']);
 /* ---------------------
      CUSTOMER ROUTES
 ---------------------- */
