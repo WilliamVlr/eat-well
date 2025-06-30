@@ -1,25 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+@extends('master')
+
+@section('title')
+    {{ $vendor->name }}
+@endsection
+
+@section('css')
     <meta name="vendor-id" content="{{ $vendor->vendorId }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $vendor->name }}</title>
     {{-- CSS --}}
     <link rel="stylesheet" href="{{ asset('css/cateringDetail.css') }}">
     {{-- bootstrap --}}
     @vite(["resources/sass/app.scss", "resources/js/app.js"])
-    {{-- Lexend & Inter --}}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
-    {{-- Icon call, location, star --}}
-    {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=call,pin_drop,star" /> --}}
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@1" rel="stylesheet" />
-</head>
-<body>
+@endsection
+
+@section('content')
     <div class="profile-container">
         <div class="container daun-container">
             <img src="{{ asset('asset/catering-detail/daun1.png') }}" alt="Catering Image" class="daun1">
@@ -147,21 +142,6 @@
                     <ul class="list-group inter" id="mealOptions">
                         {{-- These will be dynamically populated by JavaScript --}}
                     </ul>
-
-                    {{-- <ul class="list-group inter">
-                        <li class="list-group-item">
-                            <input class="form-check-input me-1" type="checkbox" value="" id="firstCheckboxStretched" checked>
-                            <label class="form-check-label stretched-link" for="firstCheckboxStretched">Breakfast</label>
-                        </li>
-                        <li class="list-group-item">
-                            <input class="form-check-input me-1" type="checkbox" value="" id="secondCheckboxStretched" checked>
-                            <label class="form-check-label stretched-link" for="secondCheckboxStretched">Lunch</label>
-                        </li>
-                        <li class="list-group-item">
-                            <input class="form-check-input me-1" type="checkbox" value="" id="thirdCheckboxStretched" checked>
-                            <label class="form-check-label stretched-link" for="thirdCheckboxStretched">Dinner</label>
-                        </li>
-                    </ul> --}}
                 </div>
             </div>
         </div>
@@ -286,73 +266,6 @@
                                     </div>
                                 </div>   
                             @endforeach
-
-                            {{-- <div class="accordion-item">
-                                <div class="accordion-title">
-                                    <div class="left-card-wrapper">
-                                        <div>
-                                            <img src="{{ asset('asset/catering-detail/logo-packages.png') }}" alt="Packages Image" class="package-image">
-                                        </div>
-                                        <div>
-                                            <div class="nama-package-dan-download-wrapper">
-                                                <h4>Seafood</h4>
-                                                <div class="download-wrapper">
-                                                    <span class="material-symbols-outlined download-icon" data-pdf="{{ asset('asset/catering-detail/pdf/vegetarian-package-menu.pdf') }}">
-                                                        download
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="category-cuisine-wrapper">
-                                                <span class="category-cuisine-bold">Category:</span>
-                                                <span>Seafood</span>
-                                                <div></div>
-                                                <span class="category-cuisine-bold">Cuisine Type:</span>
-                                                <span>Thailand, Chinese</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="right-card-wrapper">
-                                        <p class="view-menu-text inter" data-pdf="{{ asset('asset/catering-detail/pdf/vegetarian-package-menu.pdf') }}">
-                                            View Package's Menu
-                                        </p>
-                                        <div class="add-button" data-tab="item2">
-                                            <p class="add-text inter">Add</p>
-                                        </div> 
-                                    </div>
-                                </div>
-
-                                <div class="accordion-content" id="item2">
-                                    <div class="menu-item">
-                                        <div class="item-row">
-                                            <span>Breakfast</span>
-                                            <span class="price" data-price="200000">Rp. 200.000,-</span>
-                                            <div class="qty-control">
-                                                <button class="decrement">−</button>
-                                                <span class="qty">0</span>
-                                                <button class="increment">+</button>
-                                            </div>
-                                        </div>
-                                        <div class="item-row">
-                                            <span>Lunch</span>
-                                            <span class="price" data-price="250000">Rp. 250.000,-</span>
-                                            <div class="qty-control">
-                                                <button class="decrement">−</button>
-                                                <span class="qty">0</span>
-                                                <button class="increment">+</button>
-                                            </div>
-                                        </div>
-                                        <div class="item-row">
-                                            <span>Dinner</span>
-                                            <span class="price" data-price="275000">Rp. 275.000,-</span>
-                                            <div class="qty-control">
-                                                <button class="decrement">−</button>
-                                                <span class="qty">0</span>
-                                                <button class="increment">+</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -373,10 +286,11 @@
             <iframe id="pdfFrame" src="" width="100%" height="600px" frameborder="0"></iframe>
         </div>
     </div>
-    
-</body>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{{ asset('js/catering detail/modalPdf-cateDetail.js') }}"></script>
-<script src="{{ asset('js/catering detail/dropdown-cateDetail.js') }}"></script>
-<script src="{{ asset('js/catering detail/package-cateDetail.js') }}"></script>
-</html>
+@endsection
+
+@section('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ asset('js/catering detail/modalPdf-cateDetail.js') }}"></script>
+    <script src="{{ asset('js/catering detail/dropdown-cateDetail.js') }}"></script>
+    <script src="{{ asset('js/catering detail/package-cateDetail.js') }}"></script>
+@endsection
