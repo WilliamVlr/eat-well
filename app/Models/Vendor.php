@@ -24,6 +24,13 @@ class Vendor extends Model
         'logo',
         'phone_number', // Added based on your migration
         'rating', // Added based on your migration
+        'provinsi', // Added based on your migration
+        'kota',
+        'kabupaten', // Added based on your migration
+        'kecamatan',
+        'kelurahan',
+        'kode_pos',
+        'jalan',
     ];
 
     protected $casts = [

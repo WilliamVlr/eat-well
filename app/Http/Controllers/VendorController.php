@@ -23,7 +23,7 @@ class VendorController extends Controller
     public function show(Vendor $vendor)
     {
         // Memuat relasi User dan Address secara efisien jika Anda ingin menampilkannya
-        $vendor->load(['user', 'address']);
+        $vendor->load(['user']);
         // $packages = $vendor->packages;
         // MEMUAT PAKET DENGAN RELASI CATEGORY DAN CUISINE_TYPES SECARA EFFICIENT
         // Pastikan Anda telah mendefinisikan relasi 'packages' di model Vendor
@@ -35,8 +35,21 @@ class VendorController extends Controller
 
     public function search(Request $request)
     {
+        // Get request query
+        $query = $request->query('query');
+
         // Get all vendors, 9 per page
-        $vendors = Vendor::paginate(9);
+        $vendors = Vendor::where('name', 'like', "%{$query}%")
+        ->orWhereHas('packages', function ($q) use ($query) {
+            $q->where('name', 'like', "%{$query}%")
+              ->orWhereHas('category', function ($q2) use ($query) {
+                  $q2->where('categoryName', 'like', "%{$query}%");
+              })
+              ->orWhereHas('cuisineTypes', function ($q3) use ($query) {
+                  $q3->where('cuisineName', 'like', "%{$query}%");
+              });
+        })
+        ->paginate(9);
 
         // Pass paginated vendors to the view
         return view('customer.search', compact('vendors'));

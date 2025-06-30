@@ -50,8 +50,8 @@
                                     </button>
                                     <input type="text" name="query"
                                         class="form-control border-start-0 input-text-style-1"
-                                        placeholder="Search for food, drinks, etc."
-                                        aria-label="Search for food, drinks, etc." required>
+                                        placeholder="Search for vendor, category, etc."
+                                        aria-label="Search for vendor, category, etc." required>
                                 </div>
                             </form>
                         </div>
