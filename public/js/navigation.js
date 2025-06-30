@@ -1,4 +1,4 @@
-  function setLanguage(lang)
-  {
-    document.getElementById('languageToggle').textContent = lang;
-  }
+document.getElementById('languageSelector').addEventListener('change', function () {
+  const selectedLanguage = this.value;
+  console.log("Selected language:", selectedLanguage);
+});
