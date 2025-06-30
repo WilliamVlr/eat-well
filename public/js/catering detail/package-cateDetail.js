@@ -119,10 +119,15 @@ $(document).ready(function () {
 
     function updateSummaryDisplay() {
         const pkgCount = Object.keys(summary.packages).length;
+        const proceedToPaymentLink = $('#proceedToPaymentLink'); 
 
         if (pkgCount === 0) {
             $(".order-message").show().text("No Package Selected Yet.");
             $(".package-count, .item-count, .price-total").hide();
+            proceedToPaymentLink.css({
+                'cursor': 'default',
+                'pointer-events': 'none',
+            });
         } else if (pkgCount === 1) {
             $(".order-message").hide();
             $(".package-count").show().text(`${pkgCount} Package`);
@@ -134,6 +139,11 @@ $(document).ready(function () {
             $(".price-total")
                 .show()
                 .text(`Rp. ${summary.totalPrice.toLocaleString("id-ID")},-`);
+            
+            proceedToPaymentLink.css({
+                'cursor': 'pointer',
+                'pointer-events': 'auto',
+            });
         } else {
             $(".order-message").hide();
             $(".package-count").show().text(`${pkgCount} Packages`);
@@ -141,6 +151,11 @@ $(document).ready(function () {
             $(".price-total")
                 .show()
                 .text(`Rp. ${summary.totalPrice.toLocaleString("id-ID")},-`);
+
+            proceedToPaymentLink.css({
+                'cursor': 'pointer',
+                'pointer-events': 'auto',
+            });
         }
     }
 

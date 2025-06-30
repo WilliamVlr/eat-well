@@ -10,7 +10,7 @@
     {{-- CSS --}}
     <link rel="stylesheet" href="{{ asset('css/cateringDetail.css') }}">
     {{-- bootstrap --}}
-    @vite(["resources/sass/app.scss", "resources/js/app.js"])
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@1" rel="stylesheet" />
 @endsection
 
@@ -37,11 +37,13 @@
 
                     <div class="location-wrapper">
                         <span class="material-symbols-outlined location-icon">pin_drop</span>
-                        <span class="inter address">{{ $vendor->address->jalan }}, {{  $vendor->address->kelurahan }}, {{  $vendor->address->kecamatan }}, {{  $vendor->address->kabupaten }}, {{  $vendor->address->provinsi }}, {{  $vendor->address->kode_pos }}</span>
+                        <span class="inter address">{{ $vendor->address->jalan }}, {{ $vendor->address->kelurahan }},
+                            {{ $vendor->address->kecamatan }}, {{ $vendor->address->kabupaten }},
+                            {{ $vendor->address->provinsi }}, {{ $vendor->address->kode_pos }}</span>
                     </div>
 
                     <div class="rating-and-number-sold-wrapper">
-                        <a href="{{ route("rate-and-review") }}" class="rate-review-button">
+                        <a href="{{ route('rate-and-review') }}" class="rate-review-button">
                             <div class="rating-container">
                                 <span class="material-symbols-outlined star-icon">star</span>
                                 <span class="inter rating-and-sold">{{ $vendor->rating }}</span>
@@ -75,36 +77,43 @@
         <div class="carousel-wrapper">
             <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" data-bs-touch="true">
                 <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                        class="active"></button>
                     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></button>
                     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></button>
                     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3"></button>
                 </div>
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="{{ asset('asset/catering-detail/food preview 1.jpeg') }}" class="d-block w-100" alt="...">
+                        <img src="{{ asset('asset/catering-detail/food preview 1.jpeg') }}" class="d-block w-100"
+                            alt="...">
                     </div>
                     <div class="carousel-item">
-                        <img src="{{ asset('asset/catering-detail/food preview 2.jpg') }}" class="d-block w-100" alt="...">
+                        <img src="{{ asset('asset/catering-detail/food preview 2.jpg') }}" class="d-block w-100"
+                            alt="...">
                     </div>
                     <div class="carousel-item">
-                        <img src="{{ asset('asset/catering-detail/food preview 3.jpeg') }}" class="d-block w-100" alt="...">
+                        <img src="{{ asset('asset/catering-detail/food preview 3.jpeg') }}" class="d-block w-100"
+                            alt="...">
                     </div>
                     <div class="carousel-item">
-                        <img src="{{ asset('asset/catering-detail/food preview 4.jpg') }}" class="d-block w-100" alt="...">
+                        <img src="{{ asset('asset/catering-detail/food preview 4.jpg') }}" class="d-block w-100"
+                            alt="...">
                     </div>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+                    data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+                    data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                 </button>
-                </div>
             </div>
         </div>
+    </div>
     </div>
 
     <div class="price-and-shipping-container">
@@ -117,7 +126,8 @@
                 </div>
                 <div class="price-kanan">
                     <div class="dropdown">
-                        <button id="dropdownMenuButton" class="btn btn-secondary dropdown-toggle inter" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button id="dropdownMenuButton" class="btn btn-secondary dropdown-toggle inter" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
                             {{ $packages[0]->name }}
                         </button>
                         <ul class="dropdown-menu">
@@ -126,7 +136,7 @@
                                 <li class="dropdown-item inter" data-package-id="{{ $package->packageId }}"
                                     data-breakfast-price="{{ $package->breakfastPrice ?? 'null' }}"
                                     data-lunch-price="{{ $package->lunchPrice ?? 'null' }}"
-                                    data-dinner-price="{{ $package->dinnerPrice ?? 'null' }}"> 
+                                    data-dinner-price="{{ $package->dinnerPrice ?? 'null' }}">
                                     {{ $package->name }}
                                 </li>
                             @endforeach
@@ -152,7 +162,7 @@
                 <div class="section-makan">
                     <h3 class="inter">Breakfast</h3>
                     <p class="inter">{{ $vendor->breakfast_delivery }}</p>
-                </div> 
+                </div>
             @endif
             @if ($vendor->lunch_delivery)
                 <div class="section-makan">
@@ -182,11 +192,13 @@
                                         <div class="left-card-wrapper">
                                             @if ($package->imgPath)
                                                 <div>
-                                                    <img src="{{ asset($package->imgPath) }}" alt="{{ $package->name }} Image" class="package-image">
+                                                    <img src="{{ asset($package->imgPath) }}"
+                                                        alt="{{ $package->name }} Image" class="package-image">
                                                 </div>
                                             @else
                                                 <div>
-                                                    <img src="{{ asset('asset/catering-detail/logo-packages.png') }}" alt="Packages Image" class="package-image">
+                                                    <img src="{{ asset('asset/catering-detail/logo-packages.png') }}"
+                                                        alt="Packages Image" class="package-image">
                                                 </div>
                                             @endif
                                             <div>
@@ -194,7 +206,8 @@
                                                     <h4>{{ $package->name }}</h4>
                                                     <div class="download-wrapper">
                                                         {{-- <span class="material-symbols-outlined download-icon" data-pdf="{{ asset('asset/catering-detail/pdf/vegetarian-package-menu.pdf') }}"> --}}
-                                                        <span class="material-symbols-outlined download-icon" data-pdf="{{ asset($package->menuPDFPath) }}">
+                                                        <span class="material-symbols-outlined download-icon"
+                                                            data-pdf="{{ asset($package->menuPDFPath) }}">
                                                             download
                                                         </span>
                                                     </div>
@@ -216,12 +229,13 @@
                                         </div>
                                         <div class="right-card-wrapper">
                                             {{-- <p class="view-menu-text inter" data-pdf="{{ asset('asset/catering-detail/pdf/vegetarian-package-menu.pdf') }}"> --}}
-                                            <p class="view-menu-text inter" data-pdf="{{ asset($package->menuPDFPath) }}">
+                                            <p class="view-menu-text inter"
+                                                data-pdf="{{ asset($package->menuPDFPath) }}">
                                                 View Package's Menu
                                             </p>
                                             <div class="add-button" data-tab="item{{ $package->packageId }}">
                                                 <p class="add-text inter">Add</p>
-                                            </div> 
+                                            </div>
                                         </div>
                                     </div>
 
@@ -230,7 +244,8 @@
                                             @if (!is_null($package->breakfastPrice))
                                                 <div class="item-row">
                                                     <span>Breakfast</span>
-                                                    <span class="price" data-price="{{ $package->breakfastPrice }}">Rp. {{ number_format($package->breakfastPrice, 0, ',', '.') }},-</span>
+                                                    <span class="price" data-price="{{ $package->breakfastPrice }}">Rp.
+                                                        {{ number_format($package->breakfastPrice, 0, ',', '.') }},-</span>
                                                     <div class="qty-control">
                                                         <button class="decrement">−</button>
                                                         <span class="qty">0</span>
@@ -242,7 +257,8 @@
                                             @if (!is_null($package->lunchPrice))
                                                 <div class="item-row">
                                                     <span>Lunch</span>
-                                                    <span class="price" data-price="{{ $package->lunchPrice }}">Rp. {{ number_format($package->lunchPrice, 0, ',', '.') }},-</span>
+                                                    <span class="price" data-price="{{ $package->lunchPrice }}">Rp.
+                                                        {{ number_format($package->lunchPrice, 0, ',', '.') }},-</span>
                                                     <div class="qty-control">
                                                         <button class="decrement">−</button>
                                                         <span class="qty">0</span>
@@ -254,7 +270,8 @@
                                             @if (!is_null($package->dinnerPrice))
                                                 <div class="item-row">
                                                     <span>Dinner</span>
-                                                    <span class="price" data-price="{{ $package->dinnerPrice }}">Rp. {{ number_format($package->dinnerPrice, 0, ',', '.') }},-</span>
+                                                    <span class="price" data-price="{{ $package->dinnerPrice }}">Rp.
+                                                        {{ number_format($package->dinnerPrice, 0, ',', '.') }},-</span>
                                                     <div class="qty-control">
                                                         <button class="decrement">−</button>
                                                         <span class="qty">0</span>
@@ -264,19 +281,27 @@
                                             @endif
                                         </div>
                                     </div>
-                                </div>   
+                                </div>
                             @endforeach
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="button-order inter">
+        {{-- <div class="button-order inter" id="proceedToPaymentButton">
             <span class="order-message">No Package Selected Yet.</span>
             <span class="package-count" style="display:none;"></span>
             <span class="item-count" style="display:none;"></span>
             <span class="price-total" style="display:none;"></span>
-        </div>
+        </div> --}}
+        <a href="{{ route('payment.show', ['vendor' => $vendor->vendorId]) }}" class="button-order inter"
+            id="proceedToPaymentLink"
+            style="cursor: default; pointer-events: none; text-decoration: none;">
+            <span class="order-message">No Package Selected Yet.</span>
+            <span class="package-count" style="display:none;"></span>
+            <span class="item-count" style="display:none;"></span>
+            <span class="price-total" style="display:none;"></span>
+        </a>
     </section>
 
     <!-- Modal PDF Viewer -->
