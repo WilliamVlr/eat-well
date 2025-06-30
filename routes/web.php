@@ -3,6 +3,8 @@
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\SessionController;
+use App\Http\Controllers\AuthManager;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -27,6 +29,8 @@ Route::get('/about-us', function(){
 Route::get('/register', [RegisteredUserController::class, 'create']);
 Route::post('/register', [RegisteredUserController::class, 'store']);
 
+Route::get('/login', [SessionController::class, 'create']);
+Route::post('/login', [SessionController::class, 'store']);
 /* ---------------------
      CUSTOMER ROUTES
 ---------------------- */
