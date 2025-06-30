@@ -170,7 +170,7 @@
                                         <div class="catering-card-body d-flex flex-column flex-grow-1">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <span
-                                                    class="catering-city small text-muted">{{ $vendor->address->kota ?? '-' }}</span>
+                                                    class="catering-city small text-muted">{{ $vendor->kota ?? '-' }}</span>
                                                 <button class="btn btn-light btn-fav p-1" title="Favorite" type="button"
                                                     onclick="event.stopPropagation();">
                                                     <span class="material-symbols-outlined icon-sm">favorite</span>
