@@ -44,8 +44,9 @@ button{
     width: 100% !important;
 }
 #remember{
-    border: 1px solid black;
+  border: 1px solid black;
 }
+
 svg{
     width: 23px;
 }
