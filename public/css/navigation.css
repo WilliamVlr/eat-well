@@ -134,3 +134,41 @@
     width: 60px;
 }
 
+.dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+#languageSelector {
+  color: white;
+  border: 2px solid white;
+  border-radius: 20px; /* elips */
+  background-color: transparent;
+  padding: 6px 30px 6px 12px; /* kanan agak besar untuk panah */
+  font-size: 14px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  min-width: 80px;
+}
+
+/* Panah bawah custom */
+.dropdown-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid white;
+  transform: translateY(-50%);
+}
+
+#languageSelector option {
+  color: black;
+  background-color: white;
+}
