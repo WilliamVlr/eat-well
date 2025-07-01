@@ -4,6 +4,15 @@
 <table class="table table-striped">
     <thead>
         <tr>
+            <th class="d-flex flex-row justify-content-between">
+                <span>Period</span>
+                <span>:</span>
+            </th>
+            <th>
+                {{ $periodText }}
+            </th>
+        </tr>
+        <tr>
             <th>Order ID</th>
             <th>Customer</th>
             <th>Start Date</th>

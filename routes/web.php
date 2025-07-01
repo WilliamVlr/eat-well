@@ -8,6 +8,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AuthManager;
+use App\Http\Controllers\SalesController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -91,8 +92,10 @@ Route::get('/add-address', function(){
 ---------------------- */
 // Catering dashboard
 Route::get('/cateringHomePage', [CateringHomeController::class, 'index'])->name('cateringHomePage');
-Route::get('/cateringHomePage/sales', [CateringHomeController::class,'laporan'])->name('sales.show');
-Route::get('/cateringHomePage/sales/export', [CateringHomeController::class,'export_excel'])->name('sales.export');
+
+// Catering sales
+Route::get('/vendor/sales', [SalesController::class,'index'])->name('sales.show');
+Route::get('/vendor/sales/export', [SalesController::class,'export_sales'])->name('sales.export');
 
 // Manage Packages
 Route::get('/manageCateringPackage', [PackageController::class, 'index'])->name('manageCateringPackage');
