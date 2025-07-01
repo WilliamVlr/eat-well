@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory; // Opsional tapi sangat direkomendasikan
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'orders';
     protected $primaryKey = 'orderId'; // Matches your migration
@@ -19,6 +20,16 @@ class Order extends Model
         'startDate', // Matches your migration
         'endDate', // Matches your migration
         'isCancelled', // Matches your migration
+        'provinsi', // Added based on your migration
+        'kota',
+        'kabupaten', // Added based on your migration
+        'kecamatan',
+        'kelurahan',
+        'kode_pos',
+        'jalan',
+        'recipient_name', // Matches your migration
+        'recipient_phone', // Matches your migration
+        'notes',
     ];
 
     protected $casts = [
@@ -40,14 +51,14 @@ class Order extends Model
         return $this->belongsTo(Vendor::class, 'vendorId', 'vendorId');
     }
 
-    public function payments()
+    public function payment()
     {
         return $this->hasOne(Payment::class, 'orderId', 'orderId');
     }
 
     public function orderItems()
     {
-        return $this->hasMany(OrderItem::class, 'orderId', 'orderId');
+        return $this->hasMany(OrderItem::class, 'orderId', 'orderId')->orderBy('updated_at', 'asc');
     }
 
     public function deliveryStatuses()

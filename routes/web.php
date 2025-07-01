@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CateringHomeController;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AuthManager;
@@ -37,25 +40,37 @@ Route::get('/customer-first-page', function(){
 });
 
 // Customer Home
-Route::get('/home', function (){
-    return view('customer.home');
-})->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/manage-profile', function () {
     return view('manageProfile');
 })->name('manage-profile');
+
+// Caterings
+Route::get('/caterings', [VendorController::class, 'search'])->name('search');
+Route::get('/catering/{vendor}', [VendorController::class, 'show'])->name('catering-detail');
+
+// Favorite
+Route::post('favorite/{vendorId}', [FavoriteController::class, 'favorite'])->name('favorite');
+Route::post('unfavorite/{vendorId}', [FavoriteController::class, 'unfavorite'])->name('unfavorite');
 
 // Catering Details
 // Route::get('/catering-detail', function () {
 //     return view('cateringDetail');
 // })->name('catering-detail');
 
-Route::get('/catering-detail/{vendor}', [VendorController::class, 'show'])->name('catering-detail');
+
 Route::post('/update-order-summary', [VendorController::class, 'updateOrderSummary']);
 
 Route::get('/catering-detail/rating-and-review', function(){
     return view('ratingAndReview');
 })->name('rate-and-review');
+
+// Order History
+Route::get('/orders', [OrderController::class, 'index'])->name('order-history');
+
+Route::get('/orders/{id}', [OrderController::class, 'show'])->name('order-detail');
+// Route::get('/order-detail', [OrderController::class, 'show'])->name('order-detail');
 
 // Order Payment
 Route::get('/payment', function () {

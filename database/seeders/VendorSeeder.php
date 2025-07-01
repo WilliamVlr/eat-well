@@ -17,7 +17,7 @@ class VendorSeeder extends Seeder
         $vendors = [
             [
                 'userId' => User::factory()->create(['role' => 'Vendor'])->userId,
-                'addressId' => 1,
+                // 'addressId' => 1,
                 'name' => 'Nusantara Delights',
                 'breakfast_delivery' => '06:30-09:30',
                 'lunch_delivery' => '11:00-14:00',
@@ -28,7 +28,7 @@ class VendorSeeder extends Seeder
             ],
             [
                 'userId' => 2,
-                'addressId' => 2,
+                // 'addressId' => 2,
                 'name' => 'Tropical Bites',
                 'breakfast_delivery' => '07:00-10:00',
                 'lunch_delivery' => '12:00-15:00',
@@ -39,7 +39,7 @@ class VendorSeeder extends Seeder
             ],
             [
                 'userId' => 3,
-                'addressId' => 3,
+                // 'addressId' => 3,
                 'name' => 'Sari Rasa Kitchen',
                 'breakfast_delivery' => '06:00-08:30',
                 'lunch_delivery' => '11:30-14:30',
@@ -51,7 +51,8 @@ class VendorSeeder extends Seeder
         ];
 
         foreach($vendors as $vendor) {
-           Vendor::firstOrCreate(['name' => $vendor['name']], $vendor);
+            Vendor::factory()->create($vendor);
+        //    Vendor::firstOrCreate(['name' => $vendor['name']], $vendor);
         }
 
         Vendor::factory()->count(100)->create();
