@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('cart', function (Blueprint $table) {
             $table->id('cartId');
-            $table->unsignedBigInteger('userId')->nullable(false);
-            $table->unsignedBigInteger('vendorId')->nullable(false);
+            $table->unsignedBigInteger('userId');
+            $table->unsignedBigInteger('vendorId');
             $table->decimal('totalPrice', 10, 2);
             // $table->dateTime('createdAt')->useCurrent()->nullable();
             // $table->dateTime('updatedAt')->useCurrent()->nullable();
@@ -22,6 +22,8 @@ return new class extends Migration
 
             $table->foreign('userId')->references('userId')->on('users')->onDelete('cascade');
             $table->foreign('vendorId')->references('vendorId')->on('vendors')->onDelete('cascade');
+
+            $table->unique(['userId', 'vendorId']);
         });
     }
 
