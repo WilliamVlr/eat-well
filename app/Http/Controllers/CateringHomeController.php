@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\UserRole;
 use App\Exports\OrderExport;
+use App\Exports\SalesExport;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,7 @@ class CateringHomeController extends Controller
 
     public function export_excel()
     {
-        return Excel::download(new OrderExport, "laporan_penjualan.xlsx");
+        return Excel::download(new SalesExport, "laporan_penjualan.xlsx");
     }
 
     public function laporan()
@@ -55,7 +56,7 @@ class CateringHomeController extends Controller
                 $order->groupedPackages = $grouped->values(); // Add custom property
             }
 
-            return view('laporanPenjualanVendor', compact('orders', 'totalSales'));
+            return view('catering.vendorSales', compact('orders', 'totalSales'));
         } else {
             return redirect('/');
         }

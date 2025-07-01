@@ -313,7 +313,7 @@
             <h2 class="chart-title">Statistic of Your Income on April 2025</h2>
             <canvas id="salesChart"></canvas>
             <div class="mt-3">
-                <a href="{{route('cateringHomePage.export')}}" class="btn-download text-decoration-none">DOWNLOAD REPORT</a>
+                <a href="{{route('sales.export')}}" class="btn-download text-decoration-none">DOWNLOAD REPORT</a>
             </div>
         </div>
     </div>

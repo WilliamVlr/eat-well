@@ -7,5 +7,5 @@
 @endsection
 
 @section('content')
-    @include('penjualanTable', [$orders, $totalSales])
+    @include('catering.salesTable', [$orders, $totalSales])
 @endsection
