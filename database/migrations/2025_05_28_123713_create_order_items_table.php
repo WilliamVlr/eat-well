@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->timestamps();
 
+            $table->softDeletes();
             $table->foreign('orderId')->references('orderId')->on('orders')->onDelete('cascade');
             $table->foreign('packageId')->references('packageId')->on('packages')->onDelete('cascade');
         });
