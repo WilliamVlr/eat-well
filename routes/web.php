@@ -91,8 +91,8 @@ Route::get('/add-address', function(){
 ---------------------- */
 // Catering dashboard
 Route::get('/cateringHomePage', [CateringHomeController::class, 'index'])->name('cateringHomePage');
-Route::get('/cateringHomePage/export/excel', [CateringHomeController::class,'export_excel'])->name('cateringHomePage.export');
 Route::get('/cateringHomePage/laporan', [CateringHomeController::class,'laporan'])->name('laporan');
+Route::get('/cateringHomePage/laporan/export', [CateringHomeController::class,'export_excel'])->name('cateringHomePage.export');
 
 // Manage Packages
 Route::get('/manageCateringPackage', [PackageController::class, 'index'])->name('manageCateringPackage');
