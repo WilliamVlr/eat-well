@@ -5,6 +5,8 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AuthManager;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -18,11 +20,12 @@ use Illuminate\Support\Facades\Route;
 /* --------------------
      GUEST ROUTES
 -------------------- */
+
 Route::get('/', function () {
     return view('landingPage');
 });
 
-Route::get('/about-us', function(){
+Route::get('/about-us', function () {
     return view('aboutUs');
 });
 
@@ -32,12 +35,12 @@ Route::post('/login', [SessionController::class, 'store']);
      CUSTOMER ROUTES
 ---------------------- */
 // Customer Account Setup
-Route::get('/customer-first-page', function(){
+Route::get('/customer-first-page', function () {
     return view('customer.customerFirstPage');
 });
 
 // Customer Home
-Route::get('/home', function (){
+Route::get('/home', function () {
     return view('customer.home');
 })->name('home');
 
@@ -49,14 +52,18 @@ Route::get('/manage-profile', function () {
 Route::get('/search', [VendorController::class, 'search'])->name('search');
 
 // Catering Details
-// Route::get('/catering-detail', function () {
-//     return view('cateringDetail');
-// })->name('catering-detail');
-
 Route::get('/catering-detail/{vendor}', [VendorController::class, 'show'])->name('catering-detail');
-Route::post('/update-order-summary', [VendorController::class, 'updateOrderSummary']);
+Route::post('/update-order-summary', [CartController::class, 'updateOrderSummary'])->name('update.order.summary');
+Route::get('/load-cart', [CartController::class, 'loadCart'])->name('load.cart');
 
-Route::get('/catering-detail/rating-and-review', function(){
+// For authenticated users
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('/catering-detail/{vendor}', [VendorController::class, 'show'])->name('catering-detail');
+//     Route::post('/update-order-summary', [CartController::class, 'updateOrderSummary'])->name('update.order.summary');
+//     Route::get('/load-cart', [CartController::class, 'loadCart'])->name('load.cart');
+// });
+
+Route::get('/catering-detail/rating-and-review', function () {
     return view('ratingAndReview');
 })->name('rate-and-review');
 
@@ -67,16 +74,19 @@ Route::get('/orders/{id}', [OrderController::class, 'show'])->name('order-detail
 // Route::get('/order-detail', [OrderController::class, 'show'])->name('order-detail');
 
 // Order Payment
-Route::get('/payment', function () {
-    return view('payment');
-});
+// Route::get('/payment', function () {
+//     return view('payment');
+// });
+
+// Mengaksesnya dari vendor tertentu, misal /payment/vendor/1
+Route::get('/vendor/{vendor}/payment', [OrderController::class, 'showPaymentPage'])->name('payment.show');
 
 // Manage Address
-Route::get('/manage-address', function(){
+Route::get('/manage-address', function () {
     return view('ManageAddress');
 });
 
-Route::get('/add-address', function(){
+Route::get('/add-address', function () {
     return view('addAddress');
 });
 
@@ -84,7 +94,7 @@ Route::get('/add-address', function(){
      VENDOR ROUTES
 ---------------------- */
 // Catering dashboard
-Route::get('/cateringHomePage', function() {
+Route::get('/cateringHomePage', function () {
     return view('cateringHomePage');
 });
 
@@ -96,7 +106,7 @@ Route::post('/manageCateringPackage', [PackageController::class, 'store'])->name
 Route::put('/manageCateringPackage/{package}', [PackageController::class, 'update'])->name('packages.update');
 
 // Manage Order
-Route::get('/manageOrder', function(){
+Route::get('/manageOrder', function () {
     return view('manageOrder');
 });
 
