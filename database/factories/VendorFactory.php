@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Address;
+use App\Models\Package;
 use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -58,7 +59,7 @@ class VendorFactory extends Factory
 
         return [
             'userId' => User::inRandomOrder()->first()->userId,
-            'addressId' => Address::inRandomOrder()->first()->addressId,
+            // 'addressId' => Address::inRandomOrder()->first()->addressId,
             'name' => Str::words(fake()->company(), 2, ''),
             // 'breakfast_delivery' => $startBreakfast->format('H:i') . ' - ' . $endBreakfast->format('H:i'),
             // 'lunch_delivery' => $startLunch->format('H:i') . ' - ' . $endLunch->format('H:i'),
@@ -69,6 +70,28 @@ class VendorFactory extends Factory
             'logo' => fake()->imageUrl(640, 480, 'food', true, 'vendor'),
             'phone_number' => fake()->phoneNumber(),
             'rating' => fake()->randomFloat(1, 1, 5), // Rating between 1.0 and 5.0
+            'provinsi' => fake()->state(),
+            'kota' => fake()->city(),
+            'kabupaten' => fake()->city(),
+            'kecamatan' => fake()->streetName(),
+            'kelurahan' => fake()->streetName(),
+            'kode_pos' => fake()->postcode(),
+            'jalan' => fake()->streetAddress()
         ];
+    }
+
+    public function configure()
+    {
+        // Pastikan setiap Vendor memiliki minimal 1 Package setelah dibuat
+        return $this->afterCreating(function (Vendor $vendor) {
+            // Buat 1 Package dan kaitkan dengan Vendor yang baru dibuat
+            // 'for($vendor)' akan otomatis mengisi vendorId pada Package
+            Package::factory()->for($vendor)->create();
+
+            // Opsional: Anda bisa membuat lebih dari 1 package secara acak
+            if ($this->faker->boolean(70)) { // 70% kemungkinan akan ada package tambahan
+                Package::factory()->count($this->faker->numberBetween(1, 3))->for($vendor)->create();
+            }
+        });
     }
 }

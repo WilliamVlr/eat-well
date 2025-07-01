@@ -3,67 +3,121 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\PaymentMethod;
+use Carbon\Carbon;
+// use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    public function index()
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
     {
-        $vendorId = Auth::id(); // ambil ID user yang login (vendor)
+        $userId = Auth::check() ? Auth::user()->userId : 5;
+        $status = $request->query('status', 'all');
+        $query = $request->query('query');
+        $now = Carbon::now();
 
-        $orders = Order::with([
-            'user',
-            'orderItems.package',
-            'deliveryStatuses'
-        ])
-        ->where('vendorId', $vendorId) // hanya order untuk vendor ini
-        ->get()
-        ->map(function ($order) {
-            return [
-                'id' => $order->orderId, // gunakan 'orderId' kalau memang ini primary key-mu
-                'user' => [
-                    'name' => $order->user->name ?? 'Guest',
-                    'phone' => $order->user->phone ?? '-',
-                    'address' => $order->user->address ?? '-',
-                    'notes' => $order->user->notes ?? '-',
-                ],
-                'order_items' => $order->orderItems->map(function ($item) {
-                    return [
-                        'package' => [
-                            'name' => $item->package->name ?? 'Paket',
-                        ],
-                        'quantity' => $item->quantity,
-                        'package_time_slot' => $item->packageTimeSlot
-                    ];
-                }),
-                'delivery_statuses' => $order->deliveryStatuses->map(function ($ds) {
-                    return [
-                        'slot' => $ds->slot,
-                        'status' => is_object($ds->status) ? $ds->status->value : $ds->status
-                    ];
-                })
-            ];
-        });
+        $orders = Order::with(['orderItems.package', 'vendor'])
+            ->where('userId', $userId)
+            ->when($status === 'active', function ($q) use ($now) {
+                $q->where('isCancelled', 0)
+                    ->whereDate('startDate', '<=', $now)
+                    ->whereDate('endDate', '>=', $now);
+            })
+            ->when($status === 'finished', function ($q) use ($now) {
+                $q->where('isCancelled', 0)
+                    ->whereDate('endDate', '<', $now);
+            })
+            ->when($status === 'cancelled', function ($q) use ($now) {
+                $q->where('isCancelled', 1);
+            })
+            ->when($query, function ($q) use ($query) {
+                $q->where(function ($sub) use ($query) {
+                    $sub->where('orderId', 'like', "%$query%")
+                        ->orWhereHas('vendor', function ($vendorQ) use ($query) {
+                            $vendorQ->where('name', 'like', "%$query%");
+                        })
+                        ->orWhereHas('orderItems.package', function ($packageQ) use ($query) {
+                            $packageQ->where('name', 'like', "%$query%");
+                        });
+                });
+            })
+            ->orderByDesc('endDate')
+            ->get();
 
-        return view('manageOrder', compact('orders'));
+        return view('customer.orderHistory', compact('orders', 'status'));
     }
 
-    public function updateStatus(Request $request, $orderId, $slot)
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
     {
-        $request->validate([
-            'status' => 'required|in:Prepared,Delivering,Received'
-        ]);
+        //
+    }
 
-        $orderStatus = \App\Models\DeliveryStatus::where('orderId', $orderId)
-            ->where('slot', $slot)
-            ->first();
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
+    }
 
-        if ($orderStatus) {
-            $orderStatus->status = $request->status;
-            $orderStatus->save();
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        $order = Order::findOrFail($id)
+            ->load(['payment', 'deliveryStatuses', 'orderItems.package', 'vendor']);
+
+        $paymentMethod = $order->payment ? PaymentMethod::find($order->payment->methodId) : null;
+
+        // Define slots
+        $slots = [
+            ['key' => 'morning', 'label' => 'Morning', 'icon' => 'partly_cloudy_day'],
+            ['key' => 'afternoon', 'label' => 'Afternoon', 'icon' => 'wb_sunny'],
+            ['key' => 'evening', 'label' => 'Evening', 'icon' => 'nights_stay'],
+        ];
+
+        // Group delivery statuses by slot and date
+        $statusesBySlot = [];
+        foreach ($order->deliveryStatuses as $status) {
+            $slotKey = strtolower($status->slot->value ?? $status->slot);
+            $dateKey = Carbon::parse($status->deliveryDate)->format('l, d M Y');
+            $statusesBySlot[$slotKey][$dateKey] = $status;
         }
+        // dd($statusesBySlot);
 
-        return response()->json(['success' => true]);
+        return view('customer.orderDetail', compact('order', 'paymentMethod', 'slots', 'statusesBySlot'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
     }
 }

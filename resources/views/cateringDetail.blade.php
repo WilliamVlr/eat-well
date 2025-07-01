@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $vendor->name }}</title>
     {{-- CSS --}}
     <link rel="stylesheet" href="{{ asset('css/cateringDetail.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
     {{-- bootstrap --}}
     @vite(["resources/sass/app.scss", "resources/js/app.js"])
     {{-- Lexend & Inter --}}
@@ -17,12 +17,8 @@
     {{-- Icon call, location, star --}}
     {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=call,pin_drop,star" /> --}}
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@1" rel="stylesheet" />
-
-    <link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
 </head>
 <body>
-    {{-- <x-navigation></x-navigation> --}}
-    
     <div class="profile-container">
         <div class="container daun-container">
             <img src="{{ asset('asset/catering-detail/daun1.png') }}" alt="Catering Image" class="daun1">
@@ -45,7 +41,7 @@
 
                     <div class="location-wrapper">
                         <span class="material-symbols-outlined location-icon">pin_drop</span>
-                        <span class="inter address">{{ $vendor->address->jalan }}</span>
+                        <span class="inter address">{{ $vendor->jalan }}, {{  $vendor->kelurahan }}, {{  $vendor->kecamatan }}, {{  $vendor->kabupaten }}, {{  $vendor->provinsi }}, {{  $vendor->kode_pos }}</span>
                     </div>
 
                     <div class="rating-and-number-sold-wrapper">
@@ -67,8 +63,8 @@
                     <div class="hijau-luar">
                         <div class="cokelat-lingkaran">
                             <div>
-                                <img src="{{ asset('asset/catering-detail/logo-aldenaire-catering.jpg') }}" alt="Catering Image" class="logo-catering">
-                                {{-- <img src="{{ $vendor->logo }}" alt="Catering Image" class="logo-catering"> --}}
+                                {{-- <img src="{{ asset('asset/catering-detail/logo-aldenaire-catering.jpg') }}" alt="Catering Image" class="logo-catering"> --}}
+                                <img src="{{ $vendor->logo }}" alt="Catering Image" class="logo-catering">
                             </div>
                         </div>
                     </div>
@@ -120,24 +116,38 @@
             <h1 class="lexend">Weekly Price</h1>
             <div class="price-container">
                 <div class="price-bulet">
-                    <h1 class="lexend">625k</h1>
+                    {{-- <h1 class="lexend">625k</h1> --}}
+                    <h1 class="lexend" id="displayedPrice"></h1>
                 </div>
                 <div class="price-kanan">
                     <div class="dropdown">
                         <button id="dropdownMenuButton" class="btn btn-secondary dropdown-toggle inter" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Package A
+                            {{ $packages[0]->name }}
                         </button>
                         <ul class="dropdown-menu">
-                            <li class="dropdown-item inter">Package A</li>
+                            @foreach ($packages as $package)
+                                {{-- <li class="dropdown-item inter">{{ $package->name }}</li> --}}
+                                <li class="dropdown-item inter" data-package-id="{{ $package->packageId }}"
+                                    data-breakfast-price="{{ $package->breakfastPrice ?? 'null' }}"
+                                    data-lunch-price="{{ $package->lunchPrice ?? 'null' }}"
+                                    data-dinner-price="{{ $package->dinnerPrice ?? 'null' }}"> 
+                                    {{ $package->name }}
+                                </li>
+                            @endforeach
+                            {{-- <li class="dropdown-item inter">Package A</li>
                             <li class="dropdown-item inter">Package B</li>
-                            <li class="dropdown-item inter">Package C</li>
+                            <li class="dropdown-item inter">Package C</li> --}}
                         </ul>
                     </div>
 
                     <!-- Hidden input to hold selected value for form submission -->
                     <input type="hidden" name="selected_package" id="selectedPackage" value="Package A">
-                    
-                    <ul class="list-group inter">
+
+                    <ul class="list-group inter" id="mealOptions">
+                        {{-- These will be dynamically populated by JavaScript --}}
+                    </ul>
+
+                    {{-- <ul class="list-group inter">
                         <li class="list-group-item">
                             <input class="form-check-input me-1" type="checkbox" value="" id="firstCheckboxStretched" checked>
                             <label class="form-check-label stretched-link" for="firstCheckboxStretched">Breakfast</label>
@@ -150,7 +160,7 @@
                             <input class="form-check-input me-1" type="checkbox" value="" id="thirdCheckboxStretched" checked>
                             <label class="form-check-label stretched-link" for="thirdCheckboxStretched">Dinner</label>
                         </li>
-                    </ul>
+                    </ul> --}}
                 </div>
             </div>
         </div>
@@ -185,76 +195,98 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="accordions inter">
-                            <div class="accordion-item">
-                                <div class="accordion-title">
-                                    <div class="left-card-wrapper">
-                                        <div>
-                                            <img src="{{ asset('asset/catering-detail/logo-packages.png') }}" alt="Packages Image" class="package-image">
-                                        </div>
-                                        <div>
-                                            <div class="nama-package-dan-download-wrapper">
-                                                <h4>Vegetarian</h4>
-                                                <div class="download-wrapper">
-                                                    {{-- <span class="material-symbols-outlined download-icon">download</span> --}}
-                                                    <span class="material-symbols-outlined download-icon" data-pdf="{{ asset('asset/catering-detail/pdf/vegetarian-package-menu.pdf') }}">
-                                                        download
+                            @foreach ($packages as $package)
+                                <div class="accordion-item">
+                                    <div class="accordion-title" data-package-id="{{ $package->packageId }}">
+                                        <div class="left-card-wrapper">
+                                            @if ($package->imgPath)
+                                                <div>
+                                                    <img src="{{ asset($package->imgPath) }}" alt="{{ $package->name }} Image" class="package-image">
+                                                </div>
+                                            @else
+                                                <div>
+                                                    <img src="{{ asset('asset/catering-detail/logo-packages.png') }}" alt="Packages Image" class="package-image">
+                                                </div>
+                                            @endif
+                                            <div>
+                                                <div class="nama-package-dan-download-wrapper">
+                                                    <h4>{{ $package->name }}</h4>
+                                                    <div class="download-wrapper">
+                                                        {{-- <span class="material-symbols-outlined download-icon" data-pdf="{{ asset('asset/catering-detail/pdf/vegetarian-package-menu.pdf') }}"> --}}
+                                                        <span class="material-symbols-outlined download-icon" data-pdf="{{ asset($package->menuPDFPath) }}">
+                                                            download
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="category-cuisine-wrapper">
+                                                    <span class="category-cuisine-bold">Category:</span>
+                                                    <span>{{ $package->category->categoryName ?? 'N/A' }}</span>
+                                                    <div></div>
+                                                    <span class="category-cuisine-bold">Cuisine Type:</span>
+                                                    <span>
+                                                        @forelse ($package->cuisineTypes as $cuisine)
+                                                            {{ $cuisine->cuisineName }}{{ !$loop->last ? ', ' : '' }}
+                                                        @empty
+                                                            N/A
+                                                        @endforelse
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="category-cuisine-wrapper">
-                                                <span class="category-cuisine-bold">Category:</span>
-                                                <span>Vegan</span>
-                                                <div></div>
-                                                <span class="category-cuisine-bold">Cuisine Type:</span>
-                                                <span>Indonesian, Chinese</span>
-                                            </div>
+                                        </div>
+                                        <div class="right-card-wrapper">
+                                            {{-- <p class="view-menu-text inter" data-pdf="{{ asset('asset/catering-detail/pdf/vegetarian-package-menu.pdf') }}"> --}}
+                                            <p class="view-menu-text inter" data-pdf="{{ asset($package->menuPDFPath) }}">
+                                                View Package's Menu
+                                            </p>
+                                            <div class="add-button" data-tab="item{{ $package->packageId }}">
+                                                <p class="add-text inter">Add</p>
+                                            </div> 
                                         </div>
                                     </div>
-                                    <div class="right-card-wrapper">
-                                        {{-- <p class="view-menu-text inter">View Package's Menu</p> --}}
-                                         <p class="view-menu-text inter" data-pdf="{{ asset('asset/catering-detail/pdf/vegetarian-package-menu.pdf') }}">
-                                            View Package's Menu
-                                        </p>
-                                        <div class="add-button" data-tab="item1">
-                                            <p class="add-text inter">Add</p>
-                                        </div> 
-                                    </div>
-                                </div>
 
-                                <div class="accordion-content" id="item1">
-                                    <div class="menu-item">
-                                        <div class="item-row">
-                                            <span>Breakfast</span>
-                                            <span class="price" data-price="200000">Rp. 200.000,-</span>
-                                            <div class="qty-control">
-                                                <button class="decrement">−</button>
-                                                <span class="qty">0</span>
-                                                <button class="increment">+</button>
-                                            </div>
-                                        </div>
-                                        <div class="item-row">
-                                            <span>Lunch</span>
-                                            <span class="price" data-price="250000">Rp. 250.000,-</span>
-                                            <div class="qty-control">
-                                                <button class="decrement">−</button>
-                                                <span class="qty">0</span>
-                                                <button class="increment">+</button>
-                                            </div>
-                                        </div>
-                                        <div class="item-row">
-                                            <span>Dinner</span>
-                                            <span class="price" data-price="275000">Rp. 275.000,-</span>
-                                            <div class="qty-control">
-                                                <button class="decrement">−</button>
-                                                <span class="qty">0</span>
-                                                <button class="increment">+</button>
-                                            </div>
+                                    <div class="accordion-content" id="item{{ $package->packageId }}">
+                                        <div class="menu-item">
+                                            @if (!is_null($package->breakfastPrice))
+                                                <div class="item-row">
+                                                    <span>Breakfast</span>
+                                                    <span class="price" data-price="{{ $package->breakfastPrice }}">Rp. {{ number_format($package->breakfastPrice, 0, ',', '.') }},-</span>
+                                                    <div class="qty-control">
+                                                        <button class="decrement">−</button>
+                                                        <span class="qty">0</span>
+                                                        <button class="increment">+</button>
+                                                    </div>
+                                                </div>
+                                            @endif
+
+                                            @if (!is_null($package->lunchPrice))
+                                                <div class="item-row">
+                                                    <span>Lunch</span>
+                                                    <span class="price" data-price="{{ $package->lunchPrice }}">Rp. {{ number_format($package->lunchPrice, 0, ',', '.') }},-</span>
+                                                    <div class="qty-control">
+                                                        <button class="decrement">−</button>
+                                                        <span class="qty">0</span>
+                                                        <button class="increment">+</button>
+                                                    </div>
+                                                </div>
+                                            @endif
+
+                                            @if (!is_null($package->dinnerPrice))
+                                                <div class="item-row">
+                                                    <span>Dinner</span>
+                                                    <span class="price" data-price="{{ $package->dinnerPrice }}">Rp. {{ number_format($package->dinnerPrice, 0, ',', '.') }},-</span>
+                                                    <div class="qty-control">
+                                                        <button class="decrement">−</button>
+                                                        <span class="qty">0</span>
+                                                        <button class="increment">+</button>
+                                                    </div>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                </div>   
+                            @endforeach
 
-                            <div class="accordion-item">
+                            {{-- <div class="accordion-item">
                                 <div class="accordion-title">
                                     <div class="left-card-wrapper">
                                         <div>
@@ -264,7 +296,6 @@
                                             <div class="nama-package-dan-download-wrapper">
                                                 <h4>Seafood</h4>
                                                 <div class="download-wrapper">
-                                                    {{-- <span class="material-symbols-outlined download-icon">download</span> --}}
                                                     <span class="material-symbols-outlined download-icon" data-pdf="{{ asset('asset/catering-detail/pdf/vegetarian-package-menu.pdf') }}">
                                                         download
                                                     </span>
@@ -280,7 +311,6 @@
                                         </div>
                                     </div>
                                     <div class="right-card-wrapper">
-                                        {{-- <p class="view-menu-text inter">View Package's Menu</p> --}}
                                         <p class="view-menu-text inter" data-pdf="{{ asset('asset/catering-detail/pdf/vegetarian-package-menu.pdf') }}">
                                             View Package's Menu
                                         </p>
@@ -321,7 +351,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>

@@ -7,8 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
-    @yield('css')
+
     <link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
+    @yield('css')
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,25 +19,34 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-    <nav class="navbar navbar-expand-lg fixed-top">
+    <nav class="navbar navbar-expand-md custNavigation">
+        <div class="h-100 w-100 invisible position-absolute bg-black opacity-50 z-3 nav-visibility"></div>
         <div class="container-fluid">
             <a class="navbar-brand me-auto" href="#">
                 <img src="/asset/navigation/eatwellLogo.png" alt="logo" style="width: 6vh;">
             </a>
 
             <!-- Language Dropdown -->
-            <div class="dropdown">
+            {{-- <div class="dropdown dropdown-bahasa" style="margin-left: 50px">
 
                 <button id="languageToggle" class="btn btn-outline-light dropdown-toggle" type="button"
                     data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 20px">
                     EN
                 </button>
 
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu dropdown-bahasa">
                     <li><button class="dropdown-item" onclick="setLanguage('EN')">EN</button></li>
                     <li><button class="dropdown-item" onclick="setLanguage('ID')">ID</button></li>
                 </ul>
+            </div> --}}
+
+            <div class="dropdown-wrapper">
+                <select id="languageSelector" style="text-align: center; margin-left: 30px">
+                    <option value="en">EN</option>
+                    <option value="id">ID</option>
+                </select>
             </div>
+
 
 
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
@@ -47,45 +57,56 @@
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
-                    <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
+                    <ul class="navbar-nav flex-grow-1 pe-3">
                         <li class="nav-item">
-                            <a class="nav-link mx-lg-2" aria-current="page" href='homepage'>Home</a>
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('home') ? 'active' : '' }}"
+                                href="/home">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mx-lg-2" href="about-us">About</a>
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('about-us') ? 'active' : '' }}"
+                                href="/about-us">About Us</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link mx-lg-2" href="Contact">Contact</a>
-                        </li>
+                        {{-- <li class="nav-item">
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('') ? 'active' : '' }}"
+                                href="/about-us">Active Subscription</a>
+                        </li> --}}
+
+                        @auth
+                            <li class="nav-item">
+                                <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('subscription') ? 'active' : '' }}"
+                                    href="/subscription">Setting</a>
+                            </li>
+                        @else
+                        @endauth
 
                     </ul>
                 </div>
             </div>
 
-            <div style="padding: 0.5rem 1rem; border-radius: 0.25rem; margin-right: 2vw">
+            {{-- <div style="padding: 0.5rem 1rem; border-radius: 0.25rem; margin-right: 2vw">
                 <a class="login-button p-0" href="#">
                     <button type="button" class="login_button">Log In</button>
                 </a>
-            </div>
+            </div> --}}
 
 
-            {{-- @auth
-          <!-- Jika sudah login -->
-          <div style="padding: 0.5rem 1rem; border-radius: 0.25rem; margin-right: 2vw">
-            <a class="login-button p-0" href="{{ route('profile') }}">
-              <button type="button" class="login_button">
-                <i class="bi bi-gear-fill"></i> Profile
-              </button>
-            </a>
-          </div>
-        @else
-          <!-- Jika belum login -->
-          <div style="padding: 0.5rem 1rem; border-radius: 0.25rem; margin-right: 2vw">
-            <a class="login-button p-0" href="{{ route('login') }}">
-              <button type="button" class="login_button">Log In</button>
-            </a>
-          </div>
-        @endauth --}}
+            @auth
+                <!-- Jika sudah login -->
+                <div style="padding: 0.5rem 1rem; border-radius: 0.25rem; margin-right: 2vw">
+                    <a class="login-button p-0" href="profile">
+                        <button type="button" class="login_button">
+                            <i class="bi bi-gear-fill"></i> Profile
+                        </button>
+                    </a>
+                </div>
+            @else
+                <!-- Jika belum login -->
+                <div style="padding: 0.5rem 1rem; border-radius: 0.25rem; margin-right: 2vw">
+                    <a class="login-button p-0" href="login">
+                        <button type="button" class="login_button">Log In</button>
+                    </a>
+                </div>
+            @endauth
 
 
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
@@ -96,7 +117,7 @@
         </div>
     </nav>
 
-    <div class="flex-grow-1" style="margin-top: 100px">
+    <div class="flex-grow-1">
         @yield('content')
     </div>
 
@@ -137,7 +158,8 @@
     </footer> --}}
 
     <footer class="bg-dark text-white py-0">
-        <div class="container text-center footer-page d-flex flex-column align-items-center py-4" style="margin-top: 10px">
+        <div class="container text-center footer-page d-flex flex-column align-items-center py-4"
+            style="margin-top: 10px">
 
             <!-- Logo + Title -->
             <div class="mb-2 text-center justify-content-center">
@@ -154,9 +176,12 @@
 
             <!-- Sosial Media -->
             <div class="d-flex justify-content-center gap-4 mb-2">
-                <a href="#" class="text-white fs-4"><img src="{{ asset('asset/footer/1.png') }}" width="30px"></a>
-                <a href="#" class="text-white fs-4"><img src="{{ asset('asset/footer/2.png') }}" width="30px"></a>
-                <a href="#" class="text-white fs-4"><img src="{{ asset('asset/footer/3.png') }}" width="30px"></i></a>
+                <a href="#" class="text-white fs-4"><img src="{{ asset('asset/footer/1.png') }}"
+                        width="30px"></a>
+                <a href="#" class="text-white fs-4"><img src="{{ asset('asset/footer/2.png') }}"
+                        width="30px"></a>
+                <a href="#" class="text-white fs-4"><img src="{{ asset('asset/footer/3.png') }}"
+                        width="30px"></i></a>
             </div>
 
             <!-- Copyright -->

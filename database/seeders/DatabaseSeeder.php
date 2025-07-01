@@ -6,6 +6,7 @@ use App\Models\CuisineType;
 use App\Models\Package;
 use App\Models\PackageCategory;
 use App\Models\PackageCuisine;
+use App\Models\PaymentMethod;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -27,9 +28,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             AddressSeeder::class,
-            VendorSeeder::class,
             PackageCategorySeeder::class,
             CuisineTypeSeeder::class,
+            PaymentMethodSeeder::class,
+            VendorSeeder::class,
             PackageSeeder::class,
             PackageCuisineSeeder::class,
             OrderSeeder::class,

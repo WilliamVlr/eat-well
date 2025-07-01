@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Address;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,6 +14,10 @@ class AddressSeeder extends Seeder
      */
     public function run(): void
     {
-        Address::factory()->count(10)->create();
+        Address::factory(5)
+        ->recycle(User::factory(3)->create())
+        ->create([
+            'notes' => fake()->sentence(),
+        ]);
     }
 }
