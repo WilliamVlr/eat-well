@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str as str;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Vendor>
@@ -58,7 +59,10 @@ class VendorFactory extends Factory
         }
 
         return [
-            'userId' => User::inRandomOrder()->first()->userId,
+            // 'userId' => User::inRandomOrder()->first()->userId,
+            'userId' => function(){
+                return User::factory()->create(['role' => 'Vendor', 'password' => Hash::make('password')])->userId;
+            },
             'addressId' => Address::inRandomOrder()->first()->addressId,
             'name' => Str::words(fake()->company(), 2, ''),
             // 'breakfast_delivery' => $startBreakfast->format('H:i') . ' - ' . $endBreakfast->format('H:i'),

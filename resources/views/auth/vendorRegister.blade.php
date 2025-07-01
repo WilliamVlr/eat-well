@@ -1,44 +1,55 @@
 @extends('master')
-
-@section('title', 'Login')
+@section('title', 'Vendor Registration')
 
 @section('css')
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/login-register.css') }}">
+    <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
 @endsection
 
 @section('content')
     <div class="container-fluid">
         <div class="row content align-items-center justify-content-center p-4 p-md-5">
             <div class="col-11 col-sm-10 col-md-8 col-lg-6 col-xl-4">
-                <div class="card text-bg-light rounded-5 d-block" id="login-card">
+
+                <div class="card text-bg-light rounded-5" id="cregister-card">
                     <div class="card-body p-5">
-                        <h5 class="card-title text-center p-3">Sign in to EatWell</h5>
+                        <h5 class="card-title text-center p-3">Vendor Registration</h5>
 
-                        <form method="POST" action="/login" novalidate>
+                        <form action="/register/vendor" method="post" novalidate>
                             @csrf
+
                             <div class="form-floating mb-3">
-                                <input type="email" name="email" class="form-control m-0 @error('email') is-invalid @enderror" id="email" value="{{ old('email') }}" placeholder="" >
+                                <input type="text" name="name" id="name" class="form-control m-0 @error('name') is-invalid @enderror" value="{{old('name')}}" placeholder="">
+                                <label for="name" class="form-label m-0">Name</label>
+                                <div class="invalid-feedback">@error('name') {{$errors->first('name')}}@enderror</div>
+                            </div>
+
+
+                            <div class="form-floating mb-3">
+                                <input type="email" name="email" id="email" class="form-control m-0 @error('email') is-invalid @enderror" value="{{ old('email') }}" placeholder="">
                                 <label for="email" class="form-label m-0">Email</label>
-                                <div class="invalid-feedback">{{ $errors->first('email') }}</div>
+                                <div class="invalid-feedback">@error('email') {{$errors->first('email')}} @enderror</div>
                             </div>
 
                             <div class="form-floating mb-3">
-                                <input type="password" name="password" class="form-control m-0 @error('password') is-invalid @enderror" id="password" placeholder="" >
+                                <input type="password" name="password" id="password" class="form-control m-o @error('password') is-invalid @enderror" placeholder="">
                                 <label for="password" class="form-label m-0">Password</label>
-                                <div class="invalid-feedback">{{ $errors->first('password') }}</div>
+                                <div class="invalid-feedback">@error('password') {{$errors->first('password')}}@enderror</div>
                             </div>
 
-                            <div class="form-check">
-                                <input type="checkbox" name="remember" class="form-check-input" id="remember">
-                                <label for="remember" class="form-check-label">Remember me</label>
+
+                            <div class="form-floating mb-3">
+                                <input type="password" name="password_confirmation" id="pasword_confirmation" class="form-control m-0 @error('password_confirmation') is-invalid @enderror" placeholder="">
+                                <label for="password_confirmation" class="form-label m-0">Password Confirmation</label>
+                                <div class="invalid-feedback">@error('password_confirmation') {{$errors->first('password_confirmation')}}@enderror</div>
                             </div>
 
-                            <button type="submit" class="btn btn-dark my-2 login-register-btn">Sign in</button>
+                            <button type="submit" class="btn btn-dark login-register-btn my-2">Register</button>
                         </form>
 
-                        <a href="{{ route('auth.redirect', ['provider'=>'google']) }}">
+                        <a href="{{ route('auth.redirect', ['provider' => 'google', 'role' => 'vendor']) }}">
                             <button class="btn btn-dark google-button py-2">
                                     <svg class="ms-2 position-absolute" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
                                         <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
@@ -47,17 +58,18 @@
                                         <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
                                         <path fill="none" d="M0 0h48v48H0z"></path>
                                     </svg>
-                                Sign in with Google
+                                Register with Google
                             </button>
                         </a>
 
                         <div class="row justify-content-center p-2">
-                            <a href="{{ url('/register/customer')}} " class="btn btn-link change-card-link text-center w-auto p-0">Don't have an account? <u>Register now!</u></a>
+                            <a href="{{ url('/login') }}" class="btn btn-link change-card-link text-center w-auto p-0">Already has an account? <u>Login now!</u></a>
                             <p class="text-center change-card-link m-0">or</p>
-                            <a href="{{ url('/register/vendor') }}" class="btn btn-link change-card-link text-center w-auto p-0">Join Eatwell as a <u>vendor!</u></a>
+                            <a href="{{ url('/register/customer') }}" class="btn btn-link change-card-link text-center w-auto p-0">Join Eatwell as a <u>customer!</u></a>
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <div class="fruits-img d-none d-xl-block col-xl-7">
@@ -69,5 +81,5 @@
 
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
-    <script src="{{asset('js/login-register.js') }}"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 @endsection
