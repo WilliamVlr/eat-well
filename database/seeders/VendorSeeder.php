@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,7 +16,7 @@ class VendorSeeder extends Seeder
     {
         $vendors = [
             [
-                'userId' => 1,
+                'userId' => User::factory()->create(['role' => 'Vendor'])->userId,
                 'addressId' => 1,
                 'name' => 'Nusantara Delights',
                 'breakfast_delivery' => '06:30-09:30',

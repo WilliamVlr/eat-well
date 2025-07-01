@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CateringHomeController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\SessionController;
@@ -74,9 +75,9 @@ Route::get('/add-address', function(){
      VENDOR ROUTES
 ---------------------- */
 // Catering dashboard
-Route::get('/cateringHomePage', function() {
-    return view('cateringHomePage');
-});
+Route::get('/cateringHomePage', [CateringHomeController::class, 'index'])->name('cateringHomePage');
+Route::get('/cateringHomePage/export/excel', [CateringHomeController::class,'export_excel'])->name('cateringHomePage.export');
+Route::get('/cateringHomePage/laporan', [CateringHomeController::class,'laporan'])->name('laporan');
 
 // Manage Packages
 Route::get('/manageCateringPackage', [PackageController::class, 'index'])->name('manageCateringPackage');
