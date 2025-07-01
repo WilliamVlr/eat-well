@@ -1,0 +1,9 @@
+body
+{
+    background-color: rgb(244, 244, 244);
+}
+
+.view-all-logsbtn{
+    display: flex;
+    justify-content: center;
+}
