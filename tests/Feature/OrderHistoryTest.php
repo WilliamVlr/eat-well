@@ -168,4 +168,30 @@ class OrderHistoryTest extends TestCase
         $response = $this->actingAs($user)->get('/orders?query=NotExist');
         $response->assertSee('No orders found');
     }
+
+    /** @test */
+    public function test_order_detail_page_shows_package_details()
+    {
+        $user = User::query()->where('role', 'like', 'Customer')->first();
+        $vendor = Vendor::factory()->create(['name' => 'Murazik LLC']);
+        $order = Order::factory()->create([
+            'userId' => $user->userId,
+            'vendorId' => $vendor->vendorId,
+        ]);
+        $package = Package::factory()->create(['name' => 'est asperiores eveniet']);
+        OrderItem::create([
+            'orderId' => $order->orderId,
+            'packageId' => $package->packageId,
+            'packageTimeSlot' => 'Afternoon',
+            'price' => 545288.95,
+            'quantity' => 7,
+        ]);
+
+        $response = $this->actingAs($user)->get("/orders/{$order->orderId}");
+        $response->assertSee('Murazik LLC');
+        $response->assertSee('est asperiores eveniet');
+        $response->assertSee('Afternoon');
+        $response->assertSee((string)$order->orderId);
+    }
+
 }
