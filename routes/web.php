@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\VendorController;
+use App\Models\Order;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -70,13 +72,14 @@ Route::delete('/packages/{id}', [PackageController::class, 'destroy'])->name('pa
 // Route::post('/packages', [PackageController::class, 'store'])->name('packages.store');
 Route::post('/manageCateringPackage', [PackageController::class, 'store'])->name('packages.store');
 Route::put('/manageCateringPackage/{package}', [PackageController::class, 'update'])->name('packages.update');
-
-// Manage Order
-Route::get('/manageOrder', function(){
-    return view('manageOrder');
-});
+Route::post('/packages/import', [PackageController::class, 'import'])->name('packages.import');
 
 
-/* ---------------------
-     ADMIN ROUTES
----------------------- */
+Route::get('/manageOrder', [OrderController::class, 'index'])
+     ->name('orders.index');
+
+Route::post(
+    '/orders/{orderId}/status/{slot}',
+    [OrderController::class, 'updateStatus']
+)->name('orders.updateStatus');
+

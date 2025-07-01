@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Catering Manage Menu</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" rel="stylesheet" />
@@ -189,7 +190,18 @@
     <div class="heading-title">Find your Package</div>
     <div class="text-muted-subheading">You can edit our previous and add your new package to your catering.</div>
 
+
     <div class="container mt-5">
+        <div class="d-flex justify-content-between mb-3">
+
+            <div class="w-50">
+                <label for="import" class="form-label">Import</label>
+                <input type="file" class="form-control" id="import" accept=".csv, .xlsx, .xls">
+                <div class="form-text">Format kolom: name, category, cuisine_type, breakfast_price, lunch_price,
+                    dinner_price, average_calory, file_menu, package_image</div>
+            </div>
+        </div>
+
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead class="table-dark">
@@ -215,7 +227,9 @@
                             <td>{{ $package->name }}</td>
                             <td>{{ $package->category->categoryName ?? 'N/A' }}</td>
                             <td>
-                                {{ $package->cuisineTypes->pluck('cuisineName')->implode(', ') }}
+                                @foreach ($package->cuisineTypes as $type)
+                                {{ $type->cuisineName }}
+                                @endforeach
                             </td>
                             <td>Rp{{ number_format($package->breakfastPrice ?? 0, 0, ',', '.') }}</td>
                             <td>Rp{{ number_format($package->lunchPrice ?? 0, 0, ',', '.') }}</td>
@@ -266,6 +280,7 @@
     </div>
     <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#packageModal"
         onclick="openAddModal()">Add Package</button>
+
     </div>
 
     <!-- Modal -->
@@ -281,6 +296,11 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="excelUpload" class="form-label">Upload Excel / CSV</label>
+                            <input type="file" class="form-control" id="excelUpload" accept=".csv, .xlsx, .xls">
+                        </div>
+
                         <!-- form fields -->
                         <div class="mb-3">
                             <label for="packageName" class="form-label">Package Name</label>
@@ -463,8 +483,148 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadInput = document.getElementById('import');
+            if (!uploadInput) return;
+
+            uploadInput.addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = async (evt) => {
+                    const workbook = XLSX.read(new Uint8Array(evt.target.result), {
+                        type: 'array'
+                    });
+                    const rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[
+                        0]], {
+                        defval: ''
+                    });
+                    if (!rows.length) {
+                        alert('File kosong / format salah!');
+                        return;
+                    }
+
+                    const postUrl = '/manageCateringPackage'; // <— URL sudah benar
+                    const csrf = document.querySelector('meta[name="csrf-token"]').content;
+
+                    const requests = rows.map(row => {
+                        const fd = new FormData();
+                        fd.append('_token', csrf);
+                        fd.append('name', row['name']);
+                        fd.append('categoryId', row['categoryId']);
+                        fd.append('vendorId', row['vendorId']);
+                        fd.append('averageCalories', row['averageCalories']);
+                        fd.append('breakfastPrice', row['breakfastPrice']);
+                        fd.append('lunchPrice', row['lunchPrice']);
+                        fd.append('dinnerPrice', row['dinnerPrice']);
+
+                        return fetch(postUrl, {
+                            method: 'POST',
+                            body: fd,
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        })
+                    });
+
+                    try {
+                        const res = await Promise.allSettled(requests);
+                        const ok = res.filter(x => x.status === 'fulfilled').length;
+                        alert(`Import selesai! Berhasil: ${ok}, Gagal: ${res.length - ok}`);
+                        location.reload();
+                    } catch (err) {
+                        console.error(err);
+                        alert('Terjadi kesalahan saat import!');
+                    }
+                };
+                reader.readAsArrayBuffer(file);
+            });
+        });
+    </script>
+
+
+
+    <script>
+        document.getElementById('excelUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, {
+                    type: 'array'
+                });
+                const sheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[sheetName];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+                // Ambil baris pertama
+                const firstRow = jsonData[0];
+
+                // Masukkan ke form
+                if (firstRow) {
+                    document.getElementById('packageName').value = firstRow["name"];
+                    document.getElementById('category').value = mapCategory(firstRow["category"]);
+                    document.getElementById('breakfastPrice').value = firstRow["breakfast_price"];
+                    document.getElementById('lunchPrice').value = firstRow["lunch_price"];
+                    document.getElementById('dinnerPrice').value = firstRow["dinner_price"];
+                    document.getElementById('averageCalories').value = firstRow["average_calory"];
+
+                    // Handle cuisine (anggap kolom isinya dipisah koma)
+                    const cuisineIds = mapCuisineNames(firstRow["cuisine_type"]);
+                    cuisineIds.forEach(id => toggleCuisine(id));
+                }
+            };
+
+            reader.readAsArrayBuffer(file);
+        });
+
+        function mapCategory(name) {
+            const categoryMap = {
+                "Vegetarian": 1,
+                "Gluten-Free": 2,
+                "Halal": 3,
+                "Low Carb": 4,
+                "Low Calorie": 5,
+                "Organic": 6,
+            };
+            return categoryMap[name] || '';
+        }
+
+        function mapCuisineNames(cuisineStr) {
+            const cuisineMap = {
+                "Indonesian": 1,
+                "Chinese": 2,
+                "Japanese": 3,
+                "Korean": 4,
+                "Western": 5,
+                "Fusion": 6
+            };
+            const names = cuisineStr.split(',').map(n => n.trim());
+            return names.map(n => cuisineMap[n]).filter(Boolean);
+        }
+
+        function toggleCuisine(id, event = null) {
+            const existingInput = document.getElementById(`cuisine-${id}`);
+            if (!existingInput) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'cuisineIds[]';
+                input.value = id;
+                input.id = `cuisine-${id}`;
+                document.getElementById('cuisineInputs').appendChild(input);
+            }
+
+            if (event) {
+                event.target.classList.toggle('btn-outline-secondary');
+                event.target.classList.toggle('btn-success');
+            }
+        }
+
         function deletePackage(id) {
             if (confirm('Are you sure you want to delete this package?')) {
                 fetch(`/packages/${id}`, {
@@ -495,6 +655,8 @@
         // function selectCuisine(cuisine) {
         //     document.getElementById('cuisineType').value = name;
         // }
+
+
 
         const selectedCuisineIds = new Set();
 

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory; // Opsional tapi sangat direkomendasikan
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class PackageCategory extends Model
@@ -10,10 +10,12 @@ class PackageCategory extends Model
     use HasFactory;
 
     protected $table = 'package_categories';
-    protected $primaryKey = 'categoryId'; // Matches your migration
+    protected $primaryKey = 'categoryId';
+    public $incrementing = true;
+    protected $keyType = 'int';
 
     protected $fillable = [
-        'categoryName', // Matches your migration
+        'categoryName',
     ];
 
     protected $casts = [

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\CuisineType;
 use App\Models\Package;
 use App\Models\PackageCategory;
+use App\Models\PackageCuisine;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -30,6 +31,9 @@ class DatabaseSeeder extends Seeder
             PackageCategorySeeder::class,
             CuisineTypeSeeder::class,
             PackageSeeder::class,
+            PackageCuisineSeeder::class,
+            OrderSeeder::class,
+            OrderItemSeeder::class
         ]);
 
     }

@@ -6,15 +6,19 @@ use Illuminate\Http\Request;
 use App\Models\Package;
 use App\Models\CuisineType;
 use App\Models\PackageCuisine;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\PackagesImport;
 
 class PackageController extends Controller
 {
     // Menampilkan semua package
     public function index()
     {
-        $packages = Package::with('cuisineTypes')->get();
+        $packages = Package::with('cuisineTypes', 'category')->get();
+        // dd($packages);
         $cuisines = CuisineType::all(); // Ambil semua cuisine
         return view('manageCateringPackage', compact('packages', 'cuisines'));
+
     }
 
     // Menyimpan data package baru
@@ -100,4 +104,15 @@ class PackageController extends Controller
         $package->update($validated);
         return redirect(route('manageCateringPackage'));
     }
+
+    public function import(Request $request)
+{
+    $request->validate([
+        'excel_file' => 'required|file|mimes:xlsx,csv,xls'
+    ]);
+
+    Excel::import(new PackagesImport, $request->file('excel_file'));
+
+    return redirect()->back()->with('success', 'Packages imported successfully!');
+}
 }

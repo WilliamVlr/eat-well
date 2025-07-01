@@ -23,7 +23,7 @@ class DeliveryStatus extends Model
     ];
 
     protected $casts = [
-        'slot' => TimeSlot::class,
+        'slot' => 'string',
         'status' => DeliveryStatuses::class,
         'deliveryDate' => 'datetime', // Matches your migration
         'created_at' => 'datetime',

@@ -1,171 +1,411 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Manage Orders with Meal Boxes</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <style>
-    body {
-      background-color: #0b3d2e;
-      color: #fff;
-      margin-top: 80px;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Manage Orders</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #0b3d2e;
+            color: #fff;
+            margin-top: 80px;
+        }
 
-    h1 {
-      font-weight: bold;
-    }
+        h1 {
+            font-weight: bold;
+        }
 
-    .tab-btn {
-      color: #fff;
-      border-color: #fff;
-    }
+        .tab-btn {
+            color: #fff;
+            border-color: #fff;
+        }
 
-    .tab-btn.active {
-      background-color: #fff;
-      color: #14532d;
-      font-weight: bold;
-    }
+        .tab-btn.active {
+            background-color: #fff;
+            color: #14532d;
+            font-weight: bold;
+        }
 
-    .card {
-      background-color: #fff;
-      color: #000;
-      border-radius: 0.75rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
+        .card {
+            background-color: #fff;
+            color: #000;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
 
-    .card-body {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
+        .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
 
-    .order-header {
-      display: flex;
-      justify-content: flex-end;
-      font-weight: 600;
-      font-size: 0.95rem;
-      margin-bottom: 0.5rem;
-      color: #14532d;
-    }
+        .order-header {
+            display: flex;
+            justify-content: flex-end;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            color: #14532d;
+        }
 
-    .card-title {
-      font-weight: bold;
-      font-size: 1rem;
-      margin-bottom: 0.5rem;
-    }
+        .meal-box {
+            border-radius: 0.5rem;
+            padding: 0.8rem 1rem;
+            margin-bottom: 1rem;
+            background-color: #ebf5ee;
+            color: #14532d;
+        }
 
-    .meal-box {
-      border-radius: 0.5rem;
-      padding: 0.8rem 1rem;
-      margin-bottom: 1rem;
-      background-color: #ebf5ee;
-      color: #14532d;
-    }
+        .meal-box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
 
-    .meal-box-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: 700;
-      font-size: 1.1rem;
-      margin-bottom: 0.5rem;
-    }
+        .meal-entries {
+            padding-left: 10px;
+        }
 
-    .meal-entries {
-      padding-left: 10px;
-    }
+        .meal-entry {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.3rem;
+        }
 
-    .meal-entry {
-      font-weight: 600;
-      font-size: 0.95rem;
-      margin-bottom: 0.3rem;
-    }
+        .meal-select {
+            width: 140px;
+            height: 32px;
+            padding: 4px 12px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 0.5rem;
+            border: 1.5px solid transparent;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            appearance: none;
+            text-align-last: center;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        }
 
-    .meal-select {
-      width: 140px;
-      height: 32px;
-      padding: 4px 12px;
-      font-size: 0.9rem;
-      font-weight: 700;
-      border-radius: 0.5rem;
-      border: 1.5px solid transparent;
-      cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      appearance: none;
-      text-align-last: center;
-      transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-    }
+        .meal-select.prepared {
+            background-color: #fff7e6;
+            color: #8a6d0b;
+            border-color: #f9d71c;
+            box-shadow: 0 0 6px #f9d71c88;
+        }
 
-    .meal-select.preparing {
-      background-color: #fff7e6;
-      color: #8a6d0b;
-      border-color: #f9d71c;
-      box-shadow: 0 0 6px #f9d71c88;
-    }
+        .meal-select.delivering {
+            background-color: #dbefff;
+            color: #0b3d91;
+            border-color: #4a90e2;
+            box-shadow: 0 0 6px #4a90e288;
+        }
 
-    .meal-select.delivering {
-      background-color: #dbefff;
-      color: #0b3d91;
-      border-color: #4a90e2;
-      box-shadow: 0 0 6px #4a90e288;
-    }
-
-    .meal-select.received {
-      background-color: #d9f7e4;
-      color: #1f6f3a;
-      border-color: #44bb44;
-      box-shadow: 0 0 6px #44bb4488;
-    }
-
-    .header-search-group {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .header-search-group label {
-      white-space: nowrap;
-      font-weight: 600;
-    }
-
-    .header-search-group .form-select-sm {
-      max-width: 140px;
-    }
-
-    @media (min-width: 768px) {
-      .header-search-group {
-        gap: 12px;
-      }
-    }
-  </style>
+        .meal-select.received {
+            background-color: #d9f7e4;
+            color: #1f6f3a;
+            border-color: #44bb44;
+            box-shadow: 0 0 6px #44bb4488;
+        }
+    </style>
 </head>
+
 <body class="p-4">
-  <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
-    <h1 class="mb-3 mb-md-0">Manage Orders</h1>
-    <div class="header-search-group">
-      <label for="search">No. Order:</label>
-      <input type="text" id="search" class="form-control form-control-sm" placeholder="Search by Order #" />
-      <label for="package-select" class="mb-0">Package:</label>
-      <select id="package-select" class="form-select form-select-sm">
-        <option>All Packages</option>
-        <option>Paket A</option>
-        <option>Paket B</option>
-      </select>
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+        <h1 class="mb-3 mb-md-0">Manage Orders</h1>
+        <div class="d-flex gap-2">
+            <input type="text" class="form-control form-control-sm" placeholder="Search by Order #" />
+            <select class="form-select form-select-sm">
+                <option>All Packages</option>
+                <option>Paket A</option>
+                <option>Paket B</option>
+            </select>
+        </div>
     </div>
-  </div>
 
-  <div class="mb-4">
-    <button class="btn tab-btn active me-2" onclick="switchTab(this)">This Week</button>
-    <button class="btn tab-btn btn-outline-light" onclick="switchTab(this)">Next Week</button>
-  </div>
+    <div class="mb-4">
+        <button class="btn tab-btn active me-2" onclick="switchTab(this)">This Week</button>
+        <button class="btn tab-btn btn-outline-light" onclick="switchTab(this)">Next Week</button>
+    </div>
 
-  <div class="row g-4" id="order-container"></div>
+    <div class="row g-4" id="order-container"></div>
 
-  <script>
+    <script>
+        const orders = @json($orders);
+        const mealTypes = ['breakfast', 'lunch', 'dinner'];
+        const orderContainer = document.getElementById("order-container");
+
+        function updateMealStatus(select, orderId, slot) {
+            const status = select.value;
+
+            // Ubah warna dropdown
+            select.classList.remove('prepared', 'delivering', 'received');
+            select.classList.add(status.toLowerCase());
+
+            fetch(`/orders/${orderId}/status/${slot}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrf // ← pakai meta‑tag
+                    },
+                    body: JSON.stringify({
+                        status
+                    })
+                })
+                .then(r => r.ok ? r.json() : Promise.reject(r))
+                .then(res => {
+                    if (!res.success) throw new Error('DB update error');
+                })
+                .catch(() => {
+                    alert('Gagal update status, coba lagi.');
+                    // rollback warna jika mau
+                });
+        }
+
+
+        function switchTab(button) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+        }
+
+        orders.forEach(order => {
+            const deliveryMap = {};
+            order.delivery_statuses.forEach(ds => {
+                deliveryMap[ds.slot.toLowerCase()] = ds.status;
+            });
+
+            let mealSections = '';
+            mealTypes.forEach(slot => {
+                const items = order.order_items.filter(i => i.package_time_slot === slot);
+                if (items.length > 0) {
+                    const entries = items.map(i => {
+                        return `<div class="meal-entry">${i.package.name} (${i.quantity}x)</div>`;
+                    }).join("");
+
+                    const status = deliveryMap[slot] || "Prepared";
+                    mealSections += `
+            <div class="meal-box">
+              <div class="meal-box-header">
+                <span>${slot.charAt(0).toUpperCase() + slot.slice(1)}</span>
+                <select class="form-select form-select-sm meal-select ${status.toLowerCase()}" onchange="updateMealStatus(this, ${order.id}, '${slot}')">
+                  <option ${status === "Prepared" ? "selected" : ""}>Prepared</option>
+                  <option ${status === "Delivering" ? "selected" : ""}>Delivering</option>
+                  <option ${status === "Received" ? "selected" : ""}>Received</option>
+                </select>
+              </div>
+              <div class="meal-entries">${entries}</div>
+            </div>
+          `;
+                }
+            });
+
+            orderContainer.innerHTML += `
+        <div class="col-12 col-md-6 col-lg-4 d-flex">
+          <div class="card w-100">
+            <div class="card-body">
+              <div class="order-header">
+                Order #INV${String(order.id).padStart(3, '0')}
+              </div>
+              <p class="mb-1">${order.user?.name || '-'}</p>
+              <p class="mb-1">${order.user?.phone || '-'}</p>
+              <p class="mb-1">${order.user?.address || '-'}</p>
+              <p class="mb-2 text-muted"><i>${order.user?.notes || '-'}</i></p>
+              ${mealSections}
+            </div>
+          </div>
+        </div>
+      `;
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
+
+
+
+
+{{-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Manage Orders with Meal Boxes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #0b3d2e;
+            color: #fff;
+            margin-top: 80px;
+        }
+
+        h1 {
+            font-weight: bold;
+        }
+
+        .tab-btn {
+            color: #fff;
+            border-color: #fff;
+        }
+
+        .tab-btn.active {
+            background-color: #fff;
+            color: #14532d;
+            font-weight: bold;
+        }
+
+        .card {
+            background-color: #fff;
+            color: #000;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: flex-end;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            color: #14532d;
+        }
+
+        .card-title {
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .meal-box {
+            border-radius: 0.5rem;
+            padding: 0.8rem 1rem;
+            margin-bottom: 1rem;
+            background-color: #ebf5ee;
+            color: #14532d;
+        }
+
+        .meal-box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .meal-entries {
+            padding-left: 10px;
+        }
+
+        .meal-entry {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .meal-select {
+            width: 140px;
+            height: 32px;
+            padding: 4px 12px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 0.5rem;
+            border: 1.5px solid transparent;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            appearance: none;
+            text-align-last: center;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        }
+
+        .meal-select.preparing {
+            background-color: #fff7e6;
+            color: #8a6d0b;
+            border-color: #f9d71c;
+            box-shadow: 0 0 6px #f9d71c88;
+        }
+
+        .meal-select.delivering {
+            background-color: #dbefff;
+            color: #0b3d91;
+            border-color: #4a90e2;
+            box-shadow: 0 0 6px #4a90e288;
+        }
+
+        .meal-select.received {
+            background-color: #d9f7e4;
+            color: #1f6f3a;
+            border-color: #44bb44;
+            box-shadow: 0 0 6px #44bb4488;
+        }
+
+        .header-search-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-search-group label {
+            white-space: nowrap;
+            font-weight: 600;
+        }
+
+        .header-search-group .form-select-sm {
+            max-width: 140px;
+        }
+
+        @media (min-width: 768px) {
+            .header-search-group {
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body class="p-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+        <h1 class="mb-3 mb-md-0">Manage Orders</h1>
+        <div class="header-search-group">
+            <label for="search">No. Order:</label>
+            <input type="text" id="search" class="form-control form-control-sm" placeholder="Search by Order #" />
+            <label for="package-select" class="mb-0">Package:</label>
+            <select id="package-select" class="form-select form-select-sm">
+                <option>All Packages</option>
+                <option>Paket A</option>
+                <option>Paket B</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <button class="btn tab-btn active me-2" onclick="switchTab(this)">This Week</button>
+        <button class="btn tab-btn btn-outline-light" onclick="switchTab(this)">Next Week</button>
+    </div>
+
+    <div class="row g-4" id="order-container"></div>
+
+
+    <script>
     const orders = [
       {
         id: "INV001",
@@ -264,6 +504,7 @@
     });
   </script>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html>
+
+</html> --}}
