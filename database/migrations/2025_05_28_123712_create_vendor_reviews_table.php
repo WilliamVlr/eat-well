@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('review')->nullable();
             $table->timestamps();
 
+            $table->softDeletes();
             $table->foreign('vendorId')->references('vendorId')->on('vendors')->onDelete('cascade');
             $table->foreign('userId')->references('userId')->on('users')->onDelete('cascade');
             $table->foreign('orderId')->references('orderId')->on('orders')->onDelete('cascade');            

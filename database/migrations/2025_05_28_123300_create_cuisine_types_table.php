@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('cuisine_types', function (Blueprint $table) {
             $table->id('cuisineId');
             $table->string('cuisineName');
+
+            $table->softDeletes();
             $table->timestamps();
         });
     }

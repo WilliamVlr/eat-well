@@ -46,6 +46,14 @@
                     <a class="menu-link inter font-regular" href="/manage-address">Manage Address</a>
                 </li>
             </ul>
+            <div class="logout">
+                <form method="POST" action="{{ route('login-register') }}" class="logout-form">
+                @csrf
+                    <button type="submit" class="logout-btn inter font-regular">
+                        Log out
+                    </button>
+                </form>
+            </div>
         </div>
             
         

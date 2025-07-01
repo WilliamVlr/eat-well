@@ -25,12 +25,15 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             // $table->enum('role', ['customer', 'vendor', 'admin']);
+            //Role = Customer/Vendor/Admin
             $table->string('role')->default('Customer');
             $table->boolean('enabled2FA')->default(false);
             $table->string('remember_token', 100);
             $table->dateTime('dateOfBirth')->nullable();
             $table->boolean('genderMale')->default(false);
             $table->decimal('wellpay', 10, 2)->default(0.00);
+
+            $table->softDeletes();
             $table->timestamps();
         });
 
