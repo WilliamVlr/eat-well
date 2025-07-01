@@ -6,6 +6,10 @@
     @vite(['resources/js/app.js', 'resources/sass/app.scss'])
 @endsection
 
+@php
+    use Carbon\Carbon;
+@endphp
+
 @section('content')
     <table class="table table-striped">
         <thead>
@@ -27,17 +31,17 @@
                 <td>{{Carbon::parse($order->endDate)->format('Y-m-d')}}</td>
                 <td>
                     @foreach ($order->orderItems as $item)
-                        {{$item->package->name . !$loop->last ? ', ' : ''}}
+                        {{$item->package->name}} {{!$loop->last ? ', ' : ''}}
                     @endforeach
                 </td>
-                <td>Rp {{$order->totalPrice}}</td>
+                <td>Rp {{number_format($order->totalPrice, 2, ',', '.')}}</td>
             </tr>
             @endforeach
         </tbody>
         <tfoot>
         <tr>
             <td colspan="5" class="text-end fw-bold">Total Sales</td>
-            <td class="fw-bold">$ 200.00</td>
+            <td class="fw-bold">Rp{{number_format($totalSales, 2, ',', '.')}}</td>
         </tr>
     </tfoot>
     </table>

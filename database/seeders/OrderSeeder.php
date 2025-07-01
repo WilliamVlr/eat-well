@@ -77,5 +77,68 @@ class OrderSeeder extends Seeder
                     }
                 }
             });
+
+             Order::factory()
+            ->count(5)
+            ->create([
+                'vendorId' => 1,
+            ])
+            ->each(function ($order) {
+                $items = OrderItem::factory()
+                    ->count(rand(1, 3))
+                    ->forVendor($order->vendorId)
+                    ->make(['orderId' => $order->orderId]);
+
+                // Group by packageId and packageTimeSlot, sum quantities
+                $grouped = [];
+                foreach ($items as $item) {
+                    // Always use the enum's value
+                    $slot = $item->packageTimeSlot->value;
+                    $key = $item->packageId . '-' . $slot;
+                    if (!isset($grouped[$key])) {
+                        $grouped[$key] = $item;
+                    } else {
+                        $grouped[$key]->quantity += $item->quantity;
+                    }
+                }
+
+                $order->orderItems()->saveMany($grouped);
+
+                // Calculate total price
+                $total = $order->orderItems->sum(function ($item) {
+                    return $item->price * $item->quantity;
+                });
+
+                $order->totalPrice = $total;
+                $order->save();
+
+                if(rand(1, 2) == 1){
+                    Payment::factory()->create([
+                        'orderId' => $order->orderId,
+                    ]);
+                } else {
+                    Payment::factory()->create([
+                        'orderId' => $order->orderId,
+                        'paid_at' => fake()->dateTimeBetween('-7 days', '-1 days'),
+                    ]);
+                }
+
+                // Get unique time slots from orderItems
+                $slots = $order->orderItems->pluck('packageTimeSlot')->unique()->toArray();
+
+                // Use order startDate or today if not set
+                $startDate = $order->startDate ? Carbon::parse($order->startDate) : now();
+
+                for ($i = 0; $i < 7; $i++) {
+                    $date = (clone $startDate)->addDays($i);
+                    foreach ($slots as $slot) {
+                        DeliveryStatus::factory()->create([
+                            'orderId' => $order->orderId,
+                            'deliveryDate' => $date,
+                            'slot' => $slot,
+                        ]);
+                    }
+                }
+            });
     }
 }

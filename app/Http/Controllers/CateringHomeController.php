@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRole;
 use App\Exports\OrderExport;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -23,8 +24,9 @@ class CateringHomeController extends Controller
     public function laporan()
     {
         $user = Auth::check() ? Auth::user() : null;
+        // dd($user);
         
-        if($user && $user->role == 'Vendor')
+        if($user && $user->role === UserRole::Vendor)
         {
             $vendorId = $user->vendor->vendorId;
 
@@ -32,8 +34,12 @@ class CateringHomeController extends Controller
             ->get();
 
             $orders->load(['user', 'orderItems.package']);
-            
-            return view('laporanPenjualanVendor', compact('orders'));
+            // dd($orders);
+
+            $totalSales = $orders->sum('totalPrice');
+            // dd($totalSales);
+
+            return view('laporanPenjualanVendor', compact('orders', 'totalSales'));
         } else {
             return redirect('/');
         }
