@@ -27,8 +27,7 @@
 
 
 
-        <h1 class="text-center mt-5 fw-bold">Admin Dashboard</h1>
-
+        <h1 class="text-center mt-3 fw-bold">Admin Dashboard</h1>
         <div class="" style="margin: 4vw">
             <div class="row mt-5">
                 <div class="col-lg-6" style="">
@@ -38,34 +37,37 @@
                         <h4 class="mt-0 mb-3 fw-bold">Preview</h4>
                         <div class="col-lg-6 mb-2">
                             <div class="card"
-                                style="height: 20vh; background-image: url('asset/admin/card.png'); background-size: cover; background-position: center">
+                                style="background-image: url('asset/admin/card.png'); background-size: cover; background-position: center">
                                 <div class="card-body">
                                     {{-- keuntungan ambil data di order aja dari total price lalu anggap saja kita kasih pajak 5% --}}
                                     <h5 class="card-title text-center fw-bolder mt-2 fs-4 mb-3" style="color: white">
                                         Keuntungan</h5>
                                     <p class="card-text text-center fs-5" style="color: rgb(255, 255, 255)"> Rp.
-                                        1.400.500.250,00 </p>
+                                        {{ $profit }}, 00 </p>
 
-                                    <p class="card-text text-center fs-6" style="color: rgb(233, 248, 235)"> Increased
-                                        by
-                                        100% 📈</p>
+                                    <p class="card-text text-center fs-6" style="color: rgb(233, 248, 235)">
+                                        {{ $percentageprofit >= 0 ? 'Increased' : 'Decreased' }} by
+                                        {{ number_format(abs($percentageprofit), 2) }} % {{ $percentageprofit >= 0 ? '📈' : '📉' }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-lg-6" style="height: 20vh" style="margin-right: 0px">
+                        <div class="col-lg-6" style="margin-right: 0px">
                             <div class="card"
-                                style="height: 20vh; background-image: url('asset/admin/card2.png'); background-size: cover; background-position: center">
+                                style="background-image: url('asset/admin/card2.png'); background-size: cover; background-position: center">
                                 <div class="card-body">
                                     {{-- keuntungan ambil data di order aja dari total price lalu anggap saja kita kasih pajak 5% --}}
                                     <h5 class="card-title text-center fw-bolder mt-2 fs-4 mb-3" style="color: white">
                                         Total Sales</h5>
                                     <p class="card-text text-center fs-5" style="color: rgb(255, 255, 255)"> Rp.
-                                        1.400.500.250,00 </p>
+                                        {{ $totalPrice }},00 </p>
 
-                                    <p class="card-text text-center fs-6" style="color: rgb(233, 248, 235)"> Increased
-                                        by
-                                        100% 📈</p>
+                                    <p class="card-text text-center fs-6" style="color: rgb(233, 248, 235)">
+                                        {{ $increment >= 0 ? 'Increased' : 'Decreased' }} by
+                                        {{ number_format(abs($percentage), 2) }} % {{ $increment >= 0 ? '📈' : '📉' }}
+                                    </p>
+
                                 </div>
                             </div>
                         </div>
@@ -87,19 +89,22 @@
                 </div>
 
                 <div class="col-lg-1">
-                    
+
                 </div>
 
-                <div class="col-lg-5" style="height: 70vh; background-color: white; margin-right:0px; border-radius: 30px; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); padding:10px">
-                    <h1 class="fw-bold mt-3" style="margin-left: 1vw">Logs</h1>
+                <div class="col-lg-5"
+                    style="background-color: white; margin-right:0px; border-radius: 30px; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); padding:10px">
+                    <h1 class="fw-bold mt-3" style="margin-left: 1vw">Recent Logs</h1>
                     <hr>
-                    <table class="table">
+                    <table class="table table-log">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">First</th>
-                                <th scope="col">Last</th>
-                                <th scope="col">Handle</th>
+                                <th scope="col">No. </th>
+                                <th scope="col">User</th>
+                                <th scope="col">Activity</th>
+                                <th scope="col">Time</th>
+                                <th scope="col"></th>
+                                
                             </tr>
                         </thead>
                         <tbody>
@@ -108,18 +113,63 @@
                                 <td>Mark</td>
                                 <td>Otto</td>
                                 <td>@mdo</td>
+                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
                             </tr>
                             <tr>
                                 <th scope="row">2</th>
                                 <td>Jacob</td>
                                 <td>Thornton</td>
                                 <td>@fat</td>
+                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
                             </tr>
                             <tr>
                                 <th scope="row">3</th>
                                 <td>John</td>
                                 <td>Doe</td>
                                 <td>@social</td>
+                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">4</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">5</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">6</th>
+                                <td>John</td>
+                                <td>Doe</td>
+                                <td>@social</td>
+                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">7</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">8</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9</th>
+                                <td>John</td>
+                                <td>Doe</td>
+                                <td>@social</td>
+                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -136,13 +186,14 @@
         const ctx = document.getElementById('myChart').getContext('2d');
 
         new Chart(ctx, {
-            type: 'bar',
+            type: 'line',
             data: {
-                labels: ['A', 'B', 'C'],
+                labels: ['A', 'B', 'C', 'D', 'E'],
                 datasets: [{
-                    label: 'Contoh',
-                    data: [10, 20, 30],
-                    backgroundColor: 'rgba(255, 99, 132, 0.5)'
+                    label: 'Sales',
+                    data: [10, 58, 30, 49, 56],
+                    backgroundColor: 'rgba(125, 99, 132, 1)',
+                    borderColor: 'rgba(175, 192, 192, 1)'
                 }]
             },
             options: {
@@ -152,8 +203,16 @@
                     y: {
                         beginAtZero: true
                     }
+                },
+
+            plugins: {
+                legend: {
+                    onClick: null
                 }
             }
+            }
+
+            
         });
     </script>
 

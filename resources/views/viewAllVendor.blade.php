@@ -36,7 +36,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ $vendor->name }}</h5>
                         <p class="card-text">Telp : {{ $vendor->phone_number }}</p>
-                        <p class="card-text">Address : {{ $vendor->address->jalan . ', ' . $vendor->address->kota }}</p>
+                        <p class="card-text">Address : {{ $vendor->jalan . ', ' . $vendor->kota }}</p>
                         <a href="{{ route('catering-detail', $vendor) }}" class="btn btn-primary" style="background-color: green">View Detail</a>
                     </div>
                 </div>
