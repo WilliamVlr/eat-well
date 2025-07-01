@@ -4,17 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory; // Opsional tapi sangat direkomendasikan
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Vendor extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'vendors';
     protected $primaryKey = 'vendorId'; // Matches your migration
 
     protected $fillable = [
         'userId',
-        'addressId',
+        // 'addressId',
         'name', // Added based on your migration
         'breakfast_delivery',
         'lunch_delivery',
@@ -23,6 +24,13 @@ class Vendor extends Model
         'logo',
         'phone_number', // Added based on your migration
         'rating', // Added based on your migration
+        'provinsi', // Added based on your migration
+        'kota',
+        'kabupaten', // Added based on your migration
+        'kecamatan',
+        'kelurahan',
+        'kode_pos',
+        'jalan',
     ];
 
     protected $casts = [
@@ -36,10 +44,10 @@ class Vendor extends Model
         return $this->belongsTo(User::class, 'userId', 'userId');
     }
 
-    public function address()
-    {
-        return $this->hasOne(Address::class, 'addressId', 'addressId');
-    }
+    // public function address()
+    // {
+    //     return $this->hasOne(Address::class, 'addressId', 'addressId');
+    // }
 
     public function packages()
     {

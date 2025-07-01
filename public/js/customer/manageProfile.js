@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    
     document.querySelectorAll('.menu-link').forEach(link => {
         link.addEventListener('click', function(e) {
             document.querySelectorAll('.menu-link').forEach(l => l.classList.remove('active'));
