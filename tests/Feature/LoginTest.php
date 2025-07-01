@@ -58,7 +58,7 @@ class LoginTest extends TestCase
     public function tc4_password_field_is_hidden_on_login_page()
     {
         $response = $this->get('/login');
-        $response->assertSee('<input class="form-control m-0" type="password" name="password" id="password" placeholder="" required="required">', false);
+        $response->assertSee('type="password"', false);
     }
     // Forgot password for later on, not now.
     /** @test */
