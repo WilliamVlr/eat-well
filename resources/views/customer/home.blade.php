@@ -44,6 +44,39 @@
                 <button type="button" data-bs-target="#carouselIklan" data-bs-slide-to="2" aria-label="Slide 3"></button>
             </div>
         </section>
+
+        {{-- WellPay --}}
+        <div class="wellpay-container mb-4">
+            <div class="d-flex align-items-center mb-2 lexend">
+                <span><img src="{{ asset('asset/navigation/eatwellLogo.png') }}" alt="logo"
+                        style="width: 3.5vh; background-color: var(--bg-primary); border-radius: 5px;"></span>
+                <span>
+                    <h4 class="mb-0 ms-2">WellPay</h4>
+                </span>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <span>
+                    <h1 class="inter m-0 me-3 ms-2">Rp. <span id="wellpayBalanceAmount">10.000.000</span></h1>
+                </span>
+                <div class="d-flex align-items-center justify-content-center" id="toggleVisibilityBtn"
+                    style="width: 30px; height: 30px; border: 3px solid var(--bg-primary); border-radius: 50%; background: var(--bg-primary);">
+                    <span class="material-symbols-outlined" id="visibilityIcon"
+                        style="font-variation-settings: 'FILL' 1; font-size: 20px; color: #fff; cursor: pointer;">visibility_off</span>
+                </div>
+            </div>
+            <div class="d-flex align-items-center px-3 py-1 mt-2"
+                style="width: 107px; background-color: var(--bg-contrast); padding: 5px; border-radius: 100px; color: #fff; cursor: pointer;"
+                id="topUpButton">
+                <span class="me-2">Top up</span>
+                <div class="d-flex align-items-center justify-content-center"
+                    style="width: 20px; height: 20px; border: 2px solid #fff; border-radius: 50%; background: var(--bg-contrast);">
+                    <span class="material-symbols-outlined" style="font-size: 18px; color: #fff;">add</span>
+                </div>
+            </div>
+        </div>
+        
+
         {{-- Active Subscription Card --}}
         <section class="w-100 h-auto mb-md-5 mb-4 subscription-card p-4">
             <div class="row mb-2 justify-content-between align-content-end">
@@ -96,7 +129,7 @@
                     </div>
                 </div>
                 <div class="col-lg p-2 time-slot">
-                    <div class="row mb-1 justify-content-between align-content-center"  data-bs-toggle="collapse"
+                    <div class="row mb-1 justify-content-between align-content-center" data-bs-toggle="collapse"
                         data-bs-target="#lunch-packages" role="button" aria-expanded="true"
                         aria-controls="breakfast-packages">
                         <div class="time-slot-type font-400 w-auto p-0 ps-1">Lunch</div>
@@ -106,7 +139,8 @@
                     </div>
                     <div class="collapse" id="lunch-packages">
                         <div class="row mb-1 p-0 package justify-content-between align-content-center">
-                            <div class="w-75 p-0 ps-1 package-name">Paket Lorem Ipsum Dolor Amethyst Dolorosa Megamendung</div>
+                            <div class="w-75 p-0 ps-1 package-name">Paket Lorem Ipsum Dolor Amethyst Dolorosa Megamendung
+                            </div>
                             <div class="w-auto align-self-center me-1 quantity">
                                 x 1
                             </div>
@@ -130,7 +164,8 @@
                     </div>
                     <div class="collapse" id="dinner-packages">
                         <div class="row p-0 package justify-content-between align-content-center">
-                            <div class="w-75 mb-1 p-0 ps-1 package-name">Paket Lorem Ipsum Dolor Amethyst Dolorosa Megamendung
+                            <div class="w-75 mb-1 p-0 ps-1 package-name">Paket Lorem Ipsum Dolor Amethyst Dolorosa
+                                Megamendung
                             </div>
                             <div class="w-auto align-self-center me-1 quantity">
                                 x 1
@@ -292,4 +327,5 @@
 
 @section('scripts')
     <script src="{{ asset('js/customer/favoriteCatering.js') }}"></script>
+    <script src="{{ asset('js/customer/wellpay.js') }}"></script>
 @endsection

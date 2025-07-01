@@ -52,13 +52,13 @@
                             </div>
                             <div class="col pack-price text-right">
                                 @if ($packageDetail['breakfast_qty'] > 0)
-                                    <p>Rp. {{ number_format($packageDetail['breakfast_price'], 0, ',', '.') }},-</p>
+                                    <p>Rp. {{ number_format($packageDetail['breakfast_price'], 2, ',', '.') }},-</p>
                                 @endif
                                 @if ($packageDetail['lunch_qty'] > 0)
-                                    <p>Rp. {{ number_format($packageDetail['lunch_price'], 0, ',', '.') }},-</p>
+                                    <p>Rp. {{ number_format($packageDetail['lunch_price'], 2, ',', '.') }},-</p>
                                 @endif
                                 @if ($packageDetail['dinner_qty'] > 0)
-                                    <p>Rp. {{ number_format($packageDetail['dinner_price'], 0, ',', '.') }},-</p>
+                                    <p>Rp. {{ number_format($packageDetail['dinner_price'], 2, ',', '.') }},-</p>
                                 @endif
                             </div>
                         </div>
@@ -102,7 +102,7 @@
                 style="height: 3px; background-color:black; opacity:100%; border: none; margin-left: 20px; margin-right: 20px;">
             <div class="inter font-medium text-black total">
                 <span class="detail">Total</span>
-                <span class="font-bold nominal">Rp. {{ number_format($totalOrderPrice, 0, ',', '.') }},-</span>
+                <span class="font-bold nominal">Rp. {{ number_format($totalOrderPrice, 2, ',', '.') }},-</span>
             </div>
         </div>
         <div class="pay-button">

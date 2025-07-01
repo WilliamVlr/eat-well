@@ -21,6 +21,29 @@ body {
     font-style: normal;
 }
 
+.wellpay-container {
+    padding: 15px;
+    width: 100%;
+    height: fit-content;
+    background-color: var(--bg-secondary);
+    border-radius: 10px;
+    color: var(--bg-primary);
+}
+
+.bullet-display {
+    letter-spacing: 0.1em;
+}
+
+.nominal-option {
+    min-width: 100px; /* Agar tombol memiliki lebar minimum yang konsisten */
+}
+
+/* Jika Anda punya styling khusus untuk modal */
+#topUpModal .modal-content {
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,.5);
+}
+
 .font-100{
     font-weight: 100;
 }
