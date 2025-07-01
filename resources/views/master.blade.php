@@ -27,7 +27,7 @@
             </a>
 
             <!-- Language Dropdown -->
-            <div class="dropdown dropdown-bahasa" style="margin-left: 50px">
+            {{-- <div class="dropdown dropdown-bahasa" style="margin-left: 50px">
 
                 <button id="languageToggle" class="btn btn-outline-light dropdown-toggle" type="button"
                     data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 20px">
@@ -38,7 +38,15 @@
                     <li><button class="dropdown-item" onclick="setLanguage('EN')">EN</button></li>
                     <li><button class="dropdown-item" onclick="setLanguage('ID')">ID</button></li>
                 </ul>
+            </div> --}}
+
+            <div class="dropdown-wrapper">
+                <select id="languageSelector" style="text-align: center; margin-left: 30px">
+                    <option value="en">EN</option>
+                    <option value="id">ID</option>
+                </select>
             </div>
+
 
 
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
@@ -62,7 +70,7 @@
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('') ? 'active' : '' }}"
                                 href="/about-us">Active Subscription</a>
                         </li> --}}
-                        
+
                         @auth
                             <li class="nav-item">
                                 <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('subscription') ? 'active' : '' }}"

@@ -101,7 +101,7 @@ h1{
 
 .fullord .pack-list{
     margin-left: 50px;
-    font-size: 18px;
+    font-size: 17px;
     opacity: 70%;
 }
 
@@ -177,6 +177,7 @@ h1{
 .form-check-label {
     cursor: pointer;
     vertical-align: middle;
+    font-size: 17px;
 }
 
 .total{
@@ -187,7 +188,7 @@ h1{
 }
 
 .nominal{
-   margin-right: 100px;
+   margin-right: 20px;
 }
 
 .pay-button{
