@@ -6,7 +6,7 @@ use App\Http\Controllers\VendorController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AuthManager;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('landingPage');
-});
+})->name('landingPage');
 
 Route::get('/about-us', function () {
     return view('aboutUs');
@@ -40,9 +40,12 @@ Route::get('/customer-first-page', function () {
 });
 
 // Customer Home
-Route::get('/home', function () {
-    return view('customer.home');
-})->name('home');
+// Route::get('/home', function () {
+//     return view('customer.home');
+// })->name('home');
+
+Route::get('/home', [UserController::class, 'index'])->name('home');
+Route::post('/topup', [UserController::class, 'topUpWellPay'])->middleware('auth')->name('wellpay.topup');
 
 Route::get('/manage-profile', function () {
     return view('manageProfile');

@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\PaymentMethod;
 // use Illuminate\Container\Attributes\Auth;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
@@ -23,7 +22,14 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $userId = Auth::check() ? Auth::user()->userId : 5;
+        // $userId = Auth::check() ? Auth::user()->userId : 5;
+        $userId = Auth::id();
+        if (!$userId) {
+            // Arahkan ke halaman login atau tampilkan error
+            // return redirect()->route('login')->with('error', 'Please log in to view your cart.');
+            return redirect()->route('landingPage');
+        }
+        
         $status = $request->query('status', 'all');
         $query = $request->query('query');
         $now = Carbon::now();
@@ -61,11 +67,12 @@ class OrderController extends Controller
   
     public function showPaymentPage(Vendor $vendor) // Menggunakan Route Model Binding untuk Vendor
     {
-        // $userId = Auth::id();
-        $userId = 1;
+        $userId = Auth::id();
+        // $userId = 1;
         if (!$userId) {
             // Arahkan ke halaman login atau tampilkan error
-            return redirect()->route('login')->with('error', 'Please log in to view your cart.');
+            // return redirect()->route('login')->with('error', 'Please log in to view your cart.');
+            return redirect()->route('landingPage');
         }
 
         // Ambil cart user untuk vendor tertentu

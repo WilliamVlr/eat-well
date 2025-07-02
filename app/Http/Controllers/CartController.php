@@ -7,6 +7,7 @@ use App\Models\CartItem;
 use App\Models\Package;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -14,7 +15,8 @@ class CartController extends Controller
     {
         $selectedPackages = $request->input('packages', []);
         // $userId = auth()->id();
-        $userId = 1;
+        $userId = Auth::id();
+        // $userId = 1;
         $vendorId = $request->input('vendor_id');
 
         Log::info('--- updateOrderSummary Dijalankan ---');
@@ -23,11 +25,13 @@ class CartController extends Controller
 
         if (!$userId) {
             Log::warning('User not authenticated, returning 401.');
-            return response()->json(['message' => 'User not authenticated.'], 401);
+            // return response()->json(['message' => 'User not authenticated.'], 401);
+            return redirect()->route('landingPage');
         }
         if (!$vendorId) {
             Log::warning('Vendor ID missing, returning 400.');
-            return response()->json(['message' => 'Vendor ID is missing.'], 400);
+            // return response()->json(['message' => 'Vendor ID is missing.'], 400);
+            return redirect()->route('landingPage');
         }
 
         $cart = Cart::firstOrCreate(
@@ -132,11 +136,13 @@ class CartController extends Controller
     public function loadCart(Request $request)
     {
         // $userId = auth()->id();
-        $userId = 1;
+        // $userId = 1;
+        $userId = Auth::id();
         $vendorId = $request->input('vendor_id');
 
         if (!$userId || !$vendorId) {
-            return response()->json(['message' => 'User not authenticated or vendor ID missing.'], 401);
+            // return response()->json(['message' => 'User not authenticated or vendor ID missing.'], 401);
+            return redirect()->route('landingPage');
         }
 
         // Eager load cartItems to avoid N+1 problem
