@@ -78,13 +78,7 @@
                                 href="/about-us">Active Subscription</a>
                         </li> --}}
 
-                        @auth
-                            <li class="nav-item">
-                                <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('subscription') ? 'active' : '' }}"
-                                    href="/subscription">Setting</a>
-                            </li>
-                        @else
-                        @endauth
+                    
 
                     </ul>
                 </div>
@@ -100,7 +94,7 @@
             @auth
                 <!-- Jika sudah login -->
                 <div style="padding: 0.5rem 1rem; border-radius: 0.25rem; margin-right: 2vw">
-                    <a class="login-button p-0" href="profile">
+                    <a class="login-button p-0" href="/manage-profile">
                         <button type="button" class="login_button">
                             <i class="bi bi-gear-fill"></i> Profile
                         </button>
