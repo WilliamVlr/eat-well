@@ -6,6 +6,8 @@ use App\Http\Controllers\VendorController;
 use App\Models\Order;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AuthManager;
+use App\Http\Controllers\DeliveryStatusController;
+use App\Http\Controllers\OrderVendorController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -85,9 +87,13 @@ Route::get('/add-address', function(){
      VENDOR ROUTES
 ---------------------- */
 // Catering dashboard
-Route::get('/cateringHomePage', function() {
-    return view('cateringHomePage');
-});
+// Route::get('/cateringHomePage', function() {
+//     return view('cateringHomePage');
+// });
+
+// routes/web.php
+Route::get('/cateringHomePage', [OrderVendorController::class, 'totalOrder']);
+
 
 // Manage Packages
 Route::get('/manageCateringPackage', [PackageController::class, 'index'])->name('manageCateringPackage');
@@ -96,13 +102,13 @@ Route::delete('/packages/{id}', [PackageController::class, 'destroy'])->name('pa
 Route::post('/manageCateringPackage', [PackageController::class, 'store'])->name('packages.store');
 Route::put('/manageCateringPackage/{package}', [PackageController::class, 'update'])->name('packages.update');
 Route::post('/packages/import', [PackageController::class, 'import'])->name('packages.import');
-Route::get('/manageOrder', [OrderController::class, 'index'])
+Route::get('/manageOrder', [OrderVendorController::class, 'index'])
      ->name('orders.index');
 
 Route::post(
-    '/orders/{orderId}/status/{slot}',
-    [OrderController::class, 'updateStatus']
-)->name('orders.updateStatus');
+    '/delivery-status/{orderId}/{slot}',
+    [OrderVendorController::class, 'updateStatus']
+)->name('delivery-status.update');
 
 /* ---------------------
      ADMIN ROUTES

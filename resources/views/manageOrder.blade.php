@@ -96,7 +96,8 @@
             transition: background-color 0.3s, border-color 0.3s, color 0.3s;
         }
 
-        .meal-select.prepared {
+        /* 🔧 CHANGED: pakai kelas dari kamu */
+        .meal-select.preparing {
             background-color: #fff7e6;
             color: #8a6d0b;
             border-color: #f9d71c;
@@ -123,12 +124,15 @@
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
         <h1 class="mb-3 mb-md-0">Manage Orders</h1>
         <div class="d-flex gap-2">
-            <input type="text" class="form-control form-control-sm" placeholder="Search by Order #" />
-            <select class="form-select form-select-sm">
-                <option>All Packages</option>
-                <option>Paket A</option>
-                <option>Paket B</option>
+            <input id="search-input" type="text" class="form-control form-control-sm"
+                placeholder="Search by Order #" />
+            <select id="package-filter" class="form-select form-select-sm">
+                <option value="all">All Packages</option>
+                @foreach ($packages as $pkg)
+                    <option value="{{ $pkg }}">{{ $pkg }}</option>
+                @endforeach
             </select>
+
         </div>
     </div>
 
@@ -137,25 +141,48 @@
         <button class="btn tab-btn btn-outline-light" onclick="switchTab(this)">Next Week</button>
     </div>
 
+    <p id="empty-msg" class="text-center fw-bold py-5" style="display:none;">No Orders Yet</p>
+
+
     <div class="row g-4" id="order-container"></div>
 
     <script>
         const orders = @json($orders);
-        const mealTypes = ['breakfast', 'lunch', 'dinner'];
+        const mealTypes = [{
+                key: 'Morning',
+                label: 'Breakfast'
+            },
+            {
+                key: 'Afternoon',
+                label: 'Lunch'
+            },
+            {
+                key: 'Evening',
+                label: 'Dinner'
+            }
+        ];
+        const statusClassMap = {
+            Prepared: "preparing",
+            Delivered: "delivering",
+            Arrived: "received"
+        };
+
         const orderContainer = document.getElementById("order-container");
+        const csrf = document.querySelector('meta[name="csrf-token"]').content;
+        const searchInput = document.getElementById("search-input");
+        const emptyMsg = document.getElementById("empty-msg");
+        const packageFilter = document.getElementById("package-filter");
 
         function updateMealStatus(select, orderId, slot) {
             const status = select.value;
+            select.classList.remove("preparing", "delivering", "received");
+            select.classList.add(statusClassMap[status]);
 
-            // Ubah warna dropdown
-            select.classList.remove('prepared', 'delivering', 'received');
-            select.classList.add(status.toLowerCase());
-
-            fetch(`/orders/${orderId}/status/${slot}`, {
+            fetch(`/delivery-status/${orderId}/${slot}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrf // ← pakai meta‑tag
+                        'X-CSRF-TOKEN': csrf
                     },
                     body: JSON.stringify({
                         status
@@ -163,74 +190,134 @@
                 })
                 .then(r => r.ok ? r.json() : Promise.reject(r))
                 .then(res => {
-                    if (!res.success) throw new Error('DB update error');
+                    if (!res.success) throw new Error('Save failed');
+                    location.reload();
                 })
                 .catch(() => {
-                    alert('Gagal update status, coba lagi.');
-                    // rollback warna jika mau
+                    alert('Gagal menyimpan status. Coba lagi.');
+                    select.classList.remove("preparing", "delivering", "received");
                 });
         }
 
+        let activeTab = 'This Week';
 
         function switchTab(button) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
+            activeTab = button.innerText; // Update tab aktif
+            renderOrders(); // Render ulang dengan filter baru
         }
 
-        orders.forEach(order => {
-            const deliveryMap = {};
-            order.delivery_statuses.forEach(ds => {
-                deliveryMap[ds.slot.toLowerCase()] = ds.status;
-            });
 
-            let mealSections = '';
-            mealTypes.forEach(slot => {
-                const items = order.order_items.filter(i => i.package_time_slot === slot);
-                if (items.length > 0) {
-                    const entries = items.map(i => {
-                        return `<div class="meal-entry">${i.package.name} (${i.quantity}x)</div>`;
-                    }).join("");
+        function renderOrders() {
+            const term = searchInput.value.trim().toLowerCase();
+            const selectedPackage = packageFilter.value;
 
-                    const status = deliveryMap[slot] || "Prepared";
-                    mealSections += `
-            <div class="meal-box">
-              <div class="meal-box-header">
-                <span>${slot.charAt(0).toUpperCase() + slot.slice(1)}</span>
-                <select class="form-select form-select-sm meal-select ${status.toLowerCase()}" onchange="updateMealStatus(this, ${order.id}, '${slot}')">
-                  <option ${status === "Prepared" ? "selected" : ""}>Prepared</option>
-                  <option ${status === "Delivering" ? "selected" : ""}>Delivering</option>
-                  <option ${status === "Received" ? "selected" : ""}>Received</option>
-                </select>
-              </div>
-              <div class="meal-entries">${entries}</div>
-            </div>
-          `;
+            orderContainer.innerHTML = "";
+            let shown = 0;
+
+            const today = new Date();
+            const startOfThisWeek = new Date(today);
+            startOfThisWeek.setDate(today.getDate() - today.getDay());
+
+            const endOfThisWeek = new Date(startOfThisWeek);
+            endOfThisWeek.setDate(startOfThisWeek.getDate() + 6);
+
+            orders.forEach(order => {
+                const orderIdStr = "inv" + String(order.id).padStart(3, '0');
+                if (term && !orderIdStr.includes(term)) return;
+
+                const startDate = new Date(order.start_date);
+                if (activeTab === 'This Week') {
+                    if (startDate < startOfThisWeek || startDate > endOfThisWeek) return;
+                } else if (activeTab === 'Next Week') {
+                    const startOfNextWeek = new Date(endOfThisWeek);
+                    startOfNextWeek.setDate(startOfNextWeek.getDate() + 1);
+                    const endOfNextWeek = new Date(startOfNextWeek);
+                    endOfNextWeek.setDate(endOfNextWeek.getDate() + 6);
+                    if (startDate < startOfNextWeek || startDate > endOfNextWeek) return;
                 }
-            });
 
-            orderContainer.innerHTML += `
-        <div class="col-12 col-md-6 col-lg-4 d-flex">
-          <div class="card w-100">
-            <div class="card-body">
-              <div class="order-header">
-                Order #INV${String(order.id).padStart(3, '0')}
-              </div>
-              <p class="mb-1">${order.user?.name || '-'}</p>
-              <p class="mb-1">${order.user?.phone || '-'}</p>
-              <p class="mb-1">${order.user?.address || '-'}</p>
-              <p class="mb-2 text-muted"><i>${order.user?.notes || '-'}</i></p>
-              ${mealSections}
+                if (selectedPackage !== 'all') {
+                    const orderContainsPackage = order.order_items.some(item =>
+                        item.package.name === selectedPackage
+                    );
+                    if (!orderContainsPackage) return;
+                }
+
+
+                // lanjut render...
+
+
+                shown++;
+                const deliveryMap = {};
+                order.delivery_statuses.forEach(ds => {
+                    deliveryMap[ds.slot.toLowerCase()] = ds.status;
+                });
+
+                let mealSections = '';
+                mealTypes.forEach(meal => {
+                    const items = order.order_items.filter(i => i.package_time_slot === meal.key);
+                    const filteredItems = selectedPackage === 'all' ?
+                        items :
+                        items.filter(i => i.package.name === selectedPackage);
+
+                    if (!filteredItems.length) return; // ⛔ Jangan render kalau ga ada paket yang cocok
+
+                    const entries = filteredItems.map(i =>
+                        `<div class="meal-entry">${i.package.name} (${i.quantity}x)</div>`
+                    ).join("");
+
+                    const status = deliveryMap[meal.key.toLowerCase()] || "Prepared";
+
+                    mealSections += `
+        <div class="meal-box">
+            <div class="meal-box-header">
+                <span>${meal.label}</span>
+                <select class="form-select form-select-sm meal-select ${statusClassMap[status]}"
+                    onchange="updateMealStatus(this, ${order.id}, '${meal.key}')">
+                    <option value="Prepared"  ${status === 'Prepared' ? 'selected' : ''}>Prepared</option>
+                    <option value="Delivered" ${status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                    <option value="Arrived"   ${status === 'Arrived' ? 'selected' : ''}>Arrived</option>
+                </select>
             </div>
+            <div class="meal-entries">${entries}</div>
+        </div>
+    `;
+                });
+
+
+                orderContainer.innerHTML += `
+      <div class="col-12 col-md-6 col-lg-4 d-flex">
+        <div class="card w-100">
+          <div class="card-body">
+            <div class="order-header">Order #INV${String(order.id).padStart(3, '0')}</div>
+            <p class="mb-1">${order.user?.name || '-'}</p>
+            <p class="mb-1">${order.user?.phone || '-'}</p>
+            <p class="mb-1">${order.user?.address || '-'}</p>
+            <p class="mb-2 text-muted"><i>${order.user?.notes || '-'}</i></p>
+            ${mealSections}
           </div>
         </div>
-      `;
-        });
+      </div>
+    `;
+            });
+
+            emptyMsg.style.display = shown === 0 ? "block" : "none";
+        }
+
+        searchInput.addEventListener("input", renderOrders);
+        packageFilter.addEventListener("change", renderOrders); // ⬅️ ini
+
+        renderOrders();
     </script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
+
 
 
 

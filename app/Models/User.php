@@ -121,4 +121,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(VendorReview::class, 'userId', 'userId');
     }
+
+    public function defaultAddress()
+    {
+        return $this->hasOne(\App\Models\Address::class, 'userId', 'userId')
+            ->where('is_default', true);
+    }
 }

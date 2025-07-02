@@ -32,7 +32,7 @@ class OrderSeeder extends Seeder
                 $grouped = [];
                 foreach ($items as $item) {
                     // Always use the enum's value
-                    $slot = $item->packageTimeSlot->value;
+                    $slot = $item->packageTimeSlot;
                     $key = $item->packageId . '-' . $slot;
                     if (!isset($grouped[$key])) {
                         $grouped[$key] = $item;
