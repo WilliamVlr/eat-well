@@ -95,9 +95,7 @@
                 <!-- Jika sudah login -->
                 <div style="padding: 0.5rem 1rem; border-radius: 0.25rem; margin-right: 2vw">
                     <a class="login-button p-0" href="/manage-profile">
-                        <button type="button" class="login_button">
-                            <i class="bi bi-gear-fill"></i> Profile
-                        </button>
+                        <img src="{{ asset('admin/card.png') }}" class="img-fluid" width="100px">
                     </a>
                 </div>
             @else
