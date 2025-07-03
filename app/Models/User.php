@@ -33,6 +33,10 @@ class User extends Authenticatable
         'dateOfBirth',
         'genderMale',
         'wellpay',
+        'provider_id',
+        'provider_name',
+        'provider_token',
+        'provider_refresh_token'
     ];
 
     /**

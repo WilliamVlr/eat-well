@@ -12,6 +12,12 @@
 
 @section('content')
     <main class="container pt-3 pb-3 lexend">
+
+        {{-- Untuk button ini jangan dihapus, untuk sementara button logout disini, menunggu UI logout beneran dibuat --}}
+        <form action="{{ route('logout') }}" method="post">
+            @csrf
+            <button type="submit"></button>
+        </form>
         {{-- Carousel --}}
         <section id = "carouselIklan" class="carousel slide mb-4 mb-md-5" data-bs-ride="carousel">
             <div class="carousel-inner">
