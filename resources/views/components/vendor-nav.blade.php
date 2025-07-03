@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>@yield('title')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @vite(["resources/sass/app.scss", "resources/js/app.js"])
 
     <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
 
@@ -56,29 +57,46 @@
                         alt="logo" style="width: 10vh;">
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
-                <div class="offcanvas-body">
+                <div class="offcanvas-body" style="margin-left: 5vw;">
                     <ul class="navbar-nav flex-grow-1 pe-3">
                         <li class="nav-item">
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('home') ? 'active' : '' }}"
-                                href="/home">Home</a>
+                                href="/home">Dashboard</a>
                         </li>
-
                         <li class="nav-item">
-                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('search') ? 'active' : '' }}"
-                                href="{{ route('search') }}">Search Vendor</a>
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('about-us') ? 'active' : '' }}"
+                                href="/about-us">My Packages</a>
                         </li>
-
 
                         <li class="nav-item">
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('about-us') ? 'active' : '' }}"
-                                href="/about-us">About Us</a>
+                                href="/about-us">Orders</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('about-us') ? 'active' : '' }}"
+                                href="/about-us">Profile</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('about-us') ? 'active' : '' }}"
+                                href="/about-us">Search</a>
+                        </li>
+
+
+
                         {{-- <li class="nav-item">
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('') ? 'active' : '' }}"
                                 href="/about-us">Active Subscription</a>
                         </li> --}}
 
-                    
+                        @auth
+                            <li class="nav-item">
+                                <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('subscription') ? 'active' : '' }}"
+                                    href="/subscription">Setting</a>
+                            </li>
+                        @else
+                        @endauth
 
                     </ul>
                 </div>
@@ -94,8 +112,10 @@
             @auth
                 <!-- Jika sudah login -->
                 <div style="padding: 0.5rem 1rem; border-radius: 0.25rem; margin-right: 2vw">
-                    <a class="login-button p-0" href="/manage-profile">
-                        <img src="{{ asset('admin/card.png') }}" class="img-fluid" width="100px">
+                    <a class="login-button p-0" href="profile">
+                        <button type="button" class="login_button">
+                            <i class="bi bi-gear-fill"></i> Profile
+                        </button>
                     </a>
                 </div>
             @else
@@ -155,45 +175,6 @@
 
         </div>
     </footer> --}}
-
-    <footer class="bg-dark text-white py-0">
-        <div class="container text-center footer-page d-flex flex-column align-items-center py-4"
-            style="margin-top: 10px">
-
-            <!-- Logo + Title -->
-            <div class="mb-2 text-center justify-content-center">
-                <h5 class="mt-2 fw-semibold mb-0">EAT WELL</h5>
-                <img src="{{ asset('asset/navigation/eatwellLogo.png') }}" alt="logo" style="width: 7vh;">
-            </div>
-
-            <!-- Navigation Links -->
-            <div class="footer-links d-flex justify-content-center mb-3">
-                <a href="/home" class="text-white text-decoration-none">Home</a>
-                <a href="/about-us" class="text-white text-decoration-none">About Us</a>
-                <a href="/contact" class="text-white text-decoration-none">Contact</a>
-            </div>
-
-            <!-- Sosial Media -->
-            <div class="d-flex justify-content-center gap-4 mb-2">
-                <a href="#" class="text-white fs-4"><img src="{{ asset('asset/footer/1.png') }}"
-                        width="30px"></a>
-                <a href="#" class="text-white fs-4"><img src="{{ asset('asset/footer/2.png') }}"
-                        width="30px"></a>
-                <a href="#" class="text-white fs-4"><img src="{{ asset('asset/footer/3.png') }}"
-                        width="30px"></i></a>
-            </div>
-
-            <!-- Copyright -->
-            <p class="text-white-50 mb-1 text-center">&copy; {{ date('Y') }} Eat Well. All rights reserved.</p>
-
-            <!-- Alamat -->
-            <p class="text-white-50 small text-center mb-0">
-                Jl. Pakuan No.3, Sumur Batu, Kec. Babakan Madang, Kabupaten Bogor, Jawa Barat 16810
-            </p>
-        </div>
-    </footer>
-
-
 
     @yield('scripts')
     <script src="{{ asset('js/navigation.js') }}"></script>

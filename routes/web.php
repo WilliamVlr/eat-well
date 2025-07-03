@@ -1,16 +1,19 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AuthManager;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Socialite\ProviderCallbackController;
 use App\Http\Controllers\Socialite\ProviderRedirectController;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -128,6 +131,16 @@ Route::get('/manageOrder', function () {
     return view('manageOrder');
 })->middleware('auth');
 
+
+Route::get('/test123', function(){
+    return view('test123');
+});
+
 /* ---------------------
      ADMIN ROUTES
 ---------------------- */
+Route::get('/view-all-vendors', [AdminController::class, 'viewAllVendors'])->name('view-all-vendors');
+
+Route::post('/view-vendors', [AdminController::class, 'search'])->name('view-vendors');
+
+Route::get('/admin-dashboard', [DashboardController::class, 'index'])->name('admin-dashboard');
