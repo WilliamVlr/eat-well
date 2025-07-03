@@ -31,7 +31,7 @@ class AddressFactory extends Factory
             'jalan' => fake()->streetAddress(),
             'recipient_name' => fake()->name(),
             'recipient_phone' => fake()->phoneNumber(),
-            'is_default' => fake()->boolean(),
+            'is_default' => false,
             'userId' => User::factory(),
         ];
     }
