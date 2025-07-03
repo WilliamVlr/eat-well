@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory; // Opsional tapi sangat direkomendasikan
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Address extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'addresses';
     protected $primaryKey = 'addressId';
@@ -21,6 +22,10 @@ class Address extends Model
         'kelurahan',
         'kode_pos',
         'jalan',
+        'recipient_name', // Matches your migration
+        'recipient_phone', // Matches your migration
+        'is_default', // Matches your migration
+        'notes',
     ];
 
     protected $casts = [
@@ -29,18 +34,8 @@ class Address extends Model
     ];
 
     // If address belongs to user, uncomment and adjust:
-    // public function user()
-    // {
-    //     return $this->belongsTo(User::class, 'userId', 'userId');
-    // }
-
-    public function relationCustomerAddresses()
+    public function user()
     {
-        return $this->hasMany(RelationCustomerAddress::class, 'addressId', 'addressId');
-    }
-
-    public function vendors()
-    {
-        return $this->belongsTo(Vendor::class, 'addressId', 'addressId');
+        return $this->belongsTo(User::class, 'userId', 'userId');
     }
 }

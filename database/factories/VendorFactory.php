@@ -63,7 +63,7 @@ class VendorFactory extends Factory
             'userId' => function(){
                 return User::factory()->create(['role' => 'Vendor', 'password' => Hash::make('password')])->userId;
             },
-            'addressId' => Address::inRandomOrder()->first()->addressId,
+            // 'addressId' => Address::inRandomOrder()->first()->addressId,
             'name' => Str::words(fake()->company(), 2, ''),
             // 'breakfast_delivery' => $startBreakfast->format('H:i') . ' - ' . $endBreakfast->format('H:i'),
             // 'lunch_delivery' => $startLunch->format('H:i') . ' - ' . $endLunch->format('H:i'),
@@ -71,9 +71,17 @@ class VendorFactory extends Factory
             'breakfast_delivery' => $breakfastDelivery, // Gunakan variabel yang sudah dikondisikan
             'lunch_delivery' => $lunchDelivery,         // Gunakan variabel yang sudah dikondisikan
             'dinner_delivery' => $dinnerDelivery,       // Gunakan variabel yang sudah dikondisikan
-            'logo' => fake()->imageUrl(640, 480, 'food', true, 'vendor'),
+            'logo' => fake()->randomElement(['asset/catering-detail/logo-aldenaire-catering.jpg', 'asset/catering-detail/logo 2.png', 'asset/catering-detail/logo 3.png', 'asset/catering-detail/logo 4.png', 'asset/catering-detail/logo 5.png']),
+            // 'logo' => fake()->imageUrl(640, 480, 'food', true, 'vendor'),
             'phone_number' => fake()->phoneNumber(),
             'rating' => fake()->randomFloat(1, 1, 5), // Rating between 1.0 and 5.0
+            'provinsi' => fake()->state(),
+            'kota' => fake()->city(),
+            'kabupaten' => fake()->city(),
+            'kecamatan' => fake()->streetName(),
+            'kelurahan' => fake()->streetName(),
+            'kode_pos' => fake()->postcode(),
+            'jalan' => fake()->streetAddress()
         ];
     }
 

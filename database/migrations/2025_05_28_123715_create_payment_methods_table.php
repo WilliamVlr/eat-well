@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('methodId');
             $table->string('name');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

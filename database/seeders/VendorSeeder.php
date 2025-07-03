@@ -53,6 +53,50 @@ class VendorSeeder extends Seeder
         //    Vendor::firstOrCreate(['name' => $vendor['name']], $vendor);
         // }
 
+        // foreach($vendors as $vendor) {
+        //    Vendor::firstOrCreate(['name' => $vendor['name']], $vendor);
+        // }
+        $vendors = [
+            [
+                'userId' => 1,
+                // 'addressId' => 1,
+                'name' => 'Nusantara Delights',
+                'breakfast_delivery' => '06:30-09:30',
+                'lunch_delivery' => '11:00-14:00',
+                'dinner_delivery' => '17:30-20:00',
+                'logo' => 'nusantara-delights-logo.png',
+                'phone_number' => '081234567890',
+                'rating' => 4.7,
+            ],
+            [
+                'userId' => 2,
+                // 'addressId' => 2,
+                'name' => 'Tropical Bites',
+                'breakfast_delivery' => '07:00-10:00',
+                'lunch_delivery' => '12:00-15:00',
+                'dinner_delivery' => '18:00-21:00',
+                'logo' => 'tropical-bites-logo.png',
+                'phone_number' => '089876543210',
+                'rating' => 4.3,
+            ],
+            [
+                'userId' => 3,
+                // 'addressId' => 3,
+                'name' => 'Sari Rasa Kitchen',
+                'breakfast_delivery' => '06:00-08:30',
+                'lunch_delivery' => '11:30-14:30',
+                'dinner_delivery' => '17:00-19:30',
+                'logo' => 'sari-rasa-kitchen-logo.png',
+                'phone_number' => '082112345678',
+                'rating' => 4.5,
+            ],
+        ];
+
+        foreach($vendors as $vendor) {
+            Vendor::factory()->create($vendor);
+        //    Vendor::firstOrCreate(['name' => $vendor['name']], $vendor);
+        }
+
         Vendor::factory()->count(10)->create();
     }
 }

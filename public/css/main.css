@@ -125,4 +125,13 @@ a, button {
     box-shadow: none !important;
 }
 
+/* TEXT WRAPPER */
+.text-wrapper {
+    width: fit-content;
+}
+
+.text-container {
+    width: 100%;
+}
+
 /* CARD LAYOUTS */
