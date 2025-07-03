@@ -9,6 +9,7 @@ use App\Http\Controllers\VendorController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AuthManager;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Socialite\ProviderCallbackController;
 use App\Http\Controllers\Socialite\ProviderRedirectController;
@@ -27,7 +28,7 @@ use App\Http\Controllers\Socialite\ProviderRedirectController;
 
 Route::get('/', function () {
     return view('landingPage');
-})->middleware('guest');
+})->name('landingPage')->middleware('guest');
 
 Route::get('/about-us', function () {
     return view('aboutUs');
@@ -55,6 +56,7 @@ Route::get('/customer-first-page', function () {
 
 // Customer Home
 Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth');
+Route::post('/topup', [UserController::class, 'topUpWellPay'])->middleware('auth')->name('wellpay.topup');
 
 Route::get('/manage-profile', function () {
     return view('manageProfile');
