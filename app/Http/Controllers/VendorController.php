@@ -30,7 +30,7 @@ class VendorController extends Controller
     public function show(Vendor $vendor)
     {
         // Memuat relasi User dan Address secara efisien jika Anda ingin menampilkannya
-        $vendor->load(['user', 'address']);
+        $vendor->load(['user']);
         // MEMUAT PAKET DENGAN RELASI CATEGORY DAN CUISINE_TYPES SECARA EFFICIENT
         // Pastikan Anda telah mendefinisikan relasi 'packages' di model Vendor
         // dan relasi 'category' serta 'cuisineTypes' di model Package.

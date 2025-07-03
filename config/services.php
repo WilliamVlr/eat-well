@@ -31,4 +31,10 @@ return [
         ],
     ],
 
+    'google' => [
+        'client_id' => '953940603523-ub1fetd08n1kfhtle5trho4ebpgsftcg.apps.googleusercontent.com',
+        'client_secret' => 'GOOGLE_CLIENT_SECRET',
+        'redirect' => 'http://127.0.0.1:8000/auth/google/callback',
+    ],
+
 ];

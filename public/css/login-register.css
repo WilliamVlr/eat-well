@@ -33,9 +33,20 @@ body{
 .form-check-label{
   font-size: 0.9rem;
 }
-.login{
+button{
+    font-size: 0.9rem !important;
+}
+.login-register-btn{
   width: 100% !important;
 }
+.google-button{
+    background-color: #131314;
+    width: 100% !important;
+}
 #remember{
-    border: 1px solid black;
+  border: 1px solid black;
+}
+
+svg{
+    width: 23px;
 }
