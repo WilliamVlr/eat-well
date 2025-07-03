@@ -27,7 +27,7 @@
             <section class="">
                 <div class="row">
                     @foreach ($tabs as $key => $label)
-                        <div class="{{$loop->last ? 'col-12' : 'col-6'}} col-md-2 mb-3 ps-0 pe-3">
+                        <div class="{{$loop->first ? 'col-12' : 'col-6'}} col-md-2 mb-3 ps-0 pe-3">
                             <a href="{{ route('order-history', ['status' => $key]) }}"
                                 class="btn filter-order {{ $status === $key ? 'active' : '' }}" style="width: 100%;">
                                 <span class="tab-control-text">{{ $label }}</span>

@@ -362,6 +362,7 @@ body {
 /* Hide pagination on tablet and mobile */
 @media (max-width: 768px) {
     .catering-pagination-wrapper {
-        display: none !important;
+        display: flex !important;
+        align-self: flex-end;
     }
 }

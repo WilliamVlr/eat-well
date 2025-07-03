@@ -26,50 +26,15 @@
                 @csrf
                 <button type="submit"></button>
             </form>
-            {{-- Carousel --}}
-            <section id = "carouselIklan" class="carousel slide mb-4 mb-md-5" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="{{ asset('asset/customer/home/iklan 1.jpg') }}" class="object-fit-cover" alt="Iklan 1">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="{{ asset('asset/customer/home/iklan 2.jpg') }}" alt="Iklan 2">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="{{ asset('asset/customer/home/iklan 3.jpg') }}" alt="Iklan 3">
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselIklan" data-bs-slide="prev">
-                    <div class="carousel-btn-container btn-prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </div>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselIklan" data-bs-slide="next">
-                    <div class="carousel-btn-container btn-next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </div>
-                </button>
-                {{-- Carousel indicators --}}
-                <div class="carousel-indicators mt-2">
-                    <button type="button" data-bs-target="#carouselIklan" data-bs-slide-to="0" class="active"
-                        aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselIklan" data-bs-slide-to="1"
-                        aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carouselIklan" data-bs-slide-to="2"
-                        aria-label="Slide 3"></button>
-                </div>
-            </section>
             {{-- Active Subscription Card --}}
             <section class="container w-100 mt-3 h-auto mb-md-5 mb-4 subscription-card p-4">
-                <div class="row mb-2 justify-content-between align-content-end">
-                    <div class="title font-400 w-auto">My Subscription</div>
-                    <div class="hug-content detail d-flex align-self-end">
-                        <a href="{{ route('order-history') }}" class="detail-link">View all</a>
-                    </div>
-                </div>
                 @if ($order)
+                    <div class="row mb-2 justify-content-between align-content-end">
+                        <div class="title font-400 w-auto">My Subscription</div>
+                        <div class="hug-content detail d-flex align-self-end">
+                            <a href="{{ route('order-history') }}" class="detail-link">View all</a>
+                        </div>
+                    </div>
                     <div class="row mb-2 gy-1">
                         <div class="col-6 col-sm-3 subscription-detail">
                             <div class="row sub-title">Active From</div>
@@ -147,15 +112,15 @@
                         @endforeach
                     </div>
                 @else
-                    <div>
-                        <h2 class="text-center fw-500 mb-0">No active subscription right now</h2>
-                        <p class="text-center mb-0">Order Now!</p>
+                    <div class="d-flex flex-column justify-content-center align-items-center gap-2">
+                        <h2 class="text-center fw-500 mb-0 mt-2">No active subscription right now</h2>
+                        <a href="{{ route('search') }}" class="btn btn-warning">Order Now</a>
                     </div>
                 @endif
             </section>
             {{-- Popular Caterings --}}
             <section class="container mt-3 popular-catering-container w-100 h-auto mb-md-5 mb-4">
-                <div class="row title-1">Popular Catering Near You</div>
+                <div class="row title-1">Popular Catering</div>
                 <div class="row">
                     @foreach ($vendors as $vendor)
                         <div class="col-md-6 col-xl-4 p-2">
@@ -165,12 +130,14 @@
                 </div>
             </section>
             {{-- Favorited Catering or Recently Viewed? --}}
-            @if (!$favVendors)
+            @if (!$favVendors->isEmpty())
                 <section class="container fav-catering-container mt-3 w-100 h-auto mb-md-5 mb-4">
                     {{-- Kasih if gaada --}}
                     <div class="section-title-wrap d-flex flex-row justify-content-between align-items-center">
                         <h3 class="title-1">Your Favorites</h3>
-                        <a href="#" class="detail-link">View all</a>
+                        @if ($favVendors->count() > 4)
+                            <a href="#" class="detail-link">View all</a>
+                        @endif
                     </div>
                     <div class="carousel-slider-wrap carousel-style-1 mt-10 align-self-center">
                         {{-- <button class="arrow-btn button-slider-shadow" id="prev">&lt;</button> --}}
@@ -186,8 +153,8 @@
                 </section>
             @endif
         </main>
-    @endsection
+@endsection
 
-    @section('script')
-        <script src="{{ asset('js/customer/favoriteCatering.js') }}"></script>
-    @endsection
+@section('scripts')
+    <script src="{{ asset('js/customer/favoriteCatering.js') }}"></script>
+@endsection
