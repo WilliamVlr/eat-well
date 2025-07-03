@@ -91,7 +91,7 @@ class HomeController extends Controller
     
             // 2. Get today's delivery status for each slot
             $today = now()->toDateString();
-            $today = '2025-06-24';
+            // $today = '2025-06-24';
             $deliveryStatusBySlot = $order->deliveryStatuses()
                 ->whereDate('deliveryDate', $today)
                 ->get()
@@ -110,6 +110,8 @@ class HomeController extends Controller
             // dd($slotMap);
         }
 
-        return view('customer.home', compact('vendors', 'favVendors', 'order', 'slotMap'));
+        $wellpay = $user->wellpay ?? 0; // Ambil saldo, default 0 jika kolom 'balance' null/tidak ada
+
+        return view('customer.home', compact('vendors', 'favVendors', 'order', 'slotMap', 'wellpay'));
     }
 }
