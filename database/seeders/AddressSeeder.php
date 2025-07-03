@@ -6,6 +6,7 @@ use App\Models\Address;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class AddressSeeder extends Seeder
 {
@@ -14,10 +15,31 @@ class AddressSeeder extends Seeder
      */
     public function run(): void
     {
-        Address::factory(5)
-        ->recycle(User::factory(3)->create())
+        Address::factory()
+        ->recycle(
+            User::factory()
+            ->create([
+                'email' => "customer1@gmail.com",
+                'password' => Hash::make('password'),
+                'role' => 'Customer',
+            ])
+        )
         ->create([
-            'notes' => fake()->sentence(),
+            'is_default' => true,
+        ]);
+
+        Address::factory()
+        ->recycle(
+            User::factory()
+            ->create([
+                'email' => "customer2@gmail.com",
+                'password' => Hash::make('password'),
+                'role' => 'Customer',
+            ])
+        )
+        ->create([
+            'is_default' => true,
+            'notes' => fake()->sentence(10),
         ]);
     }
 }

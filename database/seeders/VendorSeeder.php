@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class VendorSeeder extends Seeder
 {
@@ -58,8 +60,9 @@ class VendorSeeder extends Seeder
         // }
         $vendors = [
             [
-                'userId' => 1,
-                // 'addressId' => 1,
+                'userId' => User::factory()->create([
+                    'email' => 'vendor1@mail.com', 'role' => "Vendor", 'password' => Hash::make('password')
+                ])->userId,
                 'name' => 'Nusantara Delights',
                 'breakfast_delivery' => '06:30-09:30',
                 'lunch_delivery' => '11:00-14:00',
@@ -69,8 +72,9 @@ class VendorSeeder extends Seeder
                 'rating' => 4.7,
             ],
             [
-                'userId' => 2,
-                // 'addressId' => 2,
+                'userId' => User::factory()->create([
+                    'email' => 'vendor2@mail.com', 'role' => "Vendor", 'password' => Hash::make('password')
+                ])->userId,
                 'name' => 'Tropical Bites',
                 'breakfast_delivery' => '07:00-10:00',
                 'lunch_delivery' => '12:00-15:00',
@@ -80,8 +84,9 @@ class VendorSeeder extends Seeder
                 'rating' => 4.3,
             ],
             [
-                'userId' => 3,
-                // 'addressId' => 3,
+                'userId' => User::factory()->create([
+                    'email' => 'vendor3@mail.com', 'role' => "Vendor", 'password' => Hash::make('password')
+                ])->userId,
                 'name' => 'Sari Rasa Kitchen',
                 'breakfast_delivery' => '06:00-08:30',
                 'lunch_delivery' => '11:30-14:30',
@@ -92,9 +97,8 @@ class VendorSeeder extends Seeder
             ],
         ];
 
-        foreach($vendors as $vendor) {
+        foreach ($vendors as $vendor) {
             Vendor::factory()->create($vendor);
-        //    Vendor::firstOrCreate(['name' => $vendor['name']], $vendor);
         }
 
         Vendor::factory()->count(10)->create();
