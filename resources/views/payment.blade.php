@@ -138,19 +138,21 @@
     </div>
 
     <div id="qrisPopup" class="popup-overlay">
-        <div class="popup-content">
+        <div class="popup-content" style="width: fit-content;">
             <h2>Pay Now</h2>
             <div class="qr-code-container">
                 <img src="" alt="QR Code" id="qrCodeImage">
             </div>
             <p class="timer">Expires in <span id="countdownTimer">00:59</span></p>
-            <button class="popup-button download-qris" id="downloadQrisBtn">Download QRIS</button>
-            <button class="popup-button done" id="doneBtn">Done</button>
+            <div class="d-flex">
+                <button class="popup-button download-qris me-3" id="downloadQrisBtn">Download QRIS</button>
+                <button class="popup-button done" id="doneBtn">Done</button>
+            </div>
         </div>
     </div>
 
     <div id="confirmationPopup" class="popup-overlay">
-        <div class="popup-content">
+        <div class="popup-content" style="width: fit-content;">
             <p class="inter font-semibold", style="color: red; font-size:20px">Warning</p>
             <p style="font-weight:600; color:#222; text-align:center; margin-bottom:24px;">
                 Are you sure you want to proceed with this payment?

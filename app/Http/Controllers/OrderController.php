@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\DeliveryStatus;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
@@ -31,7 +32,7 @@ class OrderController extends Controller
             // return redirect()->route('login')->with('error', 'Please log in to view your cart.');
             return redirect()->route('landingPage');
         }
-        
+
         $status = $request->query('status', 'all');
         $query = $request->query('query');
         $now = Carbon::now();
@@ -70,7 +71,7 @@ class OrderController extends Controller
 
         return view('customer.orderHistory', compact('orders', 'status'));
     }
-  
+
     public function showPaymentPage(Vendor $vendor) // Menggunakan Route Model Binding untuk Vendor
     {
         $userId = Auth::id();
@@ -169,9 +170,9 @@ class OrderController extends Controller
 
         try {
             $cart = Cart::with('cartItems.package')
-                        ->where('userId', $userId)
-                        ->where('vendorId', $vendorId)
-                        ->first();
+                ->where('userId', $userId)
+                ->where('vendorId', $vendorId)
+                ->first();
 
             if (!$cart || $cart->cartItems->isEmpty()) {
                 DB::rollBack();
@@ -216,40 +217,77 @@ class OrderController extends Controller
             ]);
             Log::info('Order created. Order ID: ' . $order->orderId);
 
+            // Buat delivery statuses untuk setiap slot
+            // $slots = ['Morning', 'Afternoon', 'Evening'];
+            // foreach ($slots as $slot) {
+            //     $deliveryDate = Carbon::parse($startDate)->copy()->next($slot);
+            //     DeliveryStatus::create([
+            //         'orderId' => $order->orderId,
+            //         'deliveryDate' => $deliveryDate,
+            //         'slot' => $slot,
+            //         'status' => 'Prepared',
+            //     ]);
+            // }
+            // Log::info('Delivery statuses created for Order ID: ' . $order->orderId);
+
             // 2. Pindahkan CartItems ke OrderItems
+            $selectedTimeSlots = [];
             foreach ($cart->cartItems as $cartItem) {
                 $package = $cartItem->package;
                 if ($package) {
                     if ($cartItem->breakfastQty > 0) {
-                         OrderItem::create([
+                        OrderItem::create([
                             'orderId' => $order->orderId,
                             'packageId' => $package->packageId,
                             'packageTimeSlot' => 'Morning',
                             'price' => ($cartItem->breakfastQty * ($package->breakfastPrice ?? 0)),
                             'quantity' => $cartItem->breakfastQty,
                         ]);
+                        $selectedTimeSlots['Morning'] = true;
                     }
                     if ($cartItem->lunchQty > 0) {
-                         OrderItem::create([
+                        OrderItem::create([
                             'orderId' => $order->orderId,
                             'packageId' => $package->packageId,
                             'packageTimeSlot' => 'Afternoon',
                             'price' => ($cartItem->lunchQty * ($package->lunchPrice ?? 0)),
                             'quantity' => $cartItem->lunchQty,
                         ]);
+                        $selectedTimeSlots['Afternoon'] = true;
                     }
                     if ($cartItem->dinnerQty > 0) {
-                         OrderItem::create([
+                        OrderItem::create([
                             'orderId' => $order->orderId,
                             'packageId' => $package->packageId,
                             'packageTimeSlot' => 'Evening',
                             'price' => ($cartItem->dinnerQty * ($package->dinnerPrice ?? 0)),
                             'quantity' => $cartItem->dinnerQty,
                         ]);
+                        $selectedTimeSlots['Evening'] = true;
                     }
                 }
             }
             Log::info('OrderItems created for Order ID: ' . $order->orderId);
+
+            Log::info('Inserting Delivery Statuses for Order ID: ' . $order->orderId);
+            $countDeliveryStatuses = 0;
+            foreach (array_keys($selectedTimeSlots) as $slot) {
+                // Konversi string startDate dari order menjadi objek Carbon
+                // Ini penting karena $order->startDate sudah disimpan sebagai string 'YYYY-MM-DD'
+                $currentDeliveryDate = Carbon::parse($order->startDate); 
+
+                for ($i = 0; $i < 7; $i++) {
+                    DeliveryStatus::create([
+                        'orderId' => $order->orderId,
+                        'deliveryDate' => $currentDeliveryDate->toDateString(), 
+                        'slot' => $slot,
+                        'status' => 'Prepared',
+                    ]);
+                    $currentDeliveryDate->addDay();
+                    $countDeliveryStatuses++;
+                }
+            }
+            Log::info('Total Delivery Statuses created: ' . $countDeliveryStatuses);
 
             // 3. Buat entry Payment
             Payment::create([
@@ -266,7 +304,6 @@ class OrderController extends Controller
             DB::commit();
 
             return response()->json(['message' => 'Checkout successful!', 'orderId' => $order->orderId], 200);
-
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Checkout failed: ' . $e->getMessage(), ['exception' => $e]);
