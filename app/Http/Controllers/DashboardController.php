@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use SebastianBergmann\CodeCoverage\Util\Percentage;
 
 class DashboardController extends Controller
@@ -51,15 +52,32 @@ class DashboardController extends Controller
         $profit = 0.05 * $totalPrice;
 
         $lmprofit = 10000;
-        
+
         $percentageprofit = (($profit - $lmprofit) / $lmprofit) * 100;
 
         $profit = number_format($profit, 0, ',', '.');
 
         $totalPrice = number_format($totalPrice, 0, ',', '.');
 
-       
+        // Ambil total penjualan per bulan tahun ini
+        $monthlySales = Order::selectRaw('MONTH(created_at) as month, SUM(totalPrice) as total')
+            ->whereYear('created_at', Carbon::now()->year)
+            ->groupBy(DB::raw('MONTH(created_at)'))
+            ->orderBy(DB::raw('MONTH(created_at)'))
+            ->pluck('total', 'month'); // hasil: [1 => 12345, 2 => 23456, ...]
 
-        return view('adminDashboard', compact('totalPrice', 'percentage', 'profit', 'increment', 'percentageprofit'));
+        // Format hasil agar semua bulan 1–12 terisi (meskipun 0)
+        $allMonths = collect(range(1, 12))->map(function ($month) use ($monthlySales) {
+            return $monthlySales->get($month, 0); // isi 0 kalau tidak ada data
+        });
+
+        // Contoh kirim ke Blade (dalam bentuk array biasa)
+        $chartData = $allMonths->values()->toArray();
+
+        $labels = collect(range(1, 12))->map(function ($month) {
+            return Carbon::create()->month($month)->locale('id')->translatedFormat('F');
+        })->toArray();
+
+        return view('adminDashboard', compact('totalPrice', 'percentage', 'profit', 'increment', 'percentageprofit', 'chartData', 'labels'));
     }
 }

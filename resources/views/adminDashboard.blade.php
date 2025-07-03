@@ -27,7 +27,7 @@
 
 
 
-        <h1 class="text-center mt-3 fw-bold">Admin Dashboard</h1>
+        <h1 class="text-center mt-3 fw-bold">EAT-WELL</h1>
         <div class="" style="margin: 4vw">
             <div class="row mt-5">
                 <div class="col-lg-6" style="">
@@ -100,10 +100,11 @@
                         <thead>
                             <tr>
                                 <th scope="col">No. </th>
-                                <th scope="col">User</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">Role</th>
                                 <th scope="col">Activity</th>
                                 <th scope="col">Time</th>
-                                <th scope="col"></th>
+                                
                                 
                             </tr>
                         </thead>
@@ -181,40 +182,12 @@
         </div>
     </div>
 
-
     <script>
-        const ctx = document.getElementById('myChart').getContext('2d');
-
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['A', 'B', 'C', 'D', 'E'],
-                datasets: [{
-                    label: 'Sales',
-                    data: [10, 58, 30, 49, 56],
-                    backgroundColor: 'rgba(125, 99, 132, 1)',
-                    borderColor: 'rgba(175, 192, 192, 1)'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                },
-
-            plugins: {
-                legend: {
-                    onClick: null
-                }
-            }
-            }
-
-            
-        });
+        window.chartData = @json($chartData);
+        window.labels = @json($labels);
     </script>
+
+    <script src="{{ asset('js/admin/dashboard.js') }}"></script>
 
 
 </body>
