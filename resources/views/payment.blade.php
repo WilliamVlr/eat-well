@@ -19,6 +19,15 @@
             Notes alamat disini
         </p>
         <div class="container-sm isi">
+            {{-- Tambahkan input tersembunyi ini di sini --}}
+            <input type="hidden" id="hiddenVendorId" value="{{ $vendor->vendorId }}">
+            <input type="hidden" id="hiddenStartDate" value="{{ $startDate }}">
+            <input type="hidden" id="hiddenEndDate" value="{{ $endDate }}">
+            {{-- Ini opsional, tapi bagus untuk konsistensi atau jika Anda butuh total harga di JS --}}
+            <input type="hidden" id="hiddenCartTotalPrice" value="{{ $totalOrderPrice }}">
+            {{-- Pastikan juga ada CSRF token untuk AJAX POST request --}}
+            <meta name="csrf-token" content="{{ csrf_token() }}">
+
             <div class="orderdet">
                 <p class="lexend font-semibold text-white judul">Order Detail</p>
             </div>
@@ -66,17 +75,11 @@
                 </div>
             @endforeach
 
-            {{-- TODO: Tambahkan input untuk catatan (note) jika ada --}}
-            {{-- <div class="detail note-order lexend">
-                <p class="font-medium" style="opacity: 0.7">Note:</p>
-                <p class="font-bold">taro makanan nya di loker aja pak.</p>
-            </div> --}}
-
             <hr
                 style="height: 1.5px; background-color:black; opacity:100%; border: none; margin-left: 20px; margin-right: 20px;">
             <div class="payment-meth">
                 <p class="inter font-semibold text-black detail pack-name mb-0">Payment Method</p>
-                <div class="button-payment lexend font-medium text-black">
+                {{-- <div class="button-payment lexend font-medium text-black">
                     <div class="form-check m-0">
                         <input class="form-check-input radio-custom" type="radio" name="payment-button" id="wellpay">
                         <label class="form-check-label" for="wellpay">
@@ -92,6 +95,30 @@
                     </div>
                     <div class="form-check">
                         <input class="form-check-input radio-custom" type="radio" name="payment-button" id="bva">
+                        <label class="form-check-label" for="bva">
+                            BCA Virtual Account
+                        </label>
+                    </div>
+                </div> --}}
+
+                <div class="button-payment lexend font-medium text-black">
+                    <div class="form-check m-0">
+                        <input class="form-check-input radio-custom" type="radio" name="payment-button" id="wellpay"
+                            value="1">
+                        <label class="form-check-label" for="wellpay">
+                            Wellpay
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input radioButtonPayment radio-custom" type="radio" name="payment-button"
+                            id="qris" value="2">
+                        <label class="form-check-label" for="qris">
+                            QRIS
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input radio-custom" type="radio" name="payment-button" id="bva"
+                            value="3">
                         <label class="form-check-label" for="bva">
                             BCA Virtual Account
                         </label>
@@ -135,8 +162,30 @@
         </div>
     </div>
 
+    <div id="wellpayConfirmPopup" class="popup-overlay">
+        <div class="popup-content" style="width: fit-content">
+            <p class="inter font-semibold", style="color: green; font-size:20px">Confirm Wellpay Payment</p>
+            <p id="wellpayBalanceText" style="font-weight:400; color:#222; text-align:center; margin-bottom:12px;">
+                Your current Wellpay balance is: Rp X.XXX.XXX,-
+            </p>
+            <p style="font-weight:400; color:#222; text-align:center; margin-bottom:24px;">
+                Are you sure you want to pay with Wellpay?
+            </p>
+            <div class="d-flex">
+                <button id="wellpayCancelBtn" class="popup-button me-3"
+                    style="background:#f44336; color:white; border:none; border-radius:10px; padding:12px 32px; font-size:18px; font-weight:500; box-shadow:0 2px 6px #0001;">
+                    Cancel
+                </button>
+                <button id="wellpayConfirmBtn" class="popup-button"
+                    style="background:#4CAF50; color:white; border:none; border-radius:10px; padding:12px 32px; font-size:18px; font-weight:500; box-shadow:0 2px 6px #0001; margin-right: 10px;">
+                    Confirm
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div id="successPopup" class="popup-overlay">
-        <div class="popup-content">
+        <div class="popup-content" style="width: fit-content">
             <p style="font-weight:600; color:#222; text-align:center; margin-bottom:24px;">
                 Successfully added to your subscription. Thank you for your purchase.
             </p>
@@ -156,5 +205,16 @@
 @endsection
 
 @section('scripts')
+    {{-- Ini akan dieksekusi oleh Blade Engine Laravel --}}
+    <script>
+        // Pastikan objek global App ada
+        window.App = window.App || {};
+        window.App.routes = {
+            checkoutProcess: '{{ route('checkout.process') }}',
+            userWellpayBalance: '{{ route('user.wellpay.balance') }}',
+        };
+    </script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="{{ asset('js/payment.js') }}"></script>
 @endsection

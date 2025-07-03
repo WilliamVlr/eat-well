@@ -81,8 +81,14 @@ Route::get('/orders/{id}', [OrderController::class, 'show'])->name('order-detail
 //     return view('payment');
 // });
 
-// Mengaksesnya dari vendor tertentu, misal /payment/vendor/1
-Route::get('/vendor/{vendor}/payment', [OrderController::class, 'showPaymentPage'])->name('payment.show');
+// Route::get('/vendor/{vendor}/payment', [OrderController::class, 'showPaymentPage'])->name('payment.show');
+// Route::post('/checkout', [OrderController::class, 'processCheckout'])->name('checkout.process'); 
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/vendor/{vendor}/payment', [OrderController::class, 'showPaymentPage'])->name('payment.show');
+    Route::post('/checkout', [OrderController::class, 'processCheckout'])->name('checkout.process');
+    Route::get('/user/wellpay-balance', [OrderController::class, 'getUserWellpayBalance'])->name('user.wellpay.balance');
+});
 
 // Manage Address
 Route::get('/manage-address', function () {

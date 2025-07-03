@@ -28,10 +28,11 @@ class User extends Authenticatable
         'email_verified_at',
         'password',
         'role',
-        'enabled2FA', // Matches your migration
+        'enabled2FA',
         'remember_token',
-        'dateOfBirth', // Matches your migration
-        'genderMale', // Matches your migration
+        'dateOfBirth',
+        'genderMale',
+        'wellpay',
     ];
 
     /**
@@ -65,6 +66,7 @@ class User extends Authenticatable
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'role' => UserRole::class,
+        'wellpay' => 'decimal:2',
     ];
 
     // public function addresses()

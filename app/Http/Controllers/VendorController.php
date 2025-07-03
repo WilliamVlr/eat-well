@@ -113,45 +113,4 @@ class VendorController extends Controller
         // Pass paginated vendors to the view
         return view('customer.search', compact('vendors', 'all_categories'));
     }
-
-    public function updateOrderSummary(Request $request)
-    {
-        $selectedPackages = $request->input('packages', []); // Ambil data 'packages' dari permintaan AJAX
-
-        $totalItems = 0;
-        $totalPrice = 0;
-
-        foreach ($selectedPackages as $packageId => $packageData) {
-            // Temukan paket dari database untuk mendapatkan harga sebenarnya
-            $package = Package::find($packageId);
-
-            if ($package) {
-                // Pastikan $packageData['items'] ada dan merupakan array
-                if (isset($packageData['items']) && is_array($packageData['items'])) {
-                    foreach ($packageData['items'] as $itemName => $qty) {
-                        $itemPrice = 0;
-                        if ($itemName === 'Breakfast' && !is_null($package->breakfastPrice)) {
-                            $itemPrice = (float) $package->breakfastPrice;
-                        } elseif ($itemName === 'Lunch' && !is_null($package->lunchPrice)) {
-                            $itemPrice = (float) $package->lunchPrice;
-                        } elseif ($itemName === 'Dinner' && !is_null($package->dinnerPrice)) {
-                            $itemPrice = (float) $package->dinnerPrice;
-                        }
-
-                        $qty = (int) $qty;
-
-                        $totalItems += $qty;
-                        $totalPrice += $qty * $itemPrice;
-                    }
-                }
-            }
-        }
-
-        // Kembalikan total yang diperbarui sebagai respons JSON
-        return response()->json([
-            'totalItems' => $totalItems,
-            'totalPrice' => $totalPrice,
-            // Anda bisa mengembalikan lebih banyak data jika diperlukan, misal total per-paket
-        ]);
-    }
 }
