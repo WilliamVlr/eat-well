@@ -3,6 +3,7 @@
 @section('title', 'Home')
 
 @section('css')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/js/app.js', 'resources/sass/app.scss'])
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -50,6 +51,118 @@
                 <button type="button" data-bs-target="#carouselIklan" data-bs-slide-to="2" aria-label="Slide 3"></button>
             </div>
         </section>
+
+        {{-- WellPay --}}
+        <div class="wellpay-container mb-4">
+            <div class="d-flex align-items-center mb-2 lexend">
+                <span><img src="{{ asset('asset/navigation/eatwellLogo.png') }}" alt="logo"
+                        style="width: 3.5vh; background-color: var(--bg-primary); border-radius: 5px;"></span>
+                <span>
+                    <h4 class="mb-0 ms-2">WellPay</h4>
+                </span>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <span>
+                    <h1 class="inter m-0 me-3 ms-2">Rp <span
+                            id="wellpayBalanceAmount">{{ number_format($wellpay, 2, ',', '.') }}</span></h1>
+                </span>
+                <div class="d-flex align-items-center justify-content-center" id="toggleVisibilityBtn"
+                    style="width: 30px; height: 30px; border: 3px solid var(--bg-primary); border-radius: 50%; background: var(--bg-primary);">
+                    <span class="material-symbols-outlined" id="visibilityIcon"
+                        style="font-variation-settings: 'FILL' 1; font-size: 20px; color: #fff; cursor: pointer;">visibility_off</span>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center mt-2" id="topUpButton">
+                {{-- Custom Modal 1 --}}
+                <div id="customModal1" class="custom-modal-overlay">
+                    <div class="custom-modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="customModal1Title">Add Balance to Your WellPay</h1>
+                            <button type="button" class="btn-close" id="closeCustomModal1" aria-label="Close">
+                                <span class="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <h5>Current Balance:
+                                <span class="fw-bold">
+                                    Rp {{ number_format($wellpay, 2, ',', '.') }}
+                                </span>
+                            </h5>
+                            <input type="hidden" id="currentBalanceValue" value="{{ $wellpay }}">
+                            {{-- <form action="" method="POST" id="topUpForm"> --}}
+                            {{-- @csrf --}}
+                            <div class="mb-3">
+                                <label for="topupAmount" class="form-label mt-2">Enter the top up amount</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">Rp</span>
+                                    <input type="text" class="form-control" id="topupAmount" name="topupAmount"
+                                        autocomplete="off">
+                                </div>
+                                <div id="topupError" class="text-danger mt-1" style="font-size: 0.875em; display: none;">
+                                </div>
+                            </div>
+                            {{-- </form> --}}
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" id="nextCustomModalBtn">Continue</button>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Custom Modal 2 --}}
+                <div id="customModal2" class="custom-modal-overlay">
+                    <div class="custom-modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="customModal2Title">Confirm Top-up</h1>
+                            <button type="button" class="btn-close" id="closeCustomModal2" aria-label="Close">
+                                <span class="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <h6 class="m-0 inter">You are about to top up: <span id="confirmTopupAmount"
+                                        class="fw-bold"></span></h6>
+                                <h6 class="m-0 inter">Your new balance will be: <span id="confirmNewBalance"
+                                        class="fw-bold"></span></h6>
+                                <input type="hidden" id="finalTopupAmount" value="">
+                                <hr>
+                                <div class="mb-3">
+                                    <label for="accountPassword" class="form-label">Enter your account's password</label>
+                                    <input type="password" class="form-control" id="accountPassword" name="accountPassword"
+                                        placeholder="Your password"
+                                        style="border-top-left-radius: 0.25rem; border-bottom-left-radius: 0.25rem;" autocomplete="current-password">
+                                    <div id="passwordError" class="text-danger mt-1"
+                                        style="font-size: 0.875em; display: none;"></div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" id="backToCustomModal1">Back</button>
+                            <button class="btn btn-primary" id="confirmTopupBtn">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <button class="btn d-flex justify-content-center align-items-center m-0" id="openCustomModal1"
+                    style="width: 107px; background-color: var(--bg-contrast); padding: 5px; border-radius: 100px; color: #fff; cursor: pointer;">
+                    <span class="me-2">Top up</span>
+                    <div class="d-flex align-items-center justify-content-center"
+                        style="width: 20px; height: 20px; border: 2px solid #fff; border-radius: 50%; background: var(--bg-contrast);">
+                        <span class="material-symbols-outlined" style="font-size: 18px; color: #fff;">add</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <div id="successToast" class="success-toast">
+            <span class="material-symbols-outlined check-icon">check_circle</span>
+            <p id="successToastMessage" class="toast-message">Top-up berhasil!</p>
+        </div>
+
+
         {{-- Active Subscription Card --}}
         <section class="w-100 h-auto mb-md-5 mb-4 subscription-card p-4">
             <div class="row mb-2 justify-content-between align-content-end">
@@ -102,7 +215,7 @@
                     </div>
                 </div>
                 <div class="col-lg p-2 time-slot">
-                    <div class="row mb-1 justify-content-between align-content-center"  data-bs-toggle="collapse"
+                    <div class="row mb-1 justify-content-between align-content-center" data-bs-toggle="collapse"
                         data-bs-target="#lunch-packages" role="button" aria-expanded="true"
                         aria-controls="breakfast-packages">
                         <div class="time-slot-type font-400 w-auto p-0 ps-1">Lunch</div>
@@ -112,7 +225,8 @@
                     </div>
                     <div class="collapse" id="lunch-packages">
                         <div class="row mb-1 p-0 package justify-content-between align-content-center">
-                            <div class="w-75 p-0 ps-1 package-name">Paket Lorem Ipsum Dolor Amethyst Dolorosa Megamendung</div>
+                            <div class="w-75 p-0 ps-1 package-name">Paket Lorem Ipsum Dolor Amethyst Dolorosa Megamendung
+                            </div>
                             <div class="w-auto align-self-center me-1 quantity">
                                 x 1
                             </div>
@@ -136,7 +250,8 @@
                     </div>
                     <div class="collapse" id="dinner-packages">
                         <div class="row p-0 package justify-content-between align-content-center">
-                            <div class="w-75 mb-1 p-0 ps-1 package-name">Paket Lorem Ipsum Dolor Amethyst Dolorosa Megamendung
+                            <div class="w-75 mb-1 p-0 ps-1 package-name">Paket Lorem Ipsum Dolor Amethyst Dolorosa
+                                Megamendung
                             </div>
                             <div class="w-auto align-self-center me-1 quantity">
                                 x 1
@@ -298,4 +413,6 @@
 
 @section('scripts')
     <script src="{{ asset('js/customer/favoriteCatering.js') }}"></script>
+    {{-- <script src="{{ asset('js/customer/view-wellpay.js') }}"></script> --}}
+    <script src="{{ asset('js/customer/wellpay.js') }}"></script>
 @endsection

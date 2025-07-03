@@ -242,8 +242,8 @@
                                             @if (!is_null($package->breakfastPrice))
                                                 <div class="item-row">
                                                     <span>Breakfast</span>
-                                                    <span class="price" data-price="{{ $package->breakfastPrice }}">Rp.
-                                                        {{ number_format($package->breakfastPrice, 0, ',', '.') }},-</span>
+                                                    <span class="price" data-price="{{ $package->breakfastPrice }}">Rp
+                                                        {{ number_format($package->breakfastPrice, 0, ',', '.') }}</span>
                                                     <div class="qty-control">
                                                         <button class="decrement">−</button>
                                                         <span class="qty">0</span>
@@ -255,8 +255,8 @@
                                             @if (!is_null($package->lunchPrice))
                                                 <div class="item-row">
                                                     <span>Lunch</span>
-                                                    <span class="price" data-price="{{ $package->lunchPrice }}">Rp.
-                                                        {{ number_format($package->lunchPrice, 0, ',', '.') }},-</span>
+                                                    <span class="price" data-price="{{ $package->lunchPrice }}">Rp
+                                                        {{ number_format($package->lunchPrice, 0, ',', '.') }}</span>
                                                     <div class="qty-control">
                                                         <button class="decrement">−</button>
                                                         <span class="qty">0</span>
@@ -268,8 +268,8 @@
                                             @if (!is_null($package->dinnerPrice))
                                                 <div class="item-row">
                                                     <span>Dinner</span>
-                                                    <span class="price" data-price="{{ $package->dinnerPrice }}">Rp.
-                                                        {{ number_format($package->dinnerPrice, 0, ',', '.') }},-</span>
+                                                    <span class="price" data-price="{{ $package->dinnerPrice }}">Rp
+                                                        {{ number_format($package->dinnerPrice, 0, ',', '.') }}</span>
                                                     <div class="qty-control">
                                                         <button class="decrement">−</button>
                                                         <span class="qty">0</span>
