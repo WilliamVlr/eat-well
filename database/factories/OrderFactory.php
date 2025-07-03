@@ -49,4 +49,70 @@ class OrderFactory extends Factory
             'notes' => $address->notes,
         ];
     }
+
+    public function forUser(int $userId, ): static
+    {
+        return $this->state(function (array $attributes) use ($userId) {
+            $address = Address::where('userId', $userId)->first();
+
+            if (!$address) {
+                throw new \Exception("User with ID {$userId} doesn't have an address.");
+            }
+
+            $vendorId = Package::query()
+                ->inRandomOrder()
+                ->first()?->vendorId;
+
+            if (!$vendorId) {
+                throw new \Exception("No vendor with packages found.");
+            }
+
+            return [
+                'userId' => $userId,
+                'vendorId' => $vendorId, // Insert random vendorId from Package
+                'totalPrice' => 0,
+                'startDate' => $start,
+                'endDate' => $end,
+                'provinsi' => $address->provinsi,
+                'kota' => $address->kota,
+                'kabupaten' => $address->kabupaten,
+                'kecamatan' => $address->kecamatan,
+                'kelurahan' => $address->kelurahan,
+                'kode_pos' => $address->kode_pos,
+                'jalan' => $address->jalan,
+                'recipient_name' => $address->recipient_name,
+                'recipient_phone' => $address->recipient_phone,
+                'notes' => $address->notes,
+            ];
+        });
+    }
+
+    public function forVendor(int $vendorId): static
+    {
+        return $this->state(function (array $attributes) use ($vendorId) {
+            $start = $this->faker->dateTimeBetween("-1 year", "now");
+            $end = (clone $start)->modify("+" . rand(1, 14) . "days");
+
+            $address = Address::inRandomOrder()->first();
+
+            return [
+                'userId' => $address->userId,
+                'vendorId' => $vendorId,
+                'totalPrice' => 0,
+                'startDate' => $start,
+                'endDate' => $end,
+                'isCancelled' => $this->faker->boolean(10),
+                'provinsi' => $address->provinsi,
+                'kota' => $address->kota,
+                'kabupaten' => $address->kabupaten,
+                'kecamatan' => $address->kecamatan,
+                'kelurahan' => $address->kelurahan,
+                'kode_pos' => $address->kode_pos,
+                'jalan' => $address->jalan,
+                'recipient_name' => $address->recipient_name,
+                'recipient_phone' => $address->recipient_phone,
+                'notes' => $address->notes,
+            ];
+        });
+    }
 }

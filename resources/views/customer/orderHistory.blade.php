@@ -5,6 +5,7 @@
     $tabs = [
         'all' => 'All',
         'active' => 'Active',
+        'upcoming' => 'Upcoming',
         'finished' => 'Finished',
         'cancelled' => 'Cancelled',
     ];
@@ -25,10 +26,10 @@
         {{-- TAB CONTROL --}}
         <section class="tab-control mb-3 mt-4">
             <div class="container">
-                <div class="row tab-control-wrapper">
+                <div class="row tab-control-wrapper gap-2">
                     @foreach ($tabs as $key => $label)
                         <a href="{{ route('order-history', ['status' => $key]) }}"
-                            class="col-3 d-flex text-center justify-content-center align-items-center tab-control-text-wrapper {{ $status === $key ? 'active' : '' }}">
+                            class="col-2 d-flex text-center justify-content-center align-items-center tab-control-text-wrapper {{ $status === $key ? 'active' : '' }}">
                             <span class="tab-control-text">{{ $label }}</span>
                         </a>
                     @endforeach
@@ -75,6 +76,8 @@
                                 You have no finished orders.
                             @elseif ($status === 'cancelled')
                                 You have no cancelled orders.
+                            @elseif ($status === 'upcoming')
+                                You have no upcoming orders.
                             @else
                                 You haven't ordered anything yet.
                             @endif

@@ -6,6 +6,7 @@ use App\Models\DeliveryStatus;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -17,9 +18,31 @@ class OrderSeeder extends Seeder
      */
     public function run(): void
     {
+        // Specific user
+        $userId = User::where('role', 'Customer')->first()->userId;
+        $dates = [
+            now()->subWeek(),
+            now(),
+            now()->addWeek()
+        ];
+        foreach($dates as $date){
+            Order::factory()
+            ->forUser($userId)
+            ->create([
+                
+            ])
+        }
+        // 20 random orders for 1 vendor
+        $vendorId = 1;
+
+
+        // 5 Active order
         Order::factory()
-            ->count(9)
-            ->create()
+            ->count(5)
+            ->create([
+                'startDate' => Carbon::parse(now()->subMonth()->startOfWeek(Carbon::MONDAY)),
+                'endDate' => Carbon::parse(now()->subMonth()->endOfWeek(Carbon::SUNDAY))
+            ])
             ->each(function ($order) {
                 $items = OrderItem::factory()
                     ->count(rand(1, 3))
@@ -49,16 +72,10 @@ class OrderSeeder extends Seeder
                 $order->totalPrice = $total;
                 $order->save();
 
-                if(rand(1, 2) == 1){
-                    Payment::factory()->create([
-                        'orderId' => $order->orderId,
-                    ]);
-                } else {
-                    Payment::factory()->create([
-                        'orderId' => $order->orderId,
-                        'paid_at' => fake()->dateTimeBetween('-7 days', '-1 days'),
-                    ]);
-                }
+                Payment::factory()->create([
+                    'orderId' => $order->orderId,
+                    'paid_at' => fake()->dateTimeBetween('-7 days', '-1 days'),
+                ]);
 
                 // Get unique time slots from orderItems
                 $slots = $order->orderItems->pluck('packageTimeSlot')->unique()->toArray();
