@@ -52,6 +52,10 @@ class VendorSeeder extends Seeder
         // foreach($vendors as $vendor) {
         //    Vendor::firstOrCreate(['name' => $vendor['name']], $vendor);
         // }
+
+        // foreach($vendors as $vendor) {
+        //    Vendor::firstOrCreate(['name' => $vendor['name']], $vendor);
+        // }
         $vendors = [
             [
                 'userId' => 1,
@@ -93,6 +97,6 @@ class VendorSeeder extends Seeder
         //    Vendor::firstOrCreate(['name' => $vendor['name']], $vendor);
         }
 
-        Vendor::factory()->count(100)->create();
+        Vendor::factory()->count(10)->create();
     }
 }

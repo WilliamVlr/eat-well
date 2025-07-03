@@ -1,1 +1,0 @@
-<label {{ $attributes->merge(['class'=>'form-label m-0']) }}>{{ $slot }}</label>
