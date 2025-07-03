@@ -18,31 +18,9 @@ class OrderSeeder extends Seeder
      */
     public function run(): void
     {
-        // Specific user
-        $userId = User::where('role', 'Customer')->first()->userId;
-        $dates = [
-            now()->subWeek(),
-            now(),
-            now()->addWeek()
-        ];
-        foreach($dates as $date){
-            Order::factory()
-            ->forUser($userId)
-            ->create([
-                
-            ])
-        }
-        // 20 random orders for 1 vendor
-        $vendorId = 1;
-
-
-        // 5 Active order
         Order::factory()
-            ->count(5)
-            ->create([
-                'startDate' => Carbon::parse(now()->subMonth()->startOfWeek(Carbon::MONDAY)),
-                'endDate' => Carbon::parse(now()->subMonth()->endOfWeek(Carbon::SUNDAY))
-            ])
+            ->count(20)
+            ->create()
             ->each(function ($order) {
                 $items = OrderItem::factory()
                     ->count(rand(1, 3))

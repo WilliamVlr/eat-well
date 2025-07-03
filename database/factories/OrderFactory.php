@@ -50,7 +50,7 @@ class OrderFactory extends Factory
         ];
     }
 
-    public function forUser(int $userId, ): static
+    public function forUser(int $userId): static
     {
         return $this->state(function (array $attributes) use ($userId) {
             $address = Address::where('userId', $userId)->first();
@@ -71,8 +71,6 @@ class OrderFactory extends Factory
                 'userId' => $userId,
                 'vendorId' => $vendorId, // Insert random vendorId from Package
                 'totalPrice' => 0,
-                'startDate' => $start,
-                'endDate' => $end,
                 'provinsi' => $address->provinsi,
                 'kota' => $address->kota,
                 'kabupaten' => $address->kabupaten,

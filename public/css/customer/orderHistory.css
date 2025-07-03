@@ -30,6 +30,19 @@ body {
   margin-right: 0;
 }
 
+.filter-order {
+  background-color: rgb(230, 228, 228);
+}
+
+.filter-order:hover {
+  background-color: rgb(214, 214, 214);
+}
+
+
+.filter-order.active {
+  background-color: var(--secondary-green);
+}
+
 /* Tab Control */
 .tab-control-wrapper {
   background-color: #f3f3f3;
@@ -163,7 +176,7 @@ body {
 
       .vendor-name-wrapper {
         max-width: 300px;
-        min-width: 150px;
+        /* min-width: 150px; */
         width: fit-content;
 
         h5 {

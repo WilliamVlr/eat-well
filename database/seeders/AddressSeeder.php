@@ -15,26 +15,24 @@ class AddressSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i=1; $i <= 2; $i++) { 
-            Address::factory()
-            ->recycle(
-                User::factory()
-                ->create([
-                    'email' => "customer{$i}@mail.com",
-                    'password' => Hash::make('password'),
-                    'role' => 'Customer',
-                ])
-            )
-            ->create([
-                'is_default' => true,
-            ]);
-        }
-        
         Address::factory()
         ->recycle(
             User::factory()
             ->create([
-                'email' => "customer3@mail.com",
+                'email' => "customer1@gmail.com",
+                'password' => Hash::make('password'),
+                'role' => 'Customer',
+            ])
+        )
+        ->create([
+            'is_default' => true,
+        ]);
+
+        Address::factory()
+        ->recycle(
+            User::factory()
+            ->create([
+                'email' => "customer2@gmail.com",
                 'password' => Hash::make('password'),
                 'role' => 'Customer',
             ])
@@ -43,9 +41,5 @@ class AddressSeeder extends Seeder
             'is_default' => true,
             'notes' => fake()->sentence(10),
         ]);
-
-        Address::factory(3)
-        ->recycle(User::inRandomOrder()->first())
-        ->create();
     }
 }

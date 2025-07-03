@@ -36,8 +36,7 @@ class OrderController extends Controller
             })
             ->when($status === 'upcoming', function ($q) use ($now) {
                 $q->where('isCancelled', 0)
-                    ->whereDate('startDate', '<=', now()->addWeek())
-                    ->whereDate('endDate', '>=', now()->addWeek());
+                    ->whereDate('startDate', '>', $now);
             })
             ->when($status === 'finished', function ($q) use ($now) {
                 $q->where('isCancelled', 0)
