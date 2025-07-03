@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('vendors', function (Blueprint $table) {
-            $table->string('provinsi');
-            $table->string('kota');
-            $table->string('kabupaten');
-            $table->string('kecamatan');
-            $table->string('kelurahan');
-            $table->string('kode_pos');
-            $table->string('jalan');
+            $table->string('provinsi')->nullable();
+            $table->string('kota')->nullable();
+            $table->string('kabupaten')->nullable();
+            $table->string('kecamatan')->nullable();
+            $table->string('kelurahan')->nullable();
+            $table->string('kode_pos')->nullable();
+            $table->string('jalan')->nullable();
         });
     }
 
