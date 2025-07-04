@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRole;
 use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
@@ -9,6 +10,29 @@ use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
 {
+    public function index()
+    {
+        /**
+         * @var User|null $user
+         */
+        $user = Auth::user();
+
+        if(!$user) {
+            return redirect('login')->with("error");
+        }
+
+        if($user->role === UserRole::Vendor) {
+            return redirect("/cateringHomePage")->with("error");
+        }
+
+        if($user->role === UserRole::Admin) {
+            return redirect("/admin-dashboard")->with("error");
+        }
+
+        $vendors = $user->favoriteVendors()->paginate(30);
+
+        return view('favoritePage', compact('vendors'));
+    }
     public function favorite(String $id)
     {
         // dd("DUAR");

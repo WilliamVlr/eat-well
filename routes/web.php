@@ -69,6 +69,7 @@ Route::get('/catering/{vendor}', [VendorController::class, 'show'])->name('cater
 // Favorite
 Route::post('favorite/{vendorId}', [FavoriteController::class, 'favorite'])->name('favorite');
 Route::post('unfavorite/{vendorId}', [FavoriteController::class, 'unfavorite'])->name('unfavorite');
+Route::get('/favorites', [FavoriteController::class,'index'])->name('favorite.show')->middleware('auth');
 
 Route::get('/catering-detail/{vendor}', [VendorController::class, 'show'])->name('catering-detail')->middleware('auth');
 Route::post('/update-order-summary', [VendorController::class, 'updateOrderSummary'])->middleware('auth');
