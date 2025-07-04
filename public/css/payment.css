@@ -100,7 +100,7 @@ h1{
 }
 
 .fullord .pack-list{
-    margin-left: 50px;
+    margin-left: 30px;
     font-size: 17px;
     opacity: 70%;
 }
@@ -302,7 +302,7 @@ h1{
     font-size: 0.9rem; font-weight: 600;
 }
 .message-box-content button:hover { background-color: #fba679; }
-.fullord .row > .col { padding-left: 15px; padding-right: 15px; }
+.fullord .row > .col { padding-right: 15px; }
 .fullord .pack-list { text-align: left; }
 .fullord .pack-price { text-align: right; }
 

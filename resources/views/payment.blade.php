@@ -19,6 +19,13 @@
             Notes alamat disini
         </p>
         <div class="container-sm isi">
+            <input type="hidden" id="hiddenVendorId" value="{{ $vendor->vendorId }}">
+            <input type="hidden" id="hiddenStartDate" value="{{ $startDate }}">
+            <input type="hidden" id="hiddenEndDate" value="{{ $endDate }}">
+            <input type="hidden" id="hiddenCartTotalPrice" value="{{ $totalOrderPrice }}">
+            {{-- Pastikan juga ada CSRF token untuk AJAX POST request --}}
+            <meta name="csrf-token" content="{{ csrf_token() }}">
+
             <div class="orderdet">
                 <p class="lexend font-semibold text-white judul">Order Detail</p>
             </div>
@@ -66,32 +73,28 @@
                 </div>
             @endforeach
 
-            {{-- TODO: Tambahkan input untuk catatan (note) jika ada --}}
-            {{-- <div class="detail note-order lexend">
-                <p class="font-medium" style="opacity: 0.7">Note:</p>
-                <p class="font-bold">taro makanan nya di loker aja pak.</p>
-            </div> --}}
-
             <hr
                 style="height: 1.5px; background-color:black; opacity:100%; border: none; margin-left: 20px; margin-right: 20px;">
             <div class="payment-meth">
                 <p class="inter font-semibold text-black detail pack-name mb-0">Payment Method</p>
                 <div class="button-payment lexend font-medium text-black">
                     <div class="form-check m-0">
-                        <input class="form-check-input radio-custom" type="radio" name="payment-button" id="wellpay">
+                        <input class="form-check-input radio-custom" type="radio" name="payment-button" id="wellpay"
+                            value="1">
                         <label class="form-check-label" for="wellpay">
                             Wellpay
                         </label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input radioButtonPayment radio-custom" type="radio" name="payment-button"
-                            id="qris">
+                            id="qris" value="2">
                         <label class="form-check-label" for="qris">
                             QRIS
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input radio-custom" type="radio" name="payment-button" id="bva">
+                        <input class="form-check-input radio-custom" type="radio" name="payment-button" id="bva"
+                            value="3">
                         <label class="form-check-label" for="bva">
                             BCA Virtual Account
                         </label>
@@ -111,19 +114,21 @@
     </div>
 
     <div id="qrisPopup" class="popup-overlay">
-        <div class="popup-content">
+        <div class="popup-content" style="width: fit-content;">
             <h2>Pay Now</h2>
             <div class="qr-code-container">
                 <img src="" alt="QR Code" id="qrCodeImage">
             </div>
             <p class="timer">Expires in <span id="countdownTimer">00:59</span></p>
-            <button class="popup-button download-qris" id="downloadQrisBtn">Download QRIS</button>
-            <button class="popup-button done" id="doneBtn">Done</button>
+            <div class="d-flex">
+                <button class="popup-button download-qris me-3" id="downloadQrisBtn">Download QRIS</button>
+                <button class="popup-button done" id="doneBtn">Done</button>
+            </div>
         </div>
     </div>
 
     <div id="confirmationPopup" class="popup-overlay">
-        <div class="popup-content">
+        <div class="popup-content" style="width: fit-content;">
             <p class="inter font-semibold", style="color: red; font-size:20px">Warning</p>
             <p style="font-weight:600; color:#222; text-align:center; margin-bottom:24px;">
                 Are you sure you want to proceed with this payment?
@@ -135,8 +140,49 @@
         </div>
     </div>
 
+    <div id="wellpayConfirmPopup" class="popup-overlay">
+        <div class="popup-content" style="width: fit-content">
+            {{-- Stage 1: Initial Confirmation --}}
+            <div id="wellpayStage1" class="text-center">
+                <p class="inter font-semibold" style="color: green; font-size:20px">Confirm Wellpay Payment</p>
+                <p id="wellpayBalanceText" style="font-weight:400; color:#222; text-align:center; margin-bottom:12px;">
+                    Your current Wellpay balance is: Rp X.XXX.XXX,-
+                </p>
+                <p style="font-weight:400; color:#222; text-align:center; margin-bottom:24px;">
+                    Are you sure you want to pay with Wellpay?
+                </p>
+            </div>
+
+            {{-- Stage 2: Password Input (Hidden by default) --}}
+            <div id="wellpayStage2" style="display: none;">
+                <p class="inter font-semibold" style="color: green; font-size:20px">Enter Your Password</p>
+                <p id="wellpayAmountToPay" style="font-weight:400; color:#222; text-align:center; margin-bottom:12px;">
+                    Total to pay: Rp {{ number_format($totalOrderPrice, 0, ',', '.') }}
+                </p>
+                <div class="mb-3">
+                    <label for="wellpayPasswordInput" class="form-label visually-hidden">Password</label>
+                    <input type="password" class="form-control" id="wellpayPasswordInput" placeholder="Enter your account's password">
+                    <div id="wellpayPasswordError" class="text-danger mt-1" style="display: none;"></div>
+                </div>
+            </div>
+
+            <div id="wellpayPopupMessage" class="mt-3 text-center" style="display: none;"></div>
+
+            <div class="d-flex justify-content-center">
+                <button id="wellpayCancelBtn" class="popup-button me-3 mt-0"
+                    style="background:#f44336; color:white; border:none; border-radius:10px; padding:5px 32px; font-size:18px; font-weight:500; box-shadow:0 2px 6px #0001;">
+                    Cancel
+                </button>
+                <button id="wellpayConfirmBtn" class="popup-button mt-0"
+                    style="background:#4CAF50; color:white; border:none; border-radius:10px; padding:5px 32px; font-size:18px; font-weight:500; box-shadow:0 2px 6px #0001;">
+                    Confirm
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div id="successPopup" class="popup-overlay">
-        <div class="popup-content">
+        <div class="popup-content" style="width: fit-content">
             <p style="font-weight:600; color:#222; text-align:center; margin-bottom:24px;">
                 Successfully added to your subscription. Thank you for your purchase.
             </p>
@@ -156,5 +202,16 @@
 @endsection
 
 @section('scripts')
+    {{-- Ini akan dieksekusi oleh Blade Engine Laravel --}}
+    <script>
+        // Pastikan objek global App ada
+        window.App = window.App || {};
+        window.App.routes = {
+            checkoutProcess: '{{ route('checkout.process') }}',
+            userWellpayBalance: '{{ route('user.wellpay.balance') }}',
+        };
+    </script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="{{ asset('js/payment.js') }}"></script>
 @endsection

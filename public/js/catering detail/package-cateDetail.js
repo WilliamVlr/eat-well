@@ -138,7 +138,7 @@ $(document).ready(function () {
             }
             $(".price-total")
                 .show()
-                .text(`Rp. ${summary.totalPrice.toLocaleString("id-ID")},-`);
+                .text(`Rp. ${summary.totalPrice.toLocaleString("id-ID")}`);
             
             proceedToPaymentLink.css({
                 'cursor': 'pointer',
@@ -150,7 +150,7 @@ $(document).ready(function () {
             $(".item-count").show().text(`${summary.totalItems} Items`);
             $(".price-total")
                 .show()
-                .text(`Rp. ${summary.totalPrice.toLocaleString("id-ID")},-`);
+                .text(`Rp. ${summary.totalPrice.toLocaleString("id-ID")}`);
 
             proceedToPaymentLink.css({
                 'cursor': 'pointer',
