@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Order;
 use App\Models\Package;
 use App\Models\PackageCategory;
 use App\Models\Vendor;
@@ -35,8 +36,9 @@ class VendorController extends Controller
         // Pastikan Anda telah mendefinisikan relasi 'packages' di model Vendor
         // dan relasi 'category' serta 'cuisineTypes' di model Package.
         $packages = $vendor->packages()->with(['category', 'cuisineTypes'])->get();
+        $numSold = Order::where('vendorId', $vendor->vendorId)->count();
 
-        return view('cateringDetail', compact('vendor', 'packages'));
+        return view('cateringDetail', compact('vendor', 'packages', 'numSold'));
     }
 
     public function search(Request $request)

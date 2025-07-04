@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             VendorSeeder::class,
             PackageSeeder::class,
             OrderSeeder::class,
+            VendorPreviewSeeder::class,
         ]);
 
     }

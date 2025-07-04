@@ -217,19 +217,6 @@ class OrderController extends Controller
             ]);
             Log::info('Order created. Order ID: ' . $order->orderId);
 
-            // Buat delivery statuses untuk setiap slot
-            // $slots = ['Morning', 'Afternoon', 'Evening'];
-            // foreach ($slots as $slot) {
-            //     $deliveryDate = Carbon::parse($startDate)->copy()->next($slot);
-            //     DeliveryStatus::create([
-            //         'orderId' => $order->orderId,
-            //         'deliveryDate' => $deliveryDate,
-            //         'slot' => $slot,
-            //         'status' => 'Prepared',
-            //     ]);
-            // }
-            // Log::info('Delivery statuses created for Order ID: ' . $order->orderId);
-
             // 2. Pindahkan CartItems ke OrderItems
             $selectedTimeSlots = [];
             foreach ($cart->cartItems as $cartItem) {
