@@ -1,0 +1,15 @@
+body
+{
+    background-color: rgb(244, 244, 244);
+}
+
+.view-all-logsbtn{
+    display: flex;
+    justify-content: center;
+}
+
+.table-log td a
+{
+    color: white;
+    background-color: rgb(0, 107, 183);
+}
