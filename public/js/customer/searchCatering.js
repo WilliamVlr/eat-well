@@ -62,11 +62,3 @@ document.querySelectorAll('input[name="sort"]').forEach(function(radio) {
         }
     });
 });
-
-document.querySelectorAll('.btn-fav').forEach(function(btn) {
-    btn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-        btn.classList.toggle('favorited');
-    });
-});

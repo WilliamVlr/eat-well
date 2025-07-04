@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\RegisteredUserController;
@@ -56,15 +58,21 @@ Route::get('/customer-first-page', function () {
 })->middleware('auth');
 
 // Customer Home
-Route::get('/home', [UserController::class, 'index'])->name('home')->middleware('auth');
+Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth');
 Route::post('/topup', [UserController::class, 'topUpWellPay'])->middleware('auth')->name('wellpay.topup');
 
 Route::get('/manage-profile', function () {
     return view('manageProfile');
 })->name('manage-profile')->middleware('auth');
 
-// Search
-Route::get('/search', [VendorController::class, 'search'])->name('search');
+// Caterings
+Route::get('/caterings', [VendorController::class, 'search'])->name('search');
+Route::get('/catering/{vendor}', [VendorController::class, 'show'])->name('catering-detail');
+
+// Favorite
+Route::post('favorite/{vendorId}', [FavoriteController::class, 'favorite'])->name('favorite');
+Route::post('unfavorite/{vendorId}', [FavoriteController::class, 'unfavorite'])->name('unfavorite');
+Route::get('/favorites', [FavoriteController::class,'index'])->name('favorite.show')->middleware('auth');
 
 Route::get('/catering-detail/{vendor}', [VendorController::class, 'show'])->name('catering-detail')->middleware('auth');
 Route::post('/update-order-summary', [VendorController::class, 'updateOrderSummary'])->middleware('auth');
