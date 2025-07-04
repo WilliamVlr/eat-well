@@ -4,6 +4,11 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use App\Models\Vendor;
+use Database\Seeders\AddressSeeder;
+use Database\Seeders\CuisineTypeSeeder;
+use Database\Seeders\PackageCategorySeeder;
+use Database\Seeders\UserSeeder;
+use Database\Seeders\VendorSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -14,6 +19,16 @@ class AdminVendorsTest extends TestCase
      * A basic feature test example.
      */
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Seed only required classes
+        $this->seed(PackageCategorySeeder::class);
+        $this->seed(CuisineTypeSeeder::class);
+    }
+    
     /** @test */
     protected function loginAsAdmin()
     {
