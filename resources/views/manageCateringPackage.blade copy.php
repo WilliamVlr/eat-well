@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -189,7 +187,6 @@
 </head>
 
 <body>
-    {{-- <x-vendor-nav></x-vendor-nav> --}}
     <div class="heading-title">Find your Package</div>
     <div class="text-muted-subheading">You can edit our previous and add your new package to your catering.</div>
 
@@ -197,113 +194,92 @@
     <div class="container mt-5">
         <div class="d-flex justify-content-between mb-3">
 
-            <div class="container my-4">
-                <div class="row justify-content-center">
-                    <div class="col-md-8 text-center">
-
-                        <!-- Tombol Upload -->
-                        <label for="import" class="btn btn-success btn-sm px-4 py-2"
-                            style="background-color: #14532d; border-color: #14532d;">
-                            <i class="bi bi-upload me-2"></i> Upload Package File
-                        </label>
-                        <input type="file" class="d-none" id="import" accept=".csv, .xlsx, .xls">
-
-                        <!-- Keterangan Format -->
-                        <div class="text-muted mt-2" style="font-size: 0.85rem;">
-                            Column Format :
-                            <code>name</code>, <code>category</code>, <code>cuisine_type</code>,
-                            <code>breakfast_price</code>, <code>lunch_price</code>, <code>dinner_price</code>,
-                            <code>average_calory</code>, <code>file_menu</code>, <code>package_image</code>
-                        </div>
-
-                    </div>
-                </div>
+            <div class="w-50">
+                <label for="import" class="form-label">Import</label>
+                <input type="file" class="form-control" id="import" accept=".csv, .xlsx, .xls">
+                <div class="form-text">Format kolom: name, category, cuisine_type, breakfast_price, lunch_price,
+                    dinner_price, average_calory, file_menu, package_image</div>
+            </div>
         </div>
 
-
-
-    </div>
-
-    <div class="table-responsive">
-        <table class="table table-bordered">
-            <thead class="table-dark">
-                <tr>
-                    <th>No</th>
-                    <th>Package Name</th>
-                    <th>Category</th>
-                    <th>Cuisine Type</th>
-                    <th>Breakfast Price</th>
-                    <th>Lunch Price</th>
-                    <th>Dinner Price</th>
-                    <th>Average Calory</th>
-                    <th>File Menu</th>
-                    <th>Package Image</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-
-            <tbody id="packageTable">
-                @foreach ($packages as $package)
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-dark">
                     <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $package->name }}</td>
-                        <td>{{ $package->category->categoryName ?? 'N/A' }}</td>
-                        <td>
-                            @foreach ($package->cuisineTypes as $type)
-                                {{ $type->cuisineName }}
-                            @endforeach
-                        </td>
-                        <td>Rp{{ number_format($package->breakfastPrice ?? 0, 0, ',', '.') }}</td>
-                        <td>Rp{{ number_format($package->lunchPrice ?? 0, 0, ',', '.') }}</td>
-                        <td>Rp{{ number_format($package->dinnerPrice ?? 0, 0, ',', '.') }}</td>
-                        <td>{{ $package->averageCalories }} kcal</td>
-                        <td>
-                            @if ($package->menuPDFPath)
-                                <a href="{{ asset('asset/menus/' . $package->menuPDFPath) }}"
-                                    target="_blank">{{ $package->menuPDFPath }}</a>
-                            @else
-                                N/A
-                            @endif
-                        </td>
-                        <td>
-                            @if ($package->imgPath)
-                                <img src="{{ asset('asset/menus/' . $package->imgPath) }}" alt="{{ $package->name }}"
-                                    width="100">
-                            @else
-                                N/A
-                            @endif
-                        </td>
-                        <td>
-                            <button class="btn btn-warning btn-sm" data-package="{!! htmlspecialchars(
-                                json_encode([
-                                    'id' => $package->packageId,
-                                    'name' => $package->name,
-                                    'categoryId' => $package->categoryId,
-                                    'breakfastPrice' => $package->breakfastPrice,
-                                    'lunchPrice' => $package->lunchPrice,
-                                    'dinnerPrice' => $package->dinnerPrice,
-                                    'averageCalories' => $package->averageCalories,
-                                    'cuisines' => $package->cuisineTypes->pluck('cuisineId'),
-                                    'menuPDFPath' => $package->menuPDFPath, // 👈 baru
-                                    'imgPath' => $package->imgPath, // 👈 baru
-                                ]),
-                                ENT_QUOTES,
-                                'UTF-8',
-                            ) !!}"
-                                onclick="handleEditClick(this)">
-                                <i class="bi bi-pencil-fill"></i>
-                            </button>
+                        <th>No</th>
+                        <th>Package Name</th>
+                        <th>Category</th>
+                        <th>Cuisine Type</th>
+                        <th>Breakfast Price</th>
+                        <th>Lunch Price</th>
+                        <th>Dinner Price</th>
+                        <th>Average Calory</th>
+                        <th>File Menu</th>
+                        <th>Package Image</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
 
-                            <button class="btn btn-danger btn-sm" onclick="deletePackage({{ $package->packageId }})"
-                                title="Delete">
-                                <i class="bi bi-trash-fill"></i>
-                            </button>
-    </div>
-    </td>
-    </tr>
-    @endforeach
-    </tbody>
-    </table>
+                <tbody id="packageTable">
+                    @foreach ($packages as $package)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $package->name }}</td>
+                            <td>{{ $package->category->categoryName ?? 'N/A' }}</td>
+                            <td>
+                                @foreach ($package->cuisineTypes as $type)
+                                    {{ $type->cuisineName }},
+                                @endforeach
+                            </td>
+                            <td>Rp{{ number_format($package->breakfastPrice ?? 0, 0, ',', '.') }}</td>
+                            <td>Rp{{ number_format($package->lunchPrice ?? 0, 0, ',', '.') }}</td>
+                            <td>Rp{{ number_format($package->dinnerPrice ?? 0, 0, ',', '.') }}</td>
+                            <td>{{ $package->averageCalories }} kcal</td>
+                            <td>
+                                @if ($package->menuPDFPath)
+                                    <a href="{{ asset('asset/menus/' . $package->menuPDFPath) }}"
+                                        target="_blank">{{ $package->menuPDFPath }}</a>
+                                @else
+                                    N/A
+                                @endif
+                            </td>
+                            <td>
+                                @if ($package->imgPath)
+                                    <img src="{{ asset('asset/menus/' . $package->imgPath) }}"
+                                        alt="{{ $package->name }}" width="100">
+                                @else
+                                    N/A
+                                @endif
+                            </td>
+                            <td>
+                                <button class="btn btn-warning btn-sm" data-package="{!! htmlspecialchars(
+                                    json_encode([
+                                        'id' => $package->packageId,
+                                        'name' => $package->name,
+                                        'categoryId' => $package->categoryId,
+                                        'breakfastPrice' => $package->breakfastPrice,
+                                        'lunchPrice' => $package->lunchPrice,
+                                        'dinnerPrice' => $package->dinnerPrice,
+                                        'averageCalories' => $package->averageCalories,
+                                        'cuisines' => $package->cuisineTypes->pluck('cuisineId'),
+                                    ]),
+                                    ENT_QUOTES,
+                                    'UTF-8',
+                                ) !!}"
+                                    onclick="handleEditClick(this)">
+                                    <i class="bi bi-pencil-fill"></i>
+                                </button>
+
+                                <button class="btn btn-danger btn-sm"
+                                    onclick="deletePackage({{ $package->packageId }})" title="Delete">
+                                    <i class="bi bi-trash-fill"></i>
+                                </button>
+        </div>
+        </td>
+        </tr>
+        @endforeach
+        </tbody>
+        </table>
     </div>
     <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#packageModal"
         onclick="openAddModal()">Add Package</button>
@@ -485,9 +461,10 @@
         }
 
         function openEditModal(data) {
+            // Ganti judul
             document.getElementById('packageModalLabel').innerText = 'Edit Package';
 
-            // Isi form
+            // Isi field
             document.getElementById('packageName').value = data.name;
             document.getElementById('category').value = data.categoryId;
             document.getElementById('breakfastPrice').value = (+data.breakfastPrice).toFixed(2);
@@ -495,7 +472,7 @@
             document.getElementById('dinnerPrice').value = (+data.dinnerPrice).toFixed(2);
             document.getElementById('averageCalories').value = data.averageCalories;
 
-            // Cuisine
+            // Reset & tandai cuisines
             const cuisineInputs = document.getElementById('cuisineInputs');
             cuisineInputs.innerHTML = '';
             document.querySelectorAll('#cuisine-buttons button').forEach(b => {
@@ -508,48 +485,24 @@
                 }
                 const hidden = document.createElement('input');
                 hidden.type = 'hidden';
-                hidden.name = 'cuisine_types[]';
+                hidden.name = 'cuisines[]';
                 hidden.value = id;
                 cuisineInputs.appendChild(hidden);
             });
 
-            // Reset Dropzone file lama
-            menuDropzone.removeAllFiles(true);
-            imageDropzone.removeAllFiles(true);
-
-            // Tambahkan preview file lama
-            if (data.menuPDFPath) {
-                let mockFile = {
-                    name: data.menuPDFPath,
-                    size: 123456
-                };
-                menuDropzone.emit("addedfile", mockFile);
-                menuDropzone.emit("complete", mockFile);
-            }
-
-            if (data.imgPath) {
-                let mockFile = {
-                    name: data.imgPath,
-                    size: 123456
-                };
-                imageDropzone.emit("addedfile", mockFile);
-                imageDropzone.emit("thumbnail", mockFile, `/asset/menus/${data.imgPath}`);
-                imageDropzone.emit("complete", mockFile);
-            }
-
-            // Update form action
+            // Set tujuan & spoof method
             const form = document.getElementById('packageForm');
-            form.action = `/packages/${data.id}`; // target update
-            form.setAttribute('data-method', 'PUT'); // buat tahu ini edit
-
-            // Tambah _method hidden input (PUT)
+            form.action = `/packages/${data.id}`; // route update
+            // hapus spoof lama (kalau ada)
             form.querySelectorAll('input[name="_method"]').forEach(el => el.remove());
-            const spoof = document.createElement('input');
-            spoof.type = 'hidden';
-            spoof.name = '_method';
-            spoof.value = 'PUT';
-            form.appendChild(spoof);
+            // tambahkan spoof PUT
+            const m = document.createElement('input');
+            m.type = 'hidden';
+            m.name = '_method';
+            m.value = 'PUT';
+            form.appendChild(m);
 
+            // Tampilkan modal
             new bootstrap.Modal(document.getElementById('packageModal')).show();
         }
     </script>
@@ -616,22 +569,22 @@
             return names.map(n => cuisineMap[n]).filter(Boolean);
         }
 
-        // function toggleCuisine(id, event = null) {
-        //     const existingInput = document.getElementById(`cuisine-${id}`);
-        //     if (!existingInput) {
-        //         const input = document.createElement('input');
-        //         input.type = 'hidden';
-        //         input.name = 'cuisineIds[]';
-        //         input.value = id;
-        //         input.id = `cuisine-${id}`;
-        //         document.getElementById('cuisineInputs').appendChild(input);
-        //     }
+        function toggleCuisine(id, event = null) {
+            const existingInput = document.getElementById(`cuisine-${id}`);
+            if (!existingInput) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'cuisineIds[]';
+                input.value = id;
+                input.id = `cuisine-${id}`;
+                document.getElementById('cuisineInputs').appendChild(input);
+            }
 
-        //     if (event) {
-        //         event.target.classList.toggle('btn-outline-secondary');
-        //         event.target.classList.toggle('btn-success');
-        //     }
-        // }
+            if (event) {
+                event.target.classList.toggle('btn-outline-secondary');
+                event.target.classList.toggle('btn-success');
+            }
+        }
 
         function deletePackage(id) {
             if (confirm('Are you sure you want to delete this package?')) {
@@ -722,46 +675,43 @@
         });
 
         // Handler tunggal untuk submit form
-        document.getElementById("packageForm").addEventListener("submit", function(e) {
-            e.preventDefault();
+        document.querySelector("#packageForm").addEventListener("submit", function(e) {
+            // e.preventDefault();
             e.stopPropagation();
 
-            const form = e.target;
+            const form = document.getElementById("packageForm");
             const formData = new FormData(form);
+            console.log(form);
+            for (const [key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
+            }
 
-            // Ambil file dari Dropzone
+            // Tambahkan file dari kedua Dropzone (jika ada)
             if (menuDropzone.getAcceptedFiles().length > 0) {
                 formData.append("menuPDFPath", menuDropzone.getAcceptedFiles()[0]);
             }
-
             if (imageDropzone.getAcceptedFiles().length > 0) {
                 formData.append("imgPath", imageDropzone.getAcceptedFiles()[0]);
             }
 
-            const isEdit = form.getAttribute('data-method') === 'PUT';
-            const url = form.action;
-            const method = isEdit ? 'POST' : 'POST'; // method fetch tetap POST, spoof _method yg atur PUT
-
-            fetch(url, {
-                    method: method,
+            // Kirim 1x request ke Laravel controller
+            fetch("{{ route('packages.store') }}", {
+                    method: "POST",
                     headers: {
                         "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
                     },
                     body: formData
                 })
                 .then(res => {
-                    if (!res.ok) throw new Error("Gagal simpan");
-                    return res.text(); // bisa diganti json()
+                    if (!res.ok) throw new Error("Upload gagal");
+                    return res.text(); // bisa juga .json() sesuai respons Laravel
                 })
                 .then(response => {
-                    console.log("Sukses:", response);
-                    window.location.href = "{{ route('manageCateringPackage') }}"; // redirect sesuka lo
+                    console.log("Berhasil upload:", response);
+                    window.location.href = "{{ route('manageCateringPackage') }}";
                 })
-                .catch(err => {
-                    console.error("Gagal:", err);
-                    alert("Ada error waktu simpan paket");
-                });
         });
+
 
 
         const carousel = document.getElementById("carousel-wrapper");

@@ -98,6 +98,9 @@ Route::get('/cateringHomePage', [OrderVendorController::class, 'totalOrder']);
 // Manage Packages
 Route::get('/manageCateringPackage', [PackageController::class, 'index'])->name('manageCateringPackage');
 Route::delete('/packages/{id}', [PackageController::class, 'destroy'])->name('packages.destroy');
+Route::put('/packages/{package}', [PackageController::class, 'update'])->name('packages.update');
+Route::post('/packages',           [PackageController::class, 'store'])->name('packages.store');
+
 // Route::post('/packages', [PackageController::class, 'store'])->name('packages.store');
 Route::post('/manageCateringPackage', [PackageController::class, 'store'])->name('packages.store');
 Route::put('/manageCateringPackage/{package}', [PackageController::class, 'update'])->name('packages.update');
