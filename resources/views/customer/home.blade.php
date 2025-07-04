@@ -249,7 +249,7 @@
                     <div class="section-title-wrap d-flex flex-row justify-content-between align-items-center">
                         <h3 class="title-1">Your Favorites</h3>
                         @if ($favVendors->count() > 4)
-                            <a href="#" class="detail-link">View all</a>
+                            <a href="{{route('favorite.show')}}" class="detail-link">View all</a>
                         @endif
                     </div>
                     <div class="carousel-slider-wrap carousel-style-1 mt-10 align-self-center">

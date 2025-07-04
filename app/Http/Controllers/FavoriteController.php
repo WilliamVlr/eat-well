@@ -29,7 +29,7 @@ class FavoriteController extends Controller
             return redirect("/admin-dashboard")->with("error");
         }
 
-        $vendors = $user->favoriteVendors()->paginate(30);
+        $vendors = $user->favoriteVendors()->paginate(21);
 
         return view('favoritePage', compact('vendors'));
     }
