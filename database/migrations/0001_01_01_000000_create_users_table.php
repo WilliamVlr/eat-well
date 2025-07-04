@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('remember_token', 100);
             $table->dateTime('dateOfBirth')->nullable();
             $table->boolean('genderMale')->default(false);
+            $table->decimal('wellpay', 10, 2)->default(0.00);
 
             $table->softDeletes();
             $table->timestamps();

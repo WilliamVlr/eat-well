@@ -26,6 +26,10 @@
                 <div class="text-wrapper label-status status-active">
                     Active
                 </div>
+            @elseif (Carbon::now()->addWeek()->between(Carbon::parse($order->startDate), Carbon::parse($order->endDate)))
+                <div class="text-wrapper label-status status-active">
+                    Upcoming
+                </div>
             @else
                 <div class="text-wrapper label-status status-finished">
                     Finished

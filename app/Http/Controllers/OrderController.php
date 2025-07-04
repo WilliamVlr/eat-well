@@ -22,7 +22,14 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $userId = Auth::check() ? Auth::user()->userId : 5;
+        // $userId = Auth::check() ? Auth::user()->userId : 5;
+        $userId = Auth::id();
+        if (!$userId) {
+            // Arahkan ke halaman login atau tampilkan error
+            // return redirect()->route('login')->with('error', 'Please log in to view your cart.');
+            return redirect()->route('landingPage');
+        }
+        
         $status = $request->query('status', 'all');
         $query = $request->query('query');
         $now = Carbon::now();
@@ -33,6 +40,10 @@ class OrderController extends Controller
                 $q->where('isCancelled', 0)
                     ->whereDate('startDate', '<=', $now)
                     ->whereDate('endDate', '>=', $now);
+            })
+            ->when($status === 'upcoming', function ($q) use ($now) {
+                $q->where('isCancelled', 0)
+                    ->whereDate('startDate', '>', $now);
             })
             ->when($status === 'finished', function ($q) use ($now) {
                 $q->where('isCancelled', 0)
@@ -60,11 +71,12 @@ class OrderController extends Controller
   
     public function showPaymentPage(Vendor $vendor) // Menggunakan Route Model Binding untuk Vendor
     {
-        // $userId = Auth::id();
-        $userId = 1;
+        $userId = Auth::id();
+        // $userId = 1;
         if (!$userId) {
             // Arahkan ke halaman login atau tampilkan error
-            return redirect()->route('login')->with('error', 'Please log in to view your cart.');
+            // return redirect()->route('login')->with('error', 'Please log in to view your cart.');
+            return redirect()->route('landingPage');
         }
 
         // Ambil cart user untuk vendor tertentu

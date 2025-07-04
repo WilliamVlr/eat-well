@@ -23,7 +23,7 @@ class UserFactory extends Factory
      * @return array<string, mixed>
      */
 
-     protected $model = User::class;
+    protected $model = User::class;
 
     public function definition(): array
     {
@@ -37,6 +37,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'dateOfBirth' => fake()->dateTimeBetween('-30 years', '-18 years'),
             'genderMale' => fake()->boolean(),
+            'wellpay' => $this->faker->randomFloat(2, 0, 10000000),
         ];
     }
 
