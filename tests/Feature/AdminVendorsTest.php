@@ -69,11 +69,11 @@ class AdminVendorsTest extends TestCase
         $response = $this->get('/view-all-vendors');
 
         $response->assertStatus(200);
-        $response->assertSee('No vendors available');
+        $response->assertSee('No vendor found');
     }
 
     /** @test */
-    public function tc4_check_correct_vendor_data()
+    public function tc3_check_correct_vendor_data()
     {
         $this->loginAsAdmin();
 
@@ -88,22 +88,22 @@ class AdminVendorsTest extends TestCase
     }
 
     /** @test */
-    public function tc5_handle_special_character_vendor_name_rendered()
+    public function tc4_handle_special_character_vendor_name_rendered()
     {
         $this->loginAsAdmin();
 
         $vendor = Vendor::factory()->create([
-            'name' => '@Mega&Co.™ "<Test>VeryLongNameThatKeepsGoingAndGoing...rawrrrrrrrrrrrrrrrrrrrrrrrrr'
+            'name' => '@Mega&Co.™ "<script>VeryLongNameThatKeepsGoingAndGoing...rawrrrrrrrrrrrrrrrrrrrrrrrrr</script>'
         ]);
 
         $response = $this->get('/view-all-vendors');
 
         $response->assertStatus(200);
-        $response->assertSee(e($vendor->name));
+        $response->assertSee($vendor->name);
     }
 
     /** @test */
-    public function tc6_non_admin_cannot_access()
+    public function tc5_non_admin_cannot_access()
     {
         $this->loginAsCustomer();
         
