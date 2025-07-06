@@ -91,8 +91,6 @@
                                 </span>
                             </h5>
                             <input type="hidden" id="currentBalanceValue" value="{{ $wellpay }}">
-                            {{-- <form action="" method="POST" id="topUpForm"> --}}
-                            {{-- @csrf --}}
                             <div class="mb-3">
                                 <label for="topupAmount" class="form-label mt-2">Enter the top up amount</label>
                                 <div class="input-group">
@@ -103,7 +101,6 @@
                                 <div id="topupError" class="text-danger mt-1" style="font-size: 0.875em; display: none;">
                                 </div>
                             </div>
-                            {{-- </form> --}}
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-primary" id="nextCustomModalBtn">Continue</button>
@@ -121,7 +118,6 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
                                 <h6 class="m-0 inter">You are about to top up: <span id="confirmTopupAmount"
                                         class="fw-bold"></span></h6>
                                 <h6 class="m-0 inter">Your new balance will be: <span id="confirmNewBalance"
@@ -136,7 +132,6 @@
                                     <div id="passwordError" class="text-danger mt-1"
                                         style="font-size: 0.875em; display: none;"></div>
                                 </div>
-                            </form>
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-secondary" id="backToCustomModal1">Back</button>
