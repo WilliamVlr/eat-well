@@ -45,7 +45,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('view-all-orders') ? 'active' : '' }}"
-                                href="/view-all-orders">Orders</a>
+                                href="/view-all-orders">Transactions</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('view-all-packages-category') ? 'active' : '' }}"
@@ -67,11 +67,6 @@
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('view-all-logs') ? 'active' : '' }}"
                                 href="/view-all-logs">Logs</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('about-us') ? 'active' : '' }}"
-                                href="/about-us">Order History</a>
-                        </li>
-
                     </ul>
                 </div>
             </div>
