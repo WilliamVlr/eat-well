@@ -78,7 +78,7 @@
                                 href="/about-us">Active Subscription</a>
                         </li> --}}
 
-                    
+
 
                     </ul>
                 </div>
@@ -93,11 +93,17 @@
 
             @auth
                 <!-- Jika sudah login -->
-                <div style="padding: 0.5rem 1rem; border-radius: 0.25rem; margin-right: 2vw">
+                {{-- <div style="padding: 0.5rem 1rem; margin-right: 2vw">
                     <a class="login-button p-0" href="/manage-profile">
-                        <img src="{{ asset('admin/card.png') }}" class="img-fluid" width="100px">
+                        <img src="{{ asset('asset/admin/card.png') }}" class="img-fluid" width="50px" style="border-radius: 400px">
                     </a>
-                </div>
+                </div> --}}
+                <a href="/manage-profile">
+                    <div class="imgstyle m-2" style="border-radius:100%; width:50px; height:50px margin-right:20px">
+                        <img class="img-fluid" src="{{ asset('asset/catering/homepage/breakfastPreview.jpg') }}"
+                            alt="Card image " width="120px" style="border-radius: 100%">
+                    </div>
+                </a>
             @else
                 <!-- Jika belum login -->
                 <div style="padding: 0.5rem 1rem; border-radius: 0.25rem; margin-right: 2vw">

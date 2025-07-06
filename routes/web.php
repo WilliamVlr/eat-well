@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Socialite\ProviderCallbackController;
 use App\Http\Controllers\Socialite\ProviderRedirectController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+use App\Http\Middleware\RoleMiddleware;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -56,7 +57,7 @@ Route::get('/customer-first-page', function () {
 })->middleware('auth');
 
 // Customer Home
-Route::get('/home', [UserController::class, 'index'])->name('home')->middleware('auth');
+Route::get('/home', [UserController::class, 'index'])->middleware('auth')->name('home');
 Route::post('/topup', [UserController::class, 'topUpWellPay'])->middleware('auth')->name('wellpay.topup');
 
 Route::get('/manage-profile', function () {
@@ -145,8 +146,48 @@ Route::get('/test123', function(){
 /* ---------------------
      ADMIN ROUTES
 ---------------------- */
-Route::get('/view-all-vendors', [AdminController::class, 'viewAllVendors'])->name('view-all-vendors');
+Route::get('/view-all-vendors', [AdminController::class, 'viewAllVendors'])->name('view-all-vendors')->middleware('auth');
 
-Route::post('/view-vendors', [AdminController::class, 'search'])->name('view-vendors');
+Route::post('/view-all-vendors', [AdminController::class, 'search'])->name('view-all-vendors')->middleware('auth');
 
-Route::get('/admin-dashboard', [DashboardController::class, 'index'])->name('admin-dashboard');
+Route::get('/admin-dashboard', [DashboardController::class, 'index'])->name('admin-dashboard')->middleware('auth');
+
+Route::get('/view-all-orders', function(){
+    return view('view-all-orders');
+});
+
+Route::get('/view-all-users', function(){
+    return view('view-all-users');
+});
+
+Route::get('/view-all-logs', function(){
+    return view('view-all-logs');
+});
+
+Route::get('/view-all-packages-category', function(){
+    return view('view-all-packages-category');
+});
+
+Route::get('/view-all-packages-cuisine', function(){
+    return view('view-all-packages-cuisine');
+});
+
+// Untuk admin-only access
+// Route::midleware(['auth', 'role:Admin'])->group(function () {
+//     Route::get('/view-all-vendors', [AdminController::class, 'viewAllVendors'])->name('view-all-vendors');
+//     Route::post('/view-vendors', [AdminController::class, 'search'])->name('view-vendors');
+//     Route::get('/admin-dashboard', [DashboardController::class, 'index'])->name('admin-dashboard');
+// });
+Route::get('/view-all-vendors', [AdminController::class, 'viewAllVendors'])
+    ->name('view-all-vendors')
+    ->middleware(['auth', RoleMiddleware::class]);
+
+// POST: /view-all-vendors → hanya Admin
+Route::post('/view-all-vendors', [AdminController::class, 'search'])
+    ->name('view-all-vendors')
+    ->middleware(['auth', RoleMiddleware::class]);
+
+// GET: /admin-dashboard → hanya Admin
+Route::get('/admin-dashboard', [DashboardController::class, 'index'])
+    ->name('admin-dashboard')
+    ->middleware(['auth', RoleMiddleware::class]);
