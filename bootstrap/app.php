@@ -39,6 +39,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // $middleware->append(ShareErrorsFromSession::class);
         $middleware->append(\App\Http\Middleware\LogUserActivity::class);
     })
+    
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();

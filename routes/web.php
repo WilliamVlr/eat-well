@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Socialite\ProviderCallbackController;
 use App\Http\Controllers\Socialite\ProviderRedirectController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+use App\Http\Middleware\RoleMiddleware;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -177,3 +178,16 @@ Route::get('/view-all-packages-cuisine', function(){
 //     Route::post('/view-vendors', [AdminController::class, 'search'])->name('view-vendors');
 //     Route::get('/admin-dashboard', [DashboardController::class, 'index'])->name('admin-dashboard');
 // });
+Route::get('/view-all-vendors', [AdminController::class, 'viewAllVendors'])
+    ->name('view-all-vendors')
+    ->middleware(['auth', RoleMiddleware::class]);
+
+// POST: /view-all-vendors → hanya Admin
+Route::post('/view-all-vendors', [AdminController::class, 'search'])
+    ->name('view-all-vendors')
+    ->middleware(['auth', RoleMiddleware::class]);
+
+// GET: /admin-dashboard → hanya Admin
+Route::get('/admin-dashboard', [DashboardController::class, 'index'])
+    ->name('admin-dashboard')
+    ->middleware(['auth', RoleMiddleware::class]);
