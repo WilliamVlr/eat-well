@@ -38,7 +38,7 @@ class OrderController extends Controller
         $query = $request->query('query');
         $now = Carbon::now();
 
-        $orders = Order::with(['orderItems.package', 'vendor'])
+        $orders = Order::with(['orderItems.package', 'vendor', 'vendorReview'])
             ->where('userId', $userId)
             ->when($status === 'active', function ($q) use ($now) {
                 $q->where('isCancelled', 0)
