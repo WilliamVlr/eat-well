@@ -86,4 +86,9 @@ class Vendor extends Model
     {
         return $this->hasOne(Cart::class, 'vendorId', 'vendorId');
     }
+
+    public function previews()
+    {
+        return $this->hasMany(VendorPreview::class, 'vendorId', 'vendorId');
+    }
 }

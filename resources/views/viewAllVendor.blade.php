@@ -1,54 +1,76 @@
-@section('css')
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>View all vendors</title>
     <link rel="stylesheet" href="{{ asset('css/admin/viewall.css') }}">
-@endsection
+</head>
 
-<x-admin-nav></x-admin-nav>
+<body >
+    <x-admin-nav></x-admin-nav>
 
+    <h1 class="text-center mt-5 fw-semibold lexend">All Vendors</h1>
 
-<h1 class="text-center mt-5 fw-semibold">All Vendors</h1>
+    <div class="row w-100 lexend">
+        <div class="col-1 p-0">
 
-<div class="d-flex justify-content-center align-items-center mt-2" style="width: 100vw">
-    <div class="" style="width: 80vw">
-        <form action="/view-vendors" method="POST" class="d-flex jusify-content-center align-items-center" role="search">
-            @csrf
-            @method('post')
-            <input class="form-control me-2" type="search" placeholder="Search vendor name" aria-label="Search"
-                name="name" />
-            <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+        </div>
+        <div class="col-10 p--0">
+            <form action="/view-all-vendors" method="POST" class="d-flex jusify-content-center align-items-center"
+                role="search">
+                @csrf
+                @method('post')
+                <input class="form-control me-2" type="search" placeholder="Search vendor name" aria-label="Search"
+                    name="name" />
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+        <div class="col-1 p-0">
+
+        </div>
+
     </div>
 
-</div>
 
+    <div class="container mt-3 mb-3">
+        <div class="row d-flex justify-content-center align-items-center">
 
-<div class="container mt-3">
-    <div class="row d-flex justify-content-center align-items-center">
-        @foreach ($vendors as $vendor)
-                <div class="card col-md-3 mt-3 mx-3" style="width: 18rem;">
-                    <div class="imgstyle m-2"
-                        style="background-color:black; border-radius:100%; width:100px; height:100px">
-                        {{-- <img class="card-img-top" src="{{ $vendor->logo }}" alt="Card image cap" width="100px"> --}}
-                        <img class="card-img-top" src="{{ asset('asset/catering/homepage/breakfastPreview.jpg') }}" alt="Card image cap" width="120px" style="border-radius: 100%">
-                    </div>
-
-                    <hr>
-
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $vendor->name }}</h5>
-                        <p class="card-text">Telp : {{ $vendor->phone_number }}</p>
-                        <p class="card-text">Address : {{ $vendor->jalan . ', ' . $vendor->kota }}</p>
-                        <a href="{{ route('catering-detail', $vendor) }}" class="btn btn-primary" style="background-color: green">View Detail</a>
-                    </div>
+            @if ($vendors->isEmpty())
+                <div class="text-center mt-5">
+                    <h4>No vendor found.</h4>
                 </div>
-        @endforeach
+            @else
+                @foreach ($vendors as $vendor)
+                    <div class="card col-md-3 mt-3 mx-3" style="width: 18rem;">
+                        <div class="imgstyle m-2"
+                            style="background-color:black; border-radius:100%; width:100px; height:100px">
+                            <img class="card-img-top" src="{{ asset('asset/catering/homepage/breakfastPreview.jpg') }}"
+                                alt="Card image cap" width="120px" style="border-radius: 100%">
+                        </div>
+
+                        <hr>
+
+                        <div class="card-body">
+                            <h4 class="card-title lexend">{{ $vendor->name }}</h4>
+                            <p class="card-text">Profit : Rp. {{ number_format($sales[$vendor->vendorId] ?? 0, 0, ',', '.') }},00</p>
+                            <p class="card-text">✆ : {{ $vendor->phone_number }}</p>
+                            <p class="card-text">🏠︎ : {{ $vendor->jalan . ', ' . $vendor->kota }}</p>
+                            
+                        </div>
+                    </div>
+                @endforeach
+            @endif
 
 
+
+        </div>
     </div>
-</div>
 
+    <x-admin-footer></x-admin-footer>
 
+</body>
 
-<!-- Nothing in life is to be feared, it is only to be understood. Now is the time to understand more, so that we may fear less. - Marie Curie -->
-</div>
-
-{{-- nanti pakai card saja, bisa di ridirect ke vendor detail --}}
+</html>
