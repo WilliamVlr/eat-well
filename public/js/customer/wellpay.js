@@ -123,6 +123,15 @@ document.addEventListener("DOMContentLoaded", function () {
             formatRupiah(e.target);
             topupError.style.display = "none";
         });
+
+        topupInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter' || event.keyCode === 13) {
+                event.preventDefault(); // Mencegah perilaku default browser
+                if (nextCustomModalBtn) {
+                    nextCustomModalBtn.click();
+                }
+            }
+        });
     }
 
     // Event listener to open Custom Modal 1
@@ -273,6 +282,15 @@ document.addEventListener("DOMContentLoaded", function () {
             } catch (error) {
                 console.error('Error:', error);
                 showErrorToast("Network error. Please try again.");
+            }
+        });
+    }
+
+    if (accountPasswordInput) {
+        accountPasswordInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter' || event.keyCode === 13) {
+                event.preventDefault(); // Mencegah submit form tradisional (jika ada)
+                confirmTopupBtn.click(); // Memicu klik pada tombol konfirmasi
             }
         });
     }

@@ -31,13 +31,15 @@
                         </div>
                         <div class="schedule-container">
                             {{-- <span class="inter schedule">Monday - Sunday</span> --}}
-                            <span class="inter schedule">10k+ sold</span>
+                            <span class="inter schedule">{{ $numSold }} sold</span>
                         </div>
                     </div>
 
                     <div class="location-wrapper">
                         <span class="material-symbols-outlined location-icon">pin_drop</span>
-                        <span class="inter address">{{ $vendor->jalan }}, {{  $vendor->kelurahan }}, {{  $vendor->kecamatan }}, {{  $vendor->kabupaten }}, {{  $vendor->provinsi }}, {{  $vendor->kode_pos }}</span>
+                        <span class="inter address">{{ $vendor->jalan }}, {{ $vendor->kelurahan }},
+                            {{ $vendor->kecamatan }}, {{ $vendor->kabupaten }}, {{ $vendor->provinsi }},
+                            {{ $vendor->kode_pos }}</span>
                     </div>
 
                     <div class="rating-and-number-sold-wrapper">
@@ -73,31 +75,22 @@
         <h1 class="lexend">From Our Kitchen to Your Table</h1>
 
         <div class="carousel-wrapper">
-            <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" data-bs-touch="true">
+            <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" data-bs-touch="true" data-bs-interval="2500">
                 <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
-                        class="active"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3"></button>
+                    @foreach ($vendor->previews as $key => $preview)
+                        <button type="button" data-bs-target="#carouselExampleAutoplaying"
+                            data-bs-slide-to="{{ $key }}" class="{{ $loop->first ? 'active' : '' }}"
+                            aria-current="{{ $loop->first ? 'true' : 'false' }}"
+                            aria-label="Slide {{ $key + 1 }}"></button>
+                    @endforeach
                 </div>
                 <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="{{ asset('asset/catering-detail/food preview 1.jpeg') }}" class="d-block w-100"
-                            alt="...">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="{{ asset('asset/catering-detail/food preview 2.jpg') }}" class="d-block w-100"
-                            alt="...">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="{{ asset('asset/catering-detail/food preview 3.jpeg') }}" class="d-block w-100"
-                            alt="...">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="{{ asset('asset/catering-detail/food preview 4.jpg') }}" class="d-block w-100"
-                            alt="...">
-                    </div>
+                    @foreach ($vendor->previews as $key => $preview)
+                        <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                            <img src="{{ asset($preview->previewPicturePath) }}" class="d-block w-100"
+                                alt="Food Preview {{ $key + 1 }}">
+                        </div>
+                    @endforeach
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
                     data-bs-slide="prev">
@@ -293,8 +286,7 @@
             <span class="price-total" style="display:none;"></span>
         </div> --}}
         <a href="{{ route('payment.show', ['vendor' => $vendor->vendorId]) }}" class="button-order inter"
-            id="proceedToPaymentLink"
-            style="cursor: default; pointer-events: none; text-decoration: none;">
+            id="proceedToPaymentLink" style="cursor: default; pointer-events: none; text-decoration: none;">
             <span class="order-message">No Package Selected Yet.</span>
             <span class="package-count" style="display:none;"></span>
             <span class="item-count" style="display:none;"></span>

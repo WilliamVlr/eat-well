@@ -14,19 +14,19 @@ class DeliveryStatus extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'delivery_statuses';
-    protected $primaryKey = 'statusId'; // Matches your migration
+    protected $primaryKey = 'statusId';
 
     protected $fillable = [
-        'orderId', // Matches your migration
-        'deliveryDate', // Matches your migration
-        'slot', // Matches your migration
-        'status', // Matches your migration
+        'orderId', 
+        'deliveryDate', 
+        'slot', 
+        'status', 
     ];
 
     protected $casts = [
         'slot' => TimeSlot::class,
         'status' => DeliveryStatuses::class,
-        'deliveryDate' => 'datetime', // Matches your migration
+        'deliveryDate' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
