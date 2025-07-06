@@ -37,7 +37,6 @@
                     </span>
                 </div>
 
-<<<<<<< HEAD
                 <div class="d-flex align-items-center">
                     <span>
                         <h1 class="inter m-0 me-3 ms-2">Rp <span
@@ -69,119 +68,6 @@
                                 <input type="hidden" id="currentBalanceValue" value="{{ $wellpay }}">
                                 {{-- <form action="" method="POST" id="topUpForm"> --}}
                                 {{-- @csrf --}}
-=======
-        {{-- Untuk button ini jangan dihapus, untuk sementara button logout disini, menunggu UI logout beneran dibuat --}}
-        <form action="{{ route('logout') }}" method="post">
-            @csrf
-            <button type="submit"></button>
-        </form>
-        {{-- Carousel --}}
-        <section id = "carouselIklan" class="carousel slide mb-4 mb-md-5" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="{{ asset('asset/customer/home/iklan 1.jpg') }}" class="object-fit-cover" alt="Iklan 1">
-                </div>
-                <div class="carousel-item">
-                    <img src="{{ asset('asset/customer/home/iklan 2.jpg') }}" alt="Iklan 2">
-                </div>
-                <div class="carousel-item">
-                    <img src="{{ asset('asset/customer/home/iklan 3.jpg') }}" alt="Iklan 3">
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselIklan" data-bs-slide="prev">
-                <div class="carousel-btn-container btn-prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </div>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselIklan" data-bs-slide="next">
-                <div class="carousel-btn-container btn-next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </div>
-            </button>
-            {{-- Carousel indicators --}}
-            <div class="carousel-indicators mt-2">
-                <button type="button" data-bs-target="#carouselIklan" data-bs-slide-to="0" class="active"
-                    aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselIklan" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselIklan" data-bs-slide-to="2" aria-label="Slide 3"></button>
-            </div>
-        </section>
-
-        {{-- WellPay --}}
-        <div class="wellpay-container mb-4">
-            <div class="d-flex align-items-center mb-2 lexend">
-                <span><img src="{{ asset('asset/navigation/eatwellLogo.png') }}" alt="logo"
-                        style="width: 3.5vh; background-color: var(--bg-primary); border-radius: 5px;"></span>
-                <span>
-                    <h4 class="mb-0 ms-2">WellPay</h4>
-                </span>
-            </div>
-
-            <div class="d-flex align-items-center">
-                <span>
-                    <h1 class="inter m-0 me-3 ms-2">Rp <span
-                            id="wellpayBalanceAmount">{{ number_format($wellpay, 2, ',', '.') }}</span></h1>
-                </span>
-                <div class="d-flex align-items-center justify-content-center" id="toggleVisibilityBtn"
-                    style="width: 30px; height: 30px; border: 3px solid var(--bg-primary); border-radius: 50%; background: var(--bg-primary);">
-                    <span class="material-symbols-outlined" id="visibilityIcon"
-                        style="font-variation-settings: 'FILL' 1; font-size: 20px; color: #fff; cursor: pointer;">visibility_off</span>
-                </div>
-            </div>
-
-            <div class="d-flex align-items-center mt-2" id="topUpButton">
-                {{-- Custom Modal 1 --}}
-                <div id="customModal1" class="custom-modal-overlay">
-                    <div class="custom-modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="customModal1Title">Add Balance to Your WellPay</h1>
-                            <button type="button" class="btn-close" id="closeCustomModal1" aria-label="Close">
-                                <span class="material-symbols-outlined">close</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <h5>Current Balance:
-                                <span class="fw-bold">
-                                    Rp {{ number_format($wellpay, 2, ',', '.') }}
-                                </span>
-                            </h5>
-                            <input type="hidden" id="currentBalanceValue" value="{{ $wellpay }}">
-                            <div class="mb-3">
-                                <label for="topupAmount" class="form-label mt-2">Enter the top up amount</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">Rp</span>
-                                    <input type="text" class="form-control" id="topupAmount" name="topupAmount"
-                                        autocomplete="off">
-                                </div>
-                                <div id="topupError" class="text-danger mt-1" style="font-size: 0.875em; display: none;">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-primary" id="nextCustomModalBtn">Continue</button>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Custom Modal 2 --}}
-                <div id="customModal2" class="custom-modal-overlay">
-                    <div class="custom-modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="customModal2Title">Confirm Top-up</h1>
-                            <button type="button" class="btn-close" id="closeCustomModal2" aria-label="Close">
-                                <span class="material-symbols-outlined">close</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                                <h6 class="m-0 inter">You are about to top up: <span id="confirmTopupAmount"
-                                        class="fw-bold"></span></h6>
-                                <h6 class="m-0 inter">Your new balance will be: <span id="confirmNewBalance"
-                                        class="fw-bold"></span></h6>
-                                <input type="hidden" id="finalTopupAmount" value="">
-                                <hr>
->>>>>>> main
                                 <div class="mb-3">
                                     <label for="topupAmount" class="form-label mt-2">Enter the top up amount</label>
                                     <div class="input-group">
@@ -193,7 +79,6 @@
                                         style="font-size: 0.875em; display: none;">
                                     </div>
                                 </div>
-<<<<<<< HEAD
                                 {{-- </form> --}}
                             </div>
                             <div class="modal-footer">
@@ -235,12 +120,6 @@
                                 <button class="btn btn-secondary" id="backToCustomModal1">Back</button>
                                 <button class="btn btn-primary" id="confirmTopupBtn">Confirm</button>
                             </div>
-=======
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" id="backToCustomModal1">Back</button>
-                            <button class="btn btn-primary" id="confirmTopupBtn">Confirm</button>
->>>>>>> main
                         </div>
                     </div>
 
