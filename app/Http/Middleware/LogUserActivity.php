@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use App\Models\UserActivity;
 use Closure;
 use Illuminate\Http\Request;
@@ -18,8 +19,9 @@ class LogUserActivity
      */
     public function handle(Request $request, Closure $next)
     {
-        // ya ini kalau sudah login akan masuk ke database kalau tidak login tidak masuk
-        Log::info('Middleware LogUserActivity DIPANGGIL untuk URL: ' . $request->fullUrl() . Auth::check());
+        // Sebelum request diteruskan, catat login atau akses
+        $status = Auth::check() ? 'LOGIN' : 'GUEST';
+        Log::info("User status: $status | URL: {$request->fullUrl()}");
         
         if (Auth::check()) {
             UserActivity::create([
@@ -32,6 +34,9 @@ class LogUserActivity
                 'accessed_at' => now(),
             ]);
         }
+
+
+
 
         return $next($request);
     }
