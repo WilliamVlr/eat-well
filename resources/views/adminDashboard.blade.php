@@ -92,7 +92,7 @@
 
                 </div>
 
-                <div class="col-lg-5"
+                <div class="col-lg-5 table-responsive"
                     style="background-color: white; margin-right:0px; border-radius: 30px; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); padding:10px">
                     <h1 class="fw-bold mt-3" style="margin-left: 1vw">Recent Logs</h1>
                     <hr>
@@ -138,7 +138,7 @@
 
     <script src="{{ asset('js/admin/dashboard.js') }}"></script>
 
-
+    <x-admin-footer></x-admin-footer>
 </body>
 
 </html>

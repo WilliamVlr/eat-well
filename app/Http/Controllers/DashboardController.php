@@ -54,7 +54,16 @@ class DashboardController extends Controller
 
         $lmprofit = 10000;
 
-        $percentageprofit = (($profit - $lmprofit) / $lmprofit) * 100;
+        
+        $percentageprofit = 0;
+        if ($lmprofit == 0) {
+            $percentageprofit = 100;
+        } else
+        {
+            $percentageprofit = (($profit - $lmprofit) / $lmprofit) * 100;
+        }
+
+        // dd($lmprofit);
 
         $profit = number_format($profit, 0, ',', '.');
 
