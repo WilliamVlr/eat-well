@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use App\Models\Order;
+use App\Models\UserActivity;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -47,5 +48,12 @@ class AdminController extends Controller
 
 
         // return view('viewAllVendor', compact('vendors'));
+    }
+
+    public function view_all_logs()
+    {
+        $all_logs = UserActivity::all();
+
+        return view('view-all-logs', compact('all_logs'));
     }
 }

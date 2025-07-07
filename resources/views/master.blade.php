@@ -107,7 +107,7 @@
             @else
                 <!-- Jika belum login -->
                 <div style="padding: 0.5rem 1rem; border-radius: 0.25rem; margin-right: 2vw">
-                    <a class="login-button p-0" href="login">
+                    <a class="login-button p-0" href="/login">
                         <button type="button" class="login_button">Log In</button>
                     </a>
                 </div>

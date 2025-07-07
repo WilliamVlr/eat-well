@@ -191,3 +191,7 @@ Route::post('/view-all-vendors', [AdminController::class, 'search'])
 Route::get('/admin-dashboard', [DashboardController::class, 'index'])
     ->name('admin-dashboard')
     ->middleware(['auth', RoleMiddleware::class]);
+
+Route::get('/view-all-logs', [AdminController::class, 'view_all_logs'])
+    ->name('view-all-logs')
+    ->middleware(['auth', RoleMiddleware::class]);
