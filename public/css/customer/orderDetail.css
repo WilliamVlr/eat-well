@@ -554,7 +554,7 @@
 
 .total-label {
     color: #444;
-    min-width: 150px;
+    min-width: 130px;
     text-align: right;
     font-weight: 350;
 }
@@ -580,5 +580,41 @@
 
     .main-total {
         font-size: 18px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .card-order {
+        .card-bottom {
+            flex-direction: column-reverse;
+            justify-content: start;
+            align-items: end;
+
+            .left-container {
+                .rating-container {
+                    flex-direction: row;
+                    gap: 35px;
+                    .detail-primary {
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+@media screen and (max-width: 440px) {
+    .card-order {
+        .card-bottom {
+            .left-container {
+                .rating-container {
+                    gap: 22px;
+                    .detail-primary {
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
     }
 }
