@@ -7,6 +7,7 @@
 @endphp
 
 @section('css')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/js/app.js', 'resources/sass/app.scss'])
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -170,16 +171,15 @@
                                                 <div class="cds-slot-title text-center mb-2">{{ $slot['label'] }}</div>
                                                 <div class="cds-slot-status-list">
                                                     @foreach ($statusesBySlot[$slot['key']] as $date => $status)
-                                                        <div
-                                                            class="cds-slot-status-row {{ $status->status->value }}">
+                                                        <div class="cds-slot-status-row {{ $status->status->value }}">
                                                             <div
                                                                 class="cds-circle-icon d-flex align-items-center justify-content-center">
                                                                 <span class="material-symbols-outlined status-icon-sm">
-                                                                    @if ($status->status->value === "Prepared")
+                                                                    @if ($status->status->value === 'Prepared')
                                                                         restaurant
-                                                                    @elseif ($status->status->value === "Delivered")
+                                                                    @elseif ($status->status->value === 'Delivered')
                                                                         local_shipping
-                                                                    @elseif ($status->status->value === "Arrived")
+                                                                    @elseif ($status->status->value === 'Arrived')
                                                                         check_circle
                                                                     @endif
                                                                 </span>
@@ -203,13 +203,13 @@
             </div>
             {{-- Order Items --}}
             <section class="card-detail-items mb-4">
-                <div class="card-order">
+                <div class="card-order" data-order-id="{{ $order->orderId }}">
                     <div class="card-header">
                         <div class="left-container">
                             <div class="text-wrapper vendor-name-wrapper">
                                 <h5 class="">{{ $order->vendor->name }}</h5>
                             </div>
-                            <a href="{{route('catering-detail', $order->vendorId)}}" class="text-wrapper btn-view">
+                            <a href="{{ route('catering-detail', $order->vendorId) }}" class="text-wrapper btn-view">
                                 <p>View Catering</p>
                             </a>
                         </div>
@@ -223,7 +223,8 @@
                     </div>
 
                     {{-- Redirect ke catering pagenya langsung scroll ke packagenya --}}
-                    <a href="{{route('catering-detail', $order->vendorId)}}" class="card-content-wrapper text-decoration-none">
+                    <a href="{{ route('catering-detail', $order->vendorId) }}"
+                        class="card-content-wrapper text-decoration-none">
                         @foreach ($order->orderItems as $item)
                             <div class="card-content">
                                 <div class="image-wrapper">
@@ -255,7 +256,24 @@
                     </a>
                     <div class="card-bottom">
                         <div class="left-container">
-
+                            <div class="rating-container">
+                                <div class="rating-icon-list">
+                                    @if ($order->vendorReview)
+                                        <span class="detail-primary">You rated: </span>
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <span
+                                                class="material-symbols-outlined star-icon{{ $i <= $order->vendorReview->rating ? ' choosen' : '' }}"
+                                                style="cursor:default;">star</span>
+                                        @endfor
+                                    @else
+                                        <span class="detail-primary">Rate this catering </span>
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <button type="button" class="material-symbols-outlined star-icon-btn"
+                                                data-index="{{ $i }}">star</button>
+                                        @endfor
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                         <div class="right-container">
                             <div class="total-container">
@@ -273,6 +291,56 @@
                     </div>
                 </div>
             </section>
+        </div>
+        <!-- Manual Rate & Review Modal -->
+        <div id="rateReviewModal" class="custom-modal-overlay" style="display:none;">
+            <div class="custom-modal-content">
+                <div class="modal-header d-flex justify-content-between align-items-center pb-1">
+                    <h5 class="modal-title">Rate & Review</h5>
+                    <button type="button" class="btn-close" id="closeRateReviewModal" aria-label="Close">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="rating-icon-list-modal d-flex gap-1 mb-3">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <button type="button" class="material-symbols-outlined star-icon-modal"
+                                data-index="{{ $i }}">star</button>
+                        @endfor
+                    </div>
+                    <div class="mb-3">
+                        <label for="reviewText" class="form-label">Your Review</label>
+                        <textarea class="form-control" id="reviewText" rows="3" placeholder="Write your comment here..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-secondary" id="cancelRateReviewModal">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="successModal" class="custom-modal-overlay" style="display:none;">
+            <div class="custom-modal-content text-center">
+                <div class="modal-header d-flex justify-content-between align-items-center pb-1">
+                    <h5 class="modal-title w-100">Thank You!</h5>
+                    <button type="button" class="btn-close" id="closeSuccessModal" aria-label="Close">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <span class="material-symbols-outlined" style="font-size:48px;color:#ffc107;">star</span>
+                    </div>
+                    <div class="mb-2">
+                        <strong>Your review has been submitted successfully.</strong>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-primary" id="okSuccessModal">OK</button>
+                </div>
+            </div>
         </div>
     </main>
 @endsection
