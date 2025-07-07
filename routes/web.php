@@ -16,7 +16,6 @@ use App\Http\Controllers\Socialite\ProviderRedirectController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use App\Http\Middleware\RoleMiddleware;
 
-
 /* --------------------
      GUEST ROUTES
 -------------------- */
@@ -37,6 +36,11 @@ Route::middleware(['guest'])->group(function(){
 
     Route::get('/auth/{provider}/redirect/{role?}', ProviderRedirectController::class)->name('auth.redirect')->middleware('guest');
     Route::get('/auth/{provider}/callback/', ProviderCallbackController::class)->name('auth.callback')->middleware('guest');
+
+    Route::fallback(function()
+    {
+        return redirect()->route('landingPage');
+    });
 });
 
 
@@ -120,6 +124,9 @@ Route::middleware(['role:customer'])->group(function(){
         return view('addAddress');
     });
 
+    Route::fallback(function(){
+        return redirect()->route('home');
+    });
 
 });
 
@@ -142,6 +149,10 @@ Route::middleware(['role:vendor'])->group(function(){
     // Manage Order
     Route::get('/manageOrder', function () {
         return view('manageOrder');
+    });
+
+    Route::fallback(function(){
+        return redirect()->route('cateringHomePage');
     });
 });
 /* ---------------------
@@ -173,5 +184,8 @@ Route::middleware(['role:admin'])->group(function(){
         return view('view-all-packages-cuisine');
     });
 
+    Route::fallback(function(){
+        return redirect()->route('admin-dashboard');
+    });
 
 });
