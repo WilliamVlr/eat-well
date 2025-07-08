@@ -97,9 +97,41 @@
                                 <p class="recipient-address">
                                     {{ $order->jalan . ', ' . $order->kelurahan . ', ' . $order->kecamatan . ', ' . $order->kabupaten . ', ' . $order->provinsi . ', ' . $order->kode_pos }}
                                 </p>
+                                @if ($order->notes)
                                 <p class="recipient-address">
                                     Notes: {{ $order->notes }}
                                 </p>
+                                @endif
+                            </div>
+                            <div class="rating-container">
+                                <span class="detail-primary mt-2">
+                                    @if ($order->vendorReview)
+                                        Your review
+                                    @else
+                                        Rate this catering
+                                    @endif
+                                </span>
+                                <div class="rating-icon-list">
+                                    @if ($order->vendorReview)
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <span
+                                                class="material-symbols-outlined star-icon{{ $i <= $order->vendorReview->rating ? ' choosen' : '' }}"
+                                                style="cursor:default;">star</span>
+                                        @endfor
+                                    @else
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <button type="button" class="material-symbols-outlined star-icon-btn"
+                                                data-index="{{ $i }}">star</button>
+                                        @endfor
+                                    @endif
+                                </div>
+                                @if ($order->vendorReview && $order->vendorReview->review)
+                                    <div class="container-fluid p-0">
+                                        <p class="m-0">
+                                            {{ $order->vendorReview->review }}
+                                        </p>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         {{-- RIGHT: Day Filter, Date, Carousel/Slider --}}
@@ -270,36 +302,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="rating-container">
-                        <span class="detail-primary mt-2">
-                            @if ($order->vendorReview)
-                                Your review
-                            @else
-                                Rate this catering
-                            @endif
-                        </span>
-                        <div class="rating-icon-list">
-                            @if ($order->vendorReview)
-                                @for ($i = 1; $i <= 5; $i++)
-                                    <span
-                                        class="material-symbols-outlined star-icon{{ $i <= $order->vendorReview->rating ? ' choosen' : '' }}"
-                                        style="cursor:default;">star</span>
-                                @endfor
-                            @else
-                                @for ($i = 1; $i <= 5; $i++)
-                                    <button type="button" class="material-symbols-outlined star-icon-btn"
-                                        data-index="{{ $i }}">star</button>
-                                @endfor
-                            @endif
-                        </div>
-                        @if ($order->vendorReview && $order->vendorReview->review)
-                            <div class="container-fluid p-0">
-                                <p class="m-0">
-                                    {{$order->vendorReview->review}}
-                                </p>
-                            </div>
-                        @endif
                     </div>
                 </div>
             </section>

@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let lastOrderId = null;
 
     // Card stars
-    document.querySelectorAll(".card-order").forEach(function (card) {
+    document.querySelectorAll(".card-delivery-status").forEach(function (card) {
         const stars = card.querySelectorAll(".star-icon-btn");
         let selected = -1;
 

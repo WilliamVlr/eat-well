@@ -496,6 +496,26 @@
     background: #fff;
 }
 
+.cds-delivery-status {
+    .rating-container {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+
+        .detail-primary {
+            color: #4d4d4d;
+            font-weight: 300;
+        }
+
+        .rating-icon-list {
+            display: flex;
+            flex-direction: row;
+            gap: 2px;
+            align-items: center;
+        }
+    }
+}
+
 /* Responsive: Stack vertically on mobile */
 @media (max-width: 1400px) {
 
@@ -512,9 +532,9 @@
         border: none;
     }
 
-    .cds-status-left-container {
+    /* .cds-status-left-container {
         max-height: 100px;
-    }
+    } */
 
     .cds-delivery-slider,
     .cds-delivery-slider-wrapper {
