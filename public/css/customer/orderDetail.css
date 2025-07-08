@@ -496,22 +496,12 @@
     background: #fff;
 }
 
-.cds-delivery-status {
+.card-delivery-status {
     .rating-container {
-        display: flex;
-        flex-direction: row;
-        gap: 5px;
-
-        .detail-primary {
-            color: #4d4d4d;
-            font-weight: 300;
-        }
-
         .rating-icon-list {
-            display: flex;
-            flex-direction: row;
-            gap: 2px;
-            align-items: center;
+            .star-icon-btn {
+                background-color: transparent;
+            }
         }
     }
 }

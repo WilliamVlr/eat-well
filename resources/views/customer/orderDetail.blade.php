@@ -98,9 +98,9 @@
                                     {{ $order->jalan . ', ' . $order->kelurahan . ', ' . $order->kecamatan . ', ' . $order->kabupaten . ', ' . $order->provinsi . ', ' . $order->kode_pos }}
                                 </p>
                                 @if ($order->notes)
-                                <p class="recipient-address">
-                                    Notes: {{ $order->notes }}
-                                </p>
+                                    <p class="recipient-address">
+                                        Notes: {{ $order->notes }}
+                                    </p>
                                 @endif
                             </div>
                             <div class="rating-container mt-3">
@@ -111,25 +111,21 @@
                                         Rate this catering
                                     @endif
                                 </span>
-                                <div class="rating-icon-list">
-                                    @if ($order->vendorReview)
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <span
-                                                class="material-symbols-outlined star-icon{{ $i <= $order->vendorReview->rating ? ' choosen' : '' }}"
-                                                style="cursor:default;">star</span>
-                                        @endfor
-                                    @else
+                                @if ($order->vendorReview)
+                                    <div class="container-fluid m-0 mt-1 p-2 rounded-2 d-flex flex-column gap-1" style="background-color: #ecedec;">
+                                        <div class="d-flex flex-row align-items-center gap-1">
+                                            <span class="material-symbols-outlined star-icon choosen }}"
+                                                style="cursor:default; font-size: 24px;">star</span> 
+                                            <span style="font-size: 16px;">{{$order->vendorReview->rating}}</span>
+                                        </div>
+                                        <span style="font-size: 14px;">{{$order->vendorReview->review}}</span>
+                                    </div>
+                                @else
+                                    <div class="rating-icon-list">
                                         @for ($i = 1; $i <= 5; $i++)
                                             <button type="button" class="material-symbols-outlined star-icon-btn"
                                                 data-index="{{ $i }}">star</button>
                                         @endfor
-                                    @endif
-                                </div>
-                                @if ($order->vendorReview && $order->vendorReview->review)
-                                    <div class="container-fluid p-0">
-                                        <p class="m-0">
-                                            {{ $order->vendorReview->review }}
-                                        </p>
                                     </div>
                                 @endif
                             </div>
