@@ -103,8 +103,8 @@
                                 </p>
                                 @endif
                             </div>
-                            <div class="rating-container">
-                                <span class="detail-primary mt-2">
+                            <div class="rating-container mt-3">
+                                <span class="cds-address-title">
                                     @if ($order->vendorReview)
                                         Your review
                                     @else
