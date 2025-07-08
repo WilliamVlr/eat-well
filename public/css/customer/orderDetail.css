@@ -498,6 +498,7 @@
 
 /* Responsive: Stack vertically on mobile */
 @media (max-width: 1400px) {
+
     /* STACK VERTICALLY */
     .cds-status-flex {
         flex-direction: column;
@@ -573,6 +574,13 @@
     text-shadow: 0px 0px 5px #ffffff;
 }
 
+.card-order {
+    .rating-container {
+        margin-top: 10px;
+        border-top: solid black 1px;
+    }
+}
+
 @media screen and (max-width: 440px) {
     .total-row {
         font-size: 14px;
@@ -594,6 +602,7 @@
                 .rating-container {
                     flex-direction: row;
                     gap: 35px;
+
                     .detail-primary {
                         font-size: 16px;
                     }
@@ -610,6 +619,7 @@
             .left-container {
                 .rating-container {
                     gap: 22px;
+
                     .detail-primary {
                         font-size: 14px;
                     }

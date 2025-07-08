@@ -256,27 +256,6 @@
                     </a>
                     <div class="card-bottom">
                         <div class="left-container">
-                            <div class="rating-container">
-                                @if ($order->vendorReview)
-                                    <span class="detail-primary">You rated: </span>
-                                @else
-                                    <span class="detail-primary">Rate this catering </span>
-                                @endif
-                                <div class="rating-icon-list">
-                                    @if ($order->vendorReview)
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <span
-                                                class="material-symbols-outlined star-icon{{ $i <= $order->vendorReview->rating ? ' choosen' : '' }}"
-                                                style="cursor:default;">star</span>
-                                        @endfor
-                                    @else
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <button type="button" class="material-symbols-outlined star-icon-btn"
-                                                data-index="{{ $i }}">star</button>
-                                        @endfor
-                                    @endif
-                                </div>
-                            </div>
                         </div>
                         <div class="right-container">
                             <div class="total-container">
@@ -291,6 +270,36 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="rating-container">
+                        <span class="detail-primary mt-2">
+                            @if ($order->vendorReview)
+                                Your review
+                            @else
+                                Rate this catering
+                            @endif
+                        </span>
+                        <div class="rating-icon-list">
+                            @if ($order->vendorReview)
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <span
+                                        class="material-symbols-outlined star-icon{{ $i <= $order->vendorReview->rating ? ' choosen' : '' }}"
+                                        style="cursor:default;">star</span>
+                                @endfor
+                            @else
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <button type="button" class="material-symbols-outlined star-icon-btn"
+                                        data-index="{{ $i }}">star</button>
+                                @endfor
+                            @endif
+                        </div>
+                        @if ($order->vendorReview && $order->vendorReview->review)
+                            <div class="container-fluid p-0">
+                                <p class="m-0">
+                                    {{$order->vendorReview->review}}
+                                </p>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </section>
