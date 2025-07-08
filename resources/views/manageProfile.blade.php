@@ -11,7 +11,7 @@
     <div class="container container-custom">
         <div class="left-panel outer-panel">
             <div class="lexend font-medium manage-profile">
-                <div class="left-panel-in photo-prof">    
+                <div class="left-panel-in photo-prof">
                     <img src="{{asset('asset/profile/profil.jpg')}}" alt="Profile Picture" class="prof-pict">
                 </div>
                 <div class="right-panel-in data-prof">
@@ -47,7 +47,7 @@
                 </li>
             </ul>
             <div class="logout">
-                <form method="POST" action="{{ route('login-register') }}" class="logout-form">
+                <form method="POST" action="{{ route('logout') }}" class="logout-form">
                 @csrf
                     <button type="submit" class="logout-btn inter font-regular">
                         Log out
@@ -55,8 +55,8 @@
                 </form>
             </div>
         </div>
-            
-        
+
+
         <div class="right-panel outer-panel">
             <div class="lexend font-medium outer-box scrollable-box">
                 <div id="management-profile" class="management-section">
@@ -110,7 +110,7 @@
                                         </span>
                                         <input type="file" id="profilePicInput" accept="image/*" style="display:none;">
                                     </label>
-                                </div>  
+                                </div>
                                 <div class="edit-btn-group">
                                     <button class="inter font-medium edit-data">Edit</button>
                                 </div>
@@ -118,7 +118,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                  <hr class="section-divider">
                  <div id="management-security" class="management-section">
 

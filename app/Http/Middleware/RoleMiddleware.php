@@ -7,27 +7,32 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\UserRole; // Pastikan enum ini sesuai lokasi & nama file
+use Illuminate\Support\Str;
 
 class RoleMiddleware
 {
     /**
      * Handle an incoming request.
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, string $role): Response
     {
         $user = Auth::user();
-
+        $role = Str::ucfirst($role);
         // Jika belum login
         if (!$user) {
             return redirect('/login');
         }
 
-        // Cek berdasarkan enum
-        return match ($user->role) {
-            UserRole::Admin => $next($request),
-            UserRole::Vendor => redirect('/cateringHomePage'),
-            UserRole::Customer => redirect('/home'),
-            default => abort(403, 'Unauthorized role'),
-        };
+        if($user->role->value != $role)
+        {
+            return match ($user->role) {
+                UserRole::Admin => redirect('admin-dashboard'),
+                UserRole::Vendor => redirect('/cateringHomePage'),
+                UserRole::Customer => redirect('/home'),
+                default => abort(403, 'Unauthorized role'),
+            };
+        }
+
+        return $next($request);
     }
 }
