@@ -14,17 +14,12 @@ class OrderVendorController extends Controller
 {
     public function index()
     {
-        // $vendorId = Auth::id(); // ambil ID user yang login (vendor)
-        // $vendorId = 24;
-
-        $vendorId = Auth::user()->vendor->vendorId ?? 24;
+        $vendorId = Auth::user()->vendor->vendorId ?? 49;
 
         $orders = Order::with([
             'user.defaultAddress',
             'orderItems.package',
-            'deliveryStatuses' => function ($query) {
-                $query->whereDate('deliveryDate', Carbon::today());
-            }
+            'deliveryStatuses' // ⬅️ tanpa filter tanggal!
         ])
             ->where('vendorId', $vendorId)
             ->get()
@@ -43,6 +38,7 @@ class OrderVendorController extends Controller
                         'address' => $defaultAddress->jalan ?? '-',
                         'notes' => $defaultAddress->notes ?? '-',
                     ],
+
                     'order_items' => $order->orderItems->map(function ($item) {
                         return [
                             'package' => [
@@ -52,12 +48,16 @@ class OrderVendorController extends Controller
                             'package_time_slot' => $item->packageTimeSlot
                         ];
                     }),
-                    'delivery_statuses' => $order->deliveryStatuses->map(function ($ds) {
-                        return [
-                            'slot' => strtolower($ds->slot),
-                            'status' => is_object($ds->status) ? $ds->status->value : $ds->status,
-                        ];
-                    })
+
+                    'delivery_statuses' => collect($order->deliveryStatuses)
+                        ->groupBy('slot')
+                        ->map(function ($group) {
+                            $latest = $group->sortByDesc('deliveryDate')->first();
+                            return [
+                                'slot' => strtolower($latest->slot),
+                                'status' => is_object($latest->status) ? $latest->status->value : $latest->status,
+                            ];
+                        })->values()
                 ];
             });
 
@@ -69,9 +69,10 @@ class OrderVendorController extends Controller
         return view('manageOrder', compact('orders', 'packages'));
     }
 
+
     public function totalOrder()
     {
-        $vendorId = Auth::user()->vendor->vendorId ?? 24;
+        $vendorId = Auth::user()->vendor->vendorId ?? 49;
 
         $orders = Order::with([
             'user.defaultAddress',
@@ -157,25 +158,39 @@ class OrderVendorController extends Controller
     public function updateStatus(Request $request, $orderId, $slot)
     {
         try {
+            // Validasi input status
             $request->validate([
                 'status' => 'required|in:Prepared,Delivered,Arrived',
             ]);
 
-            $row = DeliveryStatus::query()
-                ->where('orderId', $orderId)
+            // Ambil status pengiriman terbaru berdasarkan slot (tanpa filter tanggal)
+            $ds = DeliveryStatus::where('orderId', $orderId)
                 ->where('slot', $slot)
-                ->whereDate('deliveryDate', now())
+                ->latest('deliveryDate')
                 ->first();
 
-            $row->status = $request->status;
-            $row->save();
+            // Jika tidak ditemukan, kembalikan error
+            if (!$ds) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Delivery status not found for this order and slot.'
+                ], 404);
+            }
 
-            return response()->json(['success' => true, 'data_order' => $row]);
+            // Simpan status baru
+            $ds->status = $request->status;
+            $ds->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Status updated successfully.',
+                'updated_status' => $ds
+            ]);
         } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,
-                'error'   => $e->getMessage(),
-                'trace'   => collect($e->getTrace())->take(5),
+                'error' => $e->getMessage(),
+                'trace' => collect($e->getTrace())->take(5), // optional
             ], 500);
         }
     }
