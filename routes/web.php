@@ -138,6 +138,7 @@ Route::middleware(['role:vendor'])->group(function(){
     Route::get('/cateringHomePage', function () {
         return view('cateringHomePage');
     });
+    Route::post('/cateringHomePage', [SessionController::class, 'destroy'])->name('logout.vendor');
 
     // Manage Packages
     Route::get('/manageCateringPackage', [PackageController::class, 'index'])->name('manageCateringPackage');
@@ -183,6 +184,8 @@ Route::middleware(['role:admin'])->group(function(){
     Route::get('/view-all-packages-cuisine', function(){
         return view('view-all-packages-cuisine');
     });
+
+    Route::post('/view-all-vendors', [SessionController::class, 'destroy'])->name('logout.admin');
 
     Route::fallback(function(){
         return redirect()->route('admin-dashboard');
