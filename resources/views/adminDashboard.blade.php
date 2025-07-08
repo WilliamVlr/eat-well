@@ -24,9 +24,11 @@
     <x-admin-nav></x-admin-nav>
 
     <div style="margin: 2vw">
-
-
-
+        {{-- Untuk button ini jangan dihapus, untuk sementara button logout disini, menunggu UI logout beneran dibuat --}}
+        <form action="{{ route('logout.admin') }}" method="post">
+            @csrf
+            <button type="submit"></button>
+        </form>
         <h1 class="text-center mt-3 fw-bold">EAT-WELL</h1>
         <div class="" style="margin: 4vw">
             <div class="row mt-5">
