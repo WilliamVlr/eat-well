@@ -16,7 +16,9 @@ class PackageController extends Controller
     public function index()
     {
         // $vendorId = Auth::id();
-        $vendorId = 24;
+        // $vendorId = 24;
+        $vendorId = Auth::user()->vendor->vendorId ?? 24;
+
         $packages = Package::with('cuisineTypes', 'category')
             ->where('vendorId', $vendorId)
             ->get();
@@ -41,9 +43,6 @@ class PackageController extends Controller
 
             'menuPDFPath'      => 'nullable|file|mimes:pdf',
             'imgPath'          => 'nullable|image|mimes:jpeg,png,jpg',
-
-            'cuisine_types'    => 'nullable|array',
-            'cuisine_types.*'  => 'exists:cuisine_types,cuisineid',
         ]);
         $validated['vendorId'] = Auth::id() ?? 24;
 
@@ -130,25 +129,13 @@ class PackageController extends Controller
             $validated['imgPath'] = $imgFileName;
         }
 
-        // Ambil cuisine_types dari form atau default ke array kosong
-        $cuisineTypes = $request->input('cuisine_types', []);
-
-        // Hapus dari validated agar tidak dimasukkan ke kolom yang tidak ada
-        unset($validated['cuisine_types']);
-
-        // Update data package
-        $package->update($validated);
-
-        // Sync cuisine types - kalau kosong, akan hapus semua relasi
-        $package->cuisineTypes()->sync($cuisineTypes);
-
         return redirect()->back()->with('success', 'Berhasil mengubah paket!');
     }
 
     public function import(Request $request)
     {
         $request->validate([
-            'excel_file' => 'required|file|mimes:xlsx,csv,xls'
+            'excel_file' => 'required|file|mimes:xlsx,csv'
         ]);
 
         Excel::import(new PackagesImport, $request->file('excel_file'));

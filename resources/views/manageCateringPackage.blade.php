@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -197,9 +195,9 @@
     <div class="container mt-5">
         <div class="d-flex justify-content-between mb-3">
 
-            <div class="container my-4">
+            <div class="container my-0">
                 <div class="row justify-content-center">
-                    <div class="col-md-8 text-center">
+                    <div class="d-flex justify-content-center gap-2 mt-3">
 
                         <!-- Tombol Upload -->
                         <label for="import" class="btn btn-success btn-sm px-4 py-2"
@@ -208,102 +206,93 @@
                         </label>
                         <input type="file" class="d-none" id="import" accept=".csv, .xlsx, .xls">
 
-                        <!-- Keterangan Format -->
-                        <div class="text-muted mt-2" style="font-size: 0.85rem;">
-                            Column Format :
-                            <code>name</code>, <code>category</code>, <code>cuisine_type</code>,
-                            <code>breakfast_price</code>, <code>lunch_price</code>, <code>dinner_price</code>,
-                            <code>average_calory</code>, <code>file_menu</code>, <code>package_image</code>
-                        </div>
+
+                        <button class="btn btn-outline-secondary btn-sm px-4 py-2" onclick="downloadTemplateCSV()">
+                            <i class="bi bi-download me-2"></i> Download Template CSV
+                        </button>
 
                     </div>
                 </div>
+            </div>
+
+
+
         </div>
 
-
-
-    </div>
-
-    <div class="table-responsive">
-        <table class="table table-bordered">
-            <thead class="table-dark">
-                <tr>
-                    <th>No</th>
-                    <th>Package Name</th>
-                    <th>Category</th>
-                    <th>Cuisine Type</th>
-                    <th>Breakfast Price</th>
-                    <th>Lunch Price</th>
-                    <th>Dinner Price</th>
-                    <th>Average Calory</th>
-                    <th>File Menu</th>
-                    <th>Package Image</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-
-            <tbody id="packageTable">
-                @foreach ($packages as $package)
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-dark">
                     <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $package->name }}</td>
-                        <td>{{ $package->category->categoryName ?? 'N/A' }}</td>
-                        <td>
-                            @foreach ($package->cuisineTypes as $type)
-                                {{ $type->cuisineName }}
-                            @endforeach
-                        </td>
-                        <td>Rp{{ number_format($package->breakfastPrice ?? 0, 0, ',', '.') }}</td>
-                        <td>Rp{{ number_format($package->lunchPrice ?? 0, 0, ',', '.') }}</td>
-                        <td>Rp{{ number_format($package->dinnerPrice ?? 0, 0, ',', '.') }}</td>
-                        <td>{{ $package->averageCalories }} kcal</td>
-                        <td>
-                            @if ($package->menuPDFPath)
-                                <a href="{{ asset('asset/menus/' . $package->menuPDFPath) }}"
-                                    target="_blank">{{ $package->menuPDFPath }}</a>
-                            @else
-                                N/A
-                            @endif
-                        </td>
-                        <td>
-                            @if ($package->imgPath)
-                                <img src="{{ asset('asset/menus/' . $package->imgPath) }}" alt="{{ $package->name }}"
-                                    width="100">
-                            @else
-                                N/A
-                            @endif
-                        </td>
-                        <td>
-                            <button class="btn btn-warning btn-sm" data-package="{!! htmlspecialchars(
-                                json_encode([
-                                    'id' => $package->packageId,
-                                    'name' => $package->name,
-                                    'categoryId' => $package->categoryId,
-                                    'breakfastPrice' => $package->breakfastPrice,
-                                    'lunchPrice' => $package->lunchPrice,
-                                    'dinnerPrice' => $package->dinnerPrice,
-                                    'averageCalories' => $package->averageCalories,
-                                    'cuisines' => $package->cuisineTypes->pluck('cuisineId'),
-                                    'menuPDFPath' => $package->menuPDFPath, // 👈 baru
-                                    'imgPath' => $package->imgPath, // 👈 baru
-                                ]),
-                                ENT_QUOTES,
-                                'UTF-8',
-                            ) !!}"
-                                onclick="handleEditClick(this)">
-                                <i class="bi bi-pencil-fill"></i>
-                            </button>
+                        <th>No</th>
+                        <th>Package Name</th>
+                        <th>Category</th>
+                        <th>Breakfast Price</th>
+                        <th>Lunch Price</th>
+                        <th>Dinner Price</th>
+                        <th>Average Calory</th>
+                        <th>File Menu</th>
+                        <th>Package Image</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
 
-                            <button class="btn btn-danger btn-sm" onclick="deletePackage({{ $package->packageId }})"
-                                title="Delete">
-                                <i class="bi bi-trash-fill"></i>
-                            </button>
-    </div>
-    </td>
-    </tr>
-    @endforeach
-    </tbody>
-    </table>
+                <tbody id="packageTable">
+                    @foreach ($packages as $package)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $package->name }}</td>
+                            <td>{{ $package->category->categoryName ?? 'N/A' }}</td>
+                            <td>Rp{{ number_format($package->breakfastPrice ?? 0, 0, ',', '.') }}</td>
+                            <td>Rp{{ number_format($package->lunchPrice ?? 0, 0, ',', '.') }}</td>
+                            <td>Rp{{ number_format($package->dinnerPrice ?? 0, 0, ',', '.') }}</td>
+                            <td>{{ $package->averageCalories }} kcal</td>
+                            <td>
+                                @if ($package->menuPDFPath)
+                                    <a href="{{ asset('asset/menus/' . $package->menuPDFPath) }}"
+                                        target="_blank">{{ $package->menuPDFPath }}</a>
+                                @else
+                                    N/A
+                                @endif
+                            </td>
+                            <td>
+                                @if ($package->imgPath)
+                                    <img src="{{ asset('asset/menus/' . $package->imgPath) }}"
+                                        alt="{{ $package->name }}" width="100">
+                                @else
+                                    N/A
+                                @endif
+                            </td>
+                            <td>
+                                <button class="btn btn-warning btn-sm" data-package="{!! htmlspecialchars(
+                                    json_encode([
+                                        'id' => $package->packageId,
+                                        'name' => $package->name,
+                                        'categoryId' => $package->categoryId,
+                                        'breakfastPrice' => $package->breakfastPrice,
+                                        'lunchPrice' => $package->lunchPrice,
+                                        'dinnerPrice' => $package->dinnerPrice,
+                                        'averageCalories' => $package->averageCalories,
+                                        'cuisines' => $package->cuisineTypes->pluck('cuisineId'),
+                                        'menuPDFPath' => $package->menuPDFPath, // 👈 baru
+                                        'imgPath' => $package->imgPath, // 👈 baru
+                                    ]),
+                                    ENT_QUOTES,
+                                    'UTF-8',
+                                ) !!}"
+                                    onclick="handleEditClick(this)">
+                                    <i class="bi bi-pencil-fill"></i>
+                                </button>
+
+                                <button class="btn btn-danger btn-sm"
+                                    onclick="deletePackage({{ $package->packageId }})" title="Delete">
+                                    <i class="bi bi-trash-fill"></i>
+                                </button>
+        </div>
+        </td>
+        </tr>
+        @endforeach
+        </tbody>
+        </table>
     </div>
     <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#packageModal"
         onclick="openAddModal()">Add Package</button>
@@ -347,15 +336,6 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Cuisine Type</label>
-                            <div id="cuisine-buttons">
-                                @foreach ($cuisines as $cuisine)
-                                    <button type="button" class="btn btn-outline-secondary btn-sm"
-                                        onclick="toggleCuisine({{ $cuisine->cuisineId }}, event)">
-                                        {{ $cuisine->cuisineName }}
-                                    </button>
-                                @endforeach
-                            </div>
 
                             <!-- Hidden inputs akan dimasukkan ke sini -->
                             <div id="cuisineInputs"></div>
@@ -419,6 +399,44 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <script>
+        function downloadTemplateCSV() {
+            const headers = [
+                "name",
+                "category",
+                "breakfast_price",
+                "lunch_price",
+                "dinner_price",
+                "average_calory",
+                "file_menu",
+                "package_image"
+            ];
+
+            const exampleRow = [
+                "Paket Diet Sehat",
+                "Vegetarian",
+                25000,
+                30000,
+                28000,
+                450,
+                "menu_vegetarian.pdf",
+                "vegetarian1.jpg"
+            ];
+
+            const csvContent = [headers, exampleRow]
+                .map(e => e.join(","))
+                .join("\n");
+
+            const blob = new Blob([csvContent], {
+                type: "text/csv;charset=utf-8;"
+            });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute("download", "package_template.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const uploadInput = document.getElementById('import');
             if (!uploadInput) return;

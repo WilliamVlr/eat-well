@@ -14,8 +14,10 @@ class OrderVendorController extends Controller
 {
     public function index()
     {
-        $vendorId = Auth::id(); // ambil ID user yang login (vendor)
-        $vendorId = 24;
+        // $vendorId = Auth::id(); // ambil ID user yang login (vendor)
+        // $vendorId = 24;
+
+        $vendorId = Auth::user()->vendor->vendorId ?? 24;
 
         $orders = Order::with([
             'user.defaultAddress',
@@ -69,8 +71,7 @@ class OrderVendorController extends Controller
 
     public function totalOrder()
     {
-        $vendorId = Auth::id();
-        $vendorId = 24;
+        $vendorId = Auth::user()->vendor->vendorId ?? 24;
 
         $orders = Order::with([
             'user.defaultAddress',
