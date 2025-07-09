@@ -63,7 +63,7 @@ Route::middleware(['role:customer'])->group(function () {
     });
 
     // Customer Home
-    Route::get('/home', [UserController::class, 'index'])->name('home');
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::post('/topup', [UserController::class, 'topUpWellPay'])->name('wellpay.topup');
 
     Route::post('/home', [SessionController::class, 'destroy'])->name('logout');

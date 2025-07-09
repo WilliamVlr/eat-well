@@ -243,9 +243,8 @@
                 </div>
             </section>
             {{-- Favorited Catering or Recently Viewed? --}}
-            @if (!$favVendors->isEmpty())
+            {{-- @if (!$favVendors->isEmpty())
                 <section class="container fav-catering-container mt-3 w-100 h-auto mb-md-5 mb-4">
-                    {{-- Kasih if gaada --}}
                     <div class="section-title-wrap d-flex flex-row justify-content-between align-items-center">
                         <h3 class="title-1">Your Favorites</h3>
                         @if ($favVendors->count() > 4)
@@ -253,18 +252,16 @@
                         @endif
                     </div>
                     <div class="carousel-slider-wrap carousel-style-1 mt-10 align-self-center">
-                        {{-- <button class="arrow-btn button-slider-shadow" id="prev">&lt;</button> --}}
                         <ul class="carousel-product-list">
                             @foreach ($favVendors as $vendor)
-                                <li>
+                                <li id="fav-card-{{ $vendor->vendorId }}">
                                     <x-card-vendor :vendor="$vendor"></x-card-vendor>
                                 </li>
                             @endforeach
                         </ul>
-                        {{-- <button class="arrow-btn button-slider-shadow" id="next">&gt;</button> --}}
                     </div>
                 </section>
-            @endif
+            @endif --}}
         </main>
     @endsection
 
