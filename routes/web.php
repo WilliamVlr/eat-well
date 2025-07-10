@@ -11,6 +11,7 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AuthManager;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CustomerRatingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Socialite\ProviderCallbackController;
@@ -91,9 +92,8 @@ Route::middleware(['role:customer'])->group(function () {
 
     // Order History
     Route::get('/orders', [OrderController::class, 'index'])->name('order-history');
-
     Route::get('/orders/{id}', [OrderController::class, 'show'])->name('order-detail');
-    // Route::get('/order-detail', [OrderController::class, 'show'])->name('order-detail');
+    Route::post('/orders/{order}/review', [CustomerRatingController::class, 'store'])->middleware('auth');;
 
     // Order Payment
     Route::get('/payment', function () {

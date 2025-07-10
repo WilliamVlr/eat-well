@@ -38,7 +38,7 @@ class OrderController extends Controller
         $query = $request->query('query');
         $now = Carbon::now();
 
-        $orders = Order::with(['orderItems.package', 'vendor'])
+        $orders = Order::with(['orderItems.package', 'vendor', 'vendorReview'])
             ->where('userId', $userId)
             ->when($status === 'active', function ($q) use ($now) {
                 $q->where('isCancelled', 0)
@@ -506,7 +506,7 @@ class OrderController extends Controller
     public function show(string $id)
     {
         $order = Order::findOrFail($id)
-            ->load(['payment', 'deliveryStatuses', 'orderItems.package', 'vendor']);
+            ->load(['payment', 'deliveryStatuses', 'orderItems.package', 'vendor', 'vendorReview']);
 
         $paymentMethod = $order->payment ? PaymentMethod::find($order->payment->methodId) : null;
 
