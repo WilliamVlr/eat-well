@@ -1,0 +1,31 @@
+:root {
+  --bg-primary: #13392A;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #185640;
+  --bg-contrast: #E77133;
+  --box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  --box-shadow-light: 0 2px 4px rgba(255, 255, 255, 0.2);
+  --box-shadow-light-hover: 0 2px 4px rgba(255, 255, 255, 0.6);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Lexend', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--bg-secondary);
+}
+
+.lexend {
+  font-family: 'Lexend', sans-serif;
+  font-style: normal;
+}
+
+.fav-vendor-container .catering-card {
+  flex-direction: row;
+  width: 100%;
+
+  .catering-card-img-wrapper {
+    max-width: 120px;
+  }
+}

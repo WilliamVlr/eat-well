@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\RegisteredUserController;
@@ -61,31 +63,28 @@ Route::middleware(['role:customer'])->group(function () {
         return view('customer.customerFirstPage');
     });
 
-
     // Customer Home
-    Route::get('/home', [UserController::class, 'index'])->name('home');
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::post('/topup', [UserController::class, 'topUpWellPay'])->name('wellpay.topup');
 
     Route::post('/home', [SessionController::class, 'destroy'])->name('logout');
+
+    // Favorite
+    Route::post('favorite/{vendorId}', [FavoriteController::class, 'favorite'])->name('favorite');
+    Route::post('unfavorite/{vendorId}', [FavoriteController::class, 'unfavorite'])->name('unfavorite');
+    Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorite.show')->middleware('auth');
 
     Route::get('/manage-profile', function () {
         return view('manageProfile');
     })->name('manage-profile');
 
-    // Search
-    Route::get('/search', [VendorController::class, 'search'])->name('search');
-
-    Route::get('/catering-detail/{vendor}', [VendorController::class, 'show'])->name('catering-detail');
-    Route::post('/update-order-summary', [VendorController::class, 'updateOrderSummary']);
+    // Search Caterings
+    Route::get('/caterings', [VendorController::class, 'search'])->name('search');
 
     // Catering Details
     Route::get('/catering-detail/{vendor}', [VendorController::class, 'show'])->name('catering-detail');
     Route::post('/update-order-summary', [CartController::class, 'updateOrderSummary'])->name('update.order.summary');
     Route::get('/load-cart', [CartController::class, 'loadCart'])->name('load.cart');
-
-    Route::get('/orders/{id}', [OrderController::class, 'show'])->name('order-detail');
-    // Route::get('/order-detail', [OrderController::class, 'show'])->name('order-detail');
-    Route::post('/orders/{order}/review', [CustomerRatingController::class, 'store'])->middleware('auth');
 
     Route::get('/catering-detail/rating-and-review', function () {
         return view('ratingAndReview');
@@ -93,9 +92,8 @@ Route::middleware(['role:customer'])->group(function () {
 
     // Order History
     Route::get('/orders', [OrderController::class, 'index'])->name('order-history');
-
     Route::get('/orders/{id}', [OrderController::class, 'show'])->name('order-detail');
-    // Route::get('/order-detail', [OrderController::class, 'show'])->name('order-detail');
+    Route::post('/orders/{order}/review', [CustomerRatingController::class, 'store'])->middleware('auth');;
 
     // Order Payment
     Route::get('/payment', function () {

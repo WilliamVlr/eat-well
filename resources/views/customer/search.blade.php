@@ -7,7 +7,9 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/cardVendor.css') }}">
     <link rel="stylesheet" href="{{ asset('css/customer/search.css') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 
 @section('content')
@@ -154,50 +156,12 @@
                         <span class="material-symbols-outlined me-1">tune</span> Filter
                     </button>
 
-                    {{-- Sort and Results Section --}}
+                    {{-- Results Section --}}
                     <div class="col-lg-8 p-0">
                         {{-- Result Section --}}
                         <div class="catering-results d-flex flex-wrap gap-3">
                             @foreach ($vendors as $vendor)
-                                <a href="{{ route('catering-detail', $vendor->vendorId) }}" class="catering-card-link">
-                                    <div class="catering-card">
-                                        <div class="catering-card-img-wrapper">
-                                            {{-- <img src="{{ $vendor->logo ? asset($vendor->logo) : asset('asset/customer/home/Iklan 2.jpg') }}"
-                                                alt="Catering Picture" class="catering-card-img"> --}}
-                                            <img src="{{ asset('asset/customer/home/Iklan 2.jpg') }}"
-                                                alt="Catering Picture" class="catering-card-img">
-                                        </div>
-                                        <div class="catering-card-body d-flex flex-column flex-grow-1">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span
-                                                    class="catering-city small text-muted">{{ $vendor->kota ?? '-' }}</span>
-                                                <button class="btn btn-light btn-fav p-1" title="Favorite" type="button"
-                                                    onclick="event.stopPropagation();">
-                                                    <span class="material-symbols-outlined icon-sm">favorite</span>
-                                                </button>
-                                            </div>
-                                            <div class="card-details-wrapper">
-                                                <span class="catering-name">{{ $vendor->name }}</span>
-                                            </div>
-                                            <div class="catering-slots mb-1">
-                                                @if ($vendor->breakfast_delivery ?? false)
-                                                    <span class="badge badge-breakfast">Breakfast</span>
-                                                @endif
-                                                @if ($vendor->lunch_delivery ?? false)
-                                                    <span class="badge badge-lunch">Lunch</span>
-                                                @endif
-                                                @if ($vendor->dinner_delivery ?? false)
-                                                    <span class="badge badge-dinner">Dinner</span>
-                                                @endif
-                                            </div>
-                                            <div class="catering-rating d-flex align-items-center">
-                                                <span class="material-symbols-outlined star-icon me-1">star</span>
-                                                <span class="fw-semibold">{{ $vendor->rating ?? '-' }}</span>
-                                                {{-- Add review count if available --}}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
+                                <x-card-vendor :vendor="$vendor"></x-card-vendor>
                             @endforeach
                         </div>
                         {{-- Pagination (visible only on laptop L and laptop) --}}
@@ -321,4 +285,5 @@
 
 @section('scripts')
     <script src="{{ asset('js/customer/searchCatering.js') }}"></script>
+    <script src="{{ asset('js/customer/favoriteCatering.js') }}"></script>
 @endsection
