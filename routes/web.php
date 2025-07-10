@@ -134,6 +134,7 @@ Route::middleware(['role:customer'])->group(function(){
      VENDOR ROUTES
 ---------------------- */
 Route::middleware(['role:vendor'])->group(function(){
+
     // Catering dashboard
     Route::get('/cateringHomePage', function () {
         return view('cateringHomePage');
@@ -191,4 +192,8 @@ Route::middleware(['role:admin'])->group(function(){
         return redirect()->route('admin-dashboard');
     });
 
+});
+
+Route::get('/vendor-first-page', function () {
+    return view('vendorFirstPage');
 });
