@@ -51,8 +51,8 @@
                                 href="/view-all-orders">Transactions</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('view-all-packages-category') ? 'active' : '' }}"
-                                href="/view-all-packages-category">Packages Category</a>
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('categories.show') ? 'active' : '' }}"
+                                href="{{route('categories.show')}}">Packages Category</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('view-all-packages-cuisine') ? 'active' : '' }}"

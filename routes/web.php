@@ -11,6 +11,7 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AuthManager;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Socialite\ProviderCallbackController;
@@ -172,9 +173,9 @@ Route::middleware(['role:admin'])->group(function () {
         return view('view-all-logs');
     });
 
-    Route::get('/view-all-packages-category', function () {
-        return view('view-all-packages-category');
-    });
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.show');
+    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+
 
     Route::get('/view-all-packages-cuisine', function () {
         return view('view-all-packages-cuisine');
