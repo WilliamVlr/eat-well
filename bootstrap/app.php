@@ -35,7 +35,7 @@ return Application::configure(basePath: dirname(__DIR__))
     // })
 
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->append(StartSession::class);
+        // $middleware->append(StartSession::class);
         // $middleware->append(VerifyCsrfToken::class);
         // $middleware->append(ShareErrorsFromSession::class);
         $middleware->append(\App\Http\Middleware\LogUserActivity::class);
