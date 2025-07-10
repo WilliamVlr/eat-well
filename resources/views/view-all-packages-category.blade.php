@@ -14,13 +14,12 @@
 @section('content')
     <section class="container-fluid pt-3 pt-sm-4 px-sm-5 d-flex justify-content-between align-items-center">
         <h1 class="text-center m-0">Category List</h1>
-        <a href="#" class="btn btn-success d-flex gap-1 align-items-center" data-bs-toggle="modal"
-            data-bs-target="#addCategoryModal">
+        <button type="button" onclick="openModal()" class="btn btn-success d-flex gap-1 align-items-center">
             <span class="material-symbols-outlined">
                 add
             </span>
             Category
-        </a>
+        </button>
     </section>
     <section class="container-fluid px-sm-5 pb-sm-4">
         <div class="table-responsive">
@@ -63,54 +62,55 @@
     </section>
 
     <!-- Add Category Modal -->
-    <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-
+    <div id="addCategoryModal" class="custom-modal hidden">
+        <div class="custom-modal-content">
+            <form action="{{ route('categories.store') }}" method="POST">
+                @csrf
+                <div class="custom-modal-header">
+                    <h5 class="modal-title">Add New Category</h5>
+                    <button type="button" class="close-modal-btn" onclick="closeModal()">×</button>
+                </div>
+                <div class="custom-modal-body">
+                    <div class="mb-3">
+                        <label for="categoryName" class="form-label">Category Name</label>
+                        <input type="text" name="categoryName" id="categoryName"
+                            class="form-control @error('categoryName') is-invalid @enderror"
+                            value="{{ old('categoryName') }}" required>
+                        @error('categoryName')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="custom-modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-success">Add Category</button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <form action="{{ route('categories.store') }}" method="POST" class="modal-content">
-        @csrf
-        <label for="categoryName" class="form-label">Category Name</label>
-        <input type="text" name="categoryName" id="categoryName"
-            class="form-control">
-        @error('categoryName')
-            <div class="text-danger">
-                {{ $message }}
-            </div>
-        @enderror
-        {{-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button> --}}
-        <button type="submit" class="btn btn-success">Add Category</button>
-        {{-- <div class="modal-header">
-            <h5 class="modal-title" id="addCategoryModalLabel">Add New Category</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <div class="mb-3">
-                <label for="categoryName" class="form-label">Category Name</label>
-                <input type="text" name="categoryName" id="categoryName"
-                    class="form-control @error('categoryName') is-invalid @enderror" value="{{ old('categoryName') }}"
-                    required>
-                @error('categoryName')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-success">Add Category</button>
-        </div> --}}
-    </form>
+    <div id="modalBackdrop" class="modal-backdrop hidden" onclick="closeModal()"></div>
 @endsection
 
 @section('scripts')
-    {{-- @if ($errors->has('categoryName'))
-        <script>
-            console.log($errors);
-            const modal = new bootstrap.Modal(document.getElementById('addCategoryModal'));
-            modal.show();
-        </script>
-    @endif --}}
+    <script>
+        function openModal() {
+            document.getElementById('addCategoryModal').classList.remove('hidden');
+            document.getElementById('modalBackdrop').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('addCategoryModal').classList.add('hidden');
+            document.getElementById('modalBackdrop').classList.add('hidden');
+        }
+
+        // Show modal if there is validation error
+        @if ($errors->has('categoryName'))
+            window.addEventListener('DOMContentLoaded', () => {
+                openModal();
+            });
+        @endif
+    </script>
 @endsection
