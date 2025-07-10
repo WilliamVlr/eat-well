@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\RegisteredUserController;
@@ -19,7 +21,7 @@ use App\Http\Middleware\RoleMiddleware;
 /* --------------------
      GUEST ROUTES
 -------------------- */
-Route::middleware(['guest'])->group(function(){
+Route::middleware(['guest'])->group(function () {
     Route::get('/', function () {
         return view('landingPage');
     })->name('landingPage')->middleware('guest');
@@ -37,8 +39,7 @@ Route::middleware(['guest'])->group(function(){
     Route::get('/auth/{provider}/redirect/{role?}', ProviderRedirectController::class)->name('auth.redirect')->middleware('guest');
     Route::get('/auth/{provider}/callback/', ProviderCallbackController::class)->name('auth.callback')->middleware('guest');
 
-    Route::fallback(function()
-    {
+    Route::fallback(function () {
         return redirect()->route('landingPage');
     });
 });
@@ -48,7 +49,7 @@ Route::middleware(['guest'])->group(function(){
  NORMAL USERS ROUTES
 ---------------------*/
 
-Route::middleware(['auth'])->group(function(){
+Route::middleware(['auth'])->group(function () {
     Route::post('/manage-profile', [SessionController::class, 'destroy'])->name('logout');
 });
 /* ---------------------
@@ -56,39 +57,33 @@ Route::middleware(['auth'])->group(function(){
 ---------------------- */
 // Customer Account Setup
 
-Route::middleware(['role:customer'])->group(function(){
+Route::middleware(['role:customer'])->group(function () {
     Route::get('/customer-first-page', function () {
         return view('customer.customerFirstPage');
     });
 
-
     // Customer Home
-    Route::get('/home', [UserController::class, 'index'])->name('home');
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::post('/topup', [UserController::class, 'topUpWellPay'])->name('wellpay.topup');
 
     Route::post('/home', [SessionController::class, 'destroy'])->name('logout');
+
+    // Favorite
+    Route::post('favorite/{vendorId}', [FavoriteController::class, 'favorite'])->name('favorite');
+    Route::post('unfavorite/{vendorId}', [FavoriteController::class, 'unfavorite'])->name('unfavorite');
+    Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorite.show')->middleware('auth');
 
     Route::get('/manage-profile', function () {
         return view('manageProfile');
     })->name('manage-profile');
 
-    // Search
-    Route::get('/search', [VendorController::class, 'search'])->name('search');
-
-    Route::get('/catering-detail/{vendor}', [VendorController::class, 'show'])->name('catering-detail');
-    Route::post('/update-order-summary', [VendorController::class, 'updateOrderSummary']);
+    // Search Caterings
+    Route::get('/caterings', [VendorController::class, 'search'])->name('search');
 
     // Catering Details
     Route::get('/catering-detail/{vendor}', [VendorController::class, 'show'])->name('catering-detail');
     Route::post('/update-order-summary', [CartController::class, 'updateOrderSummary'])->name('update.order.summary');
     Route::get('/load-cart', [CartController::class, 'loadCart'])->name('load.cart');
-
-    // For authenticated users
-    // Route::middleware(['auth'])->group(function () {
-    //     Route::get('/catering-detail/{vendor}', [VendorController::class, 'show'])->name('catering-detail');
-    //     Route::post('/update-order-summary', [CartController::class, 'updateOrderSummary'])->name('update.order.summary');
-    //     Route::get('/load-cart', [CartController::class, 'loadCart'])->name('load.cart');
-    // });
 
     Route::get('/catering-detail/rating-and-review', function () {
         return view('ratingAndReview');
@@ -124,7 +119,7 @@ Route::middleware(['role:customer'])->group(function(){
         return view('addAddress');
     });
 
-    Route::fallback(function(){
+    Route::fallback(function () {
         return redirect()->route('home');
     });
 
@@ -133,7 +128,7 @@ Route::middleware(['role:customer'])->group(function(){
 /* ---------------------
      VENDOR ROUTES
 ---------------------- */
-Route::middleware(['role:vendor'])->group(function(){
+Route::middleware(['role:vendor'])->group(function () {
     // Catering dashboard
     Route::get('/cateringHomePage', function () {
         return view('cateringHomePage');
@@ -152,42 +147,42 @@ Route::middleware(['role:vendor'])->group(function(){
         return view('manageOrder');
     });
 
-    Route::fallback(function(){
+    Route::fallback(function () {
         return redirect()->route('cateringHomePage');
     });
 });
 /* ---------------------
      ADMIN ROUTES
 ---------------------- */
-Route::middleware(['role:admin'])->group(function(){
+Route::middleware(['role:admin'])->group(function () {
     Route::get('/view-all-vendors', [AdminController::class, 'viewAllVendors'])->name('view-all-vendors');
     Route::post('/view-all-vendors', [AdminController::class, 'search'])->name('view-all-vendors');
 
     Route::get('/admin-dashboard', [DashboardController::class, 'index'])->name('admin-dashboard');
 
-    Route::get('/view-all-orders', function(){
+    Route::get('/view-all-orders', function () {
         return view('view-all-orders');
     });
 
-    Route::get('/view-all-users', function(){
+    Route::get('/view-all-users', function () {
         return view('view-all-users');
     });
 
-    Route::get('/view-all-logs', function(){
+    Route::get('/view-all-logs', function () {
         return view('view-all-logs');
     });
 
-    Route::get('/view-all-packages-category', function(){
+    Route::get('/view-all-packages-category', function () {
         return view('view-all-packages-category');
     });
 
-    Route::get('/view-all-packages-cuisine', function(){
+    Route::get('/view-all-packages-cuisine', function () {
         return view('view-all-packages-cuisine');
     });
 
     Route::post('/view-all-vendors', [SessionController::class, 'destroy'])->name('logout.admin');
 
-    Route::fallback(function(){
+    Route::fallback(function () {
         return redirect()->route('admin-dashboard');
     });
 
