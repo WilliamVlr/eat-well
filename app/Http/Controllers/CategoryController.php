@@ -72,6 +72,14 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $category = PackageCategory::findOrFail($id);
+
+        if ($category->packages()->exists()) {
+            return redirect()->back()->with('error', 'Cannot delete category with associated packages.');
+        }
+
+        $category->delete(); // Soft delete
+
+        return redirect()->back()->with('success', 'Category deleted successfully.');
     }
 }

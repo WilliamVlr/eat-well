@@ -28,8 +28,8 @@
                     <tr>
                         <th scope="col">No</th>
                         <th scope="col">Category Name</th>
+                        <th scope="col">Packages count</th>
                         <th scope="col">Created at</th>
-                        <th scope="col">Updated at</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -38,21 +38,19 @@
                         <tr>
                             <td>{{ $cat->categoryId }}</td>
                             <td>{{ $cat->categoryName }}</td>
+                            <td>{{ $cat->packages()->count() }}</td>
                             <td>{{ Carbon::parse($cat->created_at)->format('d M Y') }}</td>
-                            <td>{{ Carbon::parse($cat->updated_at)->format('d M Y') }}</td>
                             <td class="d-flex flex-wrap gap-1">
-                                <a href="#" class="btn btn-primary btn-sm d-flex gap-1 align-items-center">
-                                    <span class="material-symbols-outlined">
-                                        edit
-                                    </span>
+                                {{-- <a href="#" class="btn btn-primary btn-sm d-flex gap-1 align-items-center"
+                                    onclick="openUpdateModal('{{ $cat->categoryId }}', '{{ $cat->categoryName }}')">
+                                    <span class="material-symbols-outlined">edit</span>
                                     Edit
-                                </a>
-                                <a href="#" class="btn btn-danger btn-sm d-flex gap-1 align-items-center">
-                                    <span class="material-symbols-outlined">
-                                        delete
-                                    </span>
+                                </a> --}}
+                                <button type="button" class="btn btn-danger btn-sm d-flex gap-1 align-items-center"
+                                    onclick="handleDeleteClick('{{ $cat->categoryId }}', {{ $cat->packages()->count() }})">
+                                    <span class="material-symbols-outlined">delete</span>
                                     Delete
-                                </a>
+                                </button>
                             </td>
                         </tr>
                     @endforeach
@@ -92,6 +90,47 @@
     </div>
 
     <div id="modalBackdrop" class="modal-backdrop hidden" onclick="closeModal()"></div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteCategoryModal" class="custom-modal hidden">
+        <div class="custom-modal-content">
+            <form id="deleteCategoryForm" method="POST">
+                @csrf
+                @method('DELETE')
+                <div class="custom-modal-header">
+                    <h5 class="modal-title text-danger">Confirm Delete</h5>
+                    <button type="button" class="close-modal-btn" onclick="closeDeleteModal()">×</button>
+                </div>
+                <div class="custom-modal-body">
+                    <p>Are you sure you want to delete this category?</p>
+                </div>
+                <div class="custom-modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="deleteModalBackdrop" class="modal-backdrop hidden" onclick="closeDeleteModal()"></div>
+
+    <!-- Cannot Delete Info Modal -->
+    <div id="cannotDeleteModal" class="custom-modal hidden">
+        <div class="custom-modal-content">
+            <div class="custom-modal-header">
+                <h5 class="modal-title text-warning">Action Not Allowed</h5>
+                <button type="button" class="close-modal-btn" onclick="closeCannotDeleteModal()">×</button>
+            </div>
+            <div class="custom-modal-body">
+                <p>This category cannot be deleted because it still has associated packages.</p>
+            </div>
+            <div class="custom-modal-footer">
+                <button type="button" class="btn btn-warning" onclick="closeCannotDeleteModal()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="cannotDeleteBackdrop" class="modal-backdrop hidden" onclick="closeCannotDeleteModal()"></div>
 @endsection
 
 @section('scripts')
@@ -104,9 +143,49 @@
         function closeModal() {
             document.getElementById('addCategoryModal').classList.add('hidden');
             document.getElementById('modalBackdrop').classList.add('hidden');
+
+            // Clear the input value and remove validation state
+            const input = document.getElementById('categoryName');
+            input.value = '';
+            input.classList.remove('is-invalid');
+
+            // Also remove any error message if present
+            const errorFeedback = input.nextElementSibling;
+            if (errorFeedback && errorFeedback.classList.contains('invalid-feedback')) {
+                errorFeedback.innerText = '';
+            }
         }
 
-        // Show modal if there is validation error
+        function openDeleteModal(categoryId) {
+            const form = document.getElementById('deleteCategoryForm');
+            form.action = `/categories/${categoryId}`; // adjust route prefix if needed
+            document.getElementById('deleteCategoryModal').classList.remove('hidden');
+            document.getElementById('deleteModalBackdrop').classList.remove('hidden');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteCategoryModal').classList.add('hidden');
+            document.getElementById('deleteModalBackdrop').classList.add('hidden');
+        }
+
+        function handleDeleteClick(categoryId, packageCount) {
+            if (packageCount > 0) {
+                openCannotDeleteModal();
+            } else {
+                openDeleteModal(categoryId);
+            }
+        }
+
+        function openCannotDeleteModal() {
+            document.getElementById('cannotDeleteModal').classList.remove('hidden');
+            document.getElementById('cannotDeleteBackdrop').classList.remove('hidden');
+        }
+
+        function closeCannotDeleteModal() {
+            document.getElementById('cannotDeleteModal').classList.add('hidden');
+            document.getElementById('cannotDeleteBackdrop').classList.add('hidden');
+        }
+
         @if ($errors->has('categoryName'))
             window.addEventListener('DOMContentLoaded', () => {
                 openModal();
