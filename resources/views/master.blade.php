@@ -68,6 +68,16 @@
                                 href="{{ route('search') }}">Search Vendor</a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('search') ? 'active' : '' }}"
+                                href="{{ route('search') }}">Favorited Catering</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('search') ? 'active' : '' }}"
+                                href="{{ route('search') }}">Orders</a>
+                        </li>
+
 
                         <li class="nav-item">
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('about-us') ? 'active' : '' }}"
