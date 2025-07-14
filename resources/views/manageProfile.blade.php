@@ -9,7 +9,7 @@
 
 @section('content')
     <div class="container container-custom">
-        <div class="left-panel outer-panel">
+        <div class="left-panel outer-panel d-flex flex-column h-100">
             <div class="lexend font-medium manage-profile">
                 <div class="left-panel-in photo-prof">
                     <img src="{{asset('asset/profile/profil.jpg')}}" alt="Profile Picture" class="prof-pict">
@@ -46,9 +46,9 @@
                     <a class="menu-link inter font-regular" href="/manage-address">Manage Address</a>
                 </li>
             </ul>
-            <div class="logout">
+            <div class="logout d-none d-md-flex">
                 <form method="POST" action="{{ route('logout') }}" class="logout-form">
-                @csrf
+                    @csrf
                     <button type="submit" class="logout-btn inter font-regular">
                         Log out
                     </button>
@@ -121,12 +121,11 @@
 
                  <hr class="section-divider">
                  <div id="management-security" class="management-section">
-
-                <div class="security-manage">
-                    <p class="lexend font-medium text-black title">Security Management</p>
-                    <p class="inter font-regular text-black description">This is where we lock security with top grade protection. Safest place on earth! Manage your account security here.</p>
-                    <hr style="height: 1.8px; background-color:black; opacity:100%; border: none; margin-left: 180px; margin-right: 180px;">
-                </div>
+                    <div class="security-manage">
+                        <p class="lexend font-medium text-black title">Security Management</p>
+                        <p class="inter font-regular text-black description">This is where we lock security with top grade protection. Safest place on earth! Manage your account security here.</p>
+                        <hr style="height: 1.8px; background-color:black; opacity:100%; border: none; margin-left: 180px; margin-right: 180px;">
+                    </div>
                         <div class="left-right-security">
                             <div class="left-security">
                                 <p class="inter font-bold title-security">MFA Management</p>
@@ -179,6 +178,15 @@
                             </div>
                         </div>
                 </div>
+            </div>
+
+            <div class="logout-mobile d-flex d-md-none justify-content-center">
+                <form method="POST" action="{{ route('logout') }}" class="logout-form">
+                    @csrf
+                    <button type="submit" class="logout-btn inter font-regular">
+                        Log out
+                    </button>
+                </form>
             </div>
         </div>
     </div>

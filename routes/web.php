@@ -51,6 +51,12 @@ Route::middleware(['guest'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/manage-profile', [SessionController::class, 'destroy'])->name('logout');
+    
+    Route::get('/manage-profile', function () {
+        return view('manageProfile');
+    })->name('manage-profile');
+
+
 });
 /* ---------------------
     CUSTOMER ROUTES
@@ -128,11 +134,16 @@ Route::middleware(['role:customer'])->group(function () {
 /* ---------------------
      VENDOR ROUTES
 ---------------------- */
-Route::middleware(['role:vendor'])->group(function () {
+Route::middleware(['role:vendor'])->group(function(){
+    
+    Route::get('/vendor-first-page', function () {
+        return view('vendorFirstPage');
+    })->name('vendor.data');
+
+    Route::post('/new-vendor', [VendorController::class, 'store'])-> name('vendor.store');
+
     // Catering dashboard
-    Route::get('/cateringHomePage', function () {
-        return view('cateringHomePage');
-    });
+    Route::get('/cateringHomePage', [VendorController::class, 'display']);
     Route::post('/cateringHomePage', [SessionController::class, 'destroy'])->name('logout.vendor');
 
     // Manage Packages
