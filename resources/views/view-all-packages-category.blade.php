@@ -21,6 +21,15 @@
             Category
         </button>
     </section>
+    @if (session('success'))
+    <section class="container-fluid px-sm-5">
+        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </section>
+    @endif
+    
     <section class="container-fluid px-sm-5 pb-sm-4">
         <div class="table-responsive">
             <table class="table custom-table mt-3">
@@ -101,8 +110,8 @@
                     <h5 class="modal-title text-danger">Confirm Delete</h5>
                     <button type="button" class="close-modal-btn" onclick="closeDeleteModal()">×</button>
                 </div>
-                <div class="custom-modal-body">
-                    <p>Are you sure you want to delete this category?</p>
+                <div class="custom-modal-body mt-0">
+                    <p style="font-size: 14px;">Are you sure you want to delete this category?</p>
                 </div>
                 <div class="custom-modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
@@ -118,14 +127,14 @@
     <div id="cannotDeleteModal" class="custom-modal hidden">
         <div class="custom-modal-content">
             <div class="custom-modal-header">
-                <h5 class="modal-title text-warning">Action Not Allowed</h5>
+                <h5 class="modal-title text-danger">Action Not Allowed</h5>
                 <button type="button" class="close-modal-btn" onclick="closeCannotDeleteModal()">×</button>
             </div>
-            <div class="custom-modal-body">
-                <p>This category cannot be deleted because it still has associated packages.</p>
+            <div class="custom-modal-body mt-0">
+                <p style="font-size: 14px;">This category cannot be deleted because it still has associated packages.</p>
             </div>
             <div class="custom-modal-footer">
-                <button type="button" class="btn btn-warning" onclick="closeCannotDeleteModal()">OK</button>
+                <button type="button" class="btn btn-danger" onclick="closeCannotDeleteModal()">OK</button>
             </div>
         </div>
     </div>
