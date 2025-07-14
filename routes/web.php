@@ -168,9 +168,8 @@ Route::middleware(['role:admin'])->group(function () {
         return view('view-all-users');
     });
 
-    Route::get('/view-all-logs', function () {
-        return view('view-all-logs');
-    });
+    Route::get('/view-all-logs', [AdminController::class, 'view_all_logs'])
+        ->name('view-all-logs');
 
     Route::get('/view-all-packages-category', function () {
         return view('view-all-packages-category');
@@ -179,6 +178,15 @@ Route::middleware(['role:admin'])->group(function () {
     Route::get('/view-all-packages-cuisine', function () {
         return view('view-all-packages-cuisine');
     });
+
+    Route::get('/view-all-payment', [AdminController::class, 'view_all_payment'])
+        ->name('view-all-payment');
+
+    Route::delete('/view-all-payment/delete/{id}', [AdminController::class, 'delete_payment'])
+        ->name('delete-payment');
+
+    Route::post('/view-all-payment', [AdminController::class, 'add_new_payment'])
+        ->name('add-new-payment');
 
     Route::post('/view-all-vendors', [SessionController::class, 'destroy'])->name('logout.admin');
 

@@ -49,11 +49,11 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('view-all-packages-category') ? 'active' : '' }}"
-                                href="/view-all-packages-category">Packages Category</a>
+                                href="/view-all-packages-category">Category</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('view-all-packages-cuisine') ? 'active' : '' }}"
-                                href="/view-all-packages-cuisine">Packages Cuisine</a>
+                                href="/view-all-packages-cuisine">Cuisine</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('view-all-vendors') ? 'active' : '' }}"
@@ -102,9 +102,6 @@
     </nav>
 
     {{-- ===== PAGE CONTENT ===== --}}
-    <main class="flex-grow-1">
-        @yield('content')
-    </main>
 
     {{-- ===== FOOTER ===== --}}
     {{-- <footer class="bg-dark text-white py-0 mt-auto">
@@ -142,9 +139,6 @@
     </footer> --}}
 
     {{-- Scripts --}}
-    @yield('scripts')
-    <script src="{{ asset('js/navigation.js') }}"></script>
-
 </body>
 
 </html>

@@ -94,7 +94,7 @@
 
                 </div>
 
-                <div class="col-lg-5"
+                <div class="col-lg-5 table-responsive"
                     style="background-color: white; margin-right:0px; border-radius: 30px; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); padding:10px">
                     <h1 class="fw-bold mt-3" style="margin-left: 1vw">Recent Logs</h1>
                     <hr>
@@ -104,76 +104,25 @@
                                 <th scope="col">No. </th>
                                 <th scope="col">Username</th>
                                 <th scope="col">Role</th>
-                                <th scope="col">Activity</th>
+                                <th scope="col">URL</th>
                                 <th scope="col">Time</th>
                                 
                                 
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach($logs as $log)
                             <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
+                                <th scope="row">{{ $loop->iteration }}</th>
+                                <td>{{ $log->name }}</td>
+                                <td>{{ $log->role }}</td>
+                                <td>{{ $log->url }}</td>
+                                <td>{{ $log->accessed_at }}</td>
+                                {{-- <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td> --}}
                             </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>John</td>
-                                <td>Doe</td>
-                                <td>@social</td>
-                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">4</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">5</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">6</th>
-                                <td>John</td>
-                                <td>Doe</td>
-                                <td>@social</td>
-                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">7</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">8</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">9</th>
-                                <td>John</td>
-                                <td>Doe</td>
-                                <td>@social</td>
-                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
-                            </tr>
+                            @endforeach
+                            
+                            
                         </tbody>
                     </table>
                     <div class="view-all-logsbtn">
@@ -191,7 +140,7 @@
 
     <script src="{{ asset('js/admin/dashboard.js') }}"></script>
 
-
+    <x-admin-footer></x-admin-footer>
 </body>
 
 </html>
