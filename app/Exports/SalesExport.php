@@ -11,16 +11,18 @@ class SalesExport implements FromView
 {
     public $orders;
     public $totalSales;
-    public $periodText;
+    public $startDate;
+    public $endDate;
 
-    public function __construct($orders, $totalSales, $periodText)
+    public function __construct($orders, $totalSales, $startDate, $endDate)
     {
         $this->orders = $orders;
         $this->totalSales = $totalSales;
-        $this->periodText = $periodText;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
     }
     public function view(): View
     {
-        return view('catering.salesTable', ['orders' => $this->orders, 'totalSales' => $this->totalSales, 'periodText' => $this->periodText]);
+        return view('catering.salesTable', ['orders' => $this->orders, 'totalSales' => $this->totalSales, 'startDate' => $this->startDate, 'endDate' => $this->endDate]);
     }
 }

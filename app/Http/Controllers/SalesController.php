@@ -18,52 +18,40 @@ class SalesController extends Controller
         $vendor = $user->vendor;
         $vendorId = $vendor->vendorId;
 
-        $period = $request->query('period');
-        if (!$period)
-            $period = 'All';
+        $validated = $request->validate([
+            'startDate' => 'nullable|date_format:Y-m-d',
+            'endDate' => 'nullable|date_format:Y-m-d',
+        ]);
 
-        $data = [];
+        $startDate = $validated['startDate'] ?? null;
+        $endDate = $validated['endDate'] ?? null;
 
-        $data = $this->getVendorSalesData($vendorId, $period);
+        // Call helper method to fetch filtered data
+        [$orders, $totalSales] = $this->getVendorSalesRanged($vendorId, $startDate, $endDate);
 
-        $orders = $data['orders'];
-        // dd($orders);
-        $totalSales = $data['totalSales'];
-        $periodText = $data['periodText'];
-
-        $allOrders = Order::where('vendorId', $vendorId);
-        $start = $allOrders->min('startDate');
-        $end = $allOrders->max('startDate');
-        // dd($start, $end);
-        $periods = $this->generateQuarterlyPeriods($start, $end);
-        // dd($periods);
-        return view('catering.vendorSales', compact('orders', 'totalSales', 'periodText', 'vendor', 'periods'));
+        return view('catering.vendorSales', compact('orders', 'totalSales', 'vendor', 'startDate', 'endDate'));
     }
 
     public function export_sales(Request $request)
     {
-        $user = Auth::check() ? Auth::user() : null;
+        $user = Auth::user();
+        $vendorId = $user->vendor->vendorId;
 
-        if ($user && $user->role === UserRole::Vendor) {
-            $vendorId = $user->vendor->vendorId;
+        $validated = $request->validate([
+            'startDate' => 'nullable|date_format:Y-m-d',
+            'endDate' => 'nullable|date_format:Y-m-d',
+        ]);
 
-            $period = $request->query('period');
-            if (!$period)
-                $period = 'All';
+        $startDate = $validated['startDate'] ?? null;
+        $endDate = $validated['endDate'] ?? null;
 
-            $data = [];
+        // Call helper method to fetch filtered data
+        [$orders, $totalSales] = $this->getVendorSalesRanged($vendorId, $startDate, $endDate);
 
-            $data = $this->getVendorSalesData($vendorId, $period);
+        $start = Carbon::parse($startDate)->format('d M Y') ?? null;
+        $end = Carbon::parse($endDate)->format('d M Y') ?? null;
 
-            $orders = $data['orders'];
-            // dd($orders);
-            $totalSales = $data['totalSales'];
-            $periodText = $data['periodText'];
-
-            return Excel::download(new SalesExport($orders, $totalSales, $periodText), "laporan_penjualan_$periodText.xlsx");
-        } else {
-            return redirect()->back()->with("error", "Not authorized");
-        }
+        return Excel::download(new SalesExport($orders, $totalSales, $start, $end), "laporan_penjualan.xlsx");
     }
 
     public function generateMonthlyPeriods($startDate, $endDate)
@@ -172,4 +160,41 @@ class SalesController extends Controller
 
         return compact('orders', 'totalSales', 'periodText');
     }
+
+    private function getVendorSalesRanged($vendorId, $startDate = null, $endDate = null)
+    {
+        $orders = Order::where('vendorId', $vendorId)
+            ->when($startDate, function ($query) use ($startDate) {
+                $query->whereDate('created_at', '>=', $startDate);
+            })
+            ->when($endDate, function ($query) use ($endDate) {
+                $query->whereDate('created_at', '<=', $endDate);
+            })
+            ->get();
+
+        $orders->load(['user', 'orderItems.package', 'payment']);
+
+        $totalSales = $orders->sum('totalPrice');
+
+        foreach ($orders as $order) {
+            $grouped = $order->orderItems
+                ->groupBy('packageId')
+                ->map(function ($items) {
+                    $first = $items->first();
+                    return [
+                        'packageName' => $first->package->name,
+                        'quantity' => $items->sum('quantity'),
+                        'timeSlots' => $items->pluck('packageTimeSlot')
+                            ->map(fn($ts) => ucfirst(strtolower($ts->name)))
+                            ->unique()
+                            ->join(', '),
+                    ];
+                });
+
+            $order->groupedPackages = $grouped->values();
+        }
+
+        return [$orders, $totalSales];
+    }
+
 }
