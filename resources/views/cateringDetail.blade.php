@@ -43,10 +43,12 @@
                     </div>
 
                     <div class="rating-and-number-sold-wrapper">
-                        <a href="{{ route('rate-and-review') }}" class="rate-review-button">
+                        <a href="{{ route('rate-and-review', $vendor->vendorId) }}" class="rate-review-button">
                             <div class="rating-container">
                                 <span class="material-symbols-outlined star-icon">star</span>
-                                <span class="inter rating-and-sold">{{ $vendor->rating }}</span>
+                                @if ($vendor->rating > 0)
+                                    <span class="inter rating-and-sold">{{ $vendor->rating }}</span>   
+                                @endif
                             </div>
                         </a>
                         <div class="number-sold-container">

@@ -84,13 +84,12 @@ Route::middleware(['role:customer'])->group(function () {
     Route::get('/caterings', [VendorController::class, 'search'])->name('search');
 
     // Catering Details
+    Route::get('/catering-detail/{vendor}/rating-and-review', [VendorController::class, 'review'])->name('rate-and-review');
+
     Route::get('/catering-detail/{vendor}', [VendorController::class, 'show'])->name('catering-detail');
     Route::post('/update-order-summary', [CartController::class, 'updateOrderSummary'])->name('update.order.summary');
     Route::get('/load-cart', [CartController::class, 'loadCart'])->name('load.cart');
 
-    Route::get('/catering-detail/rating-and-review', function () {
-        return view('ratingAndReview');
-    })->name('rate-and-review');
 
     // Order History
     Route::get('/orders', [OrderController::class, 'index'])->name('order-history');

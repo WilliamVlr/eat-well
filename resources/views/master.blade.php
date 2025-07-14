@@ -51,10 +51,12 @@
 
             <form action="/lang" method="post">
                 @csrf
-                <select name="lang" id="languageSelector" style="text-align: center; margin-left: 30px;" onchange="this.form.submit()">
-                    <option value="en" @if (app()->getLocale() === 'en') selected @endif>EN</option>
-                    <option value="id" @if (app()->getLocale() === 'id') selected @endif>ID</option>
-                </select>
+                <div class="dropdown-wrapper">
+                    <select name="lang" id="languageSelector" style="text-align: center; margin-left: 30px;" onchange="this.form.submit()">
+                        <option value="en" @if (app()->getLocale() === 'en') selected @endif>EN</option>
+                        <option value="id" @if (app()->getLocale() === 'id') selected @endif>ID</option>
+                    </select>
+                </div>
             </form>
 
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"

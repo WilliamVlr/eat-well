@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('vendor_previews', function (Blueprint $table) {
             $table->id('vendorPreviewId');
             $table->unsignedBigInteger('vendorId');
-            $table->string('previewPicturePath');
+            $table->string('previewPicturePath')->default('asset/rating-page/user-profile.jpg');
             $table->timestamps();
 
             $table->foreign('vendorId')->references('vendorId')->on('vendors')->onDelete('cascade');

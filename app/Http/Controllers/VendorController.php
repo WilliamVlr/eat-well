@@ -9,6 +9,7 @@ use App\Models\Package;
 use App\Models\PackageCategory;
 use App\Models\Vendor;
 use App\Models\User;
+use App\Models\VendorReview;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
@@ -33,12 +34,24 @@ class VendorController extends Controller
         // Memuat relasi User dan Address secara efisien jika Anda ingin menampilkannya
         $vendor->load(['user']);
         // MEMUAT PAKET DENGAN RELASI CATEGORY DAN CUISINE_TYPES SECARA EFFICIENT
-        // Pastikan Anda telah mendefinisikan relasi 'packages' di model Vendor
-        // dan relasi 'category' serta 'cuisineTypes' di model Package.
+        // Pastikan Anda telah mendefinisikan relasi 'packages' di model Vendor dan relasi 'category' serta 'cuisineTypes' di model Package.
         $packages = $vendor->packages()->with(['category', 'cuisineTypes'])->get();
         $numSold = Order::where('vendorId', $vendor->vendorId)->count();
 
         return view('cateringDetail', compact('vendor', 'packages', 'numSold'));
+    }
+
+    public function review(Vendor $vendor)
+    {
+
+        $vendorReviews = VendorReview::where('vendorId', $vendor->vendorId)
+            ->with(['user', 'order']) // Load user dan order
+            ->orderBy('created_at', 'desc')
+            ->get();
+            
+        $numSold = Order::where('vendorId', $vendor->vendorId)->count();
+
+        return view('ratingAndReview', compact('vendor', 'vendorReviews', 'numSold'));
     }
 
     public function search(Request $request)
