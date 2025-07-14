@@ -4,7 +4,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
     <link rel="stylesheet" href="{{asset('css/customerVendorFirstPage.css')}}">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <link  rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap">
     <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
 @endsection
 
@@ -15,8 +15,7 @@
         <div class="row align-items-center justify-content-center px-0 py-5">
             <div class="col-auto col-sm-10 col-md-9 z-3">
                 <div class="card p-5 rounded-4">
-                    <form action="" method="POST">
-                    {{-- <form action="{{ route('vendor.store') }}" method="POST"> --}}
+                    <form action="{{ route('vendor.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row justify-content-center align-self-center py-3 gy-1">
                             <div class="col-auto mb-0 mt-0">
@@ -30,16 +29,18 @@
                             <div class="col-4 d-flex flex-column align-items-center justify-content-center">
                                 <span class="form-label mt-2">Vendor Logo</span>    
                                 <div class="position-relative" style="width: 120px; height: 120px;">
-                                    <img id="vendorLogoPreview" src="{{asset('asset/profile/profil.jpg')}}" alt="Vendor Logo" class="rounded-circle border vendor" style="width: 120px; height:120px; object-fit:cover;">
+                                    <img id="vendorLogoPreview" src="{{asset('asset/profile/noPict.jpg')}}" alt="Vendor Logo" class="rounded-circle border vendor" style="width: 120px; height:120px; object-fit:cover">
                                 </div>
                                 <button type="button" class="btn btn-outline-secondary mt-2" id="logoUploadBtn">
                                     <span>Add Logo</span>
                                 </button>
-                                <input type="file" id="vendorLogoInput" name="vendorLogo" accept="image/*" style="display: none;">
+                                <input type="file" id="vendorLogoInput" name="logo" accept="image/*" style="display: none;">
+                                <div class="text-danger mt-1" id="error-logo"></div>
                             </div>
                             <div class="col-8 d-flex flex-column align-items-space-between" style="margin-top:20px">
                                 <label for="vendorName" class="form-label">Vendor Name</label>
-                                <input type="text" class="form-control" id="vendorName" placeholder="Vendor Name">
+                                <input type="text" value="{{ old('vendorName') }}"class="form-control" id="vendorName" placeholder="Vendor Name" name="name">
+                                <div class="text-danger mt-1" id="error-name"></div>
                             </div>
                         </div>
                         <div class="row fw-bold">
@@ -53,75 +54,83 @@
                         <div class="row">
                             <div class="col-2">
                                 <label for="fromBreakfast" class="form-label">From</label>
-                                <input type="time" id="fromBreakfast" placeholder="00.00" class="form-control" name="startBreakfast">
+                                <input type="time" value="{{ old('startBreakfast') }}" id="fromBreakfast" min="00:00" max="23:59" step="60" placeholder="00.00" class="form-control" name="startBreakfast">
+                                <div class="text-danger mt-1" id="error-startBreakfast"></div>
                             </div>
                             <div class="col-2">
                                 <label for="untilBreakfast" class="form-label">Until</label>
-                                <input type="time" min="00:00" max="23:59" step="60" id="untilBreakfast" class="form-control" name="closeBreakfast">
+                                <input type="time" value="{{ old('closeBreakfast') }}" min="00:00" max="23:59" step="60" id="untilBreakfast" class="form-control" name="closeBreakfast">
+                                <div class="text-danger mt-1" id="error-closeBreakfast"></div>
                             </div>
                             <div class="col-2">
                                 <label for="fromLunch" class="form-label">From</label>
-                                <input type="time" id="fromLunch" placeholder="00.00" class="form-control" name="startBreakfast">
+                                <input type="time" value="{{ old('startLunch') }}" id="fromLunch" placeholder="00.00" class="form-control" name="startLunch">
+                                <div class="text-danger mt-1" id="error-startLunch"></div>
                             </div>
                             <div class="col-2">
                                 <label for="untilLunch" class="form-label">Until</label>
-                                <input type="time" min="00:00" max="23:59" step="60" id="untilBreakfast" class="form-control" name="closeBreakfast">
+                                <input type="time" value="{{ old('closeLunch') }}" min="00:00" max="23:59" step="60" id="untilLunch" class="form-control" name="closeLunch">
+                                <div class="text-danger mt-1" id="error-closeLunch"></div>
                             </div>
                             <div class="col-2">
                                 <label for="fromDinner" class="form-label">From</label>
-                                <input type="time" id="fromLunch" placeholder="00.00" class="form-control" name="startBreakfast">
+                                <input type="time" value="{{ old('startDinner') }}" id="fromDinner" placeholder="00.00" class="form-control" name="startDinner">
+                                <div class="text-danger mt-1" id="error-startDinner"></div>
                             </div>
                             <div class="col-2">
                                 <label for="untilDinner" class="form-label">Until</label>
-                                <input type="time" min="00:00" max="23:59" step="60" id="untilBreakfast" class="form-control" name="closeBreakfast">
+                                <input type="time" value="{{ old('closeDinner') }}" min="00:00" max="23:59" step="60" id="untilDinner" class="form-control" name="closeDinner">
+                                <div class="text-danger mt-1" id="error-closeDinner"></div>
                             </div>
                         </div>
                         <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 gy-3 py-2">
                             <div class="col">
-                                <label for="province" class="form-label">Province</label>
-                                <select id="province" class="form-select">
-                                    <option selected>Choose...</option>
-                                    <option>DKI Jakarta</option>
-                                    <option>Jawa Barat</option>
+                                <label for="provinsi" class="form-label">Province</label>
+                                <select id="provinsi" name="provinsi" class="form-select" aria-label="Small select example">
+                                    <option selected>Provinsi</option>
                                 </select>
+                                <div class="text-danger mt-1" id="error-provinsi"></div>
                             </div>
                             <div class="col">
-                                <label for="cityTown" class="form-label">City/Town</label>
-                                <select id="cityTownn" class="form-select">
-                                    <option selected>Choose...</option>
-                                    <option>...</option>
+                                <label for="kota" class="form-label">City/Town</label>
+                                <select id="kota" name="kota" class="form-select"> 
+                                    <option selected>Kota</option>
                                 </select>
+                                <div class="text-danger mt-1" id="error-kota"></div>
                             </div>
                             <div class="col">
-                                <label for="district" class="form-label">District</label>
-                                <select id="district" class="form-select">
-                                <option selected>Choose...</option>
-                                <option>...</option>
+                                <label for="kecamatan" class="form-label">District</label>
+                                <select id="kecamatan" name="kecamatan" class="form-select">
+                                <option selected>Kecamatan</option>
                                 </select>
+                                <div class="text-danger mt-1" id="error-kecamatan"></div>
                             </div>
                         </div>
                         <div class="row gy-3 py-2">
                             <div class="col">
-                                <label for="municipalityVillage" class="form-label">Municipality/Village</label>
-                                <select id="municipalityVillage" class="form-select">
-                                <option selected>Choose...</option>
-                                <option>...</option>
+                                <label for="kelurahan" class="form-label">Municipality/Village</label>
+                                <select id="kelurahan" name="kelurahan" class="form-select">
+                                <option selected>Kelurahan</option>
                                 </select>
+                                <div class="text-danger mt-1" id="error-kelurahan"></div>
                             </div>
                             <div class="col-12 col-md-4">
                                 <label for="zipCode" class="form-label">Zip Code</label>
-                                <input type="text" class="form-control" id="zipCode" placeholder="28162">
+                                <input type="text" value="{{ old('zipCode') }}" class="form-control" id="zipCode" placeholder="28162" name="kode_pos">
                                 </select>
+                                <div class="text-danger mt-1" id="error-zipCode"></div>
                             </div>
                             <div class="col-12 col-md-4 phonum">
                                 <label for="recipientTel" class="form-label">Phone Number</label>
-                                <input type="tel" class="form-control" id="recipientTel" placeholder="0812-1239-3219">
+                                <input type="tel" class="form-control" value="{{ old('phoneNumber') }}" id="phoneNumber" placeholder="0812-1239-3219" name="phone_number">
+                                <div class="text-danger mt-1" id="error-phoneNumber"></div>
                             </div>
                         </div>
                         <div class="row align-items-center justify-content-between gy-3 py-2">
                              <div class="col-12">
                                 <label for="address" class="form-label">Address</label>
-                                <input type="text" class="form-control" id="address" placeholder="1234 Main St">
+                                <input type="text" class="form-control" value="{{ old('address') }}" id="address" placeholder="1234 Main St" name="jalan">
+                                <div class="text-danger mt-1" id="error-jalan"></div>
                             </div>
                         </div>
                         <div class="col-12 col-md-8 align-self-center mx-auto mt-5">
