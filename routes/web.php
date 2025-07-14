@@ -195,3 +195,15 @@ Route::get('/admin-dashboard', [DashboardController::class, 'index'])
 Route::get('/view-all-logs', [AdminController::class, 'view_all_logs'])
     ->name('view-all-logs')
     ->middleware(['auth', RoleMiddleware::class]);
+
+Route::get('/view-all-payment', [AdminController::class, 'view_all_payment'])
+    ->name('view-all-payment')
+    ->middleware(['auth', RoleMiddleware::class]);
+
+Route::delete('/view-all-payment/delete/{id}', [AdminController::class, 'delete_payment'])
+    ->name('delete-payment')
+    ->middleware(['auth', RoleMiddleware::class]);
+
+Route::post('/view-all-payment', [AdminController::class, 'add_new_payment'])
+    ->name('add-new-payment')
+    ->middleware(['auth', RoleMiddleware::class]);

@@ -44,7 +44,7 @@
                 </div>
             @else
                 @foreach ($vendors as $vendor)
-                    <div class="card col-md-3 mt-3 mx-3" style="width: 18rem;">
+                    <div class="card col-md-3 mt-3 mx-3" style="width: 18rem; min-height: 20vh">
                         <div class="imgstyle m-2"
                             style="background-color:black; border-radius:100%; width:100px; height:100px">
                             <img class="card-img-top" src="{{ asset('asset/catering/homepage/breakfastPreview.jpg') }}"
