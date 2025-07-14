@@ -48,8 +48,6 @@
                 </select>
             </div>
 
-
-
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
                 aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header">
@@ -60,42 +58,21 @@
                 <div class="offcanvas-body" style="margin-left: 5vw;">
                     <ul class="navbar-nav flex-grow-1 pe-3">
                         <li class="nav-item">
-                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('cateringHomePage') ? 'active' : '' }}"
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ request()->routeIs('cateringHomePage') ? 'active' : '' }}"
                                 href="/cateringHomePage">Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('manageCateringPackage') ? 'active' : '' }}"
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ request()->routeIs('manageCateringPackage') ? 'active' : '' }}"
                                 href="/manageCateringPackage">My Packages</a>
                         </li>
-
+                        <li class="nav-item">
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ request()->routeIs('sales.show') ? 'active' : '' }}"
+                                href="/manageCateringPackage">Sales</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('manageOrder') ? 'active' : '' }}"
                                 href="/manageOrder">Orders</a>
                         </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('search') ? 'active' : '' }}"
-                                href="/search">Search</a>
-                        </li>
-
-
-
-                        {{-- <li class="nav-item">
-                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('') ? 'active' : '' }}"
-                                href="/about-us">Active Subscription</a>
-                        </li> --}}
-
-                        @auth
-                            <a href="/manage-profile">
-                                <div class="imgstyle m-2"
-                                    style="border-radius:100%; width:50px; height:50px margin-right:20px">
-                                    <img class="img-fluid" src="{{ asset('asset/catering/homepage/breakfastPreview.jpg') }}"
-                                        alt="Card image " width="120px" style="border-radius: 100%">
-                                </div>
-                            </a>
-                        @else
-                        @endauth
-
                     </ul>
                 </div>
             </div>
@@ -110,10 +87,11 @@
             @auth
                 <!-- Jika sudah login -->
                 <div style="padding: 0.5rem 1rem; border-radius: 0.25rem; margin-right: 2vw">
-                    <a class="login-button p-0" href="profile">
-                        <button type="button" class="login_button">
-                            <i class="bi bi-gear-fill"></i> Profile
-                        </button>
+                    <a href="/manage-profile">
+                        <div class="imgstyle m-2" style="border-radius:100%; width:50px; height:50px margin-right:20px">
+                            <img class="img-fluid" src="{{ asset('asset/catering/homepage/breakfastPreview.jpg') }}"
+                                alt="Card image " width="120px" style="border-radius: 100%">
+                        </div>
                     </a>
                 </div>
             @else
