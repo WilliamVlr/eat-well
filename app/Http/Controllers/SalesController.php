@@ -164,13 +164,18 @@ class SalesController extends Controller
     private function getVendorSalesRanged($vendorId, $startDate = null, $endDate = null)
     {
         $orders = Order::where('vendorId', $vendorId)
-            ->when($startDate, function ($query) use ($startDate) {
-                $query->whereDate('created_at', '>=', $startDate);
-            })
-            ->when($endDate, function ($query) use ($endDate) {
-                $query->whereDate('created_at', '<=', $endDate);
-            })
-            ->get();
+        ->whereHas('payment', function ($query) use ($startDate, $endDate) {
+            $query->whereNotNull('paid_at');
+
+            if ($startDate) {
+                $query->whereDate('paid_at', '>=', $startDate);
+            }
+
+            if ($endDate) {
+                $query->whereDate('paid_at', '<=', $endDate);
+            }
+        })
+        ->get();
 
         $orders->load(['user', 'orderItems.package', 'payment']);
 
