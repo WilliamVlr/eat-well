@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\SalesController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AuthManager;
@@ -146,6 +147,10 @@ Route::middleware(['role:vendor'])->group(function () {
     Route::get('/manageOrder', function () {
         return view('manageOrder');
     });
+
+    // Catering Sales
+    Route::get('/vendor/sales', [SalesController::class,'index'])->name('sales.show');
+    Route::get('/vendor/sales/export', [SalesController::class,'export_sales'])->name('sales.export');
 
     Route::fallback(function () {
         return redirect()->route('cateringHomePage');

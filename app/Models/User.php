@@ -105,7 +105,8 @@ class User extends Authenticatable
 
     public function vendor()
     {
-        return $this->hasMany(Vendor::class, 'userId', 'userId');
+        // return $this->hasMany(Vendor::class, 'userId', 'userId');
+        return $this->hasOne(Vendor::class, 'userId', 'userId');
     }
 
     public function orders()
