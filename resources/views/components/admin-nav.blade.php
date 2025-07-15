@@ -68,9 +68,14 @@
                                 href="/view-all-logs">Logs</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('about-us') ? 'active' : '' }}"
-                                href="/about-us">Order History</a>
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('view-all-payment') ? 'active' : '' }}"
+                                href="/view-all-payment">Payments</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('view-order-history') ? 'active' : '' }}"
+                                href="/view-order-history">Order History</a>
+                        </li>
+                        
 
                     </ul>
                 </div>

@@ -160,9 +160,6 @@ Route::get('/view-all-users', function(){
     return view('view-all-users');
 });
 
-Route::get('/view-all-logs', function(){
-    return view('view-all-logs');
-});
 
 Route::get('/view-all-packages-category', function(){
     return view('view-all-packages-category');
@@ -196,6 +193,9 @@ Route::get('/view-all-logs', [AdminController::class, 'view_all_logs'])
     ->name('view-all-logs')
     ->middleware(['auth', RoleMiddleware::class]);
 
+    
+Route::get('/view-all-logs', [DashboardController::class, 'view_all_logs'])->name('view-all-logs')->middleware('auth');
+
 Route::get('/view-all-payment', [AdminController::class, 'view_all_payment'])
     ->name('view-all-payment')
     ->middleware(['auth', RoleMiddleware::class]);
@@ -206,4 +206,8 @@ Route::delete('/view-all-payment/delete/{id}', [AdminController::class, 'delete_
 
 Route::post('/view-all-payment', [AdminController::class, 'add_new_payment'])
     ->name('add-new-payment')
+    ->middleware(['auth', RoleMiddleware::class]);
+
+Route::get('/view-order-history', [AdminController::class, 'view_order_history'])
+    ->name('view-order-history')
     ->middleware(['auth', RoleMiddleware::class]);

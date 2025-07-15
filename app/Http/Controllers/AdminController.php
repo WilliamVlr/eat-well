@@ -78,7 +78,7 @@ class AdminController extends Controller
         // Session::flash('message', 'Successfully delete payment !');
         // return view('view-all-payment', compact('payments'));
         // return redirect()->route('view-all-payment');
-        return redirect()->route('view-all-payment')->with('message', 'Successfully delete payment!');
+        return redirect()->route('view-all-payment')->with('message_del', 'Successfully delete payment method!');
     }
 
     public function add_new_payment(Request $request)
@@ -98,7 +98,7 @@ class AdminController extends Controller
         
         // Session::flash('message_add', 'Successfully added payment !');
         // return view('view-all-payment', compact('payments'));
-        return redirect()->route('view-all-payment')->with('message_add', 'Successfully added payment!');
+        return redirect()->route('view-all-payment')->with('message_add', 'Successfully added payment method!');
 
         // return redirect()->route('view-all-payment');
     }

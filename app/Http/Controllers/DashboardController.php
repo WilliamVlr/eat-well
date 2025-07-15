@@ -95,4 +95,10 @@ class DashboardController extends Controller
 
         return view('adminDashboard', compact('totalPrice', 'percentage', 'profit', 'increment', 'percentageprofit', 'chartData', 'labels', 'logs'));
     }
+
+    public function view_all_logs()
+    {
+        $all_logs = UserActivity::all();
+        return view('view-all-logs', compact('all_logs'));
+    }
 }
