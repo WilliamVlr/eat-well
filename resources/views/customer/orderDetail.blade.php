@@ -31,20 +31,9 @@
                         <div class="text-wrapper">
                             <span class="">Order ID. {{ $order->orderId }}</span>
                         </div>
-                        @if ($order->isCancelled)
-                            <div class="text-wrapper label-status status-cancelled">
-                                Cancelled
-                            </div>
-                        @elseif(now()->between(Carbon::parse($order->startDate), $order->endDate))
-                            <div class="text-wrapper label-status status-active">
-                                Active
-                            </div>
-                        @else
-                            <div class="text-wrapper label-status status-finished">
-                                Finished
-                            </div>
-                        @endif
-
+                        <div class="text-wrapper label-status status-{{ $status }}">
+                            {{ ucfirst($status) }}
+                        </div>
                     </div>
                 </section>
                 <section class="card-order-status">
@@ -170,16 +159,15 @@
                                                 <div class="cds-slot-title text-center mb-2">{{ $slot['label'] }}</div>
                                                 <div class="cds-slot-status-list">
                                                     @foreach ($statusesBySlot[$slot['key']] as $date => $status)
-                                                        <div
-                                                            class="cds-slot-status-row {{ $status->status->value }}">
+                                                        <div class="cds-slot-status-row {{ $status->status->value }}">
                                                             <div
                                                                 class="cds-circle-icon d-flex align-items-center justify-content-center">
                                                                 <span class="material-symbols-outlined status-icon-sm">
-                                                                    @if ($status->status->value === "Prepared")
+                                                                    @if ($status->status->value === 'Prepared')
                                                                         restaurant
-                                                                    @elseif ($status->status->value === "Delivered")
+                                                                    @elseif ($status->status->value === 'Delivered')
                                                                         local_shipping
-                                                                    @elseif ($status->status->value === "Arrived")
+                                                                    @elseif ($status->status->value === 'Arrived')
                                                                         check_circle
                                                                     @endif
                                                                 </span>
@@ -209,7 +197,7 @@
                             <div class="text-wrapper vendor-name-wrapper">
                                 <h5 class="">{{ $order->vendor->name }}</h5>
                             </div>
-                            <a href="{{route('catering-detail', $order->vendorId)}}" class="text-wrapper btn-view">
+                            <a href="{{ route('catering-detail', $order->vendorId) }}" class="text-wrapper btn-view">
                                 <p>View Catering</p>
                             </a>
                         </div>
@@ -223,7 +211,8 @@
                     </div>
 
                     {{-- Redirect ke catering pagenya langsung scroll ke packagenya --}}
-                    <a href="{{route('catering-detail', $order->vendorId)}}" class="card-content-wrapper text-decoration-none">
+                    <a href="{{ route('catering-detail', $order->vendorId) }}"
+                        class="card-content-wrapper text-decoration-none">
                         @foreach ($order->orderItems as $item)
                             <div class="card-content">
                                 <div class="image-wrapper">

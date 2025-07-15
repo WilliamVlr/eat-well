@@ -526,8 +526,18 @@ class OrderController extends Controller
             $statusesBySlot[$slotKey][$dateKey] = $status;
         }
         // dd($statusesBySlot);
+        $status = '';
+        if($order->isCancelled == 1) {
+            $status = 'cancelled';
+        } else if (Carbon::now()->greaterThan($order->endDate)){
+            $status = 'finished';
+        } else if (Carbon::now()->lessThan($order->startDate)){
+            $status = 'upcoming';
+        } else {
+            $status = 'active';
+        }
 
-        return view('customer.orderDetail', compact('order', 'paymentMethod', 'slots', 'statusesBySlot'));
+        return view('customer.orderDetail', compact('order', 'paymentMethod', 'slots', 'statusesBySlot', 'status'));
     }
 
     public function cancelOrder(string $id)
