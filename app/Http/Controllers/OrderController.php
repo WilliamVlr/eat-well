@@ -26,13 +26,14 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        // $userId = Auth::check() ? Auth::user()->userId : 5;
+        // validate request
+        $validated = $request->validate([
+            'status' => 'nullable|string|in:all,active,upcoming,cancelled,finished',
+            'query' => 'nullable|string|max:255'
+        ]);
+
+        // get userId
         $userId = Auth::id();
-        if (!$userId) {
-            // Arahkan ke halaman login atau tampilkan error
-            // return redirect()->route('login')->with('error', 'Please log in to view your cart.');
-            return redirect()->route('landingPage');
-        }
 
         $status = $request->query('status', 'all');
         $query = $request->query('query');
