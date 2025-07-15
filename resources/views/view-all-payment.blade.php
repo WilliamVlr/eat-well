@@ -22,65 +22,62 @@
         <h1 class="lexend fw-bold text-center mt-5 mb-5">All Payment Methods</h1>
         <hr>
 
-        <h6 class="fw-bold">Add Payment</h4>
-            <div class="row">
+        <h6 class="fw-bold lexend">Add Payment</h6>
+        <div class="row lexend">
 
-                <form action="{{ route('add-new-payment') }}" method="POST" class="d-flex">
-                    @csrf
-                    @method('POST')
-                    {{-- <label for="payment>Payment Method :</label> --}}
-                    <input class="form-control mr-3" type="text" placeholder="Payment Method" name="paymentMethod"
-                        id="paymentMethod" class="col-8" style="margin-right:2vh" required>
-                    <button class="btn btn-outline-success" type="submit">Add Method</button>
-                    
-                </form>
-            </div>
+            <form action="{{ route('add-new-payment') }}" method="POST" class="d-flex">
+                @csrf
+                @method('POST')
+                {{-- <label for="payment>Payment Method :</label> --}}
+                <input class="form-control mr-3" type="text" placeholder="Payment Method" name="paymentMethod"
+                    id="paymentMethod" class="col-8" style="margin-right:2vh" required>
+                <button class="btn btn-outline-success" type="submit">Add Method</button>
 
-            <hr>
+            </form>
+        </div>
 
-            {{-- <div class="" style="color: red;">
-                {{ session()->get('message', '') }}
-            </div> --}}
+        <hr>
 
-            @if (session('message'))
-                <div class="alert alert-success">
-                    {{ session('message') }}
-                </div>
-            @endif
+        <div class="" style="color: red;">
+                {{ session()->get('message_del', '') }}
+        </div>
 
+        <div class="" style="color: rgb(15, 157, 24);">
+            {{ session()->get('message_add', '') }}
+        </div>
 
-            <div class="" style="color: rgb(15, 157, 24);">
-                {{ session()->get('message_add', '') }}
-            </div>
-
-            <table class="table text-center" style="margin-bottom: 100px">
-                <thead>
+        @if ($payments->isEmpty())
+            <h3 class="text-center fw-bold lexend mt-5" style="margin-bottom: 130px">No Payment Method Available !</h3>
+        @else
+        <table class="table text-center" style="margin-bottom: 130px">
+            <thead>
+                <tr>
+                    <th scope="col-4" style="background-color: rgb(165, 203, 165) !important">ID</th>
+                    <th scope="col-4" style="background-color: rgb(165, 203, 165) !important">Payment Method</th>
+                    <th scope="col-4" style="background-color: rgb(165, 203, 165) !important"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($payments as $payment)
                     <tr>
-                        <th scope="col-4" style="background-color: rgb(165, 203, 165) !important">ID</th>
-                        <th scope="col-4" style="background-color: rgb(165, 203, 165) !important">Payment Method</th>
-                        <th scope="col-4" style="background-color: rgb(165, 203, 165) !important"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($payments as $payment)
-                        <tr>
-                            {{-- <td>{{ $payment->methodId }}</td> --}}
-                            <th scope="row">{{ $loop->iteration }}</th>
-                            {{-- <th scope="row">{{ $loop->iteration }}</th> --}}
-                            <td>{{ $payment->name }}</td>
-                            <td>
-                                <form action="{{ route('delete-payment', ['id' => $payment->methodId]) }}"
-                                    method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
-                            </td>
+                        {{-- <td>{{ $payment->methodId }}</td> --}}
+                        <th scope="row">{{ $loop->iteration }}</th>
+                        {{-- <th scope="row">{{ $loop->iteration }}</th> --}}
+                        <td>{{ $payment->name }}</td>
+                        <td>
+                            <form action="{{ route('delete-payment', ['id' => $payment->methodId]) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
 
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        @endif
 
     </div>
 

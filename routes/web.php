@@ -190,6 +190,10 @@ Route::middleware(['role:admin'])->group(function () {
 
     Route::post('/view-all-vendors', [SessionController::class, 'destroy'])->name('logout.admin');
 
+    Route::get('/view-order-history', [AdminController::class, 'view_order_history'])
+    ->name('view-order-history')
+    ->middleware(['auth', RoleMiddleware::class]);
+
     Route::fallback(function () {
         return redirect()->route('admin-dashboard');
     });
