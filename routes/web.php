@@ -25,6 +25,7 @@ use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Auth;
 
 Route::post('/lang', LanguageController::class);
+use App\Http\Controllers\VerifyOtpController;
 
 /* --------------------
      GUEST ROUTES
@@ -32,7 +33,7 @@ Route::post('/lang', LanguageController::class);
 Route::middleware(['guest'])->group(function () {
     Route::get('/', function () {
         return view('landingPage');
-    })->name('landingPage')->middleware('guest');
+    })->name('landingPage');
 
     Route::get('/about-us', function () {
         if (Auth::check()) {
@@ -41,14 +42,18 @@ Route::middleware(['guest'])->group(function () {
         return view('aboutUs');
     });
 
-    Route::get('/login', [SessionController::class, 'create'])->name('login')->middleware('guest');
-    Route::post('/login', [SessionController::class, 'store'])->middleware('guest');
+    Route::get('/login', [SessionController::class, 'create'])->name('login');
+    Route::post('/login', [SessionController::class, 'store']);
 
-    Route::get('/register/{role}', [RegisteredUserController::class, 'create'])->name('register')->middleware('guest');
-    Route::post('/register/{role}', [RegisteredUserController::class, 'store'])->middleware('guest');
+    Route::get('/register/{role}', [RegisteredUserController::class, 'create'])->name('register');
+    Route::post('/register/{role}', [RegisteredUserController::class, 'store']);
 
-    Route::get('/auth/{provider}/redirect/{role?}', ProviderRedirectController::class)->name('auth.redirect')->middleware('guest');
-    Route::get('/auth/{provider}/callback/', ProviderCallbackController::class)->name('auth.callback')->middleware('guest');
+    Route::get('/verify-otp', [VerifyOtpController::class, 'create'])->name('auth.verify');
+    Route::post('/verify-otp', [VerifyOtpController::class, 'check'])->name('auth.check');
+    Route::post('/resend-otp', [VerifyOtpController::class, 'resendOtp'])->name('auth.resend-otp');
+
+    Route::get('/auth/{provider}/redirect/{role?}', ProviderRedirectController::class)->name('auth.redirect');
+    Route::get('/auth/{provider}/callback/', ProviderCallbackController::class)->name('auth.callback');
 
     Route::fallback(function () {
         return redirect()->route('landingPage');
@@ -82,7 +87,7 @@ Route::middleware(['role:customer'])->group(function () {
     // Favorite
     Route::post('favorite/{vendorId}', [FavoriteController::class, 'favorite'])->name('favorite');
     Route::post('unfavorite/{vendorId}', [FavoriteController::class, 'unfavorite'])->name('unfavorite');
-    Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorite.show')->middleware('auth');
+    Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorite.show');
 
     // Route::get('/manage-profile', function () {
     //     return view('manageProfile');
