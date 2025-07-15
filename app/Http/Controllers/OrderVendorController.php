@@ -9,6 +9,7 @@ use App\Models\Vendor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Payment;
 
 class OrderVendorController extends Controller
 {
@@ -100,8 +101,8 @@ class OrderVendorController extends Controller
      * ---------------------------------------------------------- */
     public function totalOrder()
     {
-        $vendor   = Auth::user()->vendor ?? Vendor::find(91);
-        $vendorId = Auth::user()->vendor->vendorId ?? 91;
+        $vendor   = Auth::user()->vendor ?? Vendor::find(39);
+        $vendorId = Auth::user()->vendor->vendorId ?? 39;
         $today    = Carbon::today('Asia/Jakarta');
 
         $orders = Order::with([
@@ -136,7 +137,26 @@ class OrderVendorController extends Controller
         }
         foreach ($slotCounts as &$pkgs) ksort($pkgs);
 
-        return view('cateringHomePage', compact('slotCounts', 'vendor'));
+        /* ----- Net‑sales bulan berjalan ----- */
+        $today = now('Asia/Jakarta');   // sekali saja
+        $stats = Payment::join('orders', 'orders.orderId', '=', 'payments.orderId')
+            ->where('orders.vendorId', $vendorId)
+            ->whereYear('payments.paid_at', $today->year)
+            ->whereMonth('payments.paid_at', $today->month)
+            ->selectRaw("( WEEK(payments.paid_at,3) - WEEK(DATE_SUB(payments.paid_at, INTERVAL DAYOFMONTH(payments.paid_at)-1 DAY),3) + 1 ) AS wk,
+                     SUM(orders.totalPrice * 0.95) AS nett")
+            ->groupBy('wk')
+            ->pluck('nett', 'wk')
+            ->toArray();
+
+        /* normalisasi 4 minggu – pakai closure agar aman PHP 7.3 */
+        $salesData = array_map(function ($w) use ($stats) {
+            return (float) ($stats[$w] ?? 0);
+        }, range(1, 4));
+
+        $salesMonth = $today->format('F Y');
+
+        return view('cateringHomePage', compact('slotCounts', 'vendor', 'salesData', 'salesMonth'));
     }
 
 

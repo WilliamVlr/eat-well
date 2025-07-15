@@ -313,6 +313,7 @@
 
         }
     </style>
+    {{-- @php dd($salesData); @endphp --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
@@ -323,7 +324,7 @@
             <img src="asset/catering/homePage/logoCatering.png" alt="Logo" />
         </div>
         <div class="welcome-text">
-            <h2>Welcome, {{$vendor->name}}!</h2>
+            <h2>Welcome, {{ $vendor->name }}!</h2>
             <p style="text-align: justify; color:black;">
                 Eat Well is a smart platform that connects users with healthy meal catering services.
                 Discover, compare, and subscribe to trusted catering providers based on your dietary needs
@@ -337,7 +338,7 @@
 
     <div class="container my-5">
         <div class="chart-container text-center">
-            <h2 class="chart-title">Statistic of Your Income on April 2025</h2>
+            <h2 class="chart-title">Statistic of Your Income on {{ $salesMonth }} </h2>
             <canvas id="salesChart"></canvas>
             <button class="btn-download mt-4">DOWNLOAD REPORT</button>
         </div>
@@ -398,25 +399,31 @@
     </script>
 
     <script>
+        /* ambil <canvas> */
         const ctx = document.getElementById('salesChart').getContext('2d');
 
-        const salesChart = new Chart(ctx, {
+        /* data mingguan  – datang dari controller                       */
+        /* $salesData sudah berisi array 4 elemen → [week1, week2, …]    */
+        const chartData = @json($salesData);
+
+        /* build chart */
+        new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
                 datasets: [{
-                    data: [1000000, 2000000, 1500000, 3500000],
-                    borderColor: 'black',
+                    data: chartData, // ⬅️ pakai data dinamis
+                    borderColor: '#000',
                     backgroundColor: 'transparent',
-                    pointBackgroundColor: 'rgba(0, 128, 0, 1)',
+                    pointBackgroundColor: 'rgba(0,128,0,1)',
                     pointRadius: 6,
                 }]
             },
             options: {
                 animation: {
                     duration: 1500,
-                    easing: 'easeOutQuart' // ← diperbaiki dari 'easeOutQuert'
-                }, // animasi dimatikan
+                    easing: 'easeOutQuart'
+                },
                 scales: {
                     y: {
                         beginAtZero: true,
@@ -424,8 +431,8 @@
                             display: false
                         },
                         ticks: {
-                            color: 'rgba(0, 128, 0, 0.7)',
-                            callback: value => 'Rp' + value.toLocaleString('id-ID')
+                            color: 'rgba(0,128,0,.7)',
+                            callback: v => 'Rp' + v.toLocaleString('id-ID')
                         }
                     },
                     x: {
@@ -433,13 +440,13 @@
                             display: false
                         },
                         ticks: {
-                            color: 'rgba(0, 128, 0, 0.7)'
+                            color: 'rgba(0,128,0,.7)'
                         }
                     }
                 },
                 plugins: {
                     legend: {
-                        display: false // legend disembunyikan
+                        display: false
                     }
                 },
                 responsive: true,
@@ -447,6 +454,7 @@
             }
         });
     </script>
+
 
     <script>
         const leafCount = 5;
