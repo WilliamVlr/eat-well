@@ -66,7 +66,7 @@ Route::middleware(['role:customer'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::post('/topup', [UserController::class, 'topUpWellPay'])->name('wellpay.topup');
 
-    Route::post('/home', [SessionController::class, 'destroy'])->name('logout');
+    Route::post('/logout', [SessionController::class, 'destroy'])->name('logout');
 
     // Favorite
     Route::post('favorite/{vendorId}', [FavoriteController::class, 'favorite'])->name('favorite');
@@ -156,7 +156,7 @@ Route::middleware(['role:vendor'])->group(function () {
 ---------------------- */
 Route::middleware(['role:admin'])->group(function () {
     Route::get('/view-all-vendors', [AdminController::class, 'viewAllVendors'])->name('view-all-vendors');
-    Route::post('/view-all-vendors', [AdminController::class, 'search'])->name('view-all-vendors');
+    Route::post('/view-all-vendors', [AdminController::class, 'search'])->name('view-all-vendors.search');
 
     Route::get('/admin-dashboard', [DashboardController::class, 'index'])->name('admin-dashboard');
 
@@ -168,9 +168,8 @@ Route::middleware(['role:admin'])->group(function () {
         return view('view-all-users');
     });
 
-    Route::get('/view-all-logs', function () {
-        return view('view-all-logs');
-    });
+    Route::get('/view-all-logs', [AdminController::class, 'view_all_logs'])
+        ->name('view-all-logs');
 
     Route::get('/view-all-packages-category', function () {
         return view('view-all-packages-category');
@@ -180,7 +179,20 @@ Route::middleware(['role:admin'])->group(function () {
         return view('view-all-packages-cuisine');
     });
 
-    Route::post('/view-all-vendors', [SessionController::class, 'destroy'])->name('logout.admin');
+    Route::get('/view-all-payment', [AdminController::class, 'view_all_payment'])
+        ->name('view-all-payment');
+
+    Route::delete('/view-all-payment/delete/{id}', [AdminController::class, 'delete_payment'])
+        ->name('delete-payment');
+
+    Route::post('/view-all-payment', [AdminController::class, 'add_new_payment'])
+        ->name('add-new-payment');
+
+    Route::post('/admin-dashboard', [SessionController::class, 'destroy'])->name('logout.admin');
+
+    Route::get('/view-order-history', [AdminController::class, 'view_order_history'])
+    ->name('view-order-history')
+    ->middleware(['auth', RoleMiddleware::class]);
 
     Route::fallback(function () {
         return redirect()->route('admin-dashboard');
