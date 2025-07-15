@@ -108,10 +108,19 @@ Route::post('/packages/import', [PackageController::class, 'import'])->name('pac
 Route::get('/manageOrder', [OrderVendorController::class, 'index'])
      ->name('orders.index');
 
+// daftar/pengelolaan order
+Route::get('/vendor/orders', [OrderVendorController::class, 'index'])
+     ->name('vendor.orders');
+
 Route::post(
     '/delivery-status/{orderId}/{slot}',
     [OrderVendorController::class, 'updateStatus']
 )->name('delivery-status.update');
+
+
+Route::post('/orders/{order}/cancel',
+    [OrderVendorController::class, 'cancel'])
+    ->name('orders.cancel');
 
 /* ---------------------
      ADMIN ROUTES

@@ -2,196 +2,169 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\DeliveryStatuses;
 use App\Enums\TimeSlot;
 use App\Models\DeliveryStatus;
 use App\Models\Order;
+use App\Models\Vendor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class OrderVendorController extends Controller
 {
-    public function index()
+    public function cancel(Order $order)
     {
-        $vendorId = Auth::user()->vendor->vendorId ?? 49;
+        // pastikan vendor yang login memang pemilik pesanan
+        if ($order->vendorId !== (Auth::user()->vendor->vendorId ?? 73)) {
+            abort(403);
+        }
+
+        $order->isCancelled = 1;
+        $order->save();
+
+        return response()->json(['success' => true]);
+    }
+
+    /* ------------------------------------------------------------
+     *  Helper: batas minggu
+     * ---------------------------------------------------------- */
+    private function weekBounds(string $which = 'current'): array
+    {
+        $monday = Carbon::now('Asia/Jakarta')->startOfWeek(Carbon::MONDAY); // Senin
+
+        return $which === 'next'
+            ? [$monday->copy()->addWeek(), $monday->copy()->endOfWeek()->addWeek()]
+            : [$monday,                    $monday->copy()->endOfWeek()];
+    }
+
+    /* ------------------------------------------------------------
+     *  Daftar order (this week / next week lewat query ?week=)
+     * ---------------------------------------------------------- */
+    public function index(Request $request)
+    {
+        $vendor = Auth::user()->vendor ?? Vendor::find(73);
+        $vendorId   = Auth::user()->vendor->vendorId ?? 73;
+        $whichWeek  = $request->query('week', 'current');       // current | next
+        [$from, $to] = $this->weekBounds($whichWeek);
 
         $orders = Order::with([
             'user.defaultAddress',
             'orderItems.package',
-            'deliveryStatuses' // ⬅️ tanpa filter tanggal!
+            'deliveryStatuses',
         ])
             ->where('vendorId', $vendorId)
+            ->where('isCancelled', 0)
+            ->whereDate('startDate', '>=', $from)   // ← pakai startDate
+            ->whereDate('startDate', '<=', $to)
             ->get()
             ->map(function ($order) {
-                $defaultAddress = $order->user->defaultAddress;
+                $addr = $order->user->defaultAddress;
 
                 return [
-                    'id' => $order->orderId,
-                    'start_date' => $order->start_date
-                        ? Carbon::parse($order->start_date)->format('Y-m-d')
-                        : $order->created_at->format('Y-m-d'),
+                    'id'         => $order->orderId,
+                    'startDate'  => Carbon::parse($order->startDate)->format('Y-m-d'),
 
                     'user' => [
-                        'name' => $order->user->name ?? 'Guest',
-                        'phone' => $defaultAddress->recipient_phone ?? '-',
-                        'address' => $defaultAddress->jalan ?? '-',
-                        'notes' => $defaultAddress->notes ?? '-',
+                        'name'    => $order->user->name ?? 'Guest',
+                        'phone'   => $addr->recipient_phone ?? '-',
+                        'address' => $addr->jalan ?? '-',
+                        'notes'   => $addr->notes ?? '-',
                     ],
 
-                    'order_items' => $order->orderItems->map(function ($item) {
-                        return [
-                            'package' => [
-                                'name' => $item->package->name ?? 'Paket',
-                            ],
-                            'quantity' => $item->quantity,
-                            'package_time_slot' => $item->packageTimeSlot
-                        ];
-                    }),
+                    'order_items' => $order->orderItems->map(fn($it) => [
+                        'package' => ['name' => $it->package->name ?? 'Paket'],
+                        'quantity' => $it->quantity,
+                        'package_time_slot' => $it->packageTimeSlot,
+                    ]),
 
                     'delivery_statuses' => collect($order->deliveryStatuses)
                         ->groupBy('slot')
-                        ->map(function ($group) {
-                            $latest = $group->sortByDesc('deliveryDate')->first();
-                            return [
-                                'slot' => strtolower($latest->slot),
-                                'status' => is_object($latest->status) ? $latest->status->value : $latest->status,
-                            ];
-                        })->values()
+                        ->map(fn($g) => [
+                            'slot'   => strtolower($g->first()->slot),
+                            'status' => optional($g->sortByDesc('deliveryDate')->first()->status)->value
+                                ?? $g->sortByDesc('deliveryDate')->first()->status,
+                        ])->values(),
                 ];
             });
 
         $packages = $orders
-            ->flatMap(fn($order) => $order['order_items']->pluck('package.name'))
+            ->flatMap(fn($o) => $o['order_items']->pluck('package.name'))
             ->unique()
             ->values();
 
-        return view('manageOrder', compact('orders', 'packages'));
+        return view('manageOrder', compact('orders', 'packages', 'vendor'));
     }
 
-
+    /* ------------------------------------------------------------
+     *  Rekap total (hari ini)
+     * ---------------------------------------------------------- */
     public function totalOrder()
     {
-        $vendorId = Auth::user()->vendor->vendorId ?? 49;
+        $vendor   = Auth::user()->vendor ?? Vendor::find(91);
+        $vendorId = Auth::user()->vendor->vendorId ?? 91;
+        $today    = Carbon::today('Asia/Jakarta');
 
         $orders = Order::with([
-            'user.defaultAddress',
             'orderItems.package',
-            'deliveryStatuses' => function ($query) {
-                $query->whereDate('deliveryDate', Carbon::today());
-            }
+            'deliveryStatuses' => fn($q) =>
+            $q->whereDate('deliveryDate', $today),
         ])
             ->where('vendorId', $vendorId)
-            ->get()
-            ->map(function ($order) {
-                $defaultAddress = $order->user->defaultAddress;
+            ->where('isCancelled', 0)
+            ->whereDate('startDate', '<=', $today)
+            ->whereDate('endDate',   '>=', $today)
+            ->get();
 
-                return [
-                    'id' => $order->orderId,
-                    'start_date' => $order->start_date
-                        ? Carbon::parse($order->start_date)->format('Y-m-d')
-                        : $order->created_at->format('Y-m-d'),
-
-                    'user' => [
-                        'name' => $order->user->name ?? 'Guest',
-                        'phone' => $defaultAddress->recipient_phone ?? '-',
-                        'address' => $defaultAddress->jalan ?? '-',
-                        'notes' => $defaultAddress->notes ?? '-',
-                    ],
-                    'order_items' => $order->orderItems->map(function ($item) {
-                        return [
-                            'package' => [
-                                'name' => $item->package->name ?? 'Paket',
-                            ],
-                            'quantity' => $item->quantity,
-                            'package_time_slot' => $item->packageTimeSlot
-                        ];
-                    }),
-                    'delivery_statuses' => $order->deliveryStatuses->map(function ($ds) {
-                        return [
-                            'slot' => strtolower($ds->slot),
-                            'status' => is_object($ds->status) ? $ds->status->value : $ds->status,
-                        ];
-                    })
-                ];
-            });
-
-        // Konversi enum slot → label
+        /* ---- bangun $slotCounts persis seperti kode lama ---- */
         $slotEnumToLabel = [
             TimeSlot::Morning->value   => 'breakfast',
             TimeSlot::Afternoon->value => 'lunch',
             TimeSlot::Evening->value   => 'dinner',
         ];
 
-        $slotCounts = [
-            'breakfast' => [],
-            'lunch'     => [],
-            'dinner'    => [],
-        ];
+        $slotCounts = ['breakfast' => [], 'lunch' => [], 'dinner' => []];
 
         foreach ($orders as $order) {
-            foreach ($order['order_items'] as $item) {
-                $slotLabel = $slotEnumToLabel[$item['package_time_slot']] ?? null;
+            foreach ($order->orderItems as $item) {
+                $slotLabel = $slotEnumToLabel[$item->packageTimeSlot] ?? null;
                 if (!$slotLabel) continue;
 
-                $pkgName = $item['package']['name'];
-                if (!isset($slotCounts[$slotLabel][$pkgName])) {
-                    $slotCounts[$slotLabel][$pkgName] = 0;
-                }
-
-                $slotCounts[$slotLabel][$pkgName] += $item['quantity'];
+                $pkg = $item->package->name ?? 'Package';
+                $slotCounts[$slotLabel][$pkg] =
+                    ($slotCounts[$slotLabel][$pkg] ?? 0) + $item->quantity;
             }
         }
+        foreach ($slotCounts as &$pkgs) ksort($pkgs);
 
-        foreach ($slotCounts as $slot => $pkgs) {
-            ksort($slotCounts[$slot]);
-        }
-
-        $packages = $orders
-            ->flatMap(fn($order) => $order['order_items']->pluck('package.name'))
-            ->unique()
-            ->values();
-
-        return view('cateringHomePage', compact('orders', 'packages', 'slotCounts'));
+        return view('cateringHomePage', compact('slotCounts', 'vendor'));
     }
 
+
+    /* ------------------------------------------------------------
+     *  Update status delivery
+     * ---------------------------------------------------------- */
     public function updateStatus(Request $request, $orderId, $slot)
     {
-        try {
-            // Validasi input status
-            $request->validate([
-                'status' => 'required|in:Prepared,Delivered,Arrived',
-            ]);
+        $request->validate(['status' => 'required|in:Prepared,Delivered,Arrived']);
 
-            // Ambil status pengiriman terbaru berdasarkan slot (tanpa filter tanggal)
-            $ds = DeliveryStatus::where('orderId', $orderId)
-                ->where('slot', $slot)
-                ->latest('deliveryDate')
-                ->first();
+        $ds = DeliveryStatus::where('orderId', $orderId)
+            ->where('slot', $slot)
+            ->latest('deliveryDate')->first();
 
-            // Jika tidak ditemukan, kembalikan error
-            if (!$ds) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Delivery status not found for this order and slot.'
-                ], 404);
-            }
-
-            // Simpan status baru
-            $ds->status = $request->status;
-            $ds->save();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Status updated successfully.',
-                'updated_status' => $ds
-            ]);
-        } catch (\Throwable $e) {
+        if (!$ds) {
             return response()->json([
                 'success' => false,
-                'error' => $e->getMessage(),
-                'trace' => collect($e->getTrace())->take(5), // optional
-            ], 500);
+                'message' => 'Delivery status not found for this order and slot.'
+            ], 404);
         }
+
+        $ds->status = $request->status;
+        $ds->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Status updated successfully.',
+            'updated_status' => $ds
+        ]);
     }
 }

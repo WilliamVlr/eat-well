@@ -98,10 +98,10 @@ class PackageController extends Controller
             'name'            => 'required|string|max:255',
             'categoryId'      => 'required|integer',
 
-            'breakfastPrice'  => 'nullable|numeric|gt:0',
-            'lunchPrice'      => 'nullable|numeric|gt:0',
-            'dinnerPrice'     => 'nullable|numeric|gt:0',
-            'averageCalories' => 'nullable|numeric|gt:0',
+            'breakfastPrice'  => 'nullable|decimal:0,2|gte:0',
+            'lunchPrice'      => 'nullable|decimal:0,2|gte:0',
+            'dinnerPrice'     => 'nullable|decimal:0,2|gte:0',
+            'averageCalories' => 'nullable|decimal:0,2|gte:0',
 
             'menuPDFPath'     => 'nullable|file|mimes:pdf',
             'imgPath'         => 'nullable|image|mimes:jpeg,png,jpg',
@@ -128,6 +128,8 @@ class PackageController extends Controller
             $imgFile->move(public_path('asset/menus'), $imgFileName);
             $validated['imgPath'] = $imgFileName;
         }
+
+        $package->update($validated);
 
         return redirect()->back()->with('success', 'Berhasil mengubah paket!');
     }

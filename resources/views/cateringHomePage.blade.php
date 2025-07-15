@@ -323,7 +323,7 @@
             <img src="asset/catering/homePage/logoCatering.png" alt="Logo" />
         </div>
         <div class="welcome-text">
-            <h2>Welcome, Aldenaire Catering!</h2>
+            <h2>Welcome, {{$vendor->name}}!</h2>
             <p style="text-align: justify; color:black;">
                 Eat Well is a smart platform that connects users with healthy meal catering services.
                 Discover, compare, and subscribe to trusted catering providers based on your dietary needs
@@ -345,25 +345,28 @@
 
     <p class="heading-title">Today’s Catering Orders!</p>
     @php
-        /**  konfigurasi per slot **/
         $slotMeta = [
             'breakfast' => [
                 'title' => 'Breakfast',
                 'img' => asset('asset/catering/homePage/breakfastPreview.png'),
-                'time' => '08.00 – 10.00 AM',
+                // ⇓ ambil langsung kolom breakfast_delivery
+                'time' => $vendor->breakfast_delivery ?? '-',
             ],
             'lunch' => [
                 'title' => 'Lunch',
                 'img' => asset('asset/catering/homePage/lunchPreview.png'),
-                'time' => '12.00 – 02.00 PM',
+                // ⇓ kolom lunch_delivery
+                'time' => $vendor->lunch_delivery ?? '-',
             ],
             'dinner' => [
                 'title' => 'Dinner',
                 'img' => asset('asset/catering/homePage/dinnerPreview.png'),
-                'time' => '05.00 – 08.00 PM',
+                // ⇓ kolom dinner_delivery
+                'time' => $vendor->dinner_delivery ?? '-',
             ],
         ];
     @endphp
+
 
     <div class="card-deck">
         @foreach ($slotMeta as $slotKey => $meta)

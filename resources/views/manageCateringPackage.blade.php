@@ -345,24 +345,28 @@
                         <div class="row">
                             <div class="col">
                                 <label for="breakfastPrice" class="form-label">Breakfast Price</label>
-                                <input type="number" name="breakfastPrice" class="form-control"
-                                    id="breakfastPrice">
+                                <input type="number" name="breakfastPrice" id="breakfastPrice" class="form-control"
+                                    step="0.01">
                             </div>
+
                             <div class="col">
                                 <label for="lunchPrice" class="form-label">Lunch Price</label>
-                                <input type="number" name="lunchPrice" class="form-control" id="lunchPrice">
+                                <input type="number" name="lunchPrice" id="lunchPrice" class="form-control"
+                                    step="0.01" min="0">
                             </div>
+
                             <div class="col">
                                 <label for="dinnerPrice" class="form-label">Dinner Price</label>
-                                <input type="number" name="dinnerPrice" class="form-control" id="dinnerPrice">
+                                <input type="number" name="dinnerPrice" id="dinnerPrice" class="form-control"
+                                    step="0.01" min="0">
                             </div>
                         </div>
 
                         <div class="row mt-3">
                             <div class="col">
                                 <label for="averageCalories" class="form-label">Average Calory</label>
-                                <input type="number" name="averageCalories" class="form-control"
-                                    id="averageCalories">
+                                <input type="number" name="averageCalories" id="averageCalories"
+                                    class="form-control" step="0.01" min="0">
                             </div>
                         </div>
 
@@ -400,42 +404,17 @@
 
     <script>
         function downloadTemplateCSV() {
-            const headers = [
-                "name",
-                "category",
-                "breakfast_price",
-                "lunch_price",
-                "dinner_price",
-                "average_calory",
-                "file_menu",
-                "package_image"
-            ];
-
-            const exampleRow = [
-                "Paket Diet Sehat",
-                "Vegetarian",
-                25000,
-                30000,
-                28000,
-                450,
-                "menu_vegetarian.pdf",
-                "vegetarian1.jpg"
-            ];
-
-            const csvContent = [headers, exampleRow]
-                .map(e => e.join(","))
-                .join("\n");
-
-            const blob = new Blob([csvContent], {
-                type: "text/csv;charset=utf-8;"
-            });
             const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.setAttribute("download", "package_template.csv");
+
+            // Ganti path‑nya sesuai lokasi file di server
+            link.href = "/asset/catering/homePage/template_package_import.csv";
+            link.download = "template_package_import.csv"; // nama file saat disimpan user
+
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         }
+
 
         document.addEventListener('DOMContentLoaded', function() {
             const uploadInput = document.getElementById('import');
@@ -467,7 +446,6 @@
                         fd.append('_token', csrf);
                         fd.append('name', row['name']);
                         fd.append('categoryId', row['categoryId']);
-                        fd.append('vendorId', row['vendorId']);
                         fd.append('averageCalories', row['averageCalories']);
                         fd.append('breakfastPrice', row['breakfastPrice']);
                         fd.append('lunchPrice', row['lunchPrice']);
@@ -594,15 +572,11 @@
                 // Masukkan ke form
                 if (firstRow) {
                     document.getElementById('packageName').value = firstRow["name"];
-                    document.getElementById('category').value = mapCategory(firstRow["category"]);
-                    document.getElementById('breakfastPrice').value = firstRow["breakfast_price"];
-                    document.getElementById('lunchPrice').value = firstRow["lunch_price"];
-                    document.getElementById('dinnerPrice').value = firstRow["dinner_price"];
-                    document.getElementById('averageCalories').value = firstRow["average_calory"];
-
-                    // Handle cuisine (anggap kolom isinya dipisah koma)
-                    const cuisineIds = mapCuisineNames(firstRow["cuisine_type"]);
-                    cuisineIds.forEach(id => toggleCuisine(id));
+                    document.getElementById('category').value = firstRow["categoryId"];
+                    document.getElementById('breakfastPrice').value = firstRow["breakfastPrice"];
+                    document.getElementById('lunchPrice').value = firstRow["lunchPrice"];
+                    document.getElementById('dinnerPrice').value = firstRow["dinnerPrice"];
+                    document.getElementById('averageCalories').value = firstRow["averageCalories"];
                 }
             };
 
@@ -718,26 +692,30 @@
 
         Dropzone.autoDiscover = false;
 
-        // Inisialisasi tanpa auto upload
+        /* PDF */
         var menuDropzone = new Dropzone("#menuDropzone", {
-            url: "#", // dummy
+            url: "#",
             autoProcessQueue: false,
             maxFiles: 1,
             paramName: "menuPDFPath",
             acceptedFiles: ".pdf",
-            addRemoveLinks: true
+            addRemoveLinks: true,
+            dictRemoveFile: "Change file", // ← ganti teks di sini
         });
 
+        /* Image */
         var imageDropzone = new Dropzone("#imageDropzone", {
-            url: "#", // dummy
+            url: "#",
             autoProcessQueue: false,
             maxFiles: 1,
             paramName: "imgPath",
             acceptedFiles: ".png,.jpg,.jpeg",
             maxFilesize: 10,
             addRemoveLinks: true,
-            dictDefaultMessage: "Drop image here or click to upload"
+            dictRemoveFile: "Change image", // ← sama
+            dictDefaultMessage: "Drop image here or click to upload",
         });
+
 
         // Handler tunggal untuk submit form
         document.getElementById("packageForm").addEventListener("submit", function(e) {
