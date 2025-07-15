@@ -285,6 +285,7 @@
                             @endforeach
                         </div>
                     </div>
+                    <input type="hidden" name="query" value="{{ request('query') }}">
                     <div class="text-start">
                         <button type="submit" class="btn btn-orange w-100">Apply Filter</button>
                     </div>
