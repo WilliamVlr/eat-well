@@ -354,7 +354,7 @@ body {
   transition: 0.2s ease-in-out;
 }
 
-.label-status.status-active {
+.label-status.status-active, .label-status.status-upcoming {
   /* border-color: var(--primary-color); */
   background-color: var(--accent-color);
 }

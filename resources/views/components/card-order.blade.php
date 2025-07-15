@@ -8,7 +8,7 @@
             <div class="text-wrapper vendor-name-wrapper">
                 <h5 class="">{{ $order->vendor->name }}</h5>
             </div>
-            <a href="{{route('catering-detail', $order->vendor)}}" class="text-wrapper btn-view">
+            <a href="{{ route('catering-detail', $order->vendor) }}" class="text-wrapper btn-view">
                 <p>View Catering</p>
             </a>
         </div>
@@ -18,28 +18,14 @@
                 <p class="date">-</p>
                 <p class="date">{{ Carbon::parse($order->endDate)->format('d/m/Y') }}</p>
             </div>
-            @if ($order->isCancelled == 1)
-                <div class="text-wrapper label-status status-cancelled">
-                    Cancelled
-                </div>
-            @elseif (Carbon::now()->between(Carbon::parse($order->startDate), Carbon::parse($order->endDate)))
-                <div class="text-wrapper label-status status-active">
-                    Active
-                </div>
-            @elseif (Carbon::now()->addWeek()->between(Carbon::parse($order->startDate), Carbon::parse($order->endDate)))
-                <div class="text-wrapper label-status status-active">
-                    Upcoming
-                </div>
-            @else
-                <div class="text-wrapper label-status status-finished">
-                    Finished
-                </div>
-            @endif
+            <div class="text-wrapper label-status status-{{ $status }}">
+                {{ ucfirst($status) }}
+            </div>
         </div>
     </div>
 
 
-    <a href="{{route('order-detail', $order)}}" class="card-content-wrapper text-decoration-none">
+    <a href="{{ route('order-detail', $order) }}" class="card-content-wrapper text-decoration-none">
         @foreach ($order->orderItems as $item)
             <div class="card-content">
                 <div class="image-wrapper">
@@ -71,15 +57,21 @@
     </a>
     <div class="card-bottom">
         <div class="left-container">
-            <div class="rating-container">
-                <span class="detail-primary">Rate this catering</span>
-                <div class="rating-icon-list">
-                    @for ($i = 1; $i <= 5; $i++)
-                        <button type="button" class="material-symbols-outlined star-icon"
-                            data-index="{{ $i }}">star</button>
-                    @endfor
+            @if ($status == 'upcoming')
+                <div class="d-flex flex-row">
+                    <a href="#" class="btn btn-danger">Cancel</a>
                 </div>
-            </div>
+            @elseif ($status != 'active')
+                <div class="rating-container">
+                    <span class="detail-primary">Rate this catering</span>
+                    <div class="rating-icon-list">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <button type="button" class="material-symbols-outlined star-icon"
+                                data-index="{{ $i }}">star</button>
+                        @endfor
+                    </div>
+                </div>
+            @endif
         </div>
         <div class="right-container">
             <div class="total-container">
