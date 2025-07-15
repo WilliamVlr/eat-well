@@ -15,31 +15,20 @@ class AddressSeeder extends Seeder
      */
     public function run(): void
     {
-        Address::factory()
-        ->recycle(
-            User::factory()
-            ->create([
-                'email' => "customer1@gmail.com",
-                'password' => Hash::make('password'),
-                'role' => 'Customer',
-            ])
-        )
-        ->create([
-            'is_default' => true,
-        ]);
+        $users = User::all();
 
-        Address::factory()
-        ->recycle(
-            User::factory()
-            ->create([
-                'email' => "customer2@gmail.com",
-                'password' => Hash::make('password'),
-                'role' => 'Customer',
-            ])
-        )
-        ->create([
-            'is_default' => true,
-            'notes' => fake()->sentence(10),
-        ]);
+        foreach ($users as $user) {
+            // Buat alamat utama (is_default = true)
+            Address::factory()->create([
+                'userId' => $user->userId,
+                'is_default' => true,
+            ]);
+
+            // Buat minimal satu alamat tambahan (is_default = false)
+            Address::factory()->count(rand(1, 3))->create([ // Minimal 1, bisa sampai 3 alamat tambahan
+                'userId' => $user->userId,
+                'is_default' => false,
+            ]);
+        }
     }
 }

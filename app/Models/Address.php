@@ -14,7 +14,7 @@ class Address extends Model
     protected $primaryKey = 'addressId';
 
     protected $fillable = [
-        // 'userId', // Not in your address migration. If Address belongs to a User, add userId to migration.
+        'userId',
         'provinsi', // Added based on your migration
         'kota',
         'kabupaten', // Added based on your migration

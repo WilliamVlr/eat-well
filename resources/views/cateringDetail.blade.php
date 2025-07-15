@@ -38,7 +38,7 @@
                     <div class="location-wrapper">
                         <span class="material-symbols-outlined location-icon">pin_drop</span>
                         <span class="inter address">{{ $vendor->jalan }}, {{ $vendor->kelurahan }},
-                            {{ $vendor->kecamatan }}, {{ $vendor->kabupaten }}, {{ $vendor->provinsi }},
+                            {{ $vendor->kecamatan }}, {{ $vendor->kota }}, {{ $vendor->provinsi }},
                             {{ $vendor->kode_pos }}</span>
                     </div>
 

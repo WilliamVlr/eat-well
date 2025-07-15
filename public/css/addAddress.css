@@ -8,10 +8,9 @@ body {
     padding: 40px 30px;
     max-width: 850px;
     margin: 40px auto;
-    font-family: 'Lexend', sans-serif;
+    font-family: "Lexend", sans-serif;
     position: relative;
     overflow: visible !important;
-
 }
 
 select.form-select-sm {
@@ -20,3 +19,15 @@ select.form-select-sm {
     position: relative;
 }
 
+.invalid-feedback {
+    font-size: 0.775em;
+    color: #dc3545;
+    display: none;
+    width: 100%;
+    margin-top: 0.25rem;
+    text-align: left;
+}
+
+.is-invalid + .invalid-feedback {
+    display: block;
+}

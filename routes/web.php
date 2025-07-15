@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
@@ -113,13 +114,14 @@ Route::middleware(['role:customer'])->group(function () {
     Route::get('/user/wellpay-balance', [OrderController::class, 'getUserWellpayBalance'])->name('user.wellpay.balance');
 
     // Manage Address
-    Route::get('/manage-address', function () {
-        return view('ManageAddress');
-    });
+    // Route::get('/manage-address', function () {
+    //     return view('ManageAddress');
+    // });
 
-    Route::get('/add-address', function () {
-        return view('addAddress');
-    });
+    Route::get('/manage-address', [AddressController::class, 'index'])->name('manage-address');
+    Route::post('/set-default-address', [AddressController::class, 'setDefaultAddress'])->name('set-default-address');
+    Route::get('/add-address', [AddressController::class, 'create'])->name('add-address');
+    Route::post('/add-address', [AddressController::class, 'store'])->name('store-address');
 
     Route::fallback(function () {
         return redirect()->route('home');

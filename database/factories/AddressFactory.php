@@ -32,7 +32,8 @@ class AddressFactory extends Factory
             'recipient_name' => fake()->name(),
             'recipient_phone' => fake()->phoneNumber(),
             'is_default' => false,
-            'userId' => User::factory(),
+            // 'userId' => User::factory(),
+            'notes' => fake()->optional()->sentence(10),
         ];
     }
 }
