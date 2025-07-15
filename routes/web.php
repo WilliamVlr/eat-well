@@ -66,7 +66,7 @@ Route::middleware(['role:customer'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::post('/topup', [UserController::class, 'topUpWellPay'])->name('wellpay.topup');
 
-    Route::post('/home', [SessionController::class, 'destroy'])->name('logout');
+    Route::post('/logout', [SessionController::class, 'destroy'])->name('logout');
 
     // Favorite
     Route::post('favorite/{vendorId}', [FavoriteController::class, 'favorite'])->name('favorite');
