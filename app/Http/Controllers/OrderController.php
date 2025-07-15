@@ -529,6 +529,15 @@ class OrderController extends Controller
         return view('customer.orderDetail', compact('order', 'paymentMethod', 'slots', 'statusesBySlot'));
     }
 
+    public function cancelOrder(string $id)
+    {
+        $order = Order::findOrFail($id);
+        $order->isCancelled = true;
+        $order->save();
+
+        return redirect()->back()->with('message', 'Success cancelling order!');
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

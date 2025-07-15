@@ -27,7 +27,7 @@
             <section class="">
                 <div class="row">
                     @foreach ($tabs as $key => $label)
-                        <div class="{{$loop->first ? 'col-12' : 'col-6'}} col-md-2 mb-3 ps-0 pe-3">
+                        <div class="{{ $loop->first ? 'col-12' : 'col-6' }} col-md-2 mb-3 ps-0 pe-3">
                             <a href="{{ route('order-history', ['status' => $key]) }}"
                                 class="btn filter-order {{ $status === $key ? 'active' : '' }}" style="width: 100%;">
                                 <span class="tab-control-text">{{ $label }}</span>
@@ -102,6 +102,24 @@
             </div>
         </section>
     </main>
+
+    <!-- Modal Confirmation -->
+    <div id="cancelModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h4>Confirm Cancellation</h4>
+            <p style="font-size: 16px;">Are you sure to cancel this order?</p>
+
+            <form method="POST" id="cancelForm">
+                @csrf
+                @method('put')
+                <div class="modal-actions">
+                    <button type="submit" class="btn-confirm">Yes, Cancel</button>
+                    <button type="button" id="closeModalBtn" class="btn-cancel">No, Go Back</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 @endsection
 
 @section('scripts')

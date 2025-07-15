@@ -59,9 +59,11 @@
         <div class="left-container">
             @if ($status == 'upcoming')
                 <div class="d-flex flex-row">
-                    <a href="#" class="btn btn-danger">Cancel</a>
+                    <button class="btn btn-danger open-cancel-modal" data-order-id="{{ $order->orderId }}">
+                        Cancel
+                    </button>
                 </div>
-            @elseif ($status != 'active')
+            @elseif ($status == 'finished')
                 <div class="rating-container">
                     <span class="detail-primary">Rate this catering</span>
                     <div class="rating-icon-list">
