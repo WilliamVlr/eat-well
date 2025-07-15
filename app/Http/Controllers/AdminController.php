@@ -35,8 +35,11 @@ class AdminController extends Controller
 
     public function search(Request $request)
     {
-
-        $name = $request->name;
+        $validated = $request->validate([
+            'name' => 'required|string|max:255'
+        ]);
+        $name = $validated['name'];
+        // $name = $request->name;
 
         // $vendors = Vendor::where('name', 'like','%' .$name . '%')->get();
         $vendors = Vendor::where('name', 'like', '%' . $name . '%')->get();
@@ -89,9 +92,12 @@ class AdminController extends Controller
         // $newPayment->name = $request->paymentMethod;
 
         // $newPayment->save();
+        $validated = $request->validate([
+            'paymentMethod' => 'string|max:255|unique:payment_methods,name'
+        ]);
 
         $newPayment = PaymentMethod::create([
-            'name' => $request->paymentMethod
+            'name' => $validated['paymentMethod']
         ]);
 
         $payments = PaymentMethod::all();

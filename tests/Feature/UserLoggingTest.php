@@ -242,7 +242,7 @@ class UserLoggingTest extends TestCase
         $response->assertSee('URL');
         $response->assertSee('Method');
         $response->assertSee('IP');
-        $response->assertSee('Accessed At');
+        $response->assertSee('Time');
     }
 
     /** @test */

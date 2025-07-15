@@ -52,7 +52,7 @@ class AdminManagePaymentMethodTest extends TestCase
         ]);
 
         $response->assertRedirect(route('view-all-payment'));
-        $response->assertSessionHas('message_add', 'Successfully added payment!');
+        $response->assertSessionHas('message_add', 'Successfully added payment method!');
 
         $this->assertDatabaseHas('payment_methods', [
             'name' => 'Bank Transfer',
@@ -84,7 +84,9 @@ class AdminManagePaymentMethodTest extends TestCase
             'paymentMethod' => 'Bank Transfer',
         ]);
 
-        $response->assertSessionHasErrors(['error' => 'Payment method exist.']);
+        $response->assertSessionHasErrors([
+            'paymentMethod' => 'The payment method has already been taken.'
+        ]);
         $this->assertCount(1, PaymentMethod::where('name', 'Bank Transfer')->get());
     }
 
@@ -163,12 +165,12 @@ class AdminManagePaymentMethodTest extends TestCase
         $postResponse->assertRedirect('/home');
 
         // Try to DELETE a method
-        $anyMethod = PaymentMethod::create(['name' => 'Bank Transfer']);
+        $anyMethod = PaymentMethod::create(['name' => 'Go Pay']);
         $deleteResponse = $this->delete("/view-all-payment/delete/{$anyMethod->methodId}");
         $deleteResponse->assertRedirect('/home');
 
         // Ensure method wasn't added or deleted
-        $this->assertDatabaseMissing('payment_methods', ['name' => 'Bank Transfer']);
+        $this->assertDatabaseMissing('payment_methods', ['name' => 'Illegal Add']);
         $this->assertDatabaseHas('payment_methods', ['methodId' => $anyMethod->methodId]);
     }
 

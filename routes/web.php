@@ -156,7 +156,7 @@ Route::middleware(['role:vendor'])->group(function () {
 ---------------------- */
 Route::middleware(['role:admin'])->group(function () {
     Route::get('/view-all-vendors', [AdminController::class, 'viewAllVendors'])->name('view-all-vendors');
-    Route::post('/view-all-vendors', [AdminController::class, 'search'])->name('view-all-vendors');
+    Route::post('/view-all-vendors', [AdminController::class, 'search'])->name('view-all-vendors.search');
 
     Route::get('/admin-dashboard', [DashboardController::class, 'index'])->name('admin-dashboard');
 
@@ -188,7 +188,7 @@ Route::middleware(['role:admin'])->group(function () {
     Route::post('/view-all-payment', [AdminController::class, 'add_new_payment'])
         ->name('add-new-payment');
 
-    Route::post('/view-all-vendors', [SessionController::class, 'destroy'])->name('logout.admin');
+    Route::post('/admin-dashboard', [SessionController::class, 'destroy'])->name('logout.admin');
 
     Route::get('/view-order-history', [AdminController::class, 'view_order_history'])
     ->name('view-order-history')
