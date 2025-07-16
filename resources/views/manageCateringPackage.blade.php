@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Catering Manage Menu</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" rel="stylesheet" />
@@ -186,10 +187,38 @@
 </head>
 
 <body>
+    {{-- <x-vendor-nav></x-vendor-nav> --}}
     <div class="heading-title">Find your Package</div>
     <div class="text-muted-subheading">You can edit our previous and add your new package to your catering.</div>
 
+
     <div class="container mt-5">
+        <div class="d-flex justify-content-between mb-3">
+
+            <div class="container my-0">
+                <div class="row justify-content-center">
+                    <div class="d-flex justify-content-center gap-2 mt-3">
+
+                        <!-- Tombol Upload -->
+                        <label for="import" class="btn btn-success btn-sm px-4 py-2"
+                            style="background-color: #14532d; border-color: #14532d;">
+                            <i class="bi bi-upload me-2"></i> Upload Package File
+                        </label>
+                        <input type="file" class="d-none" id="import" accept=".csv, .xlsx, .xls">
+
+
+                        <button class="btn btn-outline-secondary btn-sm px-4 py-2" onclick="downloadTemplateCSV()">
+                            <i class="bi bi-download me-2"></i> Download Template CSV
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead class="table-dark">
@@ -197,7 +226,6 @@
                         <th>No</th>
                         <th>Package Name</th>
                         <th>Category</th>
-                        <th>Cuisine Type</th>
                         <th>Breakfast Price</th>
                         <th>Lunch Price</th>
                         <th>Dinner Price</th>
@@ -214,9 +242,6 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $package->name }}</td>
                             <td>{{ $package->category->categoryName ?? 'N/A' }}</td>
-                            <td>
-                                {{ $package->cuisineTypes->pluck('cuisineName')->implode(', ') }}
-                            </td>
                             <td>Rp{{ number_format($package->breakfastPrice ?? 0, 0, ',', '.') }}</td>
                             <td>Rp{{ number_format($package->lunchPrice ?? 0, 0, ',', '.') }}</td>
                             <td>Rp{{ number_format($package->dinnerPrice ?? 0, 0, ',', '.') }}</td>
@@ -238,20 +263,25 @@
                                 @endif
                             </td>
                             <td>
-                                {{-- <button class="btn btn-warning btn-sm"
-                                    onclick="openEditModal(@json([
-                                        'id' => $package->id,
+                                <button class="btn btn-warning btn-sm" data-package="{!! htmlspecialchars(
+                                    json_encode([
+                                        'id' => $package->packageId,
                                         'name' => $package->name,
-                                        'categoryId' => $package->category_id,
-                                        'breakfastPrice' => $package->breakfast_price,
-                                        'lunchPrice' => $package->lunch_price,
-                                        'dinnerPrice' => $package->dinner_price,
-                                        'averageCalories' => $package->average_calories,
-                                        'cuisines' => $package->cuisines->pluck('id'),
-                                    ]))">
+                                        'categoryId' => $package->categoryId,
+                                        'breakfastPrice' => $package->breakfastPrice,
+                                        'lunchPrice' => $package->lunchPrice,
+                                        'dinnerPrice' => $package->dinnerPrice,
+                                        'averageCalories' => $package->averageCalories,
+                                        'cuisines' => $package->cuisineTypes->pluck('cuisineId'),
+                                        'menuPDFPath' => $package->menuPDFPath, // 👈 baru
+                                        'imgPath' => $package->imgPath, // 👈 baru
+                                    ]),
+                                    ENT_QUOTES,
+                                    'UTF-8',
+                                ) !!}"
+                                    onclick="handleEditClick(this)">
                                     <i class="bi bi-pencil-fill"></i>
-                                </button> --}}
-
+                                </button>
 
                                 <button class="btn btn-danger btn-sm"
                                     onclick="deletePackage({{ $package->packageId }})" title="Delete">
@@ -266,6 +296,7 @@
     </div>
     <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#packageModal"
         onclick="openAddModal()">Add Package</button>
+
     </div>
 
     <!-- Modal -->
@@ -275,12 +306,17 @@
                 <form id="packageForm" method="post" action="{{ route('packages.store') }}"
                     enctype="multipart/form-data">
                     @csrf
-                    @method('post')
+                    {{-- @method('put') --}}
                     <div class="modal-header">
                         <h5 class="modal-title" id="packageModalLabel">Add Package</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="excelUpload" class="form-label">Upload Excel / CSV</label>
+                            <input type="file" class="form-control" id="excelUpload" accept=".csv, .xlsx, .xls">
+                        </div>
+
                         <!-- form fields -->
                         <div class="mb-3">
                             <label for="packageName" class="form-label">Package Name</label>
@@ -300,18 +336,6 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Cuisine Type</label>
-                            <div id="cuisine-buttons">
-                                @foreach ($cuisines as $cuisine)
-                                    <button type="button" class="btn btn-outline-secondary btn-sm"
-                                        onclick="toggleCuisine({{ $cuisine->cuisineId }}, event)">
-                                        {{ $cuisine->cuisineName }}
-                                    </button>
-                                @endforeach
-                            </div>
-
-
-
 
                             <!-- Hidden inputs akan dimasukkan ke sini -->
                             <div id="cuisineInputs"></div>
@@ -321,23 +345,28 @@
                         <div class="row">
                             <div class="col">
                                 <label for="breakfastPrice" class="form-label">Breakfast Price</label>
-                                <input type="number" name="breakfastPrice" class="form-control" id="breakfastPrice">
+                                <input type="number" name="breakfastPrice" id="breakfastPrice" class="form-control"
+                                    step="0.01">
                             </div>
+
                             <div class="col">
                                 <label for="lunchPrice" class="form-label">Lunch Price</label>
-                                <input type="number" name="lunchPrice" class="form-control" id="lunchPrice">
+                                <input type="number" name="lunchPrice" id="lunchPrice" class="form-control"
+                                    step="0.01" min="0">
                             </div>
+
                             <div class="col">
                                 <label for="dinnerPrice" class="form-label">Dinner Price</label>
-                                <input type="number" name="dinnerPrice" class="form-control" id="dinnerPrice">
+                                <input type="number" name="dinnerPrice" id="dinnerPrice" class="form-control"
+                                    step="0.01" min="0">
                             </div>
                         </div>
 
                         <div class="row mt-3">
                             <div class="col">
                                 <label for="averageCalories" class="form-label">Average Calory</label>
-                                <input type="number" name="averageCalories" class="form-control"
-                                    id="averageCalories">
+                                <input type="number" name="averageCalories" id="averageCalories"
+                                    class="form-control" step="0.01" min="0">
                             </div>
                         </div>
 
@@ -357,99 +386,7 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    {{-- <div class="modal fade" id="packageEditModal" tabindex="-1" aria-labelledby="packageModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <form id="packageForm" method="POST"
-                    action="{{ route('packages.update', ['package' => $package]) }}" enctype="multipart/form-data">
-                    @csrf
-                    @method('put')
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="packageModalLabel">Edit Package</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- form fields -->
-                        <div class="mb-3">
-                            <label for="packageName" class="form-label">Package Name</label>
-                            <input type="text" name="name" class="form-control" id="packageName" required>
-                        </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Select Category</label>
-                            <select class="form-select" name="categoryId" id="category">
-                                <option value="1">Vegetarian</option>
-                                <option value="2">Gluten-Free</option>
-                                <option value="3">Halal</option>
-                                <option value="4">Low Carb</option>
-                                <option value="5">Low Calorie</option>
-                                <option value="6">Organic</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Cuisine Type</label>
-                            <div id="cuisine-buttons">
-                                <button type="button" class="btn btn-outline-secondary btn-sm"
-                                    onclick="toggleCuisine(1, event)">Indonesian</button>
-                                <button type="button" class="btn btn-outline-secondary btn-sm"
-                                    onclick="toggleCuisine(2, event)">Chinese</button>
-                                <button type="button" class="btn btn-outline-secondary btn-sm"
-                                    onclick="toggleCuisine(3, event)">Japanese</button>
-                                <button type="button" class="btn btn-outline-secondary btn-sm"
-                                    onclick="toggleCuisine(4, event)">Korean</button>
-                                <button type="button" class="btn btn-outline-secondary btn-sm"
-                                    onclick="toggleCuisine(5, event)">Western</button>
-                                <button type="button" class="btn btn-outline-secondary btn-sm"
-                                    onclick="toggleCuisine(6, event)">Fusion</button>
-                            </div>
-
-                            <!-- Hidden inputs akan dimasukkan ke sini -->
-                            <div id="cuisineInputs"></div>
-
-                        </div>
-
-                        <div class="row">
-                            <div class="col">
-                                <label for="breakfastPrice" class="form-label">Breakfast Price</label>
-                                <input type="number" name="breakfastPrice" class="form-control"
-                                    id="breakfastPrice">
-                            </div>
-                            <div class="col">
-                                <label for="lunchPrice" class="form-label">Lunch Price</label>
-                                <input type="number" name="lunchPrice" class="form-control" id="lunchPrice">
-                            </div>
-                            <div class="col">
-                                <label for="dinnerPrice" class="form-label">Dinner Price</label>
-                                <input type="number" name="dinnerPrice" class="form-control" id="dinnerPrice">
-                            </div>
-                        </div>
-
-                        <div class="row mt-3">
-                            <div class="col">
-                                <label for="averageCalories" class="form-label">Average Calory</label>
-                                <input type="number" name="averageCalories" class="form-control"
-                                    id="averageCalories">
-                            </div>
-                        </div>
-
-                        <div class="dropzone" id="menuDropzone">
-                            <input type="file" name="menuPDFPath" id="menuPDFPath">
-                        </div>
-                        <div class="dropzone" id="imageDropzone">
-                            <input type="file" name="imgPath" id="imgPath">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-success" value="Save Package">Save Package</button>
-                    </div>
-                </form>
-            </div>
-        </div> --}}
     </div>
 
     <div class="heading-title">Add Your Package Preview</div>
@@ -463,8 +400,231 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <script>
+        function downloadTemplateCSV() {
+            const link = document.createElement("a");
+
+            // Ganti path‑nya sesuai lokasi file di server
+            link.href = "/asset/catering/homePage/template_package_import.csv";
+            link.download = "template_package_import.csv"; // nama file saat disimpan user
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadInput = document.getElementById('import');
+            if (!uploadInput) return;
+
+            uploadInput.addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = async (evt) => {
+                    const workbook = XLSX.read(new Uint8Array(evt.target.result), {
+                        type: 'array'
+                    });
+                    const rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[
+                        0]], {
+                        defval: ''
+                    });
+                    if (!rows.length) {
+                        alert('File kosong / format salah!');
+                        return;
+                    }
+
+                    const postUrl = '/manageCateringPackage'; // <— URL sudah benar
+                    const csrf = document.querySelector('meta[name="csrf-token"]').content;
+
+                    const requests = rows.map(row => {
+                        const fd = new FormData();
+                        fd.append('_token', csrf);
+                        fd.append('name', row['name']);
+                        fd.append('categoryId', row['categoryId']);
+                        fd.append('averageCalories', row['averageCalories']);
+                        fd.append('breakfastPrice', row['breakfastPrice']);
+                        fd.append('lunchPrice', row['lunchPrice']);
+                        fd.append('dinnerPrice', row['dinnerPrice']);
+
+                        return fetch(postUrl, {
+                            method: 'POST',
+                            body: fd,
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        })
+                    });
+
+                    try {
+                        const res = await Promise.allSettled(requests);
+                        const ok = res.filter(x => x.status === 'fulfilled').length;
+                        alert(`Import selesai! Berhasil: ${ok}, Gagal: ${res.length - ok}`);
+                        location.reload();
+                    } catch (err) {
+                        console.error(err);
+                        alert('Terjadi kesalahan saat import!');
+                    }
+                };
+                reader.readAsArrayBuffer(file);
+            });
+        });
+
+        function handleEditClick(btn) {
+            const data = JSON.parse(btn.dataset.package);
+            console.log('DATA PACKAGE:', data); // ← Tambahkan ini dulu
+            openEditModal(data);
+        }
+
+        function openEditModal(data) {
+            document.getElementById('packageModalLabel').innerText = 'Edit Package';
+
+            // Isi form
+            document.getElementById('packageName').value = data.name;
+            document.getElementById('category').value = data.categoryId;
+            document.getElementById('breakfastPrice').value = (+data.breakfastPrice).toFixed(2);
+            document.getElementById('lunchPrice').value = (+data.lunchPrice).toFixed(2);
+            document.getElementById('dinnerPrice').value = (+data.dinnerPrice).toFixed(2);
+            document.getElementById('averageCalories').value = data.averageCalories;
+
+            // Cuisine
+            const cuisineInputs = document.getElementById('cuisineInputs');
+            cuisineInputs.innerHTML = '';
+            document.querySelectorAll('#cuisine-buttons button').forEach(b => {
+                b.classList.replace('btn-success', 'btn-outline-secondary');
+            });
+            data.cuisines.forEach(id => {
+                const btn = document.querySelector(`#cuisine-buttons button[onclick*="${id}"]`);
+                if (btn) {
+                    btn.classList.replace('btn-outline-secondary', 'btn-success');
+                }
+                const hidden = document.createElement('input');
+                hidden.type = 'hidden';
+                hidden.name = 'cuisine_types[]';
+                hidden.value = id;
+                cuisineInputs.appendChild(hidden);
+            });
+
+            // Reset Dropzone file lama
+            menuDropzone.removeAllFiles(true);
+            imageDropzone.removeAllFiles(true);
+
+            // Tambahkan preview file lama
+            if (data.menuPDFPath) {
+                let mockFile = {
+                    name: data.menuPDFPath,
+                    size: 123456
+                };
+                menuDropzone.emit("addedfile", mockFile);
+                menuDropzone.emit("complete", mockFile);
+            }
+
+            if (data.imgPath) {
+                let mockFile = {
+                    name: data.imgPath,
+                    size: 123456
+                };
+                imageDropzone.emit("addedfile", mockFile);
+                imageDropzone.emit("thumbnail", mockFile, `/asset/menus/${data.imgPath}`);
+                imageDropzone.emit("complete", mockFile);
+            }
+
+            // Update form action
+            const form = document.getElementById('packageForm');
+            form.action = `/packages/${data.id}`; // target update
+            form.setAttribute('data-method', 'PUT'); // buat tahu ini edit
+
+            // Tambah _method hidden input (PUT)
+            form.querySelectorAll('input[name="_method"]').forEach(el => el.remove());
+            const spoof = document.createElement('input');
+            spoof.type = 'hidden';
+            spoof.name = '_method';
+            spoof.value = 'PUT';
+            form.appendChild(spoof);
+
+            new bootstrap.Modal(document.getElementById('packageModal')).show();
+        }
+    </script>
+
+
+
+    <script>
+        document.getElementById('excelUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, {
+                    type: 'array'
+                });
+                const sheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[sheetName];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+                // Ambil baris pertama
+                const firstRow = jsonData[0];
+
+                // Masukkan ke form
+                if (firstRow) {
+                    document.getElementById('packageName').value = firstRow["name"];
+                    document.getElementById('category').value = firstRow["categoryId"];
+                    document.getElementById('breakfastPrice').value = firstRow["breakfastPrice"];
+                    document.getElementById('lunchPrice').value = firstRow["lunchPrice"];
+                    document.getElementById('dinnerPrice').value = firstRow["dinnerPrice"];
+                    document.getElementById('averageCalories').value = firstRow["averageCalories"];
+                }
+            };
+
+            reader.readAsArrayBuffer(file);
+        });
+
+        function mapCategory(name) {
+            const categoryMap = {
+                "Vegetarian": 1,
+                "Gluten-Free": 2,
+                "Halal": 3,
+                "Low Carb": 4,
+                "Low Calorie": 5,
+                "Organic": 6,
+            };
+            return categoryMap[name] || '';
+        }
+
+        function mapCuisineNames(cuisineStr) {
+            const cuisineMap = {
+                "Indonesian": 1,
+                "Chinese": 2,
+                "Japanese": 3,
+                "Korean": 4,
+                "Western": 5,
+                "Fusion": 6
+            };
+            const names = cuisineStr.split(',').map(n => n.trim());
+            return names.map(n => cuisineMap[n]).filter(Boolean);
+        }
+
+        // function toggleCuisine(id, event = null) {
+        //     const existingInput = document.getElementById(`cuisine-${id}`);
+        //     if (!existingInput) {
+        //         const input = document.createElement('input');
+        //         input.type = 'hidden';
+        //         input.name = 'cuisineIds[]';
+        //         input.value = id;
+        //         input.id = `cuisine-${id}`;
+        //         document.getElementById('cuisineInputs').appendChild(input);
+        //     }
+
+        //     if (event) {
+        //         event.target.classList.toggle('btn-outline-secondary');
+        //         event.target.classList.toggle('btn-success');
+        //     }
+        // }
+
         function deletePackage(id) {
             if (confirm('Are you sure you want to delete this package?')) {
                 fetch(`/packages/${id}`, {
@@ -492,10 +652,6 @@
     </script>
 
     <script>
-        // function selectCuisine(cuisine) {
-        //     document.getElementById('cuisineType').value = name;
-        // }
-
         const selectedCuisineIds = new Set();
 
         function toggleCuisine(id, event) {
@@ -519,8 +675,6 @@
                 button.classList.remove('btn-outline-secondary');
                 button.classList.add('btn-success');
             }
-
-            // console.log(selectedCuisineIds);
         }
 
 
@@ -536,111 +690,74 @@
             });
         }
 
-        // function openEditModal(packageData) {
-        //     console.log("openEditModal called with", packageData);
-
-        //     document.getElementById('packageModalLabel').innerText = 'Edit Package';
-        //     document.getElementById('packageForm').reset();
-
-        //     // Ganti action form sesuai ID package yang diklik
-        //     document.getElementById('packageForm').action = `/packages/${packageData.id}`;
-
-        //     // Prefill form fields
-        //     document.getElementById('packageName').value = packageData.name;
-        //     document.getElementById('category').value = packageData.categoryId;
-        //     document.getElementById('breakfastPrice').value = packageData.breakfastPrice;
-        //     document.getElementById('lunchPrice').value = packageData.lunchPrice;
-        //     document.getElementById('dinnerPrice').value = packageData.dinnerPrice;
-        //     document.getElementById('averageCalories').value = packageData.averageCalories;
-
-        //     // Reset dan isi cuisine
-        //     selectedCuisineIds.clear();
-        //     document.getElementById('cuisineInputs').innerHTML = '';
-        //     document.querySelectorAll('#cuisine-buttons button').forEach(btn => {
-        //         btn.classList.remove('btn-success');
-        //         btn.classList.add('btn-outline-secondary');
-        //     });
-
-        //     if (Array.isArray(packageData.cuisines)) {
-        //         packageData.cuisines.forEach(cuisineId => {
-        //             toggleCuisine(cuisineId);
-        //         });
-        //     }
-
-        //     // Show modal
-        //     const modal = new bootstrap.Modal(document.getElementById('packageEditModal'));
-        //     modal.show();
-        // }
-
-
-
-
-
         Dropzone.autoDiscover = false;
 
-        // Inisialisasi tanpa auto upload
+        /* PDF */
         var menuDropzone = new Dropzone("#menuDropzone", {
-            url: "#", // dummy
+            url: "#",
             autoProcessQueue: false,
             maxFiles: 1,
             paramName: "menuPDFPath",
             acceptedFiles: ".pdf",
-            addRemoveLinks: true
+            addRemoveLinks: true,
+            dictRemoveFile: "Change file", // ← ganti teks di sini
         });
 
+        /* Image */
         var imageDropzone = new Dropzone("#imageDropzone", {
-            url: "#", // dummy
+            url: "#",
             autoProcessQueue: false,
             maxFiles: 1,
             paramName: "imgPath",
             acceptedFiles: ".png,.jpg,.jpeg",
             maxFilesize: 10,
             addRemoveLinks: true,
-            dictDefaultMessage: "Drop image here or click to upload"
+            dictRemoveFile: "Change image", // ← sama
+            dictDefaultMessage: "Drop image here or click to upload",
         });
 
+
         // Handler tunggal untuk submit form
-        document.querySelector("#packageForm").addEventListener("submit", function(e) {
+        document.getElementById("packageForm").addEventListener("submit", function(e) {
             e.preventDefault();
             e.stopPropagation();
 
-            const form = document.getElementById("packageForm");
+            const form = e.target;
             const formData = new FormData(form);
-            console.log(form);
-            for (const [key, value] of formData.entries()) {
-                console.log(`${key}: ${value}`);
-            }
 
-            // Tambahkan file dari kedua Dropzone (jika ada)
+            // Ambil file dari Dropzone
             if (menuDropzone.getAcceptedFiles().length > 0) {
                 formData.append("menuPDFPath", menuDropzone.getAcceptedFiles()[0]);
             }
+
             if (imageDropzone.getAcceptedFiles().length > 0) {
                 formData.append("imgPath", imageDropzone.getAcceptedFiles()[0]);
             }
 
-            // Kirim 1x request ke Laravel controller
-            fetch("{{ route('packages.store') }}", {
-                    method: "POST",
+            const isEdit = form.getAttribute('data-method') === 'PUT';
+            const url = form.action;
+            const method = isEdit ? 'POST' : 'POST'; // method fetch tetap POST, spoof _method yg atur PUT
+
+            fetch(url, {
+                    method: method,
                     headers: {
                         "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
                     },
                     body: formData
                 })
                 .then(res => {
-                    if (!res.ok) throw new Error("Upload gagal");
-                    return res.text(); // bisa juga .json() sesuai respons Laravel
+                    if (!res.ok) throw new Error("Gagal simpan");
+                    return res.text(); // bisa diganti json()
                 })
                 .then(response => {
-                    console.log("Berhasil upload:", response);
-                    window.location.href = "{{ route('manageCateringPackage') }}";
+                    console.log("Sukses:", response);
+                    window.location.href = "{{ route('manageCateringPackage') }}"; // redirect sesuka lo
                 })
-            // .catch(err => {
-            //     console.error("Gagal:", err);
-            //     alert("Gagal menyimpan. Periksa input & file.");
-            // });
+                .catch(err => {
+                    console.error("Gagal:", err);
+                    alert("Ada error waktu simpan paket");
+                });
         });
-
 
 
         const carousel = document.getElementById("carousel-wrapper");

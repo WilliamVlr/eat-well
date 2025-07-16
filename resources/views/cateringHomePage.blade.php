@@ -313,6 +313,7 @@
 
         }
     </style>
+    {{-- @php dd($salesData); @endphp --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
@@ -328,7 +329,7 @@
             <img src="asset/catering/homePage/logoCatering.png" alt="Logo" />
         </div>
         <div class="welcome-text">
-            <h2>Welcome, Aldenaire Catering!</h2>
+            <h2>Welcome, {{ $vendor->name }}!</h2>
             <p style="text-align: justify; color:black;">
                 Eat Well is a smart platform that connects users with healthy meal catering services.
                 Discover, compare, and subscribe to trusted catering providers based on your dietary needs
@@ -342,55 +343,60 @@
 
     <div class="container my-5">
         <div class="chart-container text-center">
-            <h2 class="chart-title">Statistic of Your Income on April 2025</h2>
+            <h2 class="chart-title">Statistic of Your Income on {{ $salesMonth }} </h2>
             <canvas id="salesChart"></canvas>
             <button class="btn-download mt-4">DOWNLOAD REPORT</button>
         </div>
     </div>
 
     <p class="heading-title">Today’s Catering Orders!</p>
+    @php
+        $slotMeta = [
+            'breakfast' => [
+                'title' => 'Breakfast',
+                'img' => asset('asset/catering/homePage/breakfastPreview.png'),
+                // ⇓ ambil langsung kolom breakfast_delivery
+                'time' => $vendor->breakfast_delivery ?? '-',
+            ],
+            'lunch' => [
+                'title' => 'Lunch',
+                'img' => asset('asset/catering/homePage/lunchPreview.png'),
+                // ⇓ kolom lunch_delivery
+                'time' => $vendor->lunch_delivery ?? '-',
+            ],
+            'dinner' => [
+                'title' => 'Dinner',
+                'img' => asset('asset/catering/homePage/dinnerPreview.png'),
+                // ⇓ kolom dinner_delivery
+                'time' => $vendor->dinner_delivery ?? '-',
+            ],
+        ];
+    @endphp
+
+
     <div class="card-deck">
-        <!-- Breakfast Card -->
-        <div class="card">
-            <img class="card-img-top" src="asset/catering/homePage/breakfastPreview.png" alt="Breakfast Preview" />
-            <div class="card-body">
-                <h5 class="card-title">Breakfast</h5>
-                <p class="card-text" style="text-align: justify">
-                    30 x Paket A <br /> 20 x Paket B <br /> 3 x Paket C
-                </p>
-            </div>
-            <div class="card-footer">
-                <small class="text-muted">Served from 08.00 to 10.00 AM</small>
-            </div>
-        </div>
+        @foreach ($slotMeta as $slotKey => $meta)
+            <div class="card">
+                <img class="card-img-top" src="{{ $meta['img'] }}" alt="{{ $meta['title'] }} Preview" />
 
-        <!-- Lunch Card -->
-        <div class="card">
-            <img class="card-img-top" src="asset/catering/homePage/lunchPreview.png" alt="Lunch Preview" />
-            <div class="card-body">
-                <h5 class="card-title">Lunch</h5>
-                <p class="card-text" style="text-align: justify">
-                    5 x Paket A <br /> 6 x Paket B <br /> 1 x Paket C
-                </p>
-            </div>
-            <div class="card-footer">
-                <small class="text-muted">Served from 12.00 to 02.00 PM</small>
-            </div>
-        </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ $meta['title'] }}</h5>
 
-        <!-- Dinner Card -->
-        <div class="card">
-            <img class="card-img-top" src="asset/catering/homePage/dinnerPreview.png" alt="Dinner Preview" />
-            <div class="card-body">
-                <h5 class="card-title">Dinner</h5>
-                <p class="card-text" style="text-align: justify">
-                    3 x Paket A <br /> 8 x Paket B <br /> 10 x Paket C
-                </p>
+                    {{-- daftar paket & qty --}}
+                    @forelse ($slotCounts[$slotKey] ?? [] as $pkg => $qty)
+                        <p class="card-text m-0" style="text-align: justify">
+                            {{ $qty }} × {{ $pkg }}
+                        </p>
+                    @empty
+                        <p class="card-text text-muted">No orders yet</p>
+                    @endforelse
+                </div>
+
+                <div class="card-footer">
+                    <small class="text-muted">Served from {{ $meta['time'] }}</small>
+                </div>
             </div>
-            <div class="card-footer">
-                <small class="text-muted">Served from 05.00 to 08.00 PM</small>
-            </div>
-        </div>
+        @endforeach
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
@@ -398,25 +404,31 @@
     </script>
 
     <script>
+        /* ambil <canvas> */
         const ctx = document.getElementById('salesChart').getContext('2d');
 
-        const salesChart = new Chart(ctx, {
+        /* data mingguan  – datang dari controller                       */
+        /* $salesData sudah berisi array 4 elemen → [week1, week2, …]    */
+        const chartData = @json($salesData);
+
+        /* build chart */
+        new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
                 datasets: [{
-                    data: [1000000, 2000000, 1500000, 3500000],
-                    borderColor: 'black',
+                    data: chartData, // ⬅️ pakai data dinamis
+                    borderColor: '#000',
                     backgroundColor: 'transparent',
-                    pointBackgroundColor: 'rgba(0, 128, 0, 1)',
+                    pointBackgroundColor: 'rgba(0,128,0,1)',
                     pointRadius: 6,
                 }]
             },
             options: {
                 animation: {
                     duration: 1500,
-                    easing: 'easeOutQuart' // ← diperbaiki dari 'easeOutQuert'
-                }, // animasi dimatikan
+                    easing: 'easeOutQuart'
+                },
                 scales: {
                     y: {
                         beginAtZero: true,
@@ -424,8 +436,8 @@
                             display: false
                         },
                         ticks: {
-                            color: 'rgba(0, 128, 0, 0.7)',
-                            callback: value => 'Rp' + value.toLocaleString('id-ID')
+                            color: 'rgba(0,128,0,.7)',
+                            callback: v => 'Rp' + v.toLocaleString('id-ID')
                         }
                     },
                     x: {
@@ -433,13 +445,13 @@
                             display: false
                         },
                         ticks: {
-                            color: 'rgba(0, 128, 0, 0.7)'
+                            color: 'rgba(0,128,0,.7)'
                         }
                     }
                 },
                 plugins: {
                     legend: {
-                        display: false // legend disembunyikan
+                        display: false
                     }
                 },
                 responsive: true,

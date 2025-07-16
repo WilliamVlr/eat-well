@@ -7,11 +7,14 @@ use App\Http\Controllers\PackageController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\VendorController;
+use App\Models\Order;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AuthManager;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DeliveryStatusController;
+use App\Http\Controllers\OrderVendorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Socialite\ProviderCallbackController;
 use App\Http\Controllers\Socialite\ProviderRedirectController;
@@ -130,22 +133,36 @@ Route::middleware(['role:customer'])->group(function () {
 ---------------------- */
 Route::middleware(['role:vendor'])->group(function () {
     // Catering dashboard
-    Route::get('/cateringHomePage', function () {
-        return view('cateringHomePage');
-    });
+    Route::get('/cateringHomePage', [OrderVendorController::class, 'totalOrder']);
     Route::post('/cateringHomePage', [SessionController::class, 'destroy'])->name('logout.vendor');
 
     // Manage Packages
     Route::get('/manageCateringPackage', [PackageController::class, 'index'])->name('manageCateringPackage');
-    Route::delete('/packages/{id}', [PackageController::class, 'destroy'])->name('packages.destroy');
-    // Route::post('/packages', [PackageController::class, 'store'])->name('packages.store');
     Route::post('/manageCateringPackage', [PackageController::class, 'store'])->name('packages.store');
-    Route::put('/manageCateringPackage/{package}', [PackageController::class, 'update'])->name('packages.update');
+    Route::put('/packages/{package}', [PackageController::class, 'update'])->name('packages.update');
+    Route::delete('/packages/{id}', [PackageController::class, 'destroy'])->name('packages.destroy');
+    Route::post('/packages/import', [PackageController::class, 'import'])->name('packages.import');
 
     // Manage Order
-    Route::get('/manageOrder', function () {
-        return view('manageOrder');
-    });
+    Route::get('/manageOrder', [OrderVendorController::class, 'index'])
+        ->name('orders.index');
+
+    // daftar/pengelolaan order
+    // Route::get('/vendor/orders', [OrderVendorController::class, 'index'])
+    //     ->name('vendor.orders');
+
+    Route::post(
+        '/delivery-status/{orderId}/{slot}',
+        [OrderVendorController::class, 'updateStatus']
+    )->name('delivery-status.update');
+
+
+    Route::post(
+        '/orders/{order}/cancel',
+        [OrderVendorController::class, 'cancel']
+    )
+        ->name('orders.cancel');
+
 
     Route::fallback(function () {
         return redirect()->route('cateringHomePage');
@@ -191,8 +208,8 @@ Route::middleware(['role:admin'])->group(function () {
     Route::post('/admin-dashboard', [SessionController::class, 'destroy'])->name('logout.admin');
 
     Route::get('/view-order-history', [AdminController::class, 'view_order_history'])
-    ->name('view-order-history')
-    ->middleware(['auth', RoleMiddleware::class]);
+        ->name('view-order-history')
+        ->middleware(['auth', RoleMiddleware::class]);
 
     Route::fallback(function () {
         return redirect()->route('admin-dashboard');
