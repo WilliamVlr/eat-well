@@ -152,6 +152,9 @@ Route::middleware(['role:vendor'])->group(function () {
     Route::fallback(function () {
         return redirect()->route('cateringHomePage');
     });
+
+    Route::get('/manage-profile-vendor', [VendorController::class, 'manageProfile'])->name('manage-profile-vendor');
+    Route::patch('/manage-profile-vendor', [VendorController::class, 'updateProfile'])->name('manage-profile-vendor.update');
 });
 /* ---------------------
      ADMIN ROUTES

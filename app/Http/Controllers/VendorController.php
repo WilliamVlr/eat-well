@@ -11,6 +11,7 @@ use App\Models\Vendor;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VendorController extends Controller
 {
@@ -114,5 +115,80 @@ class VendorController extends Controller
 
         // Pass paginated vendors to the view
         return view('customer.search', compact('vendors', 'all_categories'));
+    }
+
+    public function manageProfile()
+    {
+        // untuk kasih breakfast delivery, jam menitnya, ambil dulu variable nya, lalu pecah, jadi jam 1 dan 2
+        $user = Auth::user();
+        $vendor = Vendor::where('userId', $user->userId)->first();
+
+        $breakfastDelivery = $vendor->breakfast_delivery;
+        $lunchDelivery = $vendor->lunch_delivery;
+        $dinnerDelivery = $vendor->dinner_delivery;
+
+        $breakfastStart = explode('-', $breakfastDelivery)[0];
+        $breakfastEnd = explode('-', $breakfastDelivery)[1];
+        $lunchStart = explode('-', $lunchDelivery)[0];
+        $lunchEnd = explode('-', $lunchDelivery)[1];
+        $dinnerStart = explode('-', $dinnerDelivery)[0];
+        $dinnerEnd = explode('-', $dinnerDelivery)[1];
+
+        $bsh = explode(':', $breakfastStart)[0];
+        $bsm = explode(':', $breakfastStart)[1];
+        $beh = explode(':', $breakfastEnd)[0];
+        $bem = explode(':', $breakfastEnd)[1];
+        $lsh = explode(':', $lunchStart)[0];
+        $lsm = explode(':', $lunchStart)[1];
+        $leh = explode(':', $lunchEnd)[0];
+        $lem = explode(':', $lunchEnd)[1];
+        $dsh = explode(':', $dinnerStart)[0];
+        $dsm = explode(':', $dinnerStart)[1];
+        $deh = explode(':', $dinnerEnd)[0];
+        $dem = explode(':', $dinnerEnd)[1];
+
+        return view('manage-profile-vendor', compact('user', 'vendor',
+            'bsh', 'bsm', 'beh', 'bem', 
+            'lsh', 'lsm', 'leh', 'lem',
+            'dsh', 'dsm', 'deh', 'dem'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        // dd($request);
+        $user = Auth::user();
+        $userId = $user->userId;
+        $vendor = Vendor::where('userId', $userId)->first();
+
+        $request_validation = $request->validate([
+            'nameInput' => 'required|string|max:255',
+            'telpInput' => 'required|string|max:255',
+        ],
+        [
+            'nameInput.required' => 'Vendor name must be filled !.',
+            'telpInput.required' => 'Telp number must be filled !',
+        ]);
+
+        $vendor->name = $request->nameInput;
+        $vendor->phone_number = $request->telpInput;
+
+        $vendor->breakfast_delivery = $request->breakfast_hour_start . ':' . $request->breakfast_minute_start . '-' .
+            $request->breakfast_hour_end . ':' . $request->breakfast_minute_end;
+        $vendor->lunch_delivery = $request->lunch_hour_start . ':' . $request->lunch_minute_start . '-' .
+            $request->lunch_hour_end . ':' . $request->lunch_minute_end;
+        $vendor->dinner_delivery = $request->dinner_hour_start . ':' . $request->dinner_minute_start . '-' .
+            $request->dinner_hour_end . ':' . $request->dinner_minute_end;
+
+        if ($request->hasFile('profilePicInput')) {
+            $file = $request->file('profilePicInput');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('asset/profile'), $filename);
+            $vendor->logo = 'asset/profile/' . $filename;
+        }
+
+        $vendor->save();
+
+        return redirect()->route('manage-profile-vendor')->with('success', 'Profile updated successfully!');
+
     }
 }
