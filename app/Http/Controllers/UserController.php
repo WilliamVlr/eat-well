@@ -87,4 +87,48 @@ class UserController extends Controller
             return response()->json(['message' => 'An error occurred: ' . $e->getMessage()], 500);
         }
     }
+
+    public function showProfile()
+    {
+        // Mengambil user yang sedang login
+        $user = Auth::user();
+
+
+        return view('manageProfile', compact('user'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        // dd($request->gender);
+
+        $user = Auth::user();
+        $userId = $user->userId;
+
+        $updated_user = User::find($userId);
+
+        // dd($updated_user);
+        $updated_user->name = $request->nameInput;
+
+        if ($request->dob_year && $request->dob_month && $request->dob_day) {
+            $updated_user->dateOfBirth = $request->dob_year . '-' . $request->dob_month . '-' . $request->dob_day . ' 00:00:00';
+        }
+
+        if ($request->hasFile('profilePicInput')) {
+            $file = $request->file('profilePicInput');
+            $filename = time() .'.'. $file->getClientOriginalExtension();
+            // dd($filename);
+            $file->move(public_path('asset/profile'), $filename);
+            $updated_user->profilePath = 'asset/profile/' . $filename;
+        }
+
+        if($request->gender === 'male'){
+            $updated_user->genderMale = 1;
+        } else{
+            $updated_user->genderMale = 0;
+        }
+
+        $updated_user->save();
+
+        return redirect()->route('manage-profile');
+    }
 }

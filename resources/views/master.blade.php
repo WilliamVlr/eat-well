@@ -64,18 +64,18 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('search') ? 'active' : '' }}"
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('caterings') ? 'active' : '' }}"
                                 href="{{ route('search') }}">Search Vendor</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('search') ? 'active' : '' }}"
-                                href="{{ route('search') }}">Favorited Catering</a>
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('favorites') ? 'active' : '' }}"
+                                href="{{ route('favorite.show') }}">Favorited Catering</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('search') ? 'active' : '' }}"
-                                href="{{ route('search') }}">Orders</a>
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('orders') ? 'active' : '' }}"
+                                href="{{ route('order-history') }}">Orders</a>
                         </li>
 
 
@@ -109,9 +109,9 @@
                     </a>
                 </div> --}}
                 <a href="/manage-profile">
-                    <div class="imgstyle m-2" style="border-radius:100%; width:50px; height:50px margin-right:20px">
-                        <img class="img-fluid" src="{{ asset('asset/catering/homepage/breakfastPreview.jpg') }}"
-                            alt="Card image " width="120px" style="border-radius: 100%">
+                    <div class="imgstyle m-2" style="border-radius:100%; margin-right:20px">
+                        <img class="" src="{{ asset(Auth::user()->profilePath) }}"
+                            alt="Card image " width="50px" height="50px" style="border-radius: 100%">
                     </div>
                 </a>
             @else
