@@ -55,15 +55,15 @@ document.addEventListener('DOMContentLoaded', function() {
             editBtn.addEventListener('click', function() {
                 setProfileEditMode(true);
                 editBtnGroup.innerHTML = `
-                    <button class="inter font-medium save-profile-btn">Save</button>
+                    <button class="inter font-medium save-profile-btn" type="submit">Save</button>
                     <button class="inter font-medium cancel-profile-btn">Cancel</button>
                 `;
                 // Save
-                editBtnGroup.querySelector('.save-profile-btn').addEventListener('click', function() {
-                    setProfileEditMode(false);
-                    editBtnGroup.innerHTML = `<button class="inter font-medium edit-data">Edit</button>`;
-                    attachEditBtnListener();
-                });
+                // editBtnGroup.querySelector('.save-profile-btn').addEventListener('click', function() {
+                //     setProfileEditMode(false);
+                //     editBtnGroup.innerHTML = `<button class="inter font-medium edit-data">Edit</button>`;
+                //     attachEditBtnListener();
+                // });
                 // Cancel
                 editBtnGroup.querySelector('.cancel-profile-btn').addEventListener('click', function() {
                     nameInput.value = originalProfile.name;

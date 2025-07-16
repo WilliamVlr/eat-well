@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>@yield('title')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    {{-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) --}}
 
     <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
 
@@ -20,7 +20,7 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-    <nav class="navbar navbar-expand-md custNavigation">
+    <nav class="navbar navbar-expand-md custNavigation w-100">
         <div class="h-100 w-100 invisible position-absolute bg-black opacity-50 z-3 nav-visibility"></div>
         <div class="container-fluid">
             <a class="navbar-brand me-auto" href="cateringHomePage">
@@ -85,17 +85,6 @@
                                 href="/about-us">Active Subscription</a>
                         </li> --}}
 
-                        @auth
-                            <a href="/manage-profile">
-                                <div class="imgstyle m-2"
-                                    style="border-radius:100%; width:50px; height:50px margin-right:20px">
-                                    <img class="img-fluid" src="{{ asset('asset/catering/homepage/breakfastPreview.jpg') }}"
-                                        alt="Card image " width="120px" style="border-radius: 100%">
-                                </div>
-                            </a>
-                        @else
-                        @endauth
-
                     </ul>
                 </div>
             </div>
@@ -108,14 +97,17 @@
 
 
             @auth
+                @php
+                    $vendor = \App\Models\Vendor::where('userId', Auth::id())->first();
+                @endphp
+
                 <!-- Jika sudah login -->
-                <div style="padding: 0.5rem 1rem; border-radius: 0.25rem; margin-right: 2vw">
-                    <a class="login-button p-0" href="profile">
-                        <button type="button" class="login_button">
-                            <i class="bi bi-gear-fill"></i> Profile
-                        </button>
-                    </a>
-                </div>
+                <a href="/manage-profile-vendor">
+                    <div class="imgstyle m-2" style="border-radius:100%; width:50px; height:50px margin-right:20px">
+                        <img class="img-fluid" src="{{ asset($vendor->logo) }}" alt="Card image " width="120px"
+                            style="border-radius: 100%">
+                    </div>
+                </a>
             @else
                 <!-- Jika belum login -->
                 <div style="padding: 0.5rem 1rem; border-radius: 0.25rem; margin-right: 2vw">

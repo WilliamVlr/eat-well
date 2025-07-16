@@ -73,9 +73,11 @@ Route::middleware(['role:customer'])->group(function () {
     Route::post('unfavorite/{vendorId}', [FavoriteController::class, 'unfavorite'])->name('unfavorite');
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorite.show')->middleware('auth');
 
-    Route::get('/manage-profile', function () {
-        return view('manageProfile');
-    })->name('manage-profile');
+    // Route::get('/manage-profile', function () {
+    //     return view('manageProfile');
+    // })->name('manage-profile');
+    Route::get('/manage-profile', [UserController::class, 'showProfile'])->name('manage-profile');
+    Route::patch('/manage-profile', [UserController::class, 'updateProfile'])->name('manage-profile.update');
 
     // Search Caterings
     Route::get('/caterings', [VendorController::class, 'search'])->name('search');
@@ -150,6 +152,9 @@ Route::middleware(['role:vendor'])->group(function () {
     Route::fallback(function () {
         return redirect()->route('cateringHomePage');
     });
+
+    Route::get('/manage-profile-vendor', [VendorController::class, 'manageProfile'])->name('manage-profile-vendor');
+    Route::patch('/manage-profile-vendor', [VendorController::class, 'updateProfile'])->name('manage-profile-vendor.update');
 });
 /* ---------------------
      ADMIN ROUTES
