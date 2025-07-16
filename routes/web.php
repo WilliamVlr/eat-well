@@ -123,6 +123,11 @@ Route::middleware(['role:customer'])->group(function () {
     Route::get('/add-address', [AddressController::class, 'create'])->name('add-address');
     Route::post('/add-address', [AddressController::class, 'store'])->name('store-address');
 
+    Route::get('/edit-address/{address}', [AddressController::class, 'edit'])->name('edit-address');
+    Route::patch('/edit-address/{address}', [AddressController::class, 'update'])->name('update-address');
+
+    Route::delete('/delete-address/{address}', [AddressController::class, 'destroy'])->name('delete-address');
+
     Route::fallback(function () {
         return redirect()->route('home');
     });

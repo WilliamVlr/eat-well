@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Address;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Order;
@@ -12,6 +13,7 @@ use App\Models\User;
 use App\Models\VendorReview;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VendorController extends Controller
 {
@@ -48,7 +50,7 @@ class VendorController extends Controller
             ->with(['user', 'order']) // Load user dan order
             ->orderBy('created_at', 'desc')
             ->get();
-            
+
         $numSold = Order::where('vendorId', $vendor->vendorId)->count();
 
         return view('ratingAndReview', compact('vendor', 'vendorReviews', 'numSold'));
@@ -125,7 +127,14 @@ class VendorController extends Controller
             ->paginate(9)
             ->appends($request->query());
 
+        Auth::check();
+        $user =  Auth::user();
+
+        if ($user) {
+            $mainAddress = Address::where('userId', $user->userId)->where('is_default', 1)->first();
+        }
+
         // Pass paginated vendors to the view
-        return view('customer.search', compact('vendors', 'all_categories'));
+        return view('customer.search', compact('vendors', 'all_categories', 'user', 'mainAddress'));
     }
 }

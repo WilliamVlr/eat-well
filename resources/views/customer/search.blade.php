@@ -25,21 +25,25 @@
                                 type="button" id="location-dropdown-button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                                 <span class="material-symbols-outlined icon-md me-1"> location_on</span>
-                                <span class="location-text"id="location-txt">Jl. Jendral Sudirman No.1 Blok D17</span>
+                                <span class="location-text"id="location-txt">{{ $mainAddress->jalan }}</span>
+
                             </button>
                             <ul class="dropdown-menu w-100" aria-labelledby="locationDropdown">
-                                <li><a class="dropdown-item location-text" href="#">Jl. Jendral Sudirman No. 1 Blok
+                                @foreach ($user->addresses as $address)
+                                    <li><a class="dropdown-item location-text" href="#" data-address-id="{{ $address->addressId }}">{{ $address->jalan }}</a></li>
+                                @endforeach
+                                {{-- <li><a class="dropdown-item location-text" href="#">Jl. Jendral Sudirman No. 1 Blok
                                         D17</a></li>
                                 <li><a class="dropdown-item location-text" href="#">Jl. Melati Raya No. 5</a></li>
                                 <li><a class="dropdown-item location-text" href="#">Jl. Mawar Indah No. 12</a></li>
                                 <li><a class="dropdown-item location-text" href="#">Jl. Kenanga No. 8</a></li>
-                                <li><a class="dropdown-item location-text" href="#">Jl. Anggrek No. 3</a></li>
+                                <li><a class="dropdown-item location-text" href="#">Jl. Anggrek No. 3</a></li> --}}
                             </ul>
                         </div>
 
                         <!-- Hidden input to hold selected value for form submission -->
                         <input type="hidden" name="selected-address" id="selected-location"
-                            value="Jl. Jendral Sudirman No.1 Blok D17">
+                            value="{{ $mainAddress->addressId }}">
                     </div>
                     {{-- Search Container --}}
                     <div class="search-container col-sm">

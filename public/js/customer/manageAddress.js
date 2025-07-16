@@ -59,6 +59,7 @@ $(document).ready(function() {
                         $('.main-address').each(function() {
                             $(this).find('.badge').css('background-color', '#909090');
                             $(this).find('.set-default-address').prop('checked', false);
+                            $(this).find('.delete-address-form').removeClass('d-none');
                         });
 
                         // 2. Set badge dan toggle untuk alamat yang baru menjadi utama.
@@ -66,6 +67,7 @@ $(document).ready(function() {
                         const $currentAddressDiv = $(`.set-default-address[data-address-id="${addressId}"]`).closest('.main-address');
                         $currentAddressDiv.find('.badge').css('background-color', '#D96323');
                         $currentAddressDiv.find('.set-default-address').prop('checked', true);
+                        $currentAddressDiv.find('.delete-address-form').addClass('d-none');
 
                         $('#successModal').modal('show');
                     } else {
@@ -95,6 +97,22 @@ $(document).ready(function() {
             // Logika jika toggle dimatikan (misalnya, pengguna mencoba menonaktifkan alamat utama -> gabisa kalo gapilih yg lain)
             $('#warningModal').modal('show');
             $this.prop('checked', true); // Pastikan toggle kembali ke kondisi 'checked' (karena tidak bisa dinonaktifkan)
+        }
+    });
+
+    let formToDelete = null;
+
+    $(document).on('click', '.delete-address-btn', function(e) {
+        e.preventDefault(); // Cegah submit langsung
+        formToDelete = $(this).closest('form'); // Simpan form yang mau dihapus
+        $('#confirmDeleteModal').modal('show'); // Tampilkan modal konfirmasi
+    });
+
+    $('#confirmDeleteBtn').on('click', function() {
+        if (formToDelete) {
+            formToDelete.submit(); // Submit form setelah user konfirmasi
+            formToDelete = null; // Reset variabel
+            $('#confirmDeleteModal').modal('hide');
         }
     });
 });

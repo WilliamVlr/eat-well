@@ -15,16 +15,16 @@ class Address extends Model
 
     protected $fillable = [
         'userId',
-        'provinsi', // Added based on your migration
+        'provinsi',
         'kota',
-        'kabupaten', // Added based on your migration
+        'kabupaten', 
         'kecamatan',
         'kelurahan',
         'kode_pos',
         'jalan',
-        'recipient_name', // Matches your migration
-        'recipient_phone', // Matches your migration
-        'is_default', // Matches your migration
+        'recipient_name',
+        'recipient_phone',
+        'is_default',
         'notes',
     ];
 
