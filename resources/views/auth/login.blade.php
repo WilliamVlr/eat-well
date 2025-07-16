@@ -34,7 +34,7 @@
                                 <label for="remember" class="form-check-label">Remember me</label>
                             </div>
 
-                            <button type="submit" class="mb-2 mt-5 w-100 gsi-material-button w-100">
+                            <button type="submit" class="mb-2 mt-5 w-100 gsi-material-button">
                                 <div class="gsi-material-button-state"></div>
                                 <div class="gsi-material-button-content-wrapper">
                                     <span class="gsi-material-button-contents">Sign in</span>
