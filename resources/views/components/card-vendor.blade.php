@@ -1,3 +1,5 @@
+@props(['vendor'])
+
 @php
     $isFavorited = auth()->check() && $vendor->favoriteVendors->contains(auth()->id());
 @endphp

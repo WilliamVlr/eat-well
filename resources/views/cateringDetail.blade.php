@@ -287,7 +287,13 @@
             <span class="item-count" style="display:none;"></span>
             <span class="price-total" style="display:none;"></span>
         </div> --}}
-        <a href="{{ route('payment.show', ['vendor' => $vendor->vendorId]) }}" class="button-order inter"
+
+        {{-- <div style="background-color: #eee; padding: 10px; margin-top: 20px;">
+            <p>Debug: Selected Address ID = {{ $selectedAddress->addressId ?? 'N/A' }}</p>
+            <p>Debug: Selected Address Jalan = {{ $selectedAddress->jalan ?? 'N/A' }}</p>
+        </div> --}}
+    
+        <a href="{{ route('payment.show', ['vendor' => $vendor->vendorId, 'address_id' => $selectedAddress->addressId]) }}" class="button-order inter"
             id="proceedToPaymentLink" style="cursor: default; pointer-events: none; text-decoration: none;">
             <span class="order-message">No Package Selected Yet.</span>
             <span class="package-count" style="display:none;"></span>

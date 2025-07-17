@@ -99,9 +99,6 @@ Route::middleware(['role:customer'])->group(function () {
     // Route::get('/order-detail', [OrderController::class, 'show'])->name('order-detail');
 
     // Order Payment
-    Route::get('/payment', function () {
-        return view('payment');
-    });
     // Route::get('/payment', function () {
     //     return view('payment');
     // });
