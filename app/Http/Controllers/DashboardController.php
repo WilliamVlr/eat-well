@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\UserActivity;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -53,7 +54,16 @@ class DashboardController extends Controller
 
         $lmprofit = 10000;
 
-        $percentageprofit = (($profit - $lmprofit) / $lmprofit) * 100;
+        
+        $percentageprofit = 0;
+        if ($lmprofit == 0) {
+            $percentageprofit = 100;
+        } else
+        {
+            $percentageprofit = (($profit - $lmprofit) / $lmprofit) * 100;
+        }
+
+        // dd($lmprofit);
 
         $profit = number_format($profit, 0, ',', '.');
 
@@ -78,6 +88,17 @@ class DashboardController extends Controller
             return Carbon::create()->month($month)->locale('id')->translatedFormat('F');
         })->toArray();
 
-        return view('adminDashboard', compact('totalPrice', 'percentage', 'profit', 'increment', 'percentageprofit', 'chartData', 'labels'));
+
+        // $logs = UserActivity::all();
+        $logs = UserActivity::limit(10)->get();
+
+
+        return view('adminDashboard', compact('totalPrice', 'percentage', 'profit', 'increment', 'percentageprofit', 'chartData', 'labels', 'logs'));
+    }
+
+    public function view_all_logs()
+    {
+        $all_logs = UserActivity::all();
+        return view('view-all-logs', compact('all_logs'));
     }
 }
