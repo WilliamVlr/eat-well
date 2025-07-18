@@ -24,7 +24,7 @@ class DeliveryStatus extends Model
     ];
 
     protected $casts = [
-        'slot' => TimeSlot::class,
+        'slot' => 'string',
         'status' => DeliveryStatuses::class,
         'deliveryDate' => 'datetime',
         'created_at' => 'datetime',

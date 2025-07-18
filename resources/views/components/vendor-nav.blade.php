@@ -15,11 +15,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
-
-
 </head>
 
-<body class="d-flex flex-column min-vh-100">
+<body class="d-flex flex-column">
     <nav class="navbar navbar-expand-md custNavigation">
         <div class="h-100 w-100 invisible position-absolute bg-black opacity-50 z-3 nav-visibility"></div>
         <div class="container-fluid">
@@ -72,30 +70,6 @@
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('manageOrder') ? 'active' : '' }}"
                                 href="/manageOrder">Orders</a>
                         </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('search') ? 'active' : '' }}"
-                                href="/search">Search</a>
-                        </li>
-
-
-
-                        {{-- <li class="nav-item">
-                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('') ? 'active' : '' }}"
-                                href="/about-us">Active Subscription</a>
-                        </li> --}}
-
-                        @auth
-                            <a href="/manage-profile">
-                                <div class="imgstyle m-2"
-                                    style="border-radius:100%; width:50px; height:50px margin-right:20px">
-                                    <img class="img-fluid" src="{{ asset('asset/catering/homepage/breakfastPreview.jpg') }}"
-                                        alt="Card image " width="120px" style="border-radius: 100%">
-                                </div>
-                            </a>
-                        @else
-                        @endauth
-
                     </ul>
                 </div>
             </div>
@@ -108,21 +82,12 @@
 
 
             @auth
-                <!-- Jika sudah login -->
-                <div style="padding: 0.5rem 1rem; border-radius: 0.25rem; margin-right: 2vw">
-                    <a class="login-button p-0" href="profile">
-                        <button type="button" class="login_button">
-                            <i class="bi bi-gear-fill"></i> Profile
-                        </button>
-                    </a>
-                </div>
-            @else
-                <!-- Jika belum login -->
-                <div style="padding: 0.5rem 1rem; border-radius: 0.25rem; margin-right: 2vw">
-                    <a class="login-button p-0" href="login">
-                        <button type="button" class="login_button">Log In</button>
-                    </a>
-                </div>
+                <a href="/manage-profile">
+                    <div class="imgstyle m-2" style="border-radius:100%; width:50px; height:50px margin-right:20px">
+                        <img class="img-fluid" src="{{ asset('asset/catering/homepage/breakfastPreview.jpg') }}"
+                            alt="Card image " width="120px" style="border-radius: 100%">
+                    </div>
+                </a>
             @endauth
 
 
@@ -130,7 +95,6 @@
                 aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
         </div>
     </nav>
 
@@ -138,7 +102,7 @@
         @yield('content')
     </div>
 
-    {{-- <footer class="bg-dark text-white py-0">
+    <footer class="bg-dark text-white py-0">
         <div class="container text-center footer-page" style="margin-top: 10px; padding: 10px">
 
             <div class="mb-2">
@@ -172,7 +136,7 @@
             </div>
 
         </div>
-    </footer> --}}
+    </footer>
 
     @yield('scripts')
     <script src="{{ asset('js/navigation.js') }}"></script>

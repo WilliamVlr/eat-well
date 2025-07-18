@@ -78,6 +78,16 @@
                                 href="{{ route('search') }}">Search Vendor</a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('search') ? 'active' : '' }}"
+                                href="{{ route('search') }}">Favorited Catering</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('search') ? 'active' : '' }}"
+                                href="{{ route('search') }}">Orders</a>
+                        </li>
+
 
                         <li class="nav-item">
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('about-us') ? 'active' : '' }}"
@@ -117,7 +127,7 @@
             @else
                 <!-- Jika belum login -->
                 <div style="padding: 0.5rem 1rem; border-radius: 0.25rem; margin-right: 2vw">
-                    <a class="login-button p-0" href="login">
+                    <a class="login-button p-0" href="/login">
                         <button type="button" class="login_button">Log In</button>
                     </a>
                 </div>
