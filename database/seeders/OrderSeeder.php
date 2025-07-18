@@ -2,14 +2,16 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 use App\Models\DeliveryStatus;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 
 class OrderSeeder extends Seeder
 {
@@ -31,7 +33,7 @@ class OrderSeeder extends Seeder
                 $grouped = [];
                 foreach ($items as $item) {
                     // Always use the enum's value
-                    $slot = $item->packageTimeSlot->value;
+                    $slot = $item->packageTimeSlot;
                     $key = $item->packageId . '-' . $slot;
                     if (!isset($grouped[$key])) {
                         $grouped[$key] = $item;

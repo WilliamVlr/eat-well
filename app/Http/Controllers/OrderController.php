@@ -26,14 +26,7 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        // $userId = Auth::check() ? Auth::user()->userId : 5;
-        $userId = Auth::id();
-        if (!$userId) {
-            // Arahkan ke halaman login atau tampilkan error
-            // return redirect()->route('login')->with('error', 'Please log in to view your cart.');
-            return redirect()->route('landingPage');
-        }
-
+        $userId = Auth::user();
         $status = $request->query('status', 'all');
         $query = $request->query('query');
         $now = Carbon::now();

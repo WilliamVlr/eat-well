@@ -105,7 +105,7 @@ class User extends Authenticatable
 
     public function vendor()
     {
-        return $this->hasMany(Vendor::class, 'userId', 'userId');
+        return $this->hasOne(Vendor::class, 'userId', 'userId');
     }
 
     public function orders()
@@ -127,5 +127,11 @@ class User extends Authenticatable
     public function vendorReviews()
     {
         return $this->hasMany(VendorReview::class, 'userId', 'userId');
+    }
+
+    public function defaultAddress()
+    {
+        return $this->hasOne(\App\Models\Address::class, 'userId', 'userId')
+            ->where('is_default', true);
     }
 }
