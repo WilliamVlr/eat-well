@@ -21,7 +21,7 @@ class OrderSeeder extends Seeder
     public function run(): void
     {
         Order::factory()
-            ->count(20)
+            ->count(100)
             ->create()
             ->each(function ($order) {
                 $items = OrderItem::factory()

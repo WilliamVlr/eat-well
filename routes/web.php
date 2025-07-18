@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\OrderController;
@@ -20,6 +22,8 @@ use App\Http\Controllers\Socialite\ProviderCallbackController;
 use App\Http\Controllers\Socialite\ProviderRedirectController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use App\Http\Middleware\RoleMiddleware;
+
+Route::post('/lang', LanguageController::class);
 
 /* --------------------
      GUEST ROUTES
@@ -84,13 +88,12 @@ Route::middleware(['role:customer'])->group(function () {
     Route::get('/caterings', [VendorController::class, 'search'])->name('search');
 
     // Catering Details
+    Route::get('/catering-detail/{vendor}/rating-and-review', [VendorController::class, 'review'])->name('rate-and-review');
+
     Route::get('/catering-detail/{vendor}', [VendorController::class, 'show'])->name('catering-detail');
     Route::post('/update-order-summary', [CartController::class, 'updateOrderSummary'])->name('update.order.summary');
     Route::get('/load-cart', [CartController::class, 'loadCart'])->name('load.cart');
 
-    Route::get('/catering-detail/rating-and-review', function () {
-        return view('ratingAndReview');
-    })->name('rate-and-review');
 
     // Order History
     Route::get('/orders', [OrderController::class, 'index'])->name('order-history');
@@ -99,9 +102,6 @@ Route::middleware(['role:customer'])->group(function () {
     // Route::get('/order-detail', [OrderController::class, 'show'])->name('order-detail');
 
     // Order Payment
-    Route::get('/payment', function () {
-        return view('payment');
-    });
     // Route::get('/payment', function () {
     //     return view('payment');
     // });
@@ -114,13 +114,19 @@ Route::middleware(['role:customer'])->group(function () {
     Route::get('/user/wellpay-balance', [OrderController::class, 'getUserWellpayBalance'])->name('user.wellpay.balance');
 
     // Manage Address
-    Route::get('/manage-address', function () {
-        return view('ManageAddress');
-    });
+    // Route::get('/manage-address', function () {
+    //     return view('ManageAddress');
+    // });
 
-    Route::get('/add-address', function () {
-        return view('addAddress');
-    });
+    Route::get('/manage-address', [AddressController::class, 'index'])->name('manage-address');
+    Route::post('/set-default-address', [AddressController::class, 'setDefaultAddress'])->name('set-default-address');
+    Route::get('/add-address', [AddressController::class, 'create'])->name('add-address');
+    Route::post('/add-address', [AddressController::class, 'store'])->name('store-address');
+
+    Route::get('/edit-address/{address}', [AddressController::class, 'edit'])->name('edit-address');
+    Route::patch('/edit-address/{address}', [AddressController::class, 'update'])->name('update-address');
+
+    Route::delete('/delete-address/{address}', [AddressController::class, 'destroy'])->name('delete-address');
 
     Route::fallback(function () {
         return redirect()->route('home');

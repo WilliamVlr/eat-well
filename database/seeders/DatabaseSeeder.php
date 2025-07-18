@@ -26,8 +26,8 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            AddressSeeder::class,
             UserSeeder::class,
+            AddressSeeder::class,
             PackageCategorySeeder::class,
             CuisineTypeSeeder::class,
             PaymentMethodSeeder::class,
@@ -35,7 +35,9 @@ class DatabaseSeeder extends Seeder
             PackageSeeder::class,
             PackageCuisineSeeder::class,
             OrderSeeder::class,
-            OrderItemSeeder::class
+            OrderItemSeeder::class,
+            VendorPreviewSeeder::class,
+            VendorReviewSeeder::class,          
         ]);
 
     }

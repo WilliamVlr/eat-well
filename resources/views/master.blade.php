@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 
+@php
+    app()->setLocale(session()->get('lang', 'en'));
+@endphp
+
 <head>
     <meta charset="UTF-8">
     <title>@yield('title')</title>
@@ -14,8 +18,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
-
-
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -40,14 +42,22 @@
                 </ul>
             </div> --}}
 
-            <div class="dropdown-wrapper">
+            {{-- <div class="dropdown-wrapper">
                 <select id="languageSelector" style="text-align: center; margin-left: 30px">
                     <option value="en">EN</option>
                     <option value="id">ID</option>
                 </select>
-            </div>
+            </div> --}}
 
-
+            <form action="/lang" method="post">
+                @csrf
+                <div class="dropdown-wrapper">
+                    <select name="lang" id="languageSelector" style="text-align: center; margin-left: 30px;" onchange="this.form.submit()">
+                        <option value="en" @if (app()->getLocale() === 'en') selected @endif>EN</option>
+                        <option value="id" @if (app()->getLocale() === 'id') selected @endif>ID</option>
+                    </select>
+                </div>
+            </form>
 
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
                 aria-labelledby="offcanvasNavbarLabel">
@@ -60,7 +70,7 @@
                     <ul class="navbar-nav flex-grow-1 pe-3">
                         <li class="nav-item">
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('home') ? 'active' : '' }}"
-                                href="/home">Home</a>
+                                href="/home">{{ __('navigation.home') }}</a>
                         </li>
 
                         <li class="nav-item">

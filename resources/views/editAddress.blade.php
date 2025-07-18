@@ -20,8 +20,9 @@
             food could be delivered? This page will help you to manage your multiple of your addresses.
         </p>
 
-        <form action="{{ route('store-address') }}" method="POST" id="addressForm" novalidate>
+        <form action="{{ route('update-address', $address->addressId) }}" method="POST" id="addressForm" novalidate>
             @csrf
+            @method('PATCH')
             <div class="row justify-content-center mb-4">
                 <div class="col-sm-3">
                     <select id="provinsi" class="form-select form-select-sm" aria-label="Small select example"
@@ -61,7 +62,7 @@
                 <div class="col-sm-9">
                     <div class="mb-3">
                         <input class="form-control form-control-sm" type="text" placeholder="Alamat"
-                            aria-label=".form-control-sm example" name="jalan" required maxlength="255">
+                            aria-label=".form-control-sm example" name="jalan" required maxlength="255" value="{{ $address->jalan }}">
                         <div class="invalid-feedback">
                             Alamat tidak boleh kosong.
                         </div>
@@ -69,9 +70,9 @@
                 </div>
                 <div class="col-sm-3">
                     <input class="form-control form-control-sm" type="text" placeholder="Kode pos"
-                        aria-label=".form-control-sm example" name="kode_pos" required pattern="[0-9]{5}" minlength="5" maxlength="5">
-                    <div class="invalid-feedback"
-                        data-message-required="Kode pos tidak boleh kosong."
+                        aria-label=".form-control-sm example" name="kode_pos" required pattern="[0-9]{5}" minlength="5"
+                        maxlength="5" value="{{ $address->kode_pos }}">
+                    <div class="invalid-feedback" data-message-required="Kode pos tidak boleh kosong."
                         data-message-pattern="Kode pos harus 5 digit angka.">
                     </div>
                 </div>
@@ -81,7 +82,7 @@
                 <div class="col-sm-12">
                     <div class="mb-3">
                         <input class="form-control form-control-sm" type="text" placeholder="Catatan (Opsional)"
-                            aria-label=".form-control-sm example" name="notes" maxlength="255">
+                            aria-label=".form-control-sm example" name="notes" maxlength="255" value="{{ $address->notes ? $address->notes : '' }}">
                         <div class="invalid-feedback">
                             Catatan maksimal 255 karakter.
                         </div>
@@ -93,7 +94,7 @@
                 <div class="col-sm-3">
                     <div class="mb-3">
                         <input class="form-control form-control-sm" type="text" placeholder="Nama Penerima"
-                            aria-label=".form-control-sm example" name="recipient_name" required maxlength="100">
+                            aria-label=".form-control-sm example" name="recipient_name" required maxlength="100" value="{{ $address->recipient_name }}">
                         <div class="invalid-feedback">
                             Nama penerima tidak boleh kosong.
                         </div>
@@ -103,9 +104,9 @@
                 <div class="col-sm-3">
                     <div class="mb-3">
                         <input class="form-control form-control-sm" type="text" placeholder="Nomor Telepon"
-                            aria-label=".form-control-sm example" name="recipient_phone" required pattern="[0-9]+" minlength="10" maxlength="15">
-                        <div class="invalid-feedback"
-                            data-message-required="Nomor telepon tidak boleh kosong."
+                            aria-label=".form-control-sm example" name="recipient_phone" required pattern="[0-9]+"
+                            minlength="10" maxlength="15" value="{{ $address->recipient_phone }}">
+                        <div class="invalid-feedback" data-message-required="Nomor telepon tidak boleh kosong."
                             data-message-pattern="Nomor telepon harus angka."
                             data-message-minlength="Nomor telepon minimal 10 digit."
                             data-message-maxlength="Nomor telepon maksimal 15 digit.">
@@ -151,9 +152,11 @@
             } else if (inputElement.validity.patternMismatch) {
                 feedbackElement.textContent = feedbackElement.dataset.messagePattern || 'Format tidak sesuai.';
             } else if (inputElement.validity.tooShort) {
-                feedbackElement.textContent = feedbackElement.dataset.messageMinlength || `Minimal ${inputElement.minLength} karakter.`;
+                feedbackElement.textContent = feedbackElement.dataset.messageMinlength ||
+                    `Minimal ${inputElement.minLength} karakter.`;
             } else if (inputElement.validity.tooLong) {
-                feedbackElement.textContent = feedbackElement.dataset.messageMaxlength || `Maksimal ${inputElement.maxLength} karakter.`;
+                feedbackElement.textContent = feedbackElement.dataset.messageMaxlength ||
+                    `Maksimal ${inputElement.maxLength} karakter.`;
             } else {
                 feedbackElement.textContent = ''; // Hapus pesan jika valid
             }
@@ -200,8 +203,11 @@
                 let formValid = true;
 
                 // Loop melalui semua elemen form yang 'required' atau punya validasi kustom
-                document.querySelectorAll('#addressForm [required], #addressForm [pattern], #addressForm [minlength], #addressForm [maxlength]').forEach(inputElement => {
-                    if (!inputElement.checkValidity()) { // checkValidity() akan mengevaluasi semua aturan HTML5
+                document.querySelectorAll(
+                    '#addressForm [required], #addressForm [pattern], #addressForm [minlength], #addressForm [maxlength]'
+                    ).forEach(inputElement => {
+                    if (!inputElement
+                    .checkValidity()) { // checkValidity() akan mengevaluasi semua aturan HTML5
                         inputElement.classList.add('is-invalid');
                         const feedbackElement = inputElement.nextElementSibling;
                         if (feedbackElement && feedbackElement.classList.contains('invalid-feedback')) {
@@ -235,7 +241,8 @@
 
             for (let i = currentIndex + 1; i < dropdownOrder.length; i++) {
                 const selectElement = document.getElementById(dropdownOrder[i]);
-                selectElement.innerHTML = `<option value="">Pilih ${dropdownOrder[i].charAt(0).toUpperCase() + dropdownOrder[i].slice(1)}</option>`;
+                selectElement.innerHTML =
+                    `<option value="">Pilih ${dropdownOrder[i].charAt(0).toUpperCase() + dropdownOrder[i].slice(1)}</option>`;
                 selectElement.disabled = true; // Disable dropdown
                 selectElement.classList.remove('is-invalid'); // Remove validation feedback
 
@@ -296,7 +303,8 @@
             if (kotaID) {
                 kecamatanSelect.disabled = false; // Enable kecamatan dropdown
                 const data = await fetchData(
-                    `https://api.binderbyte.com/wilayah/kecamatan?api_key=${API_KEY}&id_kabupaten=${kotaID}`);
+                    `https://api.binderbyte.com/wilayah/kecamatan?api_key=${API_KEY}&id_kabupaten=${kotaID}`
+                    );
                 data.forEach(kec => {
                     kecamatanSelect.innerHTML += `<option value="${kec.id}">${kec.name}</option>`;
                 });
@@ -338,6 +346,161 @@
             kelNameInput.value = this.options[this.selectedIndex].text;
             // Tidak perlu reset di bawahnya karena ini yang paling bawah
             this.dispatchEvent(new Event('input'));
+        });
+
+
+
+
+
+
+        const currentAddress = {
+            provinsi_name: "{{ $address->provinsi ?? '' }}",
+            kota_name: "{{ $address->kota ?? '' }}",
+            kecamatan_name: "{{ $address->kecamatan ?? '' }}",
+            kelurahan_name: "{{ $address->kelurahan ?? '' }}",
+            // Ini SANGAT PENTING jika Anda menyimpan ID juga di DB Anda
+            // Jika Anda menyimpan ID, gunakan ini untuk pre-fill yang lebih akurat
+            provinsi_id: "{{ $address->provinsi_id ?? '' }}",
+            kota_id: "{{ $address->kota_id ?? '' }}",
+            kecamatan_id: "{{ $address->kecamatan_id ?? '' }}",
+            kelurahan_id: "{{ $address->kelurahan_id ?? '' }}"
+        };
+
+        async function loadAndSelectDropdowns() {
+            const provinsiSelect = document.getElementById('provinsi');
+            const kotaSelect = document.getElementById('kota');
+            const kecamatanSelect = document.getElementById('kecamatan');
+            const kelurahanSelect = document.getElementById('kelurahan');
+
+            // 1. Load Provinsi
+            const provData = await fetchData(`https://api.binderbyte.com/wilayah/provinsi?api_key=${API_KEY}`);
+            provData.forEach(prov => {
+                provinsiSelect.innerHTML += `<option value="${prov.id}">${prov.name}</option>`;
+            });
+
+            let selectedProvId = '';
+            // Prioritaskan memilih berdasarkan ID jika tersedia (Lebih akurat)
+            if (currentAddress.provinsi_id) {
+                selectedProvId = currentAddress.provinsi_id;
+                provinsiSelect.value = selectedProvId;
+            } else if (currentAddress.provinsi_name) { // Fallback jika hanya nama yang tersimpan
+                for (let i = 0; i < provinsiSelect.options.length; i++) {
+                    if (provinsiSelect.options[i].text === currentAddress.provinsi_name) {
+                        selectedProvId = provinsiSelect.options[i].value;
+                        provinsiSelect.value = selectedProvId;
+                        break;
+                    }
+                }
+            }
+            // Pastikan hidden input terisi dengan nama yang benar setelah memilih
+            if (provinsiSelect.selectedIndex !== -1) { // Pastikan ada yang terpilih
+                document.getElementById('provinsi_name').value = provinsiSelect.options[provinsiSelect.selectedIndex]
+                    .text;
+            }
+
+
+            // 2. Load Kota jika provinsi sudah dipilih
+            let selectedKotaId = '';
+            if (selectedProvId) {
+                kotaSelect.disabled = false;
+                // Kosongkan dulu sebelum mengisi
+                kotaSelect.innerHTML = '<option value="">Pilih Kota</option>';
+                const kotaData = await fetchData(
+                    `https://api.binderbyte.com/wilayah/kabupaten?api_key=${API_KEY}&id_provinsi=${selectedProvId}`);
+                kotaData.forEach(kota => {
+                    kotaSelect.innerHTML += `<option value="${kota.id}">${kota.name}</option>`;
+                });
+
+                if (currentAddress.kota_id) {
+                    selectedKotaId = currentAddress.kota_id;
+                    kotaSelect.value = selectedKotaId;
+                } else if (currentAddress.kota_name) {
+                    for (let i = 0; i < kotaSelect.options.length; i++) {
+                        if (kotaSelect.options[i].text === currentAddress.kota_name) {
+                            selectedKotaId = kotaSelect.options[i].value;
+                            kotaSelect.value = selectedKotaId;
+                            break;
+                        }
+                    }
+                }
+                if (kotaSelect.selectedIndex !== -1) {
+                    document.getElementById('kota_name').value = kotaSelect.options[kotaSelect.selectedIndex].text;
+                }
+            } else {
+                resetAndDisableLowerDropdowns('provinsi');
+            }
+
+            // 3. Load Kecamatan jika kota sudah dipilih
+            let selectedKecId = '';
+            if (selectedKotaId) {
+                kecamatanSelect.disabled = false;
+                // Kosongkan dulu sebelum mengisi
+                kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+                const kecData = await fetchData(
+                    `https://api.binderbyte.com/wilayah/kecamatan?api_key=${API_KEY}&id_kabupaten=${selectedKotaId}`
+                    );
+                kecData.forEach(kec => {
+                    kecamatanSelect.innerHTML += `<option value="${kec.id}">${kec.name}</option>`;
+                });
+
+                if (currentAddress.kecamatan_id) {
+                    selectedKecId = currentAddress.kecamatan_id;
+                    kecamatanSelect.value = selectedKecId;
+                } else if (currentAddress.kecamatan_name) {
+                    for (let i = 0; i < kecamatanSelect.options.length; i++) {
+                        if (kecamatanSelect.options[i].text === currentAddress.kecamatan_name) {
+                            selectedKecId = kecamatanSelect.options[i].value;
+                            kecamatanSelect.value = selectedKecId;
+                            break;
+                        }
+                    }
+                }
+                if (kecamatanSelect.selectedIndex !== -1) {
+                    document.getElementById('kecamatan_name').value = kecamatanSelect.options[kecamatanSelect
+                        .selectedIndex].text;
+                }
+            } else {
+                resetAndDisableLowerDropdowns('kota');
+            }
+
+            // 4. Load Kelurahan jika kecamatan sudah dipilih
+            let selectedKelId = '';
+            if (selectedKecId) {
+                kelurahanSelect.disabled = false;
+                // Kosongkan dulu sebelum mengisi
+                kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
+                const kelData = await fetchData(
+                    `https://api.binderbyte.com/wilayah/kelurahan?api_key=${API_KEY}&id_kecamatan=${selectedKecId}`);
+                kelData.forEach(kel => {
+                    kelurahanSelect.innerHTML += `<option value="${kel.id}">${kel.name}</option>`;
+                });
+
+                if (currentAddress.kelurahan_id) {
+                    selectedKelId = currentAddress.kelurahan_id;
+                    kelurahanSelect.value = selectedKelId;
+                } else if (currentAddress.kelurahan_name) {
+                    for (let i = 0; i < kelurahanSelect.options.length; i++) {
+                        if (kelurahanSelect.options[i].text === currentAddress.kelurahan_name) {
+                            selectedKelId = kelurahanSelect.options[i].value;
+                            kelurahanSelect.value = selectedKelId;
+                            break;
+                        }
+                    }
+                }
+                if (kelurahanSelect.selectedIndex !== -1) {
+                    document.getElementById('kelurahan_name').value = kelurahanSelect.options[kelurahanSelect
+                        .selectedIndex].text;
+                }
+            } else {
+                resetAndDisableLowerDropdowns('kecamatan');
+            }
+        }
+
+        // Panggil fungsi untuk memuat dan memilih dropdown saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAndSelectDropdowns();
+            // Inisialisasi event listener setelah dropdown diisi
+            attachDropdownListeners();
         });
     </script>
 @endsection
