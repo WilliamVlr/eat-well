@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('components.vendor-nav')
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+@section('title', 'EatWell | My Packages')
+
+@section('css')
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Catering Manage Menu</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
@@ -17,7 +15,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            /* min-height: 100vh; */
             flex-direction: column;
             color: white;
         }
@@ -184,9 +182,9 @@
             vertical-align: middle;
         }
     </style>
-</head>
+@endsection
 
-<body>
+@section('content')
     {{-- <x-vendor-nav></x-vendor-nav> --}}
     <div class="heading-title">Find your Package</div>
     <div class="text-muted-subheading">You can edit our previous and add your new package to your catering.</div>
@@ -256,8 +254,8 @@
                             </td>
                             <td>
                                 @if ($package->imgPath)
-                                    <img src="{{ asset('asset/menus/' . $package->imgPath) }}"
-                                        alt="{{ $package->name }}" width="100">
+                                    <img src="{{ asset('asset/menus/' . $package->imgPath) }}" alt="{{ $package->name }}"
+                                        width="100">
                                 @else
                                     N/A
                                 @endif
@@ -283,8 +281,8 @@
                                     <i class="bi bi-pencil-fill"></i>
                                 </button>
 
-                                <button class="btn btn-danger btn-sm"
-                                    onclick="deletePackage({{ $package->packageId }})" title="Delete">
+                                <button class="btn btn-danger btn-sm" onclick="deletePackage({{ $package->packageId }})"
+                                    title="Delete">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
         </div>
@@ -294,8 +292,8 @@
         </tbody>
         </table>
     </div>
-    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#packageModal"
-        onclick="openAddModal()">Add Package</button>
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#packageModal" onclick="openAddModal()">Add
+        Package</button>
 
     </div>
 
@@ -303,8 +301,7 @@
     <div class="modal fade" id="packageModal" tabindex="-1" aria-labelledby="packageModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form id="packageForm" method="post" action="{{ route('packages.store') }}"
-                    enctype="multipart/form-data">
+                <form id="packageForm" method="post" action="{{ route('packages.store') }}" enctype="multipart/form-data">
                     @csrf
                     {{-- @method('put') --}}
                     <div class="modal-header">
@@ -365,8 +362,8 @@
                         <div class="row mt-3">
                             <div class="col">
                                 <label for="averageCalories" class="form-label">Average Calory</label>
-                                <input type="number" name="averageCalories" id="averageCalories"
-                                    class="form-control" step="0.01" min="0">
+                                <input type="number" name="averageCalories" id="averageCalories" class="form-control"
+                                    step="0.01" min="0">
                             </div>
                         </div>
 
@@ -397,7 +394,9 @@
         <div class="carousel-wrapper" id="carousel-wrapper"></div>
         <input type="file" id="imageInput" accept="image/*" />
     </div>
+@endsection
 
+@section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -890,6 +889,4 @@
         });
         renderAddButtons();
     </script>
-</body>
-
-</html>
+@endsection

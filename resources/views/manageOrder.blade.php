@@ -1,22 +1,15 @@
-{{-- resources/views/manageOrder.blade.php --}}
-<!DOCTYPE html>
-<html lang="en">
+@extends('components.vendor-nav')
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+@section('title', 'EatWell | Vendor Orders')
+
+@section('css')
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Manage Orders</title>
-
-    {{-- Bootstrap --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-
     <style>
         /* ----------- WARNA & KOMPOSISI DASAR ----------- */
         body {
             background: #0b3d2e;
             color: #fff;
-            margin-top: 80px
         }
 
         h1 {
@@ -119,42 +112,46 @@
             box-shadow: 0 0 6px #44bb4488
         }
     </style>
-</head>
+@endsection
 
-<body class="p-4">
+@section('content')
+    <main class="container py-3">
 
-    {{-- ---------- HEADER (search & filter) ---------- --}}
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
-        <h1 class="mb-3 mb-md-0">Manage Orders</h1>
-        <div class="d-flex gap-2">
-            <input id="search-input" type="text" class="form-control form-control-sm"
-                placeholder="Search by Order #" />
-            <select id="package-filter" class="form-select form-select-sm">
-                <option value="all">All Packages</option>
-                @foreach ($packages as $pkg)
-                    <option value="{{ $pkg }}">{{ $pkg }}</option>
-                @endforeach
-            </select>
+        {{-- ---------- HEADER (search & filter) ---------- --}}
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+            <h1 class="mb-3 mb-md-0">Manage Orders</h1>
+            <div class="d-flex gap-2">
+                <input id="search-input" type="text" class="form-control form-control-sm"
+                    placeholder="Search by Order #" />
+                <select id="package-filter" class="form-select form-select-sm">
+                    <option value="all">All Packages</option>
+                    @foreach ($packages as $pkg)
+                        <option value="{{ $pkg }}">{{ $pkg }}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
-    </div>
 
-    {{-- ---------- TAB sebagai LINK ---------- --}}
-    <div class="mb-4">
-        <a href="{{ route('orders.index', ['week' => 'current']) }}"
-            class="btn tab-btn {{ request('week', 'current') === 'current' ? 'active' : '' }} me-2">
-            This Week
-        </a>
+        {{-- ---------- TAB sebagai LINK ---------- --}}
+        <div class="mb-4">
+            <a href="{{ route('orders.index', ['week' => 'current']) }}"
+                class="btn tab-btn {{ request('week', 'current') === 'current' ? 'active' : '' }} me-2">
+                This Week
+            </a>
 
-        <a href="{{ route('orders.index', ['week' => 'next']) }}"
-            class="btn tab-btn {{ request('week') === 'next' ? 'active' : '' }}">
-            Next Week
-        </a>
-    </div>
+            <a href="{{ route('orders.index', ['week' => 'next']) }}"
+                class="btn tab-btn {{ request('week') === 'next' ? 'active' : '' }}">
+                Next Week
+            </a>
+        </div>
 
-    <p id="empty-msg" class="text-center fw-bold py-5" style="display:none;">No Orders Yet</p>
+        <p id="empty-msg" class="text-center fw-bold py-5" style="display:none;">No Orders Yet</p>
 
-    <div class="row g-4" id="order-container"></div>
+        <div class="row g-4" id="order-container"></div>
+    </main>
+@endsection
 
+@section('scripts')
     {{-- ---------- SCRIPT ---------- --}}
     <script>
         const orders = @json($orders); // sudah di‑filter oleh controller
@@ -353,6 +350,4 @@
     {{-- SweetAlert & Bootstrap JS --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> {{-- <<< NEW --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+@endsection
