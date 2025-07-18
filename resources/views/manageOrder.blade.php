@@ -140,12 +140,12 @@
 
     {{-- ---------- TAB sebagai LINK ---------- --}}
     <div class="mb-4">
-        <a href="{{ route('vendor.orders', ['week' => 'current']) }}"
+        <a href="{{ route('orders.index', ['week' => 'current']) }}"
             class="btn tab-btn {{ request('week', 'current') === 'current' ? 'active' : '' }} me-2">
             This Week
         </a>
 
-        <a href="{{ route('vendor.orders', ['week' => 'next']) }}"
+        <a href="{{ route('orders.index', ['week' => 'next']) }}"
             class="btn tab-btn {{ request('week') === 'next' ? 'active' : '' }}">
             Next Week
         </a>
@@ -262,8 +262,18 @@
 
                 shown++;
                 const deliveryMap = {};
+                const today = new Date().toISOString().split('T')[0];
+
                 order.delivery_statuses.forEach(ds => {
-                    deliveryMap[ds.slot.toLowerCase()] = ds.status;
+                    try {
+                        console.log(ds);
+                        const dsDate = ds.delivery_date.split('T')[0];
+                        if (dsDate === today) {
+                            deliveryMap[ds.slot] = ds.status;
+                        }
+                    } catch (e) {
+                        console.warn('Invalid delivery_date found:', ds.delivery_date);
+                    }
                 });
 
                 let mealSections = '';

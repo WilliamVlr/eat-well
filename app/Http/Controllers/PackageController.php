@@ -15,9 +15,7 @@ class PackageController extends Controller
     // Menampilkan semua package
     public function index()
     {
-        // $vendorId = Auth::id();
-        // $vendorId = 24;
-        $vendorId = Auth::user()->vendor->vendorId ?? 24;
+        $vendorId = Auth::user()->vendor->vendorId;
 
         $packages = Package::with('cuisineTypes', 'category')
             ->where('vendorId', $vendorId)
@@ -32,19 +30,24 @@ class PackageController extends Controller
     {
         // dd($request);
         $validated = $request->validate([
-            'categoryId'       => 'required|integer',
-            'vendorId'         => 'nullable|integer',
-            'name'             => 'required|string|max:255',
+            'categoryId' => 'required|integer|exists:package_categories,categoryId',
+            'name' => 'required|string|max:255',
 
-            'averageCalories'  => 'nullable|numeric|gt:0',
-            'breakfastPrice'   => 'nullable|numeric|gt:0',
-            'lunchPrice'       => 'nullable|numeric|gt:0',
-            'dinnerPrice'      => 'nullable|numeric|gt:0',
+            'averageCalories' => 'nullable|numeric|gt:0',
+            'breakfastPrice' => 'nullable|numeric|gt:0',
+            'lunchPrice' => 'nullable|numeric|gt:0',
+            'dinnerPrice' => 'nullable|numeric|gt:0',
 
-            'menuPDFPath'      => 'nullable|file|mimes:pdf',
-            'imgPath'          => 'nullable|image|mimes:jpeg,png,jpg',
+            'menuPDFPath' => 'nullable|file|mimes:pdf',
+            'imgPath' => 'nullable|image|mimes:jpeg,png,jpg',
+        ], [
+            'categoryId.required' => 'Package category is required',
+            'categoryId.exists' => 'Selected category does not exist in the database',
+            'name.required' => 'Package name required',
         ]);
-        $validated['vendorId'] = Auth::id() ?? 24;
+
+        $venAcc = Auth::user();
+        $validated['vendorId'] = $venAcc->vendor->vendorId;
 
         // Upload file PDF ke public/asset/menus
         if ($request->hasFile('menuPDFPath')) {
@@ -63,18 +66,18 @@ class PackageController extends Controller
         }
 
 
-        // Ambil cuisine_types terpisah
-        $cuisineTypes = $validated['cuisine_types'] ?? [];
+        // // Ambil cuisine_types terpisah
+        // $cuisineTypes = $validated['cuisine_types'] ?? [];
 
-        // Hapus dari validated array
-        unset($validated['cuisine_types']);
+        // // Hapus dari validated array
+        // unset($validated['cuisine_types']);
 
         // Simpan ke database (tanpa cuisine_types)
         $newpackage = Package::create($validated);
 
-        if (!empty($cuisineTypes)) {
-            $newpackage->cuisineTypes()->sync($cuisineTypes);
-        }
+        // if (!empty($cuisineTypes)) {
+        //     $newpackage->cuisineTypes()->sync($cuisineTypes);
+        // }
 
         return redirect(route('manageCateringPackage'));
     }
@@ -82,7 +85,14 @@ class PackageController extends Controller
     // Menghapus package berdasarkan ID
     public function destroy($id)
     {
+        $user = Auth::user();
+        $vendor = $user->vendor;
         $package = Package::findOrFail($id);
+
+        if (!$vendor || $package->vendorId !== $vendor->vendorId) {
+            abort(403, 'Unauthorized');
+        }
+
         $package->delete();
 
         return response()->json([
@@ -94,25 +104,46 @@ class PackageController extends Controller
 
     public function update(Request $request, $id)
     {
-        $validated = $request->validate([
-            'name'            => 'required|string|max:255',
-            'categoryId'      => 'required|integer',
-
-            'breakfastPrice'  => 'nullable|decimal:0,2|gte:0',
-            'lunchPrice'      => 'nullable|decimal:0,2|gte:0',
-            'dinnerPrice'     => 'nullable|decimal:0,2|gte:0',
-            'averageCalories' => 'nullable|decimal:0,2|gte:0',
-
-            'menuPDFPath'     => 'nullable|file|mimes:pdf',
-            'imgPath'         => 'nullable|image|mimes:jpeg,png,jpg',
-
-            'cuisine_types'   => 'nullable|array',
-            'cuisine_types.*' => 'exists:cuisine_types,cuisineId',
-        ]);
-
-
+        $user = Auth::user();
+        $vendorId = $user->vendor->vendorId;
         $package = Package::findOrFail($id);
 
+        // Ownership check
+        if ($vendorId != $package->vendorId) {
+            abort(403, 'Unauthorized. You cannot edit a package that is not yours.');
+        }
+
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'categoryId' => 'required|integer|exists:package_categories,categoryId',
+
+            'breakfastPrice' => 'nullable|decimal:0,2|gte:0',
+            'lunchPrice' => 'nullable|decimal:0,2|gte:0',
+            'dinnerPrice' => 'nullable|decimal:0,2|gte:0',
+            'averageCalories' => 'nullable|decimal:0,2|gte:0',
+
+            'menuPDFPath' => 'nullable|file|mimes:pdf',
+            'imgPath' => 'nullable|image|mimes:jpeg,png,jpg',
+
+            'cuisine_types' => 'nullable|array',
+            'cuisine_types.*' => 'exists:cuisine_types,cuisineId',
+        ], [
+            'categoryId.required' => 'Package category is required',
+            'categoryId.exists' => 'Selected category is invalid or not found',
+
+            'name.required' => 'Package name required',
+            'name.max' => 'Package name maximal 255 characters',
+
+            'breakfastPrice.decimal' => 'Breakfast price must be numeric',
+            'breakfastPrice.gte' => 'Breakfast price must be greater than or equal to 0',
+
+            'lunchPrice.decimal' => 'Lunch price must be numeric',
+            'lunchPrice.gte' => 'Lunch price must be greater than or equal to 0',
+
+            'dinnerPrice.decimal' => 'Dinner price must be numeric',
+            'dinnerPrice.gte' => 'Dinner price must be greater than or equal to 0',
+        ]);
         // Upload file PDF ke public/asset/menus
         if ($request->hasFile('menuPDFPath')) {
             $menuFile = $request->file('menuPDFPath');

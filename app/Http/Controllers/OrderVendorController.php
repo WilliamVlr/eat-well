@@ -16,14 +16,30 @@ class OrderVendorController extends Controller
     public function cancel(Order $order)
     {
         // pastikan vendor yang login memang pemilik pesanan
-        if ($order->vendorId !== (Auth::user()->vendor->vendorId ?? 73)) {
+        if ($order->vendorId !== (Auth::user()->vendor->vendorId)) {
             abort(403);
         }
+
+        if ($order->isCancelled) {
+            return response()->json(['success' => false, 'message' => 'Order already canceled.'], 400);
+        }
+
+        if ($order->endDate <= today()) {
+            return response()->json(['success' => false, 'message' => 'Completed orders cannot be canceled.'], 400);
+        }
+
+        if ($order->startDate <= today()) {
+            return response()->json(['success' => false, 'message' => 'Only upcoming orders can be canceled.'], 400);
+        }
+
 
         $order->isCancelled = 1;
         $order->save();
 
-        return response()->json(['success' => true]);
+        // $order->orderItems()->delete();
+        $order->deliveryStatuses()->delete();
+
+        return response()->json(['success' => true], 200);
     }
 
     /* ------------------------------------------------------------
@@ -35,7 +51,7 @@ class OrderVendorController extends Controller
 
         return $which === 'next'
             ? [$monday->copy()->addWeek(), $monday->copy()->endOfWeek()->addWeek()]
-            : [$monday,                    $monday->copy()->endOfWeek()];
+            : [$monday, $monday->copy()->endOfWeek()];
     }
 
     /* ------------------------------------------------------------
@@ -43,9 +59,14 @@ class OrderVendorController extends Controller
      * ---------------------------------------------------------- */
     public function index(Request $request)
     {
-        $vendor = Auth::user()->vendor ?? Vendor::find(73);
-        $vendorId   = Auth::user()->vendor->vendorId ?? 73;
-        $whichWeek  = $request->query('week', 'current');       // current | next
+        $validated = $request->validate([
+            'week' => 'nullable|string|in:current,next',
+        ]);
+
+        $vendor = Auth::user()->vendor;
+        $vendorId = $vendor->vendorId;
+
+        $whichWeek = $request->query('week', 'current');       // current | next
         [$from, $to] = $this->weekBounds($whichWeek);
 
         $orders = Order::with([
@@ -59,17 +80,17 @@ class OrderVendorController extends Controller
             ->whereDate('startDate', '<=', $to)
             ->get()
             ->map(function ($order) {
-                $addr = $order->user->defaultAddress;
+                // $addr = $order->user->defaultAddress;
 
                 return [
-                    'id'         => $order->orderId,
-                    'startDate'  => Carbon::parse($order->startDate)->format('Y-m-d'),
+                    'id' => $order->orderId,
+                    'startDate' => Carbon::parse($order->startDate)->format('Y-m-d'),
 
                     'user' => [
-                        'name'    => $order->user->name ?? 'Guest',
-                        'phone'   => $addr->recipient_phone ?? '-',
-                        'address' => $addr->jalan ?? '-',
-                        'notes'   => $addr->notes ?? '-',
+                        'name' => $order->recipient_name,
+                        'phone' => $order->recipient_phone,
+                        'address' => $order->jalan,
+                        'notes' => $order->notes,
                     ],
 
                     'order_items' => $order->orderItems->map(fn($it) => [
@@ -78,12 +99,12 @@ class OrderVendorController extends Controller
                         'package_time_slot' => $it->packageTimeSlot,
                     ]),
 
-                    'delivery_statuses' => collect($order->deliveryStatuses)
-                        ->groupBy('slot')
-                        ->map(fn($g) => [
-                            'slot'   => strtolower($g->first()->slot),
-                            'status' => optional($g->sortByDesc('deliveryDate')->first()->status)->value
-                                ?? $g->sortByDesc('deliveryDate')->first()->status,
+                    'delivery_statuses' => $order->deliveryStatuses
+                        ->filter(fn($ds) => $ds->deliveryDate->isToday())
+                        ->map(fn($ds) => [
+                            'slot' => strtolower($ds->slot),
+                            'status' => $ds->status,
+                            'delivery_date' => $ds->deliveryDate->toDateString(),
                         ])->values(),
                 ];
             });
@@ -101,26 +122,26 @@ class OrderVendorController extends Controller
      * ---------------------------------------------------------- */
     public function totalOrder()
     {
-        $vendor   = Auth::user()->vendor ?? Vendor::find(39);
+        $vendor = Auth::user()->vendor ?? Vendor::find(39);
         $vendorId = Auth::user()->vendor->vendorId ?? 39;
-        $today    = Carbon::today('Asia/Jakarta');
+        $today = Carbon::today('Asia/Jakarta');
 
         $orders = Order::with([
             'orderItems.package',
             'deliveryStatuses' => fn($q) =>
-            $q->whereDate('deliveryDate', $today),
+                $q->whereDate('deliveryDate', $today),
         ])
             ->where('vendorId', $vendorId)
             ->where('isCancelled', 0)
             ->whereDate('startDate', '<=', $today)
-            ->whereDate('endDate',   '>=', $today)
+            ->whereDate('endDate', '>=', $today)
             ->get();
 
         /* ---- bangun $slotCounts persis seperti kode lama ---- */
         $slotEnumToLabel = [
-            TimeSlot::Morning->value   => 'breakfast',
+            TimeSlot::Morning->value => 'breakfast',
             TimeSlot::Afternoon->value => 'lunch',
-            TimeSlot::Evening->value   => 'dinner',
+            TimeSlot::Evening->value => 'dinner',
         ];
 
         $slotCounts = ['breakfast' => [], 'lunch' => [], 'dinner' => []];
@@ -128,14 +149,16 @@ class OrderVendorController extends Controller
         foreach ($orders as $order) {
             foreach ($order->orderItems as $item) {
                 $slotLabel = $slotEnumToLabel[$item->packageTimeSlot] ?? null;
-                if (!$slotLabel) continue;
+                if (!$slotLabel)
+                    continue;
 
                 $pkg = $item->package->name ?? 'Package';
                 $slotCounts[$slotLabel][$pkg] =
                     ($slotCounts[$slotLabel][$pkg] ?? 0) + $item->quantity;
             }
         }
-        foreach ($slotCounts as &$pkgs) ksort($pkgs);
+        foreach ($slotCounts as &$pkgs)
+            ksort($pkgs);
 
         /* ----- Net‑sales bulan berjalan ----- */
         $today = now('Asia/Jakarta');   // sekali saja
@@ -165,11 +188,23 @@ class OrderVendorController extends Controller
      * ---------------------------------------------------------- */
     public function updateStatus(Request $request, $orderId, $slot)
     {
-        $request->validate(['status' => 'required|in:Prepared,Delivered,Arrived']);
+        // Force JSON validation response
+        $validated = validator($request->all(), [
+            'status' => 'required|in:Prepared,Delivered,Arrived',
+        ]);
+
+        if ($validated->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed.',
+                'errors' => $validated->errors(),
+            ], 422);
+        }
 
         $ds = DeliveryStatus::where('orderId', $orderId)
             ->where('slot', $slot)
-            ->latest('deliveryDate')->first();
+            ->whereDate('deliveryDate', today())
+            ->first();
 
         if (!$ds) {
             return response()->json([

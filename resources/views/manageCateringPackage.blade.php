@@ -438,10 +438,18 @@
                         return;
                     }
 
+                    const requiredFields = ['name', 'categoryId'];
+                    const hasRequiredColumns = requiredFields.every(field => field in rows[0]);
+
+                    if (!hasRequiredColumns) {
+                        alert('Format kolom salah! Kolom wajib: name, categoryId');
+                        return;
+                    }
+
                     const postUrl = '/manageCateringPackage'; // <— URL sudah benar
                     const csrf = document.querySelector('meta[name="csrf-token"]').content;
 
-                    const requests = rows.map(row => {
+                    const requests = rows.map(async row => {
                         const fd = new FormData();
                         fd.append('_token', csrf);
                         fd.append('name', row['name']);
@@ -451,19 +459,34 @@
                         fd.append('lunchPrice', row['lunchPrice']);
                         fd.append('dinnerPrice', row['dinnerPrice']);
 
-                        return fetch(postUrl, {
-                            method: 'POST',
-                            body: fd,
-                            headers: {
-                                'Accept': 'application/json'
-                            }
-                        })
+                        try {
+                            const res = await fetch(postUrl, {
+                                method: 'POST',
+                                body: fd,
+                                headers: {
+                                    'Accept': 'application/json'
+                                }
+                            });
+
+                            // Treat anything outside 2xx as failed
+                            if (!res.ok) return {
+                                success: false
+                            };
+                            return {
+                                success: true
+                            };
+                        } catch (err) {
+                            console.error('Request failed:', err);
+                            return {
+                                success: false
+                            };
+                        }
                     });
 
                     try {
-                        const res = await Promise.allSettled(requests);
-                        const ok = res.filter(x => x.status === 'fulfilled').length;
-                        alert(`Import selesai! Berhasil: ${ok}, Gagal: ${res.length - ok}`);
+                        const results = await Promise.all(requests);
+                        const ok = results.filter(r => r.success).length;
+                        alert(`Import selesai! Berhasil: ${ok}, Gagal: ${results.length - ok}`);
                         location.reload();
                     } catch (err) {
                         console.error(err);
@@ -595,18 +618,18 @@
             return categoryMap[name] || '';
         }
 
-        function mapCuisineNames(cuisineStr) {
-            const cuisineMap = {
-                "Indonesian": 1,
-                "Chinese": 2,
-                "Japanese": 3,
-                "Korean": 4,
-                "Western": 5,
-                "Fusion": 6
-            };
-            const names = cuisineStr.split(',').map(n => n.trim());
-            return names.map(n => cuisineMap[n]).filter(Boolean);
-        }
+        // function mapCuisineNames(cuisineStr) {
+        //     const cuisineMap = {
+        //         "Indonesian": 1,
+        //         "Chinese": 2,
+        //         "Japanese": 3,
+        //         "Korean": 4,
+        //         "Western": 5,
+        //         "Fusion": 6
+        //     };
+        //     const names = cuisineStr.split(',').map(n => n.trim());
+        //     return names.map(n => cuisineMap[n]).filter(Boolean);
+        // }
 
         // function toggleCuisine(id, event = null) {
         //     const existingInput = document.getElementById(`cuisine-${id}`);

@@ -139,7 +139,7 @@ Route::middleware(['role:vendor'])->group(function () {
     // Manage Packages
     Route::get('/manageCateringPackage', [PackageController::class, 'index'])->name('manageCateringPackage');
     Route::post('/manageCateringPackage', [PackageController::class, 'store'])->name('packages.store');
-    Route::put('/packages/{package}', [PackageController::class, 'update'])->name('packages.update');
+    Route::put('/packages/{id}', [PackageController::class, 'update'])->name('packages.update');
     Route::delete('/packages/{id}', [PackageController::class, 'destroy'])->name('packages.destroy');
     Route::post('/packages/import', [PackageController::class, 'import'])->name('packages.import');
 
