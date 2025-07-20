@@ -17,6 +17,7 @@ use App\Http\Controllers\Socialite\ProviderCallbackController;
 use App\Http\Controllers\Socialite\ProviderRedirectController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use App\Http\Middleware\RoleMiddleware;
+use Illuminate\Support\Facades\Auth;
 
 /* --------------------
      GUEST ROUTES
@@ -27,6 +28,9 @@ Route::middleware(['guest'])->group(function () {
     })->name('landingPage')->middleware('guest');
 
     Route::get('/about-us', function () {
+        if (Auth::check()) {
+            logActivity('Successfully', 'Visited', 'About Us Page');
+        }
         return view('aboutUs');
     });
 
@@ -88,6 +92,7 @@ Route::middleware(['role:customer'])->group(function () {
     Route::get('/load-cart', [CartController::class, 'loadCart'])->name('load.cart');
 
     Route::get('/catering-detail/rating-and-review', function () {
+        logActivity('Successfully', 'Visited', 'Rating and Review Page');
         return view('ratingAndReview');
     })->name('rate-and-review');
 
@@ -99,6 +104,7 @@ Route::middleware(['role:customer'])->group(function () {
 
     // Order Payment
     Route::get('/payment', function () {
+        logActivity('Successfully', 'Visited', 'Payment Page');
         return view('payment');
     });
     // Route::get('/payment', function () {
@@ -114,10 +120,12 @@ Route::middleware(['role:customer'])->group(function () {
 
     // Manage Address
     Route::get('/manage-address', function () {
+        logActivity('Successfully', 'Visited', 'Manage Address Page');
         return view('ManageAddress');
     });
 
     Route::get('/add-address', function () {
+        logActivity('Successfully', 'Visited', 'Add Address Page');
         return view('addAddress');
     });
 
@@ -133,6 +141,9 @@ Route::middleware(['role:customer'])->group(function () {
 Route::middleware(['role:vendor'])->group(function () {
     // Catering dashboard
     Route::get('/cateringHomePage', function () {
+        // untuk yang log activity, kalau suatu saat buat controllernya mohon dimasukan
+        // masukan sebelum returen view / return redirect
+        logActivity('Successfully', 'Visited', 'Catering Home Page');
         return view('cateringHomePage');
     });
     Route::post('/cateringHomePage', [SessionController::class, 'destroy'])->name('logout.vendor');
@@ -146,6 +157,7 @@ Route::middleware(['role:vendor'])->group(function () {
 
     // Manage Order
     Route::get('/manageOrder', function () {
+        logActivity('Successfully', 'Visited', 'Manage Order Page');
         return view('manageOrder');
     });
 

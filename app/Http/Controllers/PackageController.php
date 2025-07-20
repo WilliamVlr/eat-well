@@ -14,6 +14,7 @@ class PackageController extends Controller
     {
         $packages = Package::with('cuisineTypes')->get();
         $cuisines = CuisineType::all(); // Ambil semua cuisine
+        logActivity('Successfully', 'Visited', 'Manage Catering Package Page');
         return view('manageCateringPackage', compact('packages', 'cuisines'));
     }
 
@@ -65,6 +66,7 @@ class PackageController extends Controller
             $newpackage->cuisineTypes()->sync($cuisineTypes);
         }
 
+        logActivity('Successfully', 'Added', 'Catering Package');
         return redirect(route('manageCateringPackage'));
     }
 
@@ -73,6 +75,8 @@ class PackageController extends Controller
     {
         $package = Package::findOrFail($id);
         $package->delete();
+
+        logActivity('Successfully', 'Deleted', 'Catering Package');
 
         return response()->json([
             'success' => true,
@@ -98,6 +102,8 @@ class PackageController extends Controller
         ]));
 
         $package->update($validated);
+
+        logActivity('Successfully', 'Updated', 'Catering Package');
         return redirect(route('manageCateringPackage'));
     }
 }

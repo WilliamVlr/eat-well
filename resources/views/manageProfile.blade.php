@@ -72,7 +72,7 @@
                     <hr
                         style="height: 1.8px; background-color:black; opacity:100%; border: none; margin-left: 180px; margin-right: 180px;">
                     <div class="manage-profile-in">
-                        <form action="{{route('manage-profile.update')}}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('manage-profile.update') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PATCH')
                             <div class="datafoto">
@@ -84,21 +84,38 @@
                                     <label class="inter font-bold text-black data-title">Date of Birth</label>
                                     <div class="dob-picker">
                                         <select class="dob-select font-regular" name="dob_month" id="dob_month">
-                                            <option value="" selected>{{ $user->dateOfBirth->format('m') }}</option>
+                                            @if (empty($user->dateOfBirth))
+                                                <option value="" selected>mm</option>
+                                            @else
+                                                <option value="" selected>{{ $user->dateOfBirth->format('m') }}
+                                                </option>
+                                            @endif
+
                                             @for ($m = 1; $m <= 12; $m++)
                                                 <option value="{{ $m }}">{{ str_pad($m, 2, '0', STR_PAD_LEFT) }}
                                                 </option>
                                             @endfor
                                         </select>
                                         <select class="dob-select" name="dob_day" id="dob_day">
-                                            <option value="" selected>{{ $user->dateOfBirth->format('d') }}</option>
+                                            @if (empty($user->dateOfBirth))
+                                                <option value="" selected>dd</option>
+                                            @else
+                                                <option value="" selected>{{ $user->dateOfBirth->format('d') }}
+                                                </option>
+                                            @endif
                                             @for ($d = 1; $d <= 31; $d++)
-                                                <option value="{{ $d }}">{{ str_pad($d, 2, '0', STR_PAD_LEFT) }}
+                                                <option value="{{ $d }}">
+                                                    {{ str_pad($d, 2, '0', STR_PAD_LEFT) }}
                                                 </option>
                                             @endfor
                                         </select>
                                         <select class="dob-select" name="dob_year" id="dob_year">
-                                            <option value="" selected>{{ $user->dateOfBirth->format('Y') }}</option>
+                                            @if (empty($user->dateOfBirth))
+                                                <option value="" selected>YYYY</option>
+                                            @else
+                                                <option value="" selected>{{ $user->dateOfBirth->format('Y') }}
+                                                </option>
+                                            @endif
                                             @for ($y = date('Y'); $y >= 1900; $y--)
                                                 <option value="{{ $y }}">{{ $y }}</option>
                                             @endfor
@@ -135,8 +152,8 @@
                                             <span class="material-symbols-outlined change-image-icon">
                                                 add_photo_alternate
                                             </span>
-                                            <input type="file" id="profilePicInput" name="profilePicInput" accept="image/*"
-                                                style="display:none;">
+                                            <input type="file" id="profilePicInput" name="profilePicInput"
+                                                accept="image/*" style="display:none;">
                                         </label>
                                     </div>
                                     <div class="edit-btn-group">

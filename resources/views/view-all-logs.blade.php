@@ -20,22 +20,22 @@
                 <thead>
                     <tr>
                         <th scope="col-1-lg">No. </th>
-                        <th scope="col-2-lg">Username</th>
-                        <th scope="col-1-lg">User ID</th>
+                        <th scope="col-1-lg">Username</th>
+                        <th scope="col-2-lg">ID</th>
                         <th scope="col-1-lg">Role</th>
-                        <th scope="col-2-lg">URL</th>
+                        <th scope="col-1-lg">URL</th>
+                        <th scope="col-2-lg">Description</th>
                         <th scope="col-1-lg">Method</th>
-                        <th scope="col-2-lg">IP Address</th>
+                        <th scope="col-1-lg">IP</th>
                         <th scope="col-2-lg">Time</th>
-
 
                     </tr>
                 </thead>
                 <tbody>
                     @if ($all_logs->isEmpty())
-                        {{-- <div class="text-center mt-5">
+                        <div class="text-center mt-5">
                             <h4>No Logs Available.</h4>
-                        </div> --}}
+                        </div>
 
                         <tr>
                             <th>No data</th>
@@ -48,6 +48,7 @@
                             <td>{{ $log->userId }}</td>
                             <td>{{ $log->role }}</td>
                             <td>{{ $log->url }}</td>
+                            <td>{{ $log->description }}</td>
                             <td>{{ $log->method }}</td>
                             <td>{{ $log->ip_address }}</td>
                             <td>{{ $log->accessed_at }}</td>

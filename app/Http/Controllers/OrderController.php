@@ -70,6 +70,7 @@ class OrderController extends Controller
             ->orderByDesc('endDate')
             ->get();
 
+        logActivity('Successfully', 'Visited', 'Order History Page');
         return view('customer.orderHistory', compact('orders', 'status'));
     }
 
@@ -126,6 +127,7 @@ class OrderController extends Controller
             }
         }
 
+        logActivity('Successfully', 'Visited', 'Vendor Payment Page');
         return view('payment', compact('vendor', 'cart', 'cartDetails', 'totalOrderPrice', 'startDate', 'endDate'));
     }
 
@@ -135,6 +137,7 @@ class OrderController extends Controller
         if (!$user) {
             return response()->json(['message' => 'User not authenticated.'], 401);
         }
+        logActivity('Successfully', 'Viewed', 'Wellpay Balance');
         return response()->json(['wellpay' => $user->wellpay]); // <-- Menggunakan 'wellpay'
     }
 
@@ -468,6 +471,8 @@ class OrderController extends Controller
 
             DB::commit();
 
+            logActivity('Successfully', 'Processed', 'Checkout for Order ID: ' . $order->orderId);
+
             return response()->json(['message' => 'Checkout successful!', 'orderId' => $order->orderId], 200);
 
         } catch (ValidationException $e) {
@@ -475,11 +480,13 @@ class OrderController extends Controller
             // OR the specific ValidationException thrown for incorrect password
             DB::rollBack(); // Rollback if validation failed AFTER transaction began
             Log::error('Validation failed for checkout:', $e->errors());
+            logActivity('Failed', 'Process', 'Checkout');
             return response()->json(['message' => 'Validation Error', 'errors' => $e->errors()], 422);
         } catch (\Exception $e) {
             // This catches any other unexpected errors (database issues, server errors, etc.)
             DB::rollBack();
             Log::error('Checkout failed (General Error): ' . $e->getMessage(), ['exception' => $e]);
+            logActivity('Failed', 'Processed', 'Checkout');
             return response()->json(['message' => 'Checkout failed. Please try again.', 'error' => $e->getMessage()], 500);
         }
     }
@@ -525,6 +532,8 @@ class OrderController extends Controller
             $statusesBySlot[$slotKey][$dateKey] = $status;
         }
         // dd($statusesBySlot);
+
+        logActivity('Successfully', 'Visited', 'Order Detail Page');
 
         return view('customer.orderDetail', compact('order', 'paymentMethod', 'slots', 'statusesBySlot'));
     }

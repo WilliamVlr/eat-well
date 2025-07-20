@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
     <link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
     @yield('css')
+
+
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -24,7 +26,7 @@
             </a>
 
             <div class="dropdown-wrapper">
-                <select id="languageSelector" style="text-align: center; margin-left: 30px">
+                <select id="languageSelector" style="text-align: center; margin-left: 15px">
                     <option value="en">EN</option>
                     <option value="id">ID</option>
                 </select>
@@ -75,7 +77,7 @@
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('view-order-history') ? 'active' : '' }}"
                                 href="/view-order-history">Order History</a>
                         </li>
-                        
+
 
                     </ul>
                 </div>

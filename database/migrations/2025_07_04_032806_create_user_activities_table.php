@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('role');
             $table->string('url');
+            $table->string('description');
             $table->string('method');
             $table->ipAddress('ip_address');
             $table->timestamp('accessed_at');

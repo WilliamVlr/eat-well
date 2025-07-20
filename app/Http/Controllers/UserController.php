@@ -70,6 +70,8 @@ class UserController extends Controller
             $user->wellpay = $newBalance;
             $user->save();
 
+            logActivity('successfully', 'top-up', 'WellPay');
+
             // Berikan respons sukses
             return response()->json([
                 'message' => 'Top-up of Rp ' . number_format($amount, 0, ',', '.') . ' successful!',
@@ -94,6 +96,7 @@ class UserController extends Controller
         $user = Auth::user();
 
 
+        logActivity('Successfully', 'Visited', 'Manage Profile Page');
         return view('manageProfile', compact('user'));
     }
 
@@ -127,7 +130,10 @@ class UserController extends Controller
             $updated_user->genderMale = 0;
         }
 
+        logActivity('Successfully', 'Updated', "Profile to {$updated_user->name}");
         $updated_user->save();
+
+        
 
         return redirect()->route('manage-profile');
     }

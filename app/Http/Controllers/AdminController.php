@@ -28,6 +28,7 @@ class AdminController extends Controller
             ->groupBy('vendorId')
             ->pluck('totalSales', 'vendorId');
 
+        logActivity('Successfully', 'Visited', 'View All Vendor Page');
         return view('viewAllVendor', compact('vendors', 'sales'));
 
         // return view('viewAllVendor', compact('vendors'));
@@ -49,7 +50,8 @@ class AdminController extends Controller
             ->select('vendorId', DB::raw('SUM(totalPrice) as totalSales'))
             ->groupBy('vendorId')
             ->pluck('totalSales', 'vendorId');
-
+            
+        logActivity('Successfully', 'Searched', 'Vendor by Name');
         return view('viewAllVendor', compact('vendors', 'sales'));
 
 
@@ -60,6 +62,7 @@ class AdminController extends Controller
     {
         $all_logs = UserActivity::all();
 
+        logActivity('Successfully', 'Visited', 'View All Logs Page');
         return view('view-all-logs', compact('all_logs'));
     }
 
@@ -67,6 +70,7 @@ class AdminController extends Controller
     {
         $payments = PaymentMethod::all();
 
+        logActivity('Successfully', 'Visited', 'View All Payment Page');
         return view('view-all-payment', compact('payments'));
     }
 
@@ -81,6 +85,7 @@ class AdminController extends Controller
         // Session::flash('message', 'Successfully delete payment !');
         // return view('view-all-payment', compact('payments'));
         // return redirect()->route('view-all-payment');
+        logActivity('Successfully', 'Deleted', 'Payment Method');
         return redirect()->route('view-all-payment')->with('message_del', 'Successfully delete payment method!');
     }
 
@@ -104,6 +109,7 @@ class AdminController extends Controller
         
         // Session::flash('message_add', 'Successfully added payment !');
         // return view('view-all-payment', compact('payments'));
+        logActivity('Successfully', 'Added', 'Payment Method');
         return redirect()->route('view-all-payment')->with('message_add', 'Successfully added payment method!');
 
         // return redirect()->route('view-all-payment');

@@ -39,6 +39,8 @@ class VendorController extends Controller
         $packages = $vendor->packages()->with(['category', 'cuisineTypes'])->get();
         $numSold = Order::where('vendorId', $vendor->vendorId)->count();
 
+        logActivity('Successfully', 'Visited', 'Catering Detail Page');
+
         return view('cateringDetail', compact('vendor', 'packages', 'numSold'));
     }
 
@@ -114,6 +116,8 @@ class VendorController extends Controller
             ->appends($request->query());
 
         // Pass paginated vendors to the view
+        logActivity('Successfully', 'Visited', "Vendor Search Page and Searched for: {$query}");
+
         return view('customer.search', compact('vendors', 'all_categories'));
     }
 
@@ -146,6 +150,8 @@ class VendorController extends Controller
         $dsm = explode(':', $dinnerStart)[1];
         $deh = explode(':', $dinnerEnd)[0];
         $dem = explode(':', $dinnerEnd)[1];
+
+        logActivity('Successfully', 'Visited', 'Manage Profile Vendor Page');
 
         return view('manage-profile-vendor', compact('user', 'vendor',
             'bsh', 'bsm', 'beh', 'bem', 
@@ -188,6 +194,7 @@ class VendorController extends Controller
 
         $vendor->save();
 
+        logActivity('Successfully', 'Updated', 'Manage Profile Vendor Page');
         return redirect()->route('manage-profile-vendor')->with('success', 'Profile updated successfully!');
 
     }
