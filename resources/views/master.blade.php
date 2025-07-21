@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}">
 
-@php
+{{-- @php
     app()->setLocale(session()->get('lang', 'en'));
-@endphp
+@endphp --}}
 
 <head>
     <meta charset="UTF-8">
