@@ -27,6 +27,16 @@ if (!function_exists('logActivity')) {
             return;
         }
 
+        if (
+            $request->is('cateringHomePage') &&
+            $referer &&
+            !str_contains($referer, '/cateringHomePage')
+        ) {
+            return;
+        }
+
+        
+
         $description = "{$user->name} as {$user->role->value} {$status} {$action} {$object}";
 
         UserActivity::create([
