@@ -79,7 +79,11 @@
                                 <div class="data">
                                     <label class="inter font-bold text-black data-title">Name</label>
                                     <input type="text" class="lexend font-regular text-black name-input" id="nameInput"
-                                        name="nameInput" value="{{ $user->name }}" required>
+                                        name="nameInput" value="{{ $user->name }}" >
+
+                                    @error('nameInput')
+                                        <div class="" style="color: rgb(194, 12, 12)">{{ $message }}</div>
+                                    @enderror
 
                                     <label class="inter font-bold text-black data-title">Date of Birth</label>
                                     <div class="dob-picker">
@@ -143,6 +147,9 @@
                                         @endif
 
                                     </div>
+                                    @error('gender')
+                                        <div class="" style="color: rgb(194, 12, 12)">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="photo-data">
                                     <div class="profile-image-wrapper">

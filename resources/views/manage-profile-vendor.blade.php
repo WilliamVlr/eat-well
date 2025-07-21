@@ -90,14 +90,14 @@
                                 <div class="data">
                                     <label class="inter font-bold text-black data-title">Name</label>
                                     <input type="text" class="lexend font-regular text-black name-input"
-                                        id="nameInput" name="nameInput" value="{{ $vendor->name }}" required>
+                                        id="nameInput" name="nameInput" value="{{ $vendor->name }}">
                                     @error('nameInput')
                                         <p style="color: red">{{ $message }}</p>
                                     @enderror
 
                                     <label class="inter font-bold text-black data-title">Telephone</label>
                                     <input type="text" class="lexend font-regular text-black name-input"
-                                        id="telpInput" name="telpInput" value="{{ $vendor->phone_number }}" required>
+                                        id="telpInput" name="telpInput" value="{{ $vendor->phone_number }}">
                                     @error('telpInput')
                                         <p style="color: red">{{ $message }}</p>
                                     @enderror

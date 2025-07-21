@@ -153,49 +153,68 @@ class VendorController extends Controller
 
         logActivity('Successfully', 'Visited', 'Manage Profile Vendor Page');
 
-        return view('manage-profile-vendor', compact('user', 'vendor',
-            'bsh', 'bsm', 'beh', 'bem', 
-            'lsh', 'lsm', 'leh', 'lem',
-            'dsh', 'dsm', 'deh', 'dem'));
+        return view('manage-profile-vendor', compact(
+            'user',
+            'vendor',
+            'bsh',
+            'bsm',
+            'beh',
+            'bem',
+            'lsh',
+            'lsm',
+            'leh',
+            'lem',
+            'dsh',
+            'dsm',
+            'deh',
+            'dem'
+        ));
     }
 
     public function updateProfile(Request $request)
     {
-        // dd($request);
-        $user = Auth::user();
-        $userId = $user->userId;
-        $vendor = Vendor::where('userId', $userId)->first();
+        try {
+            // dd($request);
+            $user = Auth::user();
+            $userId = $user->userId;
+            $vendor = Vendor::where('userId', $userId)->first();
 
-        $request_validation = $request->validate([
-            'nameInput' => 'required|string|max:255',
-            'telpInput' => 'required|string|max:255',
-        ],
-        [
-            'nameInput.required' => 'Vendor name must be filled !.',
-            'telpInput.required' => 'Telp number must be filled !',
-        ]);
+            $request_validation = $request->validate(
+                [
+                    'nameInput' => 'required|string|max:255',
+                    'telpInput' => 'required|string|max:255',
+                ],
+                [
+                    'nameInput.required' => 'Vendor name must be filled !.',
+                    'telpInput.required' => 'Telp number must be filled !',
+                ]
+            );
 
-        $vendor->name = $request->nameInput;
-        $vendor->phone_number = $request->telpInput;
+            $vendor->name = $request->nameInput;
+            $vendor->phone_number = $request->telpInput;
 
-        $vendor->breakfast_delivery = $request->breakfast_hour_start . ':' . $request->breakfast_minute_start . '-' .
-            $request->breakfast_hour_end . ':' . $request->breakfast_minute_end;
-        $vendor->lunch_delivery = $request->lunch_hour_start . ':' . $request->lunch_minute_start . '-' .
-            $request->lunch_hour_end . ':' . $request->lunch_minute_end;
-        $vendor->dinner_delivery = $request->dinner_hour_start . ':' . $request->dinner_minute_start . '-' .
-            $request->dinner_hour_end . ':' . $request->dinner_minute_end;
+            $vendor->breakfast_delivery = $request->breakfast_hour_start . ':' . $request->breakfast_minute_start . '-' .
+                $request->breakfast_hour_end . ':' . $request->breakfast_minute_end;
+            $vendor->lunch_delivery = $request->lunch_hour_start . ':' . $request->lunch_minute_start . '-' .
+                $request->lunch_hour_end . ':' . $request->lunch_minute_end;
+            $vendor->dinner_delivery = $request->dinner_hour_start . ':' . $request->dinner_minute_start . '-' .
+                $request->dinner_hour_end . ':' . $request->dinner_minute_end;
 
-        if ($request->hasFile('profilePicInput')) {
-            $file = $request->file('profilePicInput');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('asset/profile'), $filename);
-            $vendor->logo = 'asset/profile/' . $filename;
+            if ($request->hasFile('profilePicInput')) {
+                $file = $request->file('profilePicInput');
+                $filename = time() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('asset/profile'), $filename);
+                $vendor->logo = 'asset/profile/' . $filename;
+            }
+
+            $vendor->save();
+
+            logActivity('Successfully', 'Updated', 'Manage Profile Vendor Page');
+            return redirect()->route('manage-profile-vendor')->with('success', 'Profile updated successfully!');
+        } catch (\Exception $e) {
+            // Log::error('Error updating vendor profile: ' . $e->getMessage());
+            logActivity('Failed', 'Updated', 'Vendor Profile, Due to Validation Error: ' . $e->getMessage());
+            return redirect()->back()->withErrors(['error' => 'Failed to update profile.']);
         }
-
-        $vendor->save();
-
-        logActivity('Successfully', 'Updated', 'Manage Profile Vendor Page');
-        return redirect()->route('manage-profile-vendor')->with('success', 'Profile updated successfully!');
-
     }
 }

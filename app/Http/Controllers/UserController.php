@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProfileRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -100,7 +101,9 @@ class UserController extends Controller
         return view('manageProfile', compact('user'));
     }
 
-    public function updateProfile(Request $request)
+    
+
+    public function updateProfile(ProfileRequest $request)
     {
         // dd($request->gender);
 

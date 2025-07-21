@@ -359,6 +359,8 @@ class OrderController extends Controller
                 if (!Hash::check($password, $user->getAuthPassword())) {
                     DB::rollBack();
                     // Throw ValidationException for password error
+                    logActivity('Failed', 'Processed', 'Checkout due to incorrect password');
+
                     throw ValidationException::withMessages([
                         'password' => ['Incorrect password.'],
                     ]);
@@ -369,6 +371,7 @@ class OrderController extends Controller
                     DB::rollBack();
                     // This is a specific business logic error, not a validation error on input format.
                     // Returning a 402 is appropriate here.
+                    logActivity('Failed', 'Processed', 'Checkout due to insufficient Wellpay balance');
                     return response()->json(['message' => 'Insufficient Wellpay balance. Please top up.'], 402);
                 }
 

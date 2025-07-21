@@ -35,7 +35,18 @@ if (!function_exists('logActivity')) {
             return;
         }
 
-        
+        // Abaikan log jika halaman sekarang adalah halaman untuk admin DAN user memiliki role admin
+        if(
+            ($request->is('view-all-vendors') && $user->role->value == 'Admin') ||
+            ($request->is('view-all-packages') && $user->role->value == 'Admin') ||
+            ($request->is('view-all-orders') && $user->role->value == 'Admin') ||
+            ($request->is('view-all-users') && $user->role->value == 'Admin') ||
+            ($request->is('view-all-logs') && $user->role->value == 'Admin') ||
+            ($request->is('admin-dashboard') && $user->role->value == 'Admin') ||
+            ($request->is('view-all-payment') && $user->role->value == 'Admin')
+        ) {
+            return;
+        }
 
         $description = "{$user->name} as {$user->role->value} {$status} {$action} {$object}";
 
