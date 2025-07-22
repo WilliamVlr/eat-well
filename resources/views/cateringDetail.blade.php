@@ -31,7 +31,7 @@
                         </div>
                         <div class="schedule-container">
                             {{-- <span class="inter schedule">Monday - Sunday</span> --}}
-                            <span class="inter schedule">{{ $numSold }} sold</span>
+                            <span class="inter schedule">{{ $numSold }} {{ __('catering-detail.sold') }}</span>
                         </div>
                     </div>
 
@@ -39,7 +39,7 @@
                         <span class="material-symbols-outlined location-icon">pin_drop</span>
                         <span class="inter address">{{ $vendor->jalan }}, {{ $vendor->kelurahan }},
                             {{ $vendor->kecamatan }}, {{ $vendor->kota }}, {{ $vendor->provinsi }},
-                            {{ $vendor->kode_pos }}</span>
+                            {{ $vendor->kode_pos }} {{ __('catering-detail.order') }}</span>
                     </div>
 
                     <div class="rating-and-number-sold-wrapper">
@@ -54,7 +54,7 @@
                         <div class="number-sold-container">
                             {{-- <span class="inter rating-and-sold">10k+</span>
                             <span class="inter sold-text">sold</span> --}}
-                            <span class="inter rating-and-sold">Order Now</span>
+                            <span class="inter rating-and-sold">{{ __('catering-detail.order') }}</span>
                         </div>
                     </div>
                 </div>
