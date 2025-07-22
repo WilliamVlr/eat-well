@@ -313,7 +313,7 @@
 
 @section('content')
     {{-- Untuk button ini jangan dihapus, untuk sementara button logout disini, menunggu UI logout beneran dibuat --}}
-    <form action="{{ route('logout.vendor') }}" method="post">
+    <form action="{{ route('logout') }}" method="post">
         @csrf
         <button type="submit"></button>
     </form>

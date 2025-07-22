@@ -77,7 +77,7 @@ Route::middleware(['role:customer'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::post('/topup', [UserController::class, 'topUpWellPay'])->name('wellpay.topup');
 
-    Route::post('/logout', [SessionController::class, 'destroy'])->name('logout');
+    // Route::post('/logout', [SessionController::class, 'destroy'])->name('logout');
 
     // Favorite
     Route::post('favorite/{vendorId}', [FavoriteController::class, 'favorite'])->name('favorite');
@@ -169,7 +169,7 @@ Route::middleware(['role:vendor'])->group(function () {
     //     logActivity('Successfully', 'Visited', 'Catering Home Page');
     //     return view('cateringHomePage');
     // });
-    Route::post('/cateringHomePage', [SessionController::class, 'destroy'])->name('logout.vendor');
+    // Route::post('/cateringHomePage', [SessionController::class, 'destroy'])->name('logout.vendor');
 
     // Manage Packages
     Route::get('/manageCateringPackage', [PackageController::class, 'index'])->name('manageCateringPackage');
@@ -202,13 +202,13 @@ Route::middleware(['role:vendor'])->group(function () {
     //     logActivity('Successfully', 'Visited', 'Manage Order Page');
     //     return view('manageOrder');
     // });
+    Route::get('/manage-profile-vendor', [VendorController::class, 'manageProfile'])->name('manage-profile-vendor');
+    Route::patch('/manage-profile-vendor', [VendorController::class, 'updateProfile'])->name('manage-profile-vendor.update');
 
     Route::fallback(function () {
         return redirect()->route('cateringHomePage');
     });
 
-    Route::get('/manage-profile-vendor', [VendorController::class, 'manageProfile'])->name('manage-profile-vendor');
-    Route::patch('/manage-profile-vendor', [VendorController::class, 'updateProfile'])->name('manage-profile-vendor.update');
 });
 /* ---------------------
      ADMIN ROUTES
@@ -247,7 +247,7 @@ Route::middleware(['role:admin'])->group(function () {
     Route::post('/view-all-payment', [AdminController::class, 'add_new_payment'])
         ->name('add-new-payment');
 
-    Route::post('/admin-dashboard', [SessionController::class, 'destroy'])->name('logout.admin');
+    // Route::post('/admin-dashboard', [SessionController::class, 'destroy'])->name('logout.admin');
 
     Route::get('/view-order-history', [AdminController::class, 'view_order_history'])
         ->name('view-order-history')
