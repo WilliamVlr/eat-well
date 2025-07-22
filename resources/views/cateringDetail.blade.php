@@ -1,7 +1,3 @@
-@php
-    app()->setLocale(session()->get('lang'));
-@endphp
-
 @extends('master')
 
 @section('title')
