@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>@yield('title')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    {{-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) --}}
 
     <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
 
@@ -17,8 +17,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
 </head>
 
-<body class="d-flex flex-column">
-    <nav class="navbar navbar-expand-md custNavigation">
+<body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-md custNavigation w-100">
         <div class="h-100 w-100 invisible position-absolute bg-black opacity-50 z-3 nav-visibility"></div>
         <div class="container-fluid">
             <a class="navbar-brand me-auto" href="cateringHomePage">
@@ -70,6 +70,19 @@
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('manageOrder') ? 'active' : '' }}"
                                 href="/manageOrder">Orders</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('search') ? 'active' : '' }}"
+                                href="/search">Search</a>
+                        </li>
+
+
+
+                        {{-- <li class="nav-item">
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('') ? 'active' : '' }}"
+                                href="/about-us">Active Subscription</a>
+                        </li> --}}
+
                     </ul>
                 </div>
             </div>

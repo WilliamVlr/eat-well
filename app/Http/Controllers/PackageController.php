@@ -9,6 +9,7 @@ use App\Models\PackageCuisine;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\PackagesImport;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class PackageController extends Controller
 {
@@ -22,13 +23,17 @@ class PackageController extends Controller
             ->get();
 
         $cuisines = CuisineType::all();
+        logActivity('Successfully', 'Visited', 'Manage Catering Package Page');
         return view('manageCateringPackage', compact('packages', 'cuisines'));
     }
 
     // Menyimpan data package baru
+    // use Illuminate\Validation\ValidationException;
+
     public function store(Request $request)
     {
         // dd($request);
+        try {
         $validated = $request->validate([
             'categoryId' => 'required|integer|exists:package_categories,categoryId',
             'name' => 'required|string|max:255',
@@ -49,24 +54,23 @@ class PackageController extends Controller
         $venAcc = Auth::user();
         $validated['vendorId'] = $venAcc->vendor->vendorId;
 
-        // Upload file PDF ke public/asset/menus
-        if ($request->hasFile('menuPDFPath')) {
-            $menuFile = $request->file('menuPDFPath');
-            $menuFileName = 'menu_' . time() . '.' . $menuFile->getClientOriginalExtension();
-            $menuFile->move(public_path('asset/menus'), $menuFileName);
-            $validated['menuPDFPath'] = $menuFileName;
-        }
+            // Upload file PDF
+            if ($request->hasFile('menuPDFPath')) {
+                $menuFile = $request->file('menuPDFPath');
+                $menuFileName = 'menu_' . time() . '.' . $menuFile->getClientOriginalExtension();
+                $menuFile->move(public_path('asset/menus'), $menuFileName);
+                $validated['menuPDFPath'] = $menuFileName;
+            }
 
-        // Upload gambar ke public/asset/menus
-        if ($request->hasFile('imgPath')) {
-            $imgFile = $request->file('imgPath');
-            $imgFileName = 'img_' . time() . '.' . $imgFile->getClientOriginalExtension();
-            $imgFile->move(public_path('asset/menus'), $imgFileName);
-            $validated['imgPath'] = $imgFileName;
-        }
+            // Upload gambar
+            if ($request->hasFile('imgPath')) {
+                $imgFile = $request->file('imgPath');
+                $imgFileName = 'img_' . time() . '.' . $imgFile->getClientOriginalExtension();
+                $imgFile->move(public_path('asset/menus'), $imgFileName);
+                $validated['imgPath'] = $imgFileName;
+            }
 
-
-        // // Ambil cuisine_types terpisah
+            // // Ambil cuisine_types terpisah
         // $cuisineTypes = $validated['cuisine_types'] ?? [];
 
         // // Hapus dari validated array
@@ -78,8 +82,16 @@ class PackageController extends Controller
         // if (!empty($cuisineTypes)) {
         //     $newpackage->cuisineTypes()->sync($cuisineTypes);
         // }
+        
+            logActivity('Successfully', 'Added', 'Catering Package');
+            return redirect(route('manageCateringPackage'));
+        } catch (ValidationException $e) {
+            logActivity('Failed', 'Validation Error', 'Catering Package, Error : ' . $e->getMessage());
 
-        return redirect(route('manageCateringPackage'));
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
+        }
     }
 
     // Menghapus package berdasarkan ID
@@ -94,6 +106,8 @@ class PackageController extends Controller
         }
 
         $package->delete();
+
+        logActivity('Successfully', 'Deleted', 'Catering Package');
 
         return response()->json([
             'success' => true,
@@ -161,7 +175,7 @@ class PackageController extends Controller
         }
 
         $package->update($validated);
-
+        logActivity('Successfully', 'Updated', 'Catering Package');
         return redirect()->back()->with('success', 'Berhasil mengubah paket!');
     }
 

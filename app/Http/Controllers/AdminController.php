@@ -28,6 +28,7 @@ class AdminController extends Controller
             ->groupBy('vendorId')
             ->pluck('totalSales', 'vendorId');
 
+        logActivity('Successfully', 'Visited', 'View All Vendor Page');
         return view('viewAllVendor', compact('vendors', 'sales'));
 
         // return view('viewAllVendor', compact('vendors'));
@@ -50,6 +51,7 @@ class AdminController extends Controller
             ->groupBy('vendorId')
             ->pluck('totalSales', 'vendorId');
 
+        logActivity('Successfully', 'Searched', 'Vendor by Name');
         return view('viewAllVendor', compact('vendors', 'sales'));
 
 
@@ -60,6 +62,7 @@ class AdminController extends Controller
     {
         $all_logs = UserActivity::all();
 
+        logActivity('Successfully', 'Visited', 'View All Logs Page');
         return view('view-all-logs', compact('all_logs'));
     }
 
@@ -67,6 +70,7 @@ class AdminController extends Controller
     {
         $payments = PaymentMethod::all();
 
+        logActivity('Successfully', 'Visited', 'View All Payment Page');
         return view('view-all-payment', compact('payments'));
     }
 
@@ -81,6 +85,7 @@ class AdminController extends Controller
         // Session::flash('message', 'Successfully delete payment !');
         // return view('view-all-payment', compact('payments'));
         // return redirect()->route('view-all-payment');
+        logActivity('Successfully', 'Deleted', 'Payment Method');
         return redirect()->route('view-all-payment')->with('message_del', 'Successfully delete payment method!');
     }
 
@@ -92,19 +97,28 @@ class AdminController extends Controller
         // $newPayment->name = $request->paymentMethod;
 
         // $newPayment->save();
-        $validated = $request->validate([
-            'paymentMethod' => 'string|max:255|unique:payment_methods,name'
-        ]);
+        try {
 
-        $newPayment = PaymentMethod::create([
-            'name' => $validated['paymentMethod']
-        ]);
 
-        $payments = PaymentMethod::all();
-        
-        // Session::flash('message_add', 'Successfully added payment !');
-        // return view('view-all-payment', compact('payments'));
-        return redirect()->route('view-all-payment')->with('message_add', 'Successfully added payment method!');
+            $validated = $request->validate([
+                'paymentMethod' => 'string|max:255|unique:payment_methods,name'
+            ]);
+
+            $newPayment = PaymentMethod::create([
+                'name' => $validated['paymentMethod']
+            ]);
+
+            $payments = PaymentMethod::all();
+
+            // Session::flash('message_add', 'Successfully added payment !');
+            // return view('view-all-payment', compact('payments'));
+            logActivity('Successfully', 'Added', 'Payment Method');
+            return redirect()->route('view-all-payment')->with('message_add', 'Successfully added payment method!');
+        } catch (\Exception $e) {
+            // Log::error('Error adding new payment method: ' . $e->getMessage());
+            logActivity('Failed', 'Added', 'Payment Method due to error: ' . $e->getMessage());
+            return redirect()->back()->withErrors(['error' => 'Failed to add payment method.']);
+        }
 
         // return redirect()->route('view-all-payment');
     }

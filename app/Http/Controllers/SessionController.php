@@ -40,6 +40,7 @@ class SessionController extends Controller
 
     public function destroy()
     {
+        logActivity('Successfully', 'Logged out', 'Eat-well');
         Auth::logout();
 
         return redirect('/');

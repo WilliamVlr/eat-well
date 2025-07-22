@@ -112,6 +112,8 @@ class HomeController extends Controller
 
         $wellpay = $user->wellpay ?? 0; // Ambil saldo, default 0 jika kolom 'balance' null/tidak ada
 
+        logActivity('successfully', 'visited', 'Homepage');
+
         return view('customer.home', compact('vendors', 'favVendors', 'order', 'slotMap', 'wellpay'));
     }
 }
