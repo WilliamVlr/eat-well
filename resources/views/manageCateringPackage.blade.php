@@ -87,10 +87,10 @@
         }
 
         /* @media (min-width: 769px) {
-                                                                .custom-containers {
-                                                                    max-width: 360px;
-                                                                }
-                                                            } */
+                                                                        .custom-containers {
+                                                                            max-width: 360px;
+                                                                        }
+                                                                    } */
 
         .modal-lg {
             max-width: 800px;
@@ -221,9 +221,8 @@
 
 @section('content')
     {{-- <x-vendor-nav></x-vendor-nav> --}}
-    <div class="heading-title w-50 text-center mx-auto">Find your Package</div>
-    <div class="text-muted-subheading w-75 text-center mx-auto">You can edit our previous and add your new package to your
-        catering.</div>
+    <div class="heading-title w-50 text-center mx-auto">{{ __('manage-catering-package.find_package') }}</div>
+    <div class="text-muted-subheading w-75 text-center mx-auto">{{ __('manage-catering-package.find_package_desc') }}</div>
 
 
     <div class="container custom-containers mt-5 mx-auto">
@@ -236,13 +235,13 @@
                         <!-- Tombol Upload -->
                         <label for="import" class="btn btn-success btn-sm px-4 py-2"
                             style="background-color: #14532d; border-color: #14532d;">
-                            <i class="bi bi-upload me-2"></i> Upload Package File
+                            <i class="bi bi-upload me-2"></i> {{ __('manage-catering-package.upload_excel') }}
                         </label>
                         <input type="file" class="d-none" id="import" accept=".csv, .xlsx, .xls">
 
 
                         <button class="btn btn-outline-secondary btn-sm px-4 py-2" onclick="downloadTemplateCSV()">
-                            <i class="bi bi-download me-2"></i> Download Template CSV
+                            <i class="bi bi-download me-2"></i> {{ __('manage-catering-package.download_template') }}
                         </button>
 
                     </div>
@@ -257,16 +256,16 @@
             <table class="table table-bordered">
                 <thead class="table-dark">
                     <tr>
-                        <th>No</th>
-                        <th>Package Name</th>
-                        <th>Category</th>
-                        <th>Breakfast Price</th>
-                        <th>Lunch Price</th>
-                        <th>Dinner Price</th>
-                        <th>Average Calory</th>
-                        <th>File Menu</th>
-                        <th>Package Image</th>
-                        <th>Action</th>
+                        <th>{{ __('manage-catering-package.no') }}</th>
+                        <th>{{ __('manage-catering-package.package_name') }}</th>
+                        <th>{{ __('manage-catering-package.category') }}</th>
+                        <th>{{ __('manage-catering-package.breakfast_price') }}</th>
+                        <th>{{ __('manage-catering-package.lunch_price') }}</th>
+                        <th>{{ __('manage-catering-package.dinner_price') }}</th>
+                        <th>{{ __('manage-catering-package.average_calory') }}</th>
+                        <th>{{ __('manage-catering-package.file_menu') }}</th>
+                        <th>{{ __('manage-catering-package.package_image') }}</th>
+                        <th>{{ __('manage-catering-package.action') }}</th>
                     </tr>
                 </thead>
 
@@ -279,7 +278,7 @@
                             <td>Rp{{ number_format($package->breakfastPrice ?? 0, 0, ',', '.') }}</td>
                             <td>Rp{{ number_format($package->lunchPrice ?? 0, 0, ',', '.') }}</td>
                             <td>Rp{{ number_format($package->dinnerPrice ?? 0, 0, ',', '.') }}</td>
-                            <td>{{ $package->averageCalories }} kcal</td>
+                            <td>{{ $package->averageCalories }} {{ __('manage-catering-package.kcal') }}</td>
                             <td>
                                 @if ($package->menuPDFPath)
                                     <a href="{{ asset('asset/menus/' . $package->menuPDFPath) }}"
@@ -328,8 +327,8 @@
         </tbody>
         </table>
     </div>
-    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#packageModal" onclick="openAddModal()">Add
-        Package</button>
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#packageModal"
+        onclick="openAddModal()">{{ __('manage-catering-package.add_package') }}</button>
 
     </div>
 
@@ -341,30 +340,32 @@
                     @csrf
                     {{-- @method('put') --}}
                     <div class="modal-header">
-                        <h5 class="modal-title" id="packageModalLabel">Add Package</h5>
+                        <h5 class="modal-title" id="packageModalLabel">{{ __('manage-catering-package.add_package') }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="excelUpload" class="form-label">Upload Excel / CSV</label>
+                            <label for="excelUpload"
+                                class="form-label">{{ __('manage-catering-package.upload_excel') }}</label>
                             <input type="file" class="form-control" id="excelUpload" accept=".csv, .xlsx, .xls">
                         </div>
 
                         <!-- form fields -->
                         <div class="mb-3">
-                            <label for="packageName" class="form-label">Package Name</label>
+                            <label for="packageName"
+                                class="form-label">{{ __('manage-catering-package.package_name') }}</label>
                             <input type="text" name="name" class="form-control" id="packageName" required>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Select Category</label>
+                            <label class="form-label">{{ __('manage-catering-package.select_category') }}</label>
                             <select class="form-select" name="categoryId" id="category">
-                                <option value="1">Vegetarian</option>
-                                <option value="2">Gluten-Free</option>
-                                <option value="3">Halal</option>
-                                <option value="4">Low Carb</option>
-                                <option value="5">Low Calorie</option>
-                                <option value="6">Organic</option>
+                                <option value="1">{{ __('manage-catering-package.vegetarian') }}</option>
+                                <option value="2">{{ __('manage-catering-package.gluten_free') }}</option>
+                                <option value="3">{{ __('manage-catering-package.halal') }}</option>
+                                <option value="4">{{ __('manage-catering-package.low_carb') }}</option>
+                                <option value="5">{{ __('manage-catering-package.low_calorie') }}</option>
+                                <option value="6">{{ __('manage-catering-package.organic') }}</option>
                             </select>
                         </div>
 
@@ -377,19 +378,22 @@
 
                         <div class="row">
                             <div class="col">
-                                <label for="breakfastPrice" class="form-label">Breakfast Price</label>
+                                <label for="breakfastPrice"
+                                    class="form-label">{{ __('manage-catering-package.breakfast_price') }}</label>
                                 <input type="number" name="breakfastPrice" id="breakfastPrice" class="form-control"
                                     step="0.01">
                             </div>
 
                             <div class="col">
-                                <label for="lunchPrice" class="form-label">Lunch Price</label>
+                                <label for="lunchPrice"
+                                    class="form-label">{{ __('manage-catering-package.lunch_price') }}</label>
                                 <input type="number" name="lunchPrice" id="lunchPrice" class="form-control"
                                     step="0.01" min="0">
                             </div>
 
                             <div class="col">
-                                <label for="dinnerPrice" class="form-label">Dinner Price</label>
+                                <label for="dinnerPrice"
+                                    class="form-label">{{ __('manage-catering-package.dinner_price') }}</label>
                                 <input type="number" name="dinnerPrice" id="dinnerPrice" class="form-control"
                                     step="0.01" min="0">
                             </div>
@@ -397,7 +401,8 @@
 
                         <div class="row mt-3">
                             <div class="col">
-                                <label for="averageCalories" class="form-label">Average Calory</label>
+                                <label for="averageCalories"
+                                    class="form-label">{{ __('manage-catering-package.average_calory') }}</label>
                                 <input type="number" name="averageCalories" id="averageCalories" class="form-control"
                                     step="0.01" min="0">
                             </div>
@@ -411,8 +416,10 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-success" value="Save Package">Save Package</button>
+                        <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">{{ __('manage-catering-package.cancel') }}</button>
+                        <button type="submit" class="btn btn-success"
+                            value="Save Package">{{ __('manage-catering-package.save_package') }}</button>
                     </div>
                 </form>
             </div>
@@ -422,9 +429,8 @@
 
     </div>
 
-    <div class="heading-title">Add Your Package Preview</div>
-    <div class="text-muted-subheading">We suggest adding the landscape version and including at least 3 preview images
-        and 5 preview max.</div>
+    <div class="heading-title">{{ __('manage-catering-package.preview_title') }}</div>
+    <div class="text-muted-subheading">{{ __('manage-catering-package.preview_desc') }}</div>
 
     <div class="container custom-container mb-5">
         <div class="carousel-wrapper" id="carousel-wrapper"></div>
@@ -454,7 +460,7 @@
         function showSuccess(message) {
             Swal.fire({
                 icon: 'success',
-                title: 'Berhasil!',
+                title: '{{ __('manage-catering-package.success') }}',
                 text: message,
                 confirmButtonColor: '#28a745',
                 confirmButtonText: 'OK'
@@ -464,7 +470,7 @@
         function showError(message) {
             Swal.fire({
                 icon: 'error',
-                title: 'Gagal!',
+                title: '{{ __('manage-catering-package.failed') }}',
                 text: message,
                 confirmButtonColor: '#d33',
                 confirmButtonText: 'Coba Lagi'
@@ -500,7 +506,7 @@
                     });
 
                     if (!rows.length) {
-                        showError('File kosong / format salah!');
+                        showError('{{ __('manage-catering-package.empty_file') }}');
                         return;
                     }
 
@@ -508,7 +514,7 @@
                     const hasRequiredColumns = requiredFields.every(field => field in rows[0]);
 
                     if (!hasRequiredColumns) {
-                        showError('Format kolom salah! Kolom wajib: name, categoryId');
+                        showError('{{ __('manage-catering-package.wrong_column_format') }}');
                         return;
                     }
 
@@ -552,12 +558,12 @@
                         const results = await Promise.all(requests);
                         const ok = results.filter(r => r.success).length;
                         showSuccess(
-                            `Import selesai! Berhasil: ${ok}, Gagal: ${results.length - ok}`
+                            `{{ __('manage-catering-package.import_success') }} ${ok}, {{ __('manage-catering-package.import_failed') }} ${results.length - ok}`
                         );
                         setTimeout(() => location.reload(), 1500);
                     } catch (err) {
                         console.error(err);
-                        showError('Terjadi kesalahan saat import!');
+                        showError('{{ __('manage-catering-package.import_error') }}');
                     }
                 };
                 reader.readAsArrayBuffer(file);
@@ -572,7 +578,7 @@
         }
 
         function openEditModal(data) {
-            document.getElementById('packageModalLabel').innerText = 'Edit Package';
+            document.getElementById('packageModalLabel').innerText = '{{ __('manage-catering-package.edit_package') }}';
 
             // Isi form
             document.getElementById('packageName').value = data.name;
@@ -718,7 +724,7 @@
 
         function showConfirm(message) {
             return Swal.fire({
-                title: 'Konfirmasi',
+                title: '{{ __('manage-catering-package.confirm') }}',
                 text: message,
                 icon: 'warning',
                 showCancelButton: true,
@@ -730,7 +736,7 @@
         }
 
         function deletePackage(id) {
-            showConfirm('Apakah Anda yakin ingin menghapus paket ini?').then((result) => {
+            showConfirm('{{ __('manage-catering-package.confirm_delete_msg') }}').then((result) => {
                 if (result.isConfirmed) {
                     fetch(`/packages/${id}`, {
                             method: 'DELETE',
@@ -742,15 +748,15 @@
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
-                                showSuccess('Package deleted!');
+                                showSuccess('{{ __('manage-catering-package.delete_success') }}');
                                 setTimeout(() => location.reload(), 1500);
                             } else {
-                                showError('Failed to delete package.');
+                                showError('{{ __('manage-catering-package.delete_failed') }}');
                             }
                         })
                         .catch(error => {
                             console.error('Error:', error);
-                            showError('Error deleting package.');
+                            showError('{{ __('manage-catering-package.delete_error') }}');
                         });
                 }
             });
@@ -785,7 +791,7 @@
 
 
         function openAddModal() {
-            document.getElementById('packageModalLabel').innerText = 'Add Package';
+            document.getElementById('packageModalLabel').innerText = '{{ __('manage-catering-package.add_package') }}';
             document.getElementById('packageForm').reset();
 
             selectedCuisineIds.clear();
@@ -806,7 +812,10 @@
             paramName: "menuPDFPath",
             acceptedFiles: ".pdf",
             addRemoveLinks: true,
-            dictRemoveFile: "Change file", // ← ganti teks di sini
+            dictRemoveFile: "{{ __('manage-catering-package.dz_change_file') }}",
+            dictDefaultMessage: "{{ __('manage-catering-package.dz_drop_files_here') }}",
+
+            // dictDefaultMessage: "{{ __('manage-catering-package.dz_drop_files_here') }}",
         });
 
         /* Image */
@@ -818,12 +827,10 @@
             acceptedFiles: ".png,.jpg,.jpeg",
             maxFilesize: 10,
             addRemoveLinks: true,
-            dictRemoveFile: "Change image", // ← sama
-            dictDefaultMessage: "Drop image here or click to upload",
+            dictRemoveFile: "{{ __('manage-catering-package.dz_change_image') }}",
+            dictDefaultMessage: "{{ __('manage-catering-package.dz_drop_image') }}",
         });
 
-
-        // Handler tunggal untuk submit form
         document.getElementById("packageForm").addEventListener("submit", function(e) {
             e.preventDefault();
             e.stopPropagation();
