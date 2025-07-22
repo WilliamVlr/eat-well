@@ -17,4 +17,6 @@ return [
     'add' => 'Tambah',
     'package' => 'Paket',
     'packages' => 'Paket',
+    'items' => 'Item',
+    'no_package_selected_yet' => 'Anda Belum Memilih Paket.',
 ];

@@ -16,6 +16,8 @@ $(document).ready(function () {
     const translationDataElement = document.getElementById("translation-data");
     const packageText = translationDataElement.dataset.packageText;
     const packagesText = translationDataElement.dataset.packagesText;
+    const itemsText = translationDataElement.dataset.itemsText;
+    const noPackageSelectedYetText = translationDataElement.dataset.noPackageSelectedYet;
 
     $(".add-button").click(function (e) {
         var accordionItem = $(this).attr("data-tab");
@@ -125,7 +127,7 @@ $(document).ready(function () {
                         addText.text(`${currentPackageItemCount} Item`);
                         addButton.addClass("active");
                     } else {
-                        addText.text(`${currentPackageItemCount} Items`);
+                        addText.text(`${currentPackageItemCount} ${itemsText}`);
                         addButton.addClass("active");
                     }
                 }
@@ -142,7 +144,7 @@ $(document).ready(function () {
         const proceedToPaymentLink = $('#proceedToPaymentLink'); 
 
         if (pkgCount === 0) {
-            $(".order-message").show().text("No Package Selected Yet.");
+            $(".order-message").show().text(`${noPackageSelectedYetText}`);
             $(".package-count, .item-count, .price-total").hide();
             proceedToPaymentLink.css({
                 'cursor': 'default',
@@ -154,7 +156,7 @@ $(document).ready(function () {
             if (summary.totalItems === 1) {
                 $(".item-count").show().text(`${summary.totalItems} Item`);
             } else {
-                $(".item-count").show().text(`${summary.totalItems} Items`);
+                $(".item-count").show().text(`${summary.totalItems} ${itemsText}`);
             }
             $(".price-total")
                 .show()

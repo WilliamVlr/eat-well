@@ -20,7 +20,9 @@
         data-lunch-text="{{ __('catering-detail.lunch') }}" 
         data-dinner-text="{{ __('catering-detail.dinner') }}"
         data-package-text="{{ __('catering-detail.package') }}"
-        data-packages-text="{{ __('catering-detail.packages') }}">
+        data-packages-text="{{ __('catering-detail.packages') }}"
+        data-items-text="{{ __('catering-detail.items') }}"
+        data-no-package-selected-yet="{{ __('catering-detail.no_package_selected_yet') }}">
     </div>
 
     <div class="profile-container">
@@ -307,7 +309,7 @@
         <a href="{{ route('payment.show', ['vendor' => $vendor->vendorId, 'address_id' => $selectedAddress->addressId]) }}"
             class="button-order inter" id="proceedToPaymentLink"
             style="cursor: default; pointer-events: none; text-decoration: none;">
-            <span class="order-message">No Package Selected Yet.</span>
+            <span class="order-message">{{ __('catering-detail.no_package_selected_yet') }}</span>
             <span class="package-count" style="display:none;"></span>
             <span class="item-count" style="display:none;"></span>
             <span class="price-total" style="display:none;"></span>

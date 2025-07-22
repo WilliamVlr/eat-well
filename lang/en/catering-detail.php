@@ -17,4 +17,6 @@ return [
     'add' => 'Add',
     'package' => 'Package',
     'packages' => 'Packages',
+    'items' => 'Items',
+    'no_package_selected_yet' => 'No Package Selected Yet.',
 ];
