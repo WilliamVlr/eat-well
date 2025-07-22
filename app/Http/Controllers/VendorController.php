@@ -15,7 +15,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-class VendorController extends Controller
+class 
+
+VendorController extends Controller
 {
 
     public function display()
@@ -135,7 +137,9 @@ class VendorController extends Controller
         // validating
         $userId = Auth::id();
 
-        $vendor = Vendor::where('userId', $userId)->first();
+        $vendor = Vendor::create([
+            'userId' => $userId
+        ]);
 
         // upload logo
         $logoPath = null;
@@ -143,11 +147,15 @@ class VendorController extends Controller
         $file = $request->file('logo');
 
         $filename = time().'_'.$file->getClientOriginalName();
-        // dd($filename);
+
         $file->storeAs('public/vendor_logos', $filename);
 
         $logoPath = 'vendor_logos/'.$filename;
 
+        $vendor->update([
+            'logo' => $logoPath,
+        ]);
+        
        // Convert and combine delivery times from 12-hour format (like "05:30 PM") to "HH:MM-HH:MM"
         $breakfast = $request->startBreakfast && $request->closeBreakfast
             ? $request->startBreakfast. '-' .$request->closeBreakfast

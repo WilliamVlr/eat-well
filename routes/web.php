@@ -138,11 +138,11 @@ Route::middleware(['role:vendor'])->group(function () {
     Route::get('/vendor-first-page', function () {
         return view('vendorFirstPage');
     })->name('vendor.first.page');
+    // Route::get('/vendor-first-page', f)
 
+    Route::post('/new-vendor', [VendorController::class, 'store'])->name('vendor.store');
     Route::middleware(EnsureVendor::class)->group(function () {
 
-
-        Route::post('/new-vendor', [VendorController::class, 'store'])->name('vendor.store');
 
         // Catering dashboard
         Route::get('/cateringHomePage', [VendorController::class, 'display']);
