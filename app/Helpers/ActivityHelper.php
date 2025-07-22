@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use App\Models\UserActivity;
@@ -58,6 +59,38 @@ if (!function_exists('logActivity')) {
             'description' => $description,
             'method'      => $request->method(),
             'ip_address'  => $request->ip(),
+            'accessed_at' => now(),
+        ]);
+    }
+
+    function loginLog($email, $status)
+    {
+        // $description = "{$email}" . $status . ' to Login';
+       
+
+        $userId = User::where('email', $email)->value('userId');
+        $name = User::where('email', $email)->value('name');
+        $role = User::where('email', $email)->value('role');
+
+        if($userId == null) {
+            return;
+        }
+        
+        if($status == 'Successfully')
+        {
+            $description = "{$email} Successfully logged in";
+        } else {
+            $description = "{$email}" . "{$status}";
+        }
+
+        UserActivity::create([
+            'userId'      => $userId ? $userId : null,
+            'name'        => $name ? $name : null,
+            'role'        => $role ? $role : null,
+            'url'         => request()->fullUrl(),
+            'description' => $description,
+            'method'      => request()->method(),
+            'ip_address'  => request()->ip(),
             'accessed_at' => now(),
         ]);
     }

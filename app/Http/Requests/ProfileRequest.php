@@ -33,7 +33,7 @@ class ProfileRequest extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
-        logActivity('Failed', 'Updated', "Profile due to validation errors");
+        logActivity('Failed', 'Updated', "Profile due to validation errors : " . implode($validator->errors()->all()));
 
         throw new HttpResponseException(
             redirect()->back()

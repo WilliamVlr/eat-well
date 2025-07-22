@@ -64,6 +64,7 @@ class UserController extends Controller
             $maxAllowedBalance = 1000000000;
 
             if ($newBalance > $maxAllowedBalance) {
+                logActivity('Failed', 'top-up', 'WellPay, Error : Balance cannot exceed Rp ' . number_format($maxAllowedBalance, 0, ',', '.') . '.');
                 return response()->json(['message' => 'Your balance cannot exceed Rp ' . number_format($maxAllowedBalance, 0, ',', '.') . '.'], 400);
             }
 
@@ -81,12 +82,14 @@ class UserController extends Controller
 
         } catch (ValidationException $e) {
             // Tangkap error validasi dan kirimkan ke frontend
+            logActivity('Failed', 'top-up', 'WellPay, Error : ' . $e->getMessage());
             return response()->json([
                 'message' => 'Validation Error',
                 'errors' => $e->errors()
             ], 422); // Status code 422 Unprocessable Entity
         } catch (\Exception $e) {
             // Tangkap error lainnya (misalnya error database)
+            logActivity('Failed', 'top-up', 'WellPay, Error : ' . $e->getMessage());
             return response()->json(['message' => 'An error occurred: ' . $e->getMessage()], 500);
         }
     }
