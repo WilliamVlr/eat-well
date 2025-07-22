@@ -94,7 +94,6 @@ Route::middleware(['role:customer'])->group(function () {
     Route::post('/update-order-summary', [CartController::class, 'updateOrderSummary'])->name('update.order.summary');
     Route::get('/load-cart', [CartController::class, 'loadCart'])->name('load.cart');
 
-
     // Order History
     Route::get('/orders', [OrderController::class, 'index'])->name('order-history');
 

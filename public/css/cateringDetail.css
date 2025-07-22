@@ -387,7 +387,7 @@ body {
 }
 
 #dropdownMenuButton{
-    margin-left: -20px;
+    margin-left: -10px;
      /* Set lebar maksimum dan tambahkan ellipsis untuk teks yang terlalu panjang */
     max-width: 200px; /* Sesuaikan lebar ini sesuai keinginan Anda */
     width: 200px;
@@ -449,7 +449,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-left: -5px !important;  
+  margin-left: -20px !important;  
 }
 
 .form-check-input[disabled]~.form-check-label, .form-check-input:disabled~.form-check-label{
@@ -672,7 +672,7 @@ body {
 }
 
 .add-button{
-    width: 100px;
+    width: 80px;
     height: auto;
     padding: 5px;
     background-color: var(--bg-contrast);
@@ -740,7 +740,7 @@ input, button, select, optgroup, textarea{
 }
 
 .item-row .price {
-  flex: 0 0 140px;
+  flex: 0 0 100px;
   text-align: left;
 }
 
@@ -1071,7 +1071,7 @@ input, button, select, optgroup, textarea{
     }
 
     #dropdownMenuButton{
-        margin-left: -15px;
+        margin-left: -10px;
         max-width: 150px;
         width: 150px;
     }
@@ -1096,7 +1096,7 @@ input, button, select, optgroup, textarea{
 
     .list-group-item {
         font-size: 15px !important;   
-        margin-bottom: -7px !important;          
+        margin-bottom: -20px !important;          
     }
 
     .price-kanan{
@@ -1332,7 +1332,7 @@ input, button, select, optgroup, textarea{
         height: 25px;                    /* Tinggi tombol */
         line-height: 25px;              /* Biar teks vertikal tengah */
         padding: 0 10px;                /* Jarak kiri-kanan teks */
-        margin-left: -20px;
+        margin-left: -10px;
     }
 
     .dropdown-menu{
@@ -1354,7 +1354,7 @@ input, button, select, optgroup, textarea{
     .list-group-item {
         font-size: 13px !important;   
         margin-bottom: -7px !important;    
-        margin-left: -12px !important;      
+        margin-left: -20px !important;      
     }
 
     .form-check-input {
@@ -1685,7 +1685,7 @@ input, button, select, optgroup, textarea{
 
     .list-group-item {
         font-size: 16px !important;   
-        margin-bottom: -13px !important;          
+        margin-bottom: -20px !important;          
     }
 
     .form-check-input {
