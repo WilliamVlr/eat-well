@@ -15,6 +15,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Socialite\ProviderCallbackController;
 use App\Http\Controllers\Socialite\ProviderRedirectController;
+use App\Http\Middleware\EnsureVendor;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use App\Http\Middleware\RoleMiddleware;
 
@@ -134,7 +135,7 @@ Route::middleware(['role:customer'])->group(function () {
 /* ---------------------
      VENDOR ROUTES
 ---------------------- */
-Route::middleware(['role:vendor'])->group(function(){
+Route::middleware(['role:vendor', EnsureVendor::class])->group(function(){
     
     Route::get('/vendor-first-page', function () {
         return view('vendorFirstPage');
