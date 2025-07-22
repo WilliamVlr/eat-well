@@ -18,7 +18,7 @@
 </head>
 
 <body class="d-flex flex-column">
-    <nav class="navbar navbar-expand-md custNavigation">
+    <nav class="navbar navbar-expand-md custNavigation w-100">
         <div class="h-100 w-100 invisible position-absolute bg-black opacity-50 z-3 nav-visibility"></div>
         <div class="container-fluid">
             <a class="navbar-brand me-auto" href="cateringHomePage">
@@ -98,11 +98,11 @@
         </div>
     </nav>
 
-    <div class="flex-grow-1">
+    <div class="flex-grow-1 w-100">
         @yield('content')
     </div>
 
-    <footer class="bg-dark text-white py-0">
+    <footer class="bg-dark text-white py-0 w-100">
         <div class="container text-center footer-page" style="margin-top: 10px; padding: 10px">
 
             <div class="mb-2">
@@ -140,6 +140,7 @@
 
     @yield('scripts')
     <script src="{{ asset('js/navigation.js') }}"></script>
+
 
 </body>
 

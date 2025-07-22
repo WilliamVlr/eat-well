@@ -22,7 +22,7 @@ class PackageController extends Controller
             ->get();
 
         $cuisines = CuisineType::all();
-        return view('manageCateringPackage', compact('packages', 'cuisines'));
+        return view('manageCateringPackage', compact('packages', 'cuisines', 'vendorId'));
     }
 
     // Menyimpan data package baru

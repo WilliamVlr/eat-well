@@ -46,16 +46,49 @@
             }
         }
 
-        .container {
+        .custom-container {
             padding: 30px;
             background-color: #fff;
             color: #000;
             border-radius: 15px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             text-align: center;
-            max-width: 95%;
+            max-width: 80%;
             margin-top: 20px;
         }
+
+        .custom-containers {
+            padding: 30px;
+            background-color: #fff;
+            color: #000;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 1140px;
+            /* Lebar penuh untuk desktop */
+            margin: 20px auto;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 576px) {
+            .custom-containers {
+                padding: 20px;
+                max-width: 75%;
+            }
+        }
+
+        @media (min-width: 577px) and (max-width: 768px) {
+            .custom-containers {
+                max-width: 80%;
+            }
+        }
+
+        /* @media (min-width: 769px) {
+                                                        .custom-containers {
+                                                            max-width: 360px;
+                                                        }
+                                                    } */
 
         .modal-lg {
             max-width: 800px;
@@ -186,14 +219,15 @@
 
 @section('content')
     {{-- <x-vendor-nav></x-vendor-nav> --}}
-    <div class="heading-title">Find your Package</div>
-    <div class="text-muted-subheading">You can edit our previous and add your new package to your catering.</div>
+    <div class="heading-title w-50 text-center mx-auto">Find your Package</div>
+    <div class="text-muted-subheading w-75 text-center mx-auto">You can edit our previous and add your new package to your
+        catering.</div>
 
 
-    <div class="container mt-5">
+    <div class="container custom-containers mt-5 mx-auto">
         <div class="d-flex justify-content-between mb-3">
 
-            <div class="container my-0">
+            <div class="container custom-container my-0">
                 <div class="row justify-content-center">
                     <div class="d-flex justify-content-center gap-2 mt-3">
 
@@ -390,9 +424,10 @@
     <div class="text-muted-subheading">We suggest adding the landscape version and including at least 3 preview images
         and 5 preview max.</div>
 
-    <div class="container">
+    <div class="container custom-container mb-5">
         <div class="carousel-wrapper" id="carousel-wrapper"></div>
         <input type="file" id="imageInput" accept="image/*" />
+        <input type="hidden" id="vendorId" value="{{$vendorId}}">
     </div>
 @endsection
 
@@ -780,19 +815,25 @@
                     alert("Ada error waktu simpan paket");
                 });
         });
-
-
+        const VENDOR_ID = document.getElementById('vendorId').value;
         const carousel = document.getElementById("carousel-wrapper");
         const imageInput = document.getElementById("imageInput");
         const MAX_IMAGES = 5;
 
-        const dummyImages = [
-            "asset/catering/homePage/breakfastPreview.png",
-            "asset/catering/homePage/lunchPreview.png",
-            "asset/catering/homePage/dinnerPreview.png"
-        ];
+        function loadPreviews() {
+            fetch(`/vendor-previews?vendorId=${VENDOR_ID}`)
+                .then(res => res.json())
+                .then(data => {
+                    carousel.innerHTML = '';
+                    data.previews.forEach(pv => {
+                        const item = createImageItem('/' + pv.previewPicturePath, pv.vendorPreviewId);
+                        carousel.appendChild(item);
+                    });
+                    renderAddButton();
+                });
+        }
 
-        function createImageItem(src) {
+        function createImageItem(src, previewId) {
             const item = document.createElement("div");
             item.className = "carousel-item";
             const img = document.createElement("img");
@@ -800,21 +841,27 @@
 
             const button = document.createElement("button");
             button.className = "remove-button";
+            button.dataset.previewId = previewId;
 
-            function updateButton() {
-                const total = carousel.querySelectorAll(".carousel-item").length;
-                button.textContent = total === 3 ? "↻" : "✖";
-            }
-
-            updateButton();
+            updateButtonText(button);
 
             button.addEventListener("click", () => {
-                if (button.textContent === "↻") {
+                const total = carousel.querySelectorAll(".carousel-item").length;
+                if (total <= 3) {
                     imageInput.dataset.replaceTarget = src;
+                    imageInput.dataset.replaceId = previewId;
                     imageInput.click();
                 } else {
-                    item.remove();
-                    renderAddButtons();
+                    fetch(`/vendor-previews/${previewId}`, {
+                        method: "DELETE",
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'Accept': 'application/json'
+                        }
+                    }).then(() => {
+                        item.remove();
+                        renderAddButton();
+                    });
                 }
             });
 
@@ -823,70 +870,90 @@
             return item;
         }
 
+        function updateButtonText(button) {
+            const total = carousel.querySelectorAll(".carousel-item").length;
+            button.textContent = total <= 3 ? "↻" : "✖";
+        }
+
         function createAddButton() {
             const addBtn = document.createElement("div");
             addBtn.className = "add-button";
             addBtn.textContent = "+";
             addBtn.addEventListener("click", () => {
                 delete imageInput.dataset.replaceTarget;
+                delete imageInput.dataset.replaceId;
                 imageInput.click();
             });
             return addBtn;
         }
 
-        function renderAddButtons() {
+        function renderAddButton() {
             const existingAdd = carousel.querySelector(".add-button");
             if (existingAdd) existingAdd.remove();
 
-            carousel.querySelectorAll(".carousel-item .remove-button").forEach(btn => {
-                const total = carousel.querySelectorAll(".carousel-item").length;
-                btn.textContent = total === 3 ? "↻" : "✖";
-            });
+            carousel.querySelectorAll(".remove-button").forEach(btn => updateButtonText(btn));
 
-            const totalImages = carousel.querySelectorAll(".carousel-item").length;
-            if (totalImages < MAX_IMAGES) {
-                const addBtn = createAddButton();
-                carousel.appendChild(addBtn);
+            const total = carousel.querySelectorAll(".carousel-item").length;
+            if (total < MAX_IMAGES) {
+                carousel.appendChild(createAddButton());
             }
         }
 
-        imageInput.addEventListener("change", (event) => {
-            const file = event.target.files[0];
+        imageInput.addEventListener("change", e => {
+            const file = e.target.files[0];
             if (!file) return;
 
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const src = e.target.result;
-                const replaceTarget = imageInput.dataset.replaceTarget;
+            const formData = new FormData();
+            formData.append('image', file);
 
-                if (replaceTarget) {
-                    const items = carousel.querySelectorAll(".carousel-item img");
-                    items.forEach(img => {
-                        if (img.src === replaceTarget) {
-                            img.src = src;
+            const replaceId = imageInput.dataset.replaceId;
+
+            if (replaceId) {
+                formData.append('_method', 'PUT');
+
+                fetch(`/vendor-previews/${replaceId}`, {
+                        method: "POST",
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'Accept': 'application/json'
                         }
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        const imgs = carousel.querySelectorAll("img");
+                        imgs.forEach(img => {
+                            if (img.src.includes(imageInput.dataset.replaceTarget)) {
+                                img.src = '/' + data.preview.previewPicturePath;
+                            }
+                        });
+                        delete imageInput.dataset.replaceTarget;
+                        delete imageInput.dataset.replaceId;
+                        imageInput.value = "";
                     });
-                } else {
-                    const item = createImageItem(src);
-                    const addButton = carousel.querySelector(".add-button");
-                    if (addButton) {
-                        carousel.insertBefore(item, addButton);
-                    } else {
-                        carousel.appendChild(item);
-                    }
-                }
+            } else {
+                formData.append("vendorId", VENDOR_ID);
 
-                renderAddButtons();
-            };
-
-            reader.readAsDataURL(file);
-            imageInput.value = "";
+                fetch("/vendor-previews/upload", {
+                        method: "POST",
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        const item = createImageItem('/' + data.preview.previewPicturePath, data.preview.id);
+                        const addButton = carousel.querySelector(".add-button");
+                        if (addButton) carousel.insertBefore(item, addButton);
+                        else carousel.appendChild(item);
+                        renderAddButton();
+                        imageInput.value = "";
+                    });
+            }
         });
 
-        dummyImages.forEach((src) => {
-            const item = createImageItem(src);
-            carousel.appendChild(item);
-        });
-        renderAddButtons();
+        document.addEventListener("DOMContentLoaded", loadPreviews);
     </script>
 @endsection

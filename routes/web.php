@@ -20,6 +20,7 @@ use App\Http\Controllers\OrderVendorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Socialite\ProviderCallbackController;
 use App\Http\Controllers\Socialite\ProviderRedirectController;
+use App\Http\Controllers\VendorPreviewController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use App\Http\Middleware\RoleMiddleware;
 
@@ -173,6 +174,15 @@ Route::middleware(['role:vendor'])->group(function () {
     Route::fallback(function () {
         return redirect()->route('cateringHomePage');
     });
+
+    Route::get('/vendor-previews', [VendorPreviewController::class, 'index']);
+
+    Route::delete('/vendor-previews/{id}', [VendorPreviewController::class, 'destroy']);
+
+    Route::post('/vendor-previews/upload', [VendorPreviewController::class, 'upload']);
+    Route::put('/vendor-previews/{id}', [VendorPreviewController::class, 'update']);
+
+    Route::get('/vendor-manage', [VendorPreviewController::class, 'showVendorDetail']);
 });
 /* ---------------------
      ADMIN ROUTES
