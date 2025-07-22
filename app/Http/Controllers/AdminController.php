@@ -17,10 +17,6 @@ class AdminController extends Controller
     //
     public function viewAllVendors()
     {
-        // $orders = Order::all();
-
-
-
         $vendors = Vendor::all();
 
         $sales = DB::table('orders')
@@ -30,8 +26,6 @@ class AdminController extends Controller
 
         logActivity('Successfully', 'Visited', 'View All Vendor Page');
         return view('viewAllVendor', compact('vendors', 'sales'));
-
-        // return view('viewAllVendor', compact('vendors'));
     }
 
     public function search(Request $request)
@@ -60,7 +54,7 @@ class AdminController extends Controller
 
     public function view_all_logs()
     {
-        $all_logs = UserActivity::all();
+        $all_logs = UserActivity::orderBy('accessed_at', 'desc')->paginate(25);
 
         logActivity('Successfully', 'Visited', 'View All Logs Page');
         return view('view-all-logs', compact('all_logs'));
