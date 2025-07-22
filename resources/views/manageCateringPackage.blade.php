@@ -3,10 +3,12 @@
 @section('title', 'EatWell | My Packages')
 
 @section('css')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <style>
         body {
             font-family: sans-serif;
@@ -85,10 +87,10 @@
         }
 
         /* @media (min-width: 769px) {
-                                                        .custom-containers {
-                                                            max-width: 360px;
-                                                        }
-                                                    } */
+                                                                .custom-containers {
+                                                                    max-width: 360px;
+                                                                }
+                                                            } */
 
         .modal-lg {
             max-width: 800px;
@@ -427,7 +429,7 @@
     <div class="container custom-container mb-5">
         <div class="carousel-wrapper" id="carousel-wrapper"></div>
         <input type="file" id="imageInput" accept="image/*" />
-        <input type="hidden" id="vendorId" value="{{$vendorId}}">
+        <input type="hidden" id="vendorId" value="{{ $vendorId }}">
     </div>
 @endsection
 
@@ -444,6 +446,35 @@
             link.href = "/asset/catering/homePage/template_package_import.csv";
             link.download = "template_package_import.csv"; // nama file saat disimpan user
 
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function showSuccess(message) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: message,
+                confirmButtonColor: '#28a745',
+                confirmButtonText: 'OK'
+            });
+        }
+
+        function showError(message) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: message,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Coba Lagi'
+            });
+        }
+
+        function downloadTemplateCSV() {
+            const link = document.createElement("a");
+            link.href = "/asset/catering/homePage/template_package_import.csv";
+            link.download = "template_package_import.csv";
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -467,8 +498,9 @@
                         0]], {
                         defval: ''
                     });
+
                     if (!rows.length) {
-                        alert('File kosong / format salah!');
+                        showError('File kosong / format salah!');
                         return;
                     }
 
@@ -476,11 +508,11 @@
                     const hasRequiredColumns = requiredFields.every(field => field in rows[0]);
 
                     if (!hasRequiredColumns) {
-                        alert('Format kolom salah! Kolom wajib: name, categoryId');
+                        showError('Format kolom salah! Kolom wajib: name, categoryId');
                         return;
                     }
 
-                    const postUrl = '/manageCateringPackage'; // <— URL sudah benar
+                    const postUrl = '/manageCateringPackage';
                     const csrf = document.querySelector('meta[name="csrf-token"]').content;
 
                     const requests = rows.map(async row => {
@@ -502,7 +534,6 @@
                                 }
                             });
 
-                            // Treat anything outside 2xx as failed
                             if (!res.ok) return {
                                 success: false
                             };
@@ -520,16 +551,19 @@
                     try {
                         const results = await Promise.all(requests);
                         const ok = results.filter(r => r.success).length;
-                        alert(`Import selesai! Berhasil: ${ok}, Gagal: ${results.length - ok}`);
-                        location.reload();
+                        showSuccess(
+                            `Import selesai! Berhasil: ${ok}, Gagal: ${results.length - ok}`
+                        );
+                        setTimeout(() => location.reload(), 1500);
                     } catch (err) {
                         console.error(err);
-                        alert('Terjadi kesalahan saat import!');
+                        showError('Terjadi kesalahan saat import!');
                     }
                 };
                 reader.readAsArrayBuffer(file);
             });
         });
+
 
         function handleEditClick(btn) {
             const data = JSON.parse(btn.dataset.package);
@@ -682,29 +716,44 @@
         //     }
         // }
 
+        function showConfirm(message) {
+            return Swal.fire({
+                title: 'Konfirmasi',
+                text: message,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            });
+        }
+
         function deletePackage(id) {
-            if (confirm('Are you sure you want to delete this package?')) {
-                fetch(`/packages/${id}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Accept': 'application/json',
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert('Package deleted!');
-                            location.reload(); // atau hapus row secara dinamis tanpa reload
-                        } else {
-                            alert('Failed to delete package.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Error deleting package.');
-                    });
-            }
+            showConfirm('Apakah Anda yakin ingin menghapus paket ini?').then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/packages/${id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Accept': 'application/json',
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                showSuccess('Package deleted!');
+                                setTimeout(() => location.reload(), 1500);
+                            } else {
+                                showError('Failed to delete package.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            showError('Error deleting package.');
+                        });
+                }
+            });
         }
     </script>
 
