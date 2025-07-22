@@ -66,7 +66,7 @@ class PackageController extends Controller
             logActivity('Successfully', 'Added', 'Catering Package');
             return redirect(route('manageCateringPackage'));
         } catch (ValidationException $e) {
-            logActivity('Failed', 'Validation Error', 'Catering Package');
+            logActivity('Failed', 'Validation Error', 'Catering Package, Error : ' . $e->getMessage());
 
             return redirect()->back()
                 ->withErrors($e->validator)
