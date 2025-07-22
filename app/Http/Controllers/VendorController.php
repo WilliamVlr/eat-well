@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\VendorStoreRequest;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Order;
@@ -130,91 +131,53 @@ class VendorController extends Controller
         return view('customer.search', compact('vendors', 'all_categories'));
     }
 
-    public function store(Request $request){
+    public function store(VendorStoreRequest $request){
         // validating
-        // dd($request);
         $userId = Auth::id();
-        // dd($userId);
 
         $vendor = Vendor::where('userId', $userId)->first();
-
-        // dd($vendor);
-        $validated = $request->validate([
-            'logo' => 'required|image|mimes:jpeg,png,jpg',
-            'name' => 'required|string|max:255',
-            'startBreakfast' => 'nullable',
-            'closeBreakfast' => 'nullable',
-            'startLunch' => 'nullable',
-            'closeLunch' => 'nullable',
-            'startDinner' => 'nullable',
-            'closeDinner' => 'nullable',
-            'provinsi' => 'required',
-            'kota' => 'required',
-            'kecamatan' => 'required',
-            'kelurahan' => 'required',
-            'kode_pos' => 'required|string|max:5',
-            'phone_number' => 'required|string',
-            'jalan' => 'required|string',
-        ]);
-
-        // dd($validated);
 
         // upload logo
         $logoPath = null;
         
         $file = $request->file('logo');
-        // dd($file);
+
         $filename = time().'_'.$file->getClientOriginalName();
         // dd($filename);
         $file->storeAs('public/vendor_logos', $filename);
-        // dd($file);
+
         $logoPath = 'vendor_logos/'.$filename;
-        // dd($logoPath);
-        // format delivery times
+
        // Convert and combine delivery times from 12-hour format (like "05:30 PM") to "HH:MM-HH:MM"
         $breakfast = $request->startBreakfast && $request->closeBreakfast
             ? $request->startBreakfast. '-' .$request->closeBreakfast
             : null;
-        // dd($breakfast);
 
         $lunch = $request->startLunch && $request->closeLunch
             ? $request->startLunch. '-' .$request->closeLunch
             : null;
-        // dd($lunch);
 
         $dinner = $request->startDinner && $request->closeDinner
             ? $request->startDinner . '-' . $request->closeDinner
             : null;
-        // dd($dinner);
 
         /** @var User|Authenticable $user */
-        // $user = Auth::user();
-        // dd($user);
-        // $vendor = $user->vendor();
-        // dd($vendor);
-        //Vendor udah kebuat, tinggal update datanya satu2
-
-        // $userid = Auth::user()->userId;
-
-        // $vendor = Vendor::query()->find($userid);
         
-        // dd($vendor);
         // Store the vendor
-        
         $vendor->update([
-            'name'=> $validated['name'],
+            'name'=> $request['name'],
             'logo' => $logoPath, 
-            'phone_number'=> $validated['phone_number'],
+            'phone_number'=> $request['phone_number'],
             'breakfast_delivery'=> $breakfast,
             'lunch_delivery'=> $lunch,
             'dinner_delivery'=> $dinner,
-            'provinsi'=> $validated['provinsi'],
-            'kota'=> $validated['kota'],
-            'kabupaten'=> $validated['kota'],
-            'kecamatan'=> $validated['kecamatan'],
-            'kelurahan'=> $validated['kelurahan'],
-            'kode_pos' => $validated['kode_pos'],
-            'jalan' => $validated['jalan'],
+            'provinsi'=> $request['provinsi'],
+            'kota'=> $request['kota'],
+            'kabupaten'=> $request['kota'],
+            'kecamatan'=> $request['kecamatan'],
+            'kelurahan'=> $request['kelurahan'],
+            'kode_pos' => $request['kode_pos'],
+            'jalan' => $request['jalan'],
             'rating' => 0.0,
         ]);
         // ]);

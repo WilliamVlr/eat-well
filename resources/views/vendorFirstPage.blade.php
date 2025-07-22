@@ -17,6 +17,16 @@
                 <div class="card p-5 rounded-4">
                     <form action="{{ route('vendor.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                         <div class="row justify-content-center align-self-center py-3 gy-1">
                             <div class="col-auto mb-0 mt-0">
                                 <span class="material-symbols-outlined">add_home</span>
@@ -35,12 +45,16 @@
                                     <span>Add Logo</span>
                                 </button>
                                 <input type="file" id="vendorLogoInput" name="logo" accept="image/*" style="display: none;">
-                                <div class="text-danger mt-1" id="error-logo"></div>
+                                @error('logo')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-8 d-flex flex-column align-items-space-between" style="margin-top:20px">
                                 <label for="vendorName" class="form-label">Vendor Name</label>
                                 <input type="text" value="{{ old('vendorName') }}"class="form-control" id="vendorName" placeholder="Vendor Name" name="name">
-                                <div class="text-danger mt-1" id="error-name"></div>
+                                @error('name')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="row fw-bold">
@@ -55,32 +69,44 @@
                             <div class="col-2">
                                 <label for="fromBreakfast" class="form-label">From</label>
                                 <input type="time" value="{{ old('startBreakfast') }}" id="fromBreakfast" min="00:00" max="23:59" step="60" placeholder="00.00" class="form-control" name="startBreakfast">
-                                <div class="text-danger mt-1" id="error-startBreakfast"></div>
+                                @error('startBreakfast')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-2">
                                 <label for="untilBreakfast" class="form-label">Until</label>
                                 <input type="time" value="{{ old('closeBreakfast') }}" min="00:00" max="23:59" step="60" id="untilBreakfast" class="form-control" name="closeBreakfast">
-                                <div class="text-danger mt-1" id="error-closeBreakfast"></div>
+                                @error('closeBreakfast')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-2">
                                 <label for="fromLunch" class="form-label">From</label>
                                 <input type="time" value="{{ old('startLunch') }}" id="fromLunch" placeholder="00.00" class="form-control" name="startLunch">
-                                <div class="text-danger mt-1" id="error-startLunch"></div>
+                                @error('startLunch')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-2">
                                 <label for="untilLunch" class="form-label">Until</label>
                                 <input type="time" value="{{ old('closeLunch') }}" min="00:00" max="23:59" step="60" id="untilLunch" class="form-control" name="closeLunch">
-                                <div class="text-danger mt-1" id="error-closeLunch"></div>
+                                @error('closeLunch')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-2">
                                 <label for="fromDinner" class="form-label">From</label>
                                 <input type="time" value="{{ old('startDinner') }}" id="fromDinner" placeholder="00.00" class="form-control" name="startDinner">
-                                <div class="text-danger mt-1" id="error-startDinner"></div>
+                                @error('startDinner')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-2">
                                 <label for="untilDinner" class="form-label">Until</label>
                                 <input type="time" value="{{ old('closeDinner') }}" min="00:00" max="23:59" step="60" id="untilDinner" class="form-control" name="closeDinner">
-                                <div class="text-danger mt-1" id="error-closeDinner"></div>
+                                @error('closeDinner')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 gy-3 py-2">
@@ -89,21 +115,27 @@
                                 <select id="provinsi" name="provinsi" class="form-select" aria-label="Small select example">
                                     <option selected>Provinsi</option>
                                 </select>
-                                <div class="text-danger mt-1" id="error-provinsi"></div>
+                                @error('provinsi')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col">
                                 <label for="kota" class="form-label">City/Town</label>
                                 <select id="kota" name="kota" class="form-select"> 
                                     <option selected>Kota</option>
                                 </select>
-                                <div class="text-danger mt-1" id="error-kota"></div>
+                                @error('kota')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col">
                                 <label for="kecamatan" class="form-label">District</label>
                                 <select id="kecamatan" name="kecamatan" class="form-select">
                                 <option selected>Kecamatan</option>
                                 </select>
-                                <div class="text-danger mt-1" id="error-kecamatan"></div>
+                                @error('kecamatan')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="row gy-3 py-2">
@@ -112,25 +144,33 @@
                                 <select id="kelurahan" name="kelurahan" class="form-select">
                                 <option selected>Kelurahan</option>
                                 </select>
-                                <div class="text-danger mt-1" id="error-kelurahan"></div>
+                                @error('kelurahan')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-12 col-md-4">
                                 <label for="zipCode" class="form-label">Zip Code</label>
                                 <input type="text" value="{{ old('zipCode') }}" class="form-control" id="zipCode" placeholder="28162" name="kode_pos">
                                 </select>
-                                <div class="text-danger mt-1" id="error-zipCode"></div>
+                                @error('kode_pos')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-12 col-md-4 phonum">
                                 <label for="recipientTel" class="form-label">Phone Number</label>
                                 <input type="tel" class="form-control" value="{{ old('phoneNumber') }}" id="phoneNumber" placeholder="0812-1239-3219" name="phone_number">
-                                <div class="text-danger mt-1" id="error-phoneNumber"></div>
+                                @error('phone_number')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="row align-items-center justify-content-between gy-3 py-2">
                              <div class="col-12">
                                 <label for="address" class="form-label">Address</label>
                                 <input type="text" class="form-control" value="{{ old('address') }}" id="address" placeholder="1234 Main St" name="jalan">
-                                <div class="text-danger mt-1" id="error-jalan"></div>
+                                @error('jalan')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-12 col-md-8 align-self-center mx-auto mt-5">
