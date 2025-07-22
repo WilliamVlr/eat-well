@@ -22,6 +22,7 @@ use App\Http\Middleware\RoleMiddleware;
 /* --------------------
      GUEST ROUTES
 -------------------- */
+
 Route::middleware(['guest'])->group(function () {
     Route::get('/', function () {
         return view('landingPage');
@@ -52,12 +53,10 @@ Route::middleware(['guest'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/manage-profile', [SessionController::class, 'destroy'])->name('logout');
-    
+
     Route::get('/manage-profile', function () {
         return view('manageProfile');
     })->name('manage-profile');
-
-
 });
 /* ---------------------
     CUSTOMER ROUTES
@@ -129,38 +128,41 @@ Route::middleware(['role:customer'])->group(function () {
     Route::fallback(function () {
         return redirect()->route('home');
     });
-
 });
 
 /* ---------------------
      VENDOR ROUTES
 ---------------------- */
-Route::middleware(['role:vendor', EnsureVendor::class])->group(function(){
-    
+Route::middleware(['role:vendor'])->group(function () {
+
     Route::get('/vendor-first-page', function () {
         return view('vendorFirstPage');
-    })->name('vendor.data');
+    })->name('vendor.first.page');
 
-    Route::post('/new-vendor', [VendorController::class, 'store'])-> name('vendor.store');
+    Route::middleware(EnsureVendor::class)->group(function () {
 
-    // Catering dashboard
-    Route::get('/cateringHomePage', [VendorController::class, 'display']);
-    Route::post('/cateringHomePage', [SessionController::class, 'destroy'])->name('logout.vendor');
 
-    // Manage Packages
-    Route::get('/manageCateringPackage', [PackageController::class, 'index'])->name('manageCateringPackage');
-    Route::delete('/packages/{id}', [PackageController::class, 'destroy'])->name('packages.destroy');
-    // Route::post('/packages', [PackageController::class, 'store'])->name('packages.store');
-    Route::post('/manageCateringPackage', [PackageController::class, 'store'])->name('packages.store');
-    Route::put('/manageCateringPackage/{package}', [PackageController::class, 'update'])->name('packages.update');
+        Route::post('/new-vendor', [VendorController::class, 'store'])->name('vendor.store');
 
-    // Manage Order
-    Route::get('/manageOrder', function () {
-        return view('manageOrder');
-    });
+        // Catering dashboard
+        Route::get('/cateringHomePage', [VendorController::class, 'display']);
+        Route::post('/cateringHomePage', [SessionController::class, 'destroy'])->name('logout.vendor');
 
-    Route::fallback(function () {
-        return redirect()->route('cateringHomePage');
+        // Manage Packages
+        Route::get('/manageCateringPackage', [PackageController::class, 'index'])->name('manageCateringPackage');
+        Route::delete('/packages/{id}', [PackageController::class, 'destroy'])->name('packages.destroy');
+        // Route::post('/packages', [PackageController::class, 'store'])->name('packages.store');
+        Route::post('/manageCateringPackage', [PackageController::class, 'store'])->name('packages.store');
+        Route::put('/manageCateringPackage/{package}', [PackageController::class, 'update'])->name('packages.update');
+
+        // Manage Order
+        Route::get('/manageOrder', function () {
+            return view('manageOrder');
+        });
+
+        Route::fallback(function () {
+            return redirect()->route('cateringHomePage');
+        });
     });
 });
 /* ---------------------
@@ -203,11 +205,10 @@ Route::middleware(['role:admin'])->group(function () {
     Route::post('/admin-dashboard', [SessionController::class, 'destroy'])->name('logout.admin');
 
     Route::get('/view-order-history', [AdminController::class, 'view_order_history'])
-    ->name('view-order-history')
-    ->middleware(['auth', RoleMiddleware::class]);
+        ->name('view-order-history')
+        ->middleware(['auth', RoleMiddleware::class]);
 
     Route::fallback(function () {
         return redirect()->route('admin-dashboard');
     });
-
 });
