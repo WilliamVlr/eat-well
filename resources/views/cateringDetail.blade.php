@@ -31,28 +31,30 @@
                         </div>
                         <div class="schedule-container">
                             {{-- <span class="inter schedule">Monday - Sunday</span> --}}
-                            <span class="inter schedule">{{ $numSold }} sold</span>
+                            <span class="inter schedule">{{ $numSold }} {{ __('catering-detail.sold') }}</span>
                         </div>
                     </div>
 
                     <div class="location-wrapper">
                         <span class="material-symbols-outlined location-icon">pin_drop</span>
                         <span class="inter address">{{ $vendor->jalan }}, {{ $vendor->kelurahan }},
-                            {{ $vendor->kecamatan }}, {{ $vendor->kabupaten }}, {{ $vendor->provinsi }},
-                            {{ $vendor->kode_pos }}</span>
+                            {{ $vendor->kecamatan }}, {{ $vendor->kota }}, {{ $vendor->provinsi }},
+                            {{ $vendor->kode_pos }} {{ __('catering-detail.order') }}</span>
                     </div>
 
                     <div class="rating-and-number-sold-wrapper">
-                        <a href="{{ route('rate-and-review') }}" class="rate-review-button">
+                        <a href="{{ route('rate-and-review', $vendor->vendorId) }}" class="rate-review-button">
                             <div class="rating-container">
                                 <span class="material-symbols-outlined star-icon">star</span>
-                                <span class="inter rating-and-sold">{{ $vendor->rating }}</span>
+                                @if ($vendor->rating > 0)
+                                    <span class="inter rating-and-sold">{{ $vendor->rating }}</span>   
+                                @endif
                             </div>
                         </a>
                         <div class="number-sold-container">
                             {{-- <span class="inter rating-and-sold">10k+</span>
                             <span class="inter sold-text">sold</span> --}}
-                            <span class="inter rating-and-sold">Order Now</span>
+                            <span class="inter rating-and-sold">{{ __('catering-detail.order') }}</span>
                         </div>
                     </div>
                 </div>
@@ -285,7 +287,13 @@
             <span class="item-count" style="display:none;"></span>
             <span class="price-total" style="display:none;"></span>
         </div> --}}
-        <a href="{{ route('payment.show', ['vendor' => $vendor->vendorId]) }}" class="button-order inter"
+
+        {{-- <div style="background-color: #eee; padding: 10px; margin-top: 20px;">
+            <p>Debug: Selected Address ID = {{ $selectedAddress->addressId ?? 'N/A' }}</p>
+            <p>Debug: Selected Address Jalan = {{ $selectedAddress->jalan ?? 'N/A' }}</p>
+        </div> --}}
+    
+        <a href="{{ route('payment.show', ['vendor' => $vendor->vendorId, 'address_id' => $selectedAddress->addressId]) }}" class="button-order inter"
             id="proceedToPaymentLink" style="cursor: default; pointer-events: none; text-decoration: none;">
             <span class="order-message">No Package Selected Yet.</span>
             <span class="package-count" style="display:none;"></span>

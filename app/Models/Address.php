@@ -14,17 +14,17 @@ class Address extends Model
     protected $primaryKey = 'addressId';
 
     protected $fillable = [
-        // 'userId', // Not in your address migration. If Address belongs to a User, add userId to migration.
-        'provinsi', // Added based on your migration
+        'userId',
+        'provinsi',
         'kota',
-        'kabupaten', // Added based on your migration
+        'kabupaten', 
         'kecamatan',
         'kelurahan',
         'kode_pos',
         'jalan',
-        'recipient_name', // Matches your migration
-        'recipient_phone', // Matches your migration
-        'is_default', // Matches your migration
+        'recipient_name',
+        'recipient_phone',
+        'is_default',
         'notes',
     ];
 

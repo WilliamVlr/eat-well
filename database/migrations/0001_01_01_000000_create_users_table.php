@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('password');
             // $table->enum('role', ['customer', 'vendor', 'admin']);
             //Role = Customer/Vendor/Admin
+            $table->string('profilePath')->default('asset/profile/no profile.png');
             $table->string('role')->default('Customer');
             $table->boolean('enabled2FA')->default(false);
             $table->string('remember_token', 100);

@@ -15,8 +15,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
-
-
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -97,24 +95,12 @@
 
 
             @auth
-                @php
-                    $vendor = \App\Models\Vendor::where('userId', Auth::id())->first();
-                @endphp
-
-                <!-- Jika sudah login -->
                 <a href="/manage-profile-vendor">
                     <div class="imgstyle m-2" style="border-radius:100%; width:50px; height:50px margin-right:20px">
-                        <img class="img-fluid" src="{{ asset($vendor->logo) }}" alt="Card image " width="120px"
-                            style="border-radius: 100%">
+                        <img class="img-fluid" src="{{ asset('asset/catering/homepage/breakfastPreview.jpg') }}"
+                            alt="Card image " width="120px" style="border-radius: 100%">
                     </div>
                 </a>
-            @else
-                <!-- Jika belum login -->
-                <div style="padding: 0.5rem 1rem; border-radius: 0.25rem; margin-right: 2vw">
-                    <a class="login-button p-0" href="login">
-                        <button type="button" class="login_button">Log In</button>
-                    </a>
-                </div>
             @endauth
 
 
@@ -122,7 +108,6 @@
                 aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
         </div>
     </nav>
 
@@ -130,7 +115,7 @@
         @yield('content')
     </div>
 
-    {{-- <footer class="bg-dark text-white py-0">
+    <footer class="bg-dark text-white py-0">
         <div class="container text-center footer-page" style="margin-top: 10px; padding: 10px">
 
             <div class="mb-2">
@@ -164,7 +149,7 @@
             </div>
 
         </div>
-    </footer> --}}
+    </footer>
 
     @yield('scripts')
     <script src="{{ asset('js/navigation.js') }}"></script>

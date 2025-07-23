@@ -1,18 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('components.vendor-nav')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Profile Vendor</title>
+
+@section('title')
+    Manage Profile Vendor
+@endsection
+
+@section('css')
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('css/manageProfile.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+@endsection
 
-</head>
-
-<body>
-    <x-vendor-nav></x-vendor-nav>
+@section('content')
     <div class="container container-custom">
         <div class="left-panel outer-panel">
             <div class="lexend font-medium manage-profile">
@@ -89,15 +88,15 @@
                             <div class="datafoto">
                                 <div class="data">
                                     <label class="inter font-bold text-black data-title">Name</label>
-                                    <input type="text" class="lexend font-regular text-black name-input"
-                                        id="nameInput" name="nameInput" value="{{ $vendor->name }}">
+                                    <input type="text" class="lexend font-regular text-black name-input" id="nameInput"
+                                        name="nameInput" value="{{ $vendor->name }}">
                                     @error('nameInput')
                                         <p style="color: red">{{ $message }}</p>
                                     @enderror
 
                                     <label class="inter font-bold text-black data-title">Telephone</label>
-                                    <input type="text" class="lexend font-regular text-black name-input"
-                                        id="telpInput" name="telpInput" value="{{ $vendor->phone_number }}">
+                                    <input type="text" class="lexend font-regular text-black name-input" id="telpInput"
+                                        name="telpInput" value="{{ $vendor->phone_number }}">
                                     @error('telpInput')
                                         <p style="color: red">{{ $message }}</p>
                                     @enderror
@@ -106,7 +105,7 @@
                                         Birth</label>
                                     <div class="dob-picker" style="display: none">
                                         <select class="dob-select font-regular" name="dob_month" id="dob_month">
-                                            <option value="" selected>{{ $user->dateOfBirth->format('m') }}
+                                            <option value="" selected>
                                             </option>
                                             @for ($m = 1; $m <= 12; $m++)
                                                 <option value="{{ $m }}">
@@ -115,7 +114,7 @@
                                             @endfor
                                         </select>
                                         <select class="dob-select" name="dob_day" id="dob_day">
-                                            <option value="" selected>{{ $user->dateOfBirth->format('d') }}
+                                            <option value="" selected>
                                             </option>
                                             @for ($d = 1; $d <= 31; $d++)
                                                 <option value="{{ $d }}">
@@ -124,7 +123,7 @@
                                             @endfor
                                         </select>
                                         <select class="dob-select" name="dob_year" id="dob_year">
-                                            <option value="" selected>{{ $user->dateOfBirth->format('Y') }}
+                                            <option value="" selected>
                                             </option>
                                             @for ($y = date('Y'); $y >= 1900; $y--)
                                                 <option value="{{ $y }}">{{ $y }}</option>
@@ -137,8 +136,7 @@
                                     <div class="time-row mt-3">
                                         <label class="time-label" for="breakfast_hour">Breakfast Delivery</label>
                                         {{-- Breakfast Hour Start --}}
-                                        <select class="time-select" name="breakfast_hour_start"
-                                            id="breakfast_hour_start">
+                                        <select class="time-select" name="breakfast_hour_start" id="breakfast_hour_start">
                                             <option value="">HH</option>
                                             @for ($h = 0; $h < 24; $h++)
                                                 <option value="{{ str_pad($h, 2, '0', STR_PAD_LEFT) }}"
@@ -161,8 +159,7 @@
                                         </select>
                                         <p class="mt-2">-</p>
                                         {{-- Breakfast Hour End --}}
-                                        <select class="time-select" name="breakfast_hour_end"
-                                            id="breakfast_hour_end">
+                                        <select class="time-select" name="breakfast_hour_end" id="breakfast_hour_end">
                                             <option value="">HH</option>
                                             @for ($h = 0; $h < 24; $h++)
                                                 <option value="{{ str_pad($h, 2, '0', STR_PAD_LEFT) }}"
@@ -200,8 +197,7 @@
                                         </select>
 
                                         {{-- Lunch Minute Start --}}
-                                        <select class="time-select" name="lunch_minute_start"
-                                            id="lunch_minute_start">
+                                        <select class="time-select" name="lunch_minute_start" id="lunch_minute_start">
                                             <option value="">MM</option>
                                             @for ($m = 0; $m < 60; $m += 5)
                                                 <option value="{{ str_pad($m, 2, '0', STR_PAD_LEFT) }}"
@@ -251,8 +247,7 @@
                                         </select>
 
                                         {{-- Dinner Minute Start --}}
-                                        <select class="time-select" name="dinner_minute_start"
-                                            id="dinner_minute_start">
+                                        <select class="time-select" name="dinner_minute_start" id="dinner_minute_start">
                                             <option value="">MM</option>
                                             @for ($m = 0; $m < 60; $m += 5)
                                                 <option value="{{ str_pad($m, 2, '0', STR_PAD_LEFT) }}"
@@ -385,7 +380,8 @@
             </div>
         </div>
     </div>
-    <script src="{{ asset('js/customer/manageProfile.js') }}"></script>
-</body>
+@endsection
 
-</html>
+@section('scripts')
+    <script src="{{ asset('js/customer/manageProfile.js') }}"></script>
+@endsection
