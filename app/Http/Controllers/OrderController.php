@@ -27,7 +27,7 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $userId = Auth::user();
+        $userId = Auth::id();
         $status = $request->query('status', 'all');
         $query = $request->query('query');
         $now = Carbon::now();
@@ -63,6 +63,7 @@ class OrderController extends Controller
             })
             ->orderByDesc('endDate')
             ->get();
+        // dd($orders);
 
         logActivity('Successfully', 'Visited', 'Order History Page');
         return view('customer.orderHistory', compact('orders', 'status'));
