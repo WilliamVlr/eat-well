@@ -38,9 +38,7 @@
                                 <h4>No Logs Available.</h4>
                             </div>
     
-                            <tr>
-                                <th>No data</th>
-                            </tr>
+                            <h1>No Data</h1>
                         @else
                             @foreach ($all_logs as $log)
                                 <tr>
