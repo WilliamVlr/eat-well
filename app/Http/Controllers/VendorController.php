@@ -199,157 +199,39 @@ class VendorController extends Controller
 
     public function manageProfile()
     {
-        // untuk kasih breakfast delivery, jam menitnya, ambil dulu variable nya, lalu pecah, jadi jam 1 dan 2
         $user = Auth::user();
         $vendor = Vendor::where('userId', $user->userId)->first();
 
-        $breakfastDelivery = $vendor->breakfast_delivery;
-        $lunchDelivery = $vendor->lunch_delivery;
-        $dinnerDelivery = $vendor->dinner_delivery;
+        $breakfast_start = $breakfast_end = null;
+        $lunch_start = $lunch_end = null;
+        $dinner_start = $dinner_end = null;
 
-        if($breakfastDelivery)
-        {
-            $breakfastStart = explode('-', $breakfastDelivery)[0];
-            $breakfastEnd = explode('-', $breakfastDelivery)[1];
-
-            $bsh = explode(':', $breakfastStart)[0];
-            $bsm = explode(':', $breakfastStart)[1];
-            $beh = explode(':', $breakfastEnd)[0];
-            $bem = explode(':', $breakfastEnd)[1];
+        if ($vendor->breakfast_delivery) {
+            [$breakfast_start, $breakfast_end] = explode('-', $vendor->breakfast_delivery);
         }
 
-        if($lunchDelivery)
-        {
-            $lunchStart = explode('-', $lunchDelivery)[0];
-            $lunchEnd = explode('-', $lunchDelivery)[1];
-            $lsh = explode(':', $lunchStart)[0];
-            $lsm = explode(':', $lunchStart)[1];
-            $leh = explode(':', $lunchEnd)[0];
-            $lem = explode(':', $lunchEnd)[1];
+        if ($vendor->lunch_delivery) {
+            [$lunch_start, $lunch_end] = explode('-', $vendor->lunch_delivery);
         }
 
-       
-        
-        if($dinnerDelivery)
-        {
-            $dinnerStart = explode('-', $dinnerDelivery)[0];
-            $dinnerEnd = explode('-', $dinnerDelivery)[1];
-            $dsh = explode(':', $dinnerStart)[0];
-            $dsm = explode(':', $dinnerStart)[1];
-            $deh = explode(':', $dinnerEnd)[0];
-            $dem = explode(':', $dinnerEnd)[1];
+        if ($vendor->dinner_delivery) {
+            [$dinner_start, $dinner_end] = explode('-', $vendor->dinner_delivery);
         }
-        
+
         logActivity('Successfully', 'Visited', 'Manage Profile Vendor Page');
 
-        if($breakfastDelivery && $lunchDelivery && $dinnerDelivery)
-        {
-            return view('manage-profile-vendor', compact(
+        return view('manage-profile-vendor', compact(
             'user',
             'vendor',
-            'bsh',
-            'bsm',
-            'beh',
-            'bem',
-            'lsh',
-            'lsm',
-            'leh',
-            'lem',
-            'dsh',
-            'dsm',
-            'deh',
-            'dem'
+            'breakfast_start',
+            'breakfast_end',
+            'lunch_start',
+            'lunch_end',
+            'dinner_start',
+            'dinner_end'
         ));
-        }
-        elseif($breakfastDelivery && $lunchDelivery && !$dinnerDelivery)
-        {
-            return view('manage-profile-vendor', compact(
-            'user',
-            'vendor',
-            'bsh',
-            'bsm',
-            'beh',
-            'bem',
-            'lsh',
-            'lsm',
-            'leh',
-            'lem'
-        ));
-        }
-        elseif($breakfastDelivery && !$lunchDelivery && $dinnerDelivery)
-        {
-            return view('manage-profile-vendor', compact(
-            'user',
-            'vendor',
-            'bsh',
-            'bsm',
-            'beh',
-            'bem',
-            'dsh',
-            'dsm',
-            'deh',
-            'dem'
-        ));
-        }
-        elseif(!$breakfastDelivery && $lunchDelivery && $dinnerDelivery)
-        {
-            return view('manage-profile-vendor', compact(
-            'user',
-            'vendor',
-            'lsh',
-            'lsm',
-            'leh',
-            'lem',
-            'dsh',
-            'dsm',
-            'deh',
-            'dem'
-        ));
-        }
-        elseif($breakfastDelivery && !$lunchDelivery && !$dinnerDelivery)
-        {
-            return view('manage-profile-vendor', compact(
-            'user',
-            'vendor',
-            'bsh',
-            'bsm',
-            'beh',
-            'bem'
-        ));
-        }
-        elseif(!$breakfastDelivery && $lunchDelivery && !$dinnerDelivery)
-        {
-            return view('manage-profile-vendor', compact(
-            'user',
-            'vendor',
-            'lsh',
-            'lsm',
-            'leh',
-            'lem'
-        ));
-        }
-        elseif(!$breakfastDelivery && !$lunchDelivery && $dinnerDelivery)
-        {
-            return view('manage-profile-vendor', compact(
-            'user',
-            'vendor',
-            'dsh',
-            'dsm',
-            'deh',
-            'dem'
-        ));
-        }
-        elseif(!$breakfastDelivery && !$lunchDelivery && !$dinnerDelivery)
-        {
-            return view('manage-profile-vendor', compact(
-            'user',
-            'vendor'
-        ));
-        }
-
-        
-        
     }
+
 
     public function updateProfile(Request $request)
     {
@@ -371,12 +253,25 @@ class VendorController extends Controller
             // );
 
             $validator = Validator::make($request->all(), [
-                'nameInput' => 'required|string|max:255',
-                'telpInput' => 'required|string|max:255|starts_with:08',
+                'nameInput'=> [
+                    'bail',
+                    'required',
+                    'string',
+                    'max:255',
+                    'unique:vendors,name,' . $vendor->vendorId . ',vendorId',
+                    'not_regex:/<[^>]*script.*?>.*?<\/[^>]*script.*?>/i',
+                    'not_regex:/<[^>]+>/i',
+                ],
+                'telpInput' => 'bail|required|string|max:255|starts_with:08',
+                'profilePicInput' => 'nullable|image|mimes:jpg,jpeg,png',
             ], [
                 'nameInput.required' => 'Vendor name must be filled !.',
                 'telpInput.required' => 'Telp number must be filled !',
-                'telpInput.starts_with' => 'Telp number must be start with 08'
+                'telpInput.starts_with' => 'Telp number must be start with 08',
+                'nameInput.unique' => 'Vendor name is already taken !',
+                'profilePicInput.image'   => 'Profile picture must be an image.',
+                'profilePicInput.mimes'   => 'Profile picture must be a file of type: jpg, jpeg, png.',
+                'nameInput.not_regex' => 'HTML or script tags are not allowed in the vendor name.',
             ]);
 
             if ($validator->fails()) {
@@ -389,12 +284,10 @@ class VendorController extends Controller
             $vendor->name = $request->nameInput;
             $vendor->phone_number = $request->telpInput;
 
-            $vendor->breakfast_delivery = $request->breakfast_hour_start . ':' . $request->breakfast_minute_start . '-' .
-                $request->breakfast_hour_end . ':' . $request->breakfast_minute_end;
-            $vendor->lunch_delivery = $request->lunch_hour_start . ':' . $request->lunch_minute_start . '-' .
-                $request->lunch_hour_end . ':' . $request->lunch_minute_end;
-            $vendor->dinner_delivery = $request->dinner_hour_start . ':' . $request->dinner_minute_start . '-' .
-                $request->dinner_hour_end . ':' . $request->dinner_minute_end;
+            $vendor->breakfast_delivery = $request->breakfast_time_start . '-' . $request->breakfast_time_end;
+            $vendor->lunch_delivery = $request->lunch_time_start . '-' . $request->lunch_time_end;
+            $vendor->dinner_delivery = $request->dinner_time_start . '-' . $request->dinner_time_end;
+
 
             if ($request->hasFile('profilePicInput')) {
                 $file = $request->file('profilePicInput');

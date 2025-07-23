@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('role')->nullable();
             $table->string('url')->nullable();
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->string('method')->nullable();
             $table->ipAddress('ip_address')->nullable();
             $table->timestamp('accessed_at')->nullable();

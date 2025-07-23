@@ -7,7 +7,7 @@
 
 @section('css')
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    <link rel="stylesheet" href="{{ asset('css/manageProfile.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/manageProfilevendor.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 @endsection
 
@@ -87,6 +87,9 @@
                             @method('PATCH')
                             <div class="datafoto">
                                 <div class="data">
+                                    <div class="alert alert-secondary" role="alert" style="width: 60%;" > 
+                                        {{ $user->email }}
+                                    </div>
                                     <label class="inter font-bold text-black data-title">Name</label>
                                     <input type="text" class="lexend font-regular text-black name-input" id="nameInput"
                                         name="nameInput" value="{{ $vendor->name }}">
@@ -132,156 +135,48 @@
                                     </div>
 
 
-
                                     <div class="time-row mt-3">
-                                        <label class="time-label" for="breakfast_hour">Breakfast Delivery</label>
-                                        {{-- Breakfast Hour Start --}}
-                                        <select class="time-select" name="breakfast_hour_start" id="breakfast_hour_start">
-                                            <option value="">HH</option>
-                                            @for ($h = 0; $h < 24; $h++)
-                                                <option value="{{ str_pad($h, 2, '0', STR_PAD_LEFT) }}"
-                                                    {{ isset($bsh) && $bsh == str_pad($h, 2, '0', STR_PAD_LEFT) ? 'selected' : '' }}>
-                                                    {{ str_pad($h, 2, '0', STR_PAD_LEFT) }}
-                                                </option>
-                                            @endfor
-                                        </select>
+                                        <label class="time-label" for="breakfast_time_start">Breakfast Delivery</label>
+                                        {{-- Breakfast Time Start --}}
+                                        <input type="time" class="time-input" name="breakfast_time_start"
+                                            id="breakfast_time_start"
+                                            value="{{ isset($breakfast_start) ? $breakfast_start : '' }}">
 
-                                        {{-- Breakfast Minute Start --}}
-                                        <select class="time-select" name="breakfast_minute_start"
-                                            id="breakfast_minute_start">
-                                            <option value="">MM</option>
-                                            @for ($m = 0; $m < 60; $m += 5)
-                                                <option value="{{ str_pad($m, 2, '0', STR_PAD_LEFT) }}"
-                                                    {{ isset($bsm) && $bsm == str_pad($m, 2, '0', STR_PAD_LEFT) ? 'selected' : '' }}>
-                                                    {{ str_pad($m, 2, '0', STR_PAD_LEFT) }}
-                                                </option>
-                                            @endfor
-                                        </select>
                                         <p class="mt-2">-</p>
-                                        {{-- Breakfast Hour End --}}
-                                        <select class="time-select" name="breakfast_hour_end" id="breakfast_hour_end">
-                                            <option value="">HH</option>
-                                            @for ($h = 0; $h < 24; $h++)
-                                                <option value="{{ str_pad($h, 2, '0', STR_PAD_LEFT) }}"
-                                                    {{ isset($beh) && $beh == str_pad($h, 2, '0', STR_PAD_LEFT) ? 'selected' : '' }}>
-                                                    {{ str_pad($h, 2, '0', STR_PAD_LEFT) }}
-                                                </option>
-                                            @endfor
-                                        </select>
 
-                                        {{-- Breakfast Minute End --}}
-                                        <select class="time-select" name="breakfast_minute_end"
-                                            id="breakfast_minute_end">
-                                            <option value="">MM</option>
-                                            @for ($m = 0; $m < 60; $m += 5)
-                                                <option value="{{ str_pad($m, 2, '0', STR_PAD_LEFT) }}"
-                                                    {{ isset($bem) && $bem == str_pad($m, 2, '0', STR_PAD_LEFT) ? 'selected' : '' }}>
-                                                    {{ str_pad($m, 2, '0', STR_PAD_LEFT) }}
-                                                </option>
-                                            @endfor
-                                        </select>
-
+                                        {{-- Breakfast Time End --}}
+                                        <input type="time" class="time-input" name="breakfast_time_end"
+                                            id="breakfast_time_end"
+                                            value="{{ isset($breakfast_end) ? $breakfast_end : '' }}">
                                     </div>
 
                                     <div class="time-row">
-                                        <label class="time-label" for="lunch_hour">Lunch Delivery</label>
-                                        {{-- Lunch Hour Start --}}
-                                        <select class="time-select" name="lunch_hour_start" id="lunch_hour_start">
-                                            <option value="">HH</option>
-                                            @for ($h = 0; $h < 24; $h++)
-                                                <option value="{{ str_pad($h, 2, '0', STR_PAD_LEFT) }}"
-                                                    {{ isset($lsh) && $lsh == str_pad($h, 2, '0', STR_PAD_LEFT) ? 'selected' : '' }}>
-                                                    {{ str_pad($h, 2, '0', STR_PAD_LEFT) }}
-                                                </option>
-                                            @endfor
-                                        </select>
-
-                                        {{-- Lunch Minute Start --}}
-                                        <select class="time-select" name="lunch_minute_start" id="lunch_minute_start">
-                                            <option value="">MM</option>
-                                            @for ($m = 0; $m < 60; $m += 5)
-                                                <option value="{{ str_pad($m, 2, '0', STR_PAD_LEFT) }}"
-                                                    {{ isset($lsm) && $lsm == str_pad($m, 2, '0', STR_PAD_LEFT) ? 'selected' : '' }}>
-                                                    {{ str_pad($m, 2, '0', STR_PAD_LEFT) }}
-                                                </option>
-                                            @endfor
-                                        </select>
+                                        <label class="time-label" for="lunch_time_start">Lunch Delivery</label>
+                                        {{-- Lunch Time Start --}}
+                                        <input type="time" class="time-input" name="lunch_time_start"
+                                            id="lunch_time_start" value="{{ isset($lunch_start) ? $lunch_start : '' }}">
 
                                         <p class="mt-2">-</p>
 
-                                        {{-- Lunch Hour End --}}
-                                        <select class="time-select" name="lunch_hour_end" id="lunch_hour_end">
-                                            <option value="">HH</option>
-                                            @for ($h = 0; $h < 24; $h++)
-                                                <option value="{{ str_pad($h, 2, '0', STR_PAD_LEFT) }}"
-                                                    {{ isset($leh) && $leh == str_pad($h, 2, '0', STR_PAD_LEFT) ? 'selected' : '' }}>
-                                                    {{ str_pad($h, 2, '0', STR_PAD_LEFT) }}
-                                                </option>
-                                            @endfor
-                                        </select>
-
-                                        {{-- Lunch Minute End --}}
-                                        <select class="time-select" name="lunch_minute_end" id="lunch_minute_end">
-                                            <option value="">MM</option>
-                                            @for ($m = 0; $m < 60; $m += 5)
-                                                <option value="{{ str_pad($m, 2, '0', STR_PAD_LEFT) }}"
-                                                    {{ isset($lem) && $lem == str_pad($m, 2, '0', STR_PAD_LEFT) ? 'selected' : '' }}>
-                                                    {{ str_pad($m, 2, '0', STR_PAD_LEFT) }}
-                                                </option>
-                                            @endfor
-                                        </select>
-
+                                        {{-- Lunch Time End --}}
+                                        <input type="time" class="time-input" name="lunch_time_end"
+                                            id="lunch_time_end" value="{{ isset($lunch_end) ? $lunch_end : '' }}">
                                     </div>
 
                                     <div class="time-row">
-                                        <label class="time-label" for="dinner_hour_start">Dinner Delivery</label>
-                                        {{-- Dinner Hour Start --}}
-                                        <select class="time-select" name="dinner_hour_start" id="dinner_hour_start">
-                                            <option value="">HH</option>
-                                            @for ($h = 0; $h < 24; $h++)
-                                                <option value="{{ str_pad($h, 2, '0', STR_PAD_LEFT) }}"
-                                                    {{ isset($dsh) && $dsh == str_pad($h, 2, '0', STR_PAD_LEFT) ? 'selected' : '' }}>
-                                                    {{ str_pad($h, 2, '0', STR_PAD_LEFT) }}
-                                                </option>
-                                            @endfor
-                                        </select>
-
-                                        {{-- Dinner Minute Start --}}
-                                        <select class="time-select" name="dinner_minute_start" id="dinner_minute_start">
-                                            <option value="">MM</option>
-                                            @for ($m = 0; $m < 60; $m += 5)
-                                                <option value="{{ str_pad($m, 2, '0', STR_PAD_LEFT) }}"
-                                                    {{ isset($dsm) && $dsm == str_pad($m, 2, '0', STR_PAD_LEFT) ? 'selected' : '' }}>
-                                                    {{ str_pad($m, 2, '0', STR_PAD_LEFT) }}
-                                                </option>
-                                            @endfor
-                                        </select>
+                                        <label class="time-label" for="dinner_time_start">Dinner Delivery</label>
+                                        {{-- Dinner Time Start --}}
+                                        <input type="time" class="time-input" name="dinner_time_start"
+                                            id="dinner_time_start"
+                                            value="{{ isset($dinner_start) ? $dinner_start : '' }}">
 
                                         <p class="mt-2">-</p>
 
-                                        {{-- Dinner Hour End --}}
-                                        <select class="time-select" name="dinner_hour_end" id="dinner_hour_end">
-                                            <option value="">HH</option>
-                                            @for ($h = 0; $h < 24; $h++)
-                                                <option value="{{ str_pad($h, 2, '0', STR_PAD_LEFT) }}"
-                                                    {{ isset($deh) && $deh == str_pad($h, 2, '0', STR_PAD_LEFT) ? 'selected' : '' }}>
-                                                    {{ str_pad($h, 2, '0', STR_PAD_LEFT) }}
-                                                </option>
-                                            @endfor
-                                        </select>
-
-                                        {{-- Dinner Minute End --}}
-                                        <select class="time-select" name="dinner_minute_end" id="dinner_minute_end">
-                                            <option value="">MM</option>
-                                            @for ($m = 0; $m < 60; $m += 5)
-                                                <option value="{{ str_pad($m, 2, '0', STR_PAD_LEFT) }}"
-                                                    {{ isset($dem) && $dem == str_pad($m, 2, '0', STR_PAD_LEFT) ? 'selected' : '' }}>
-                                                    {{ str_pad($m, 2, '0', STR_PAD_LEFT) }}
-                                                </option>
-                                            @endfor
-                                        </select>
-
+                                        {{-- Dinner Time End --}}
+                                        <input type="time" class="time-input" name="dinner_time_end"
+                                            id="dinner_time_end" value="{{ isset($dinner_end) ? $dinner_end : '' }}">
                                     </div>
+
                                 </div>
 
                                 <div class="photo-data">

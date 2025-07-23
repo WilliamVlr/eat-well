@@ -79,7 +79,6 @@ class UserController extends Controller
                 'message' => 'Top-up of Rp ' . number_format($amount, 0, ',', '.') . ' successful!',
                 'new_balance' => $newBalance, // Kirim saldo baru kembali ke frontend
             ], 200);
-
         } catch (ValidationException $e) {
             // Tangkap error validasi dan kirimkan ke frontend
             logActivity('Failed', 'top-up', 'WellPay, Error : ' . $e->getMessage());
@@ -104,42 +103,33 @@ class UserController extends Controller
         return view('manageProfile', compact('user'));
     }
 
-    
+
 
     public function updateProfile(ProfileRequest $request)
     {
-        // dd($request->gender);
-
         $user = Auth::user();
         $userId = $user->userId;
 
         $updated_user = User::find($userId);
 
-        // dd($updated_user);
         $updated_user->name = $request->nameInput;
 
-        if ($request->dob_year && $request->dob_month && $request->dob_day) {
-            $updated_user->dateOfBirth = $request->dob_year . '-' . $request->dob_month . '-' . $request->dob_day . ' 00:00:00';
+        if ($request->filled('dateOfBirth')) {
+            $updated_user->dateOfBirth = $request->input('dateOfBirth');
         }
 
         if ($request->hasFile('profilePicInput')) {
             $file = $request->file('profilePicInput');
-            $filename = time() .'.'. $file->getClientOriginalExtension();
-            // dd($filename);
+            $filename = time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('asset/profile'), $filename);
             $updated_user->profilePath = 'asset/profile/' . $filename;
         }
 
-        if($request->gender === 'male'){
-            $updated_user->genderMale = 1;
-        } else{
-            $updated_user->genderMale = 0;
-        }
+        $updated_user->genderMale = ($request->gender === 'male') ? 1 : 0;
 
-        logActivity('Successfully', 'Updated', "Profile to {$updated_user->name}");
         $updated_user->save();
 
-        
+        logActivity('Successfully', 'Updated', "Profile to {$updated_user->name}");
 
         return redirect()->route('manage-profile');
     }

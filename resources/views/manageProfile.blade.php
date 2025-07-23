@@ -79,14 +79,15 @@
                                 <div class="data">
                                     <label class="inter font-bold text-black data-title">Name</label>
                                     <input type="text" class="lexend font-regular text-black name-input" id="nameInput"
-                                        name="nameInput" value="{{ $user->name }}" >
+                                        name="nameInput" value="{{ $user->name }}">
 
                                     @error('nameInput')
                                         <div class="" style="color: rgb(194, 12, 12)">{{ $message }}</div>
                                     @enderror
 
-                                    <label class="inter font-bold text-black data-title">Date of Birth</label>
-                                    <div class="dob-picker">
+                                    <label class="inter font-bold text-black data-title" style="display: none">Date of
+                                        Birth</label>
+                                    <div class="dob-picker" style="display: none">
                                         <select class="dob-select font-regular" name="dob_month" id="dob_month">
                                             @if (empty($user->dateOfBirth))
                                                 <option value="" selected>mm</option>
@@ -96,7 +97,8 @@
                                             @endif
 
                                             @for ($m = 1; $m <= 12; $m++)
-                                                <option value="{{ $m }}">{{ str_pad($m, 2, '0', STR_PAD_LEFT) }}
+                                                <option value="{{ $m }}">
+                                                    {{ str_pad($m, 2, '0', STR_PAD_LEFT) }}
                                                 </option>
                                             @endfor
                                         </select>
@@ -126,6 +128,20 @@
                                         </select>
                                     </div>
 
+                                    <label for="dateOfBirth" class="inter font-bold text-black data-title">Date of
+                                        Birth</label>
+                                    <div class="dob-picker">
+                                        <input type="date" class="dob-select font-regular" name="dateOfBirth"
+                                            id="dateOfBirth"
+                                            value="{{ old('dateOfBirth', optional($user->dateOfBirth)->format('Y-m-d')) }}">
+                                            
+                                    </div>
+                                    @error('dateOfBirth')
+                                        <div class="" style="color: rgb(194, 12, 12)">{{ $message }}</div>
+                                    @enderror
+
+
+
                                     <p class="inter font-bold text-black data-title gender">Gender</p>
                                     <div class="gender-group">
                                         @if ($user->genderMale == 1)
@@ -147,9 +163,15 @@
                                         @endif
 
                                     </div>
+
+
                                     @error('gender')
                                         <div class="" style="color: rgb(194, 12, 12)">{{ $message }}</div>
                                     @enderror
+
+                                    <div class="alert alert-secondary mt-3" role="alert">
+                                        Email : {{ $user->email }}
+                                    </div>
                                 </div>
                                 <div class="photo-data">
                                     <div class="profile-image-wrapper">
@@ -173,7 +195,7 @@
                 </div>
 
                 <hr class="section-divider">
-                <div id="management-security" class="management-section">
+                <div id="management-security" class="management-section mt-4">
 
                     <div class="security-manage">
                         <p class="lexend font-medium text-black title">Security Management</p>
