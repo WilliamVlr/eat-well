@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}">
 
 <head>
     <meta charset="UTF-8">
@@ -17,7 +17,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
 </head>
 
-<body class="d-flex flex-column min-vh-100">
+<body class="d-flex flex-column">
     <nav class="navbar navbar-expand-md custNavigation w-100">
         <div class="h-100 w-100 invisible position-absolute bg-black opacity-50 z-3 nav-visibility"></div>
         <div class="container-fluid">
@@ -39,12 +39,22 @@
                 </ul>
             </div> --}}
 
-            <div class="dropdown-wrapper">
+            {{-- <div class="dropdown-wrapper">
                 <select id="languageSelector" style="text-align: center; margin-left: 30px">
                     <option value="en">EN</option>
                     <option value="id">ID</option>
                 </select>
-            </div>
+            </div> --}}
+
+            <form action="/lang" method="post">
+                @csrf
+                <div class="dropdown-wrapper">
+                    <select name="lang" id="languageSelector" style="text-align: center; margin-left: 30px;" onchange="this.form.submit()">
+                        <option value="en" @if (app()->getLocale() === 'en') selected @endif>EN</option>
+                        <option value="id" @if (app()->getLocale() === 'id') selected @endif>ID</option>
+                    </select>
+                </div>
+            </form>
 
 
 
@@ -59,16 +69,16 @@
                     <ul class="navbar-nav flex-grow-1 pe-3">
                         <li class="nav-item">
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('cateringHomePage') ? 'active' : '' }}"
-                                href="/cateringHomePage">Dashboard</a>
+                                href="/cateringHomePage">{{ __('navigation.home') }}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('manageCateringPackage') ? 'active' : '' }}"
-                                href="/manageCateringPackage">My Packages</a>
+                                href="/manageCateringPackage">{{ __('navigation.my_packages') }}</a>
                         </li>
 
                         <li class="nav-item">
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('manageOrder') ? 'active' : '' }}"
-                                href="/manageOrder">Orders</a>
+                                href="/manageOrder">{{ __('navigation.orders') }}</a>
                         </li>
 
                         <li class="nav-item">
@@ -113,11 +123,11 @@
         </div>
     </nav>
 
-    <div class="flex-grow-1">
+    <div class="flex-grow-1 w-100">
         @yield('content')
     </div>
 
-    <footer class="bg-dark text-white py-0">
+    <footer class="bg-dark text-white py-0 w-100">
         <div class="container text-center footer-page" style="margin-top: 10px; padding: 10px">
 
             <div class="mb-2">
@@ -126,9 +136,9 @@
             </div>
 
             <div class="mb-0">
-                <a href="/home" class="text-white mx-4 text-decoration-none">Home</a>
-                <a href="/about-us" class="text-white mx-4 text-decoration-none">About Us</a>
-                <a href="/contact" class="text-white mx-4 text-decoration-none">Contact</a>
+                <a href="/home" class="text-white mx-4 text-decoration-none">{{ __('navigation.home') }}</a>
+                <a href="/about-us" class="text-white mx-4 text-decoration-none">{{ __('navigation.about_us') }}</a>
+                <a href="/contact" class="text-white mx-4 text-decoration-none">{{ __('navigation.contact') }}</a>
             </div>
 
             <!-- Sosial Media -->
@@ -140,13 +150,13 @@
 
             <!-- Copyright -->
             <div class="mb-1">
-                <p class="text-white-50 mb-1">&copy; {{ date('Y') }} Eat Well. All rights reserved.</p>
+                <p class="text-white-50 mb-1">&copy; {{ date('Y') }} Eat Well. {{ __('navigation.footer_rights') }}.</p>
             </div>
 
             <!-- Alamat -->
             <div>
                 <p class="text-white-50 small" style="margin-bottom: 0px">
-                    Jl. Pakuan No.3, Sumur Batu, Kec. Babakan Madang, Kabupaten Bogor, Jawa Barat 16810
+                   {{ __('navigation.footer_address') }}
                 </p>
             </div>
 
@@ -155,6 +165,7 @@
 
     @yield('scripts')
     <script src="{{ asset('js/navigation.js') }}"></script>
+
 
 </body>
 
