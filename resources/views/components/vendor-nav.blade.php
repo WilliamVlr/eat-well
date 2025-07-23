@@ -96,12 +96,14 @@
 
             @auth
                 <a href="/manage-profile-vendor">
-                    <div class="imgstyle m-2" style="border-radius:100%; width:50px; height:50px margin-right:20px">
-                        <img class="img-fluid" src="{{ asset('asset/catering/homepage/breakfastPreview.jpg') }}"
-                            alt="Card image " width="120px" style="border-radius: 100%">
+                    <div class="imgstyle m-2" style="border-radius:100%; width:50px; height:50px; margin-right:20px;">
+                        <img class="img-fluid"
+                            src="{{ $vendorLogo ?? asset('asset/catering/homepage/breakfastPreview.jpg') }}"
+                            alt="Vendor Logo" width="120px" style="border-radius: 100%">
                     </div>
                 </a>
             @endauth
+
 
 
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
