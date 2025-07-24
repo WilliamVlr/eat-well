@@ -626,17 +626,27 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 10px;
-    padding: 2px;
-    border-radius: 5px;
-    background-color: #cccccc;
+    /* margin-left: 10px; */
+    padding: 1px;
+    border-radius: 100px;
+    /* background-color: #cccccc; */
+    /* background-color: var(--bg-secondary); */
+    border-color: var(--bg-tertiary);
+    border-style: solid;
+    border-width: 1.5px;
+    width: fit-content;
     cursor: pointer;
+    color: var(--bg-tertiary);
+    /* box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1); */
 }
 
 .download-icon{
     font-size: 25px !important;
+    font-weight: lighter !important;
     margin: 0px !important;
-    color: #707070;
+    /* color: #707070; */
+    color: var(--bg-tertiary);
+    margin-right: 0.5px;
 }
 
 .package-image{

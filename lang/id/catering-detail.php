@@ -19,4 +19,7 @@ return [
     'packages' => 'Paket',
     'items' => 'Item',
     'no_package_selected_yet' => 'Anda Belum Memilih Paket.',
+    'download_menu' => 'Unduh Menu',
+    'no_reviews' => 'Belum ada ulasan untuk vendor ini.',
+    'ordered_on' => 'Dipesan pada',
 ];

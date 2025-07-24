@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Handle semua tombol Download
-    document.querySelectorAll(".download-icon").forEach((downloadBtn) => {
+    document.querySelectorAll(".download-wrapper").forEach((downloadBtn) => {
         downloadBtn.addEventListener("click", function () {
             const pdfUrl = this.dataset.pdf;
             const link = document.createElement("a");
