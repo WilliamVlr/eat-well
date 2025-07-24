@@ -208,19 +208,18 @@
                                             <div>
                                                 <div class="nama-package-dan-download-wrapper">
                                                     <h4>{{ $package->name }}</h4>
-                                                    <div class="download-wrapper">
-                                                        {{-- <span class="material-symbols-outlined download-icon" data-pdf="{{ asset('asset/catering-detail/pdf/vegetarian-package-menu.pdf') }}"> --}}
+                                                    {{-- <div class="download-wrapper">
                                                         <span class="material-symbols-outlined download-icon"
                                                             data-pdf="{{ asset($package->menuPDFPath) }}">
                                                             download
                                                         </span>
-                                                    </div>
+                                                    </div> --}}
                                                 </div>
                                                 <div class="category-cuisine-wrapper">
                                                     <span
                                                         class="category-cuisine-bold">{{ __('catering-detail.category') }}:</span>
                                                     <span>{{ $package->category->categoryName ?? 'N/A' }}</span>
-                                                    <div></div>
+                                                    {{-- <div></div>
                                                     <span
                                                         class="category-cuisine-bold">{{ __('catering-detail.cuisine_type') }}:</span>
                                                     <span>
@@ -229,7 +228,13 @@
                                                         @empty
                                                             N/A
                                                         @endforelse
-                                                    </span>
+                                                    </span> --}}
+                                                    <div class="download-wrapper" data-pdf="{{ asset($package->menuPDFPath) }}">
+                                                        <span class="material-symbols-outlined download-icon ms-1">
+                                                            download
+                                                        </span>
+                                                        <span class="me-2 inter">{{ __('catering-detail.download_menu') }}</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
