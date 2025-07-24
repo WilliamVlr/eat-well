@@ -41,6 +41,7 @@ class RegisteredUserController extends Controller
             ]);
         }
 
+        logActivity('Successfully', 'Registered', $role . ' Account');
         Auth::login($user);
         return redirect('/home');
     }

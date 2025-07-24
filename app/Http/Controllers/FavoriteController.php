@@ -31,6 +31,8 @@ class FavoriteController extends Controller
 
         $vendors = $user->favoriteVendors()->paginate(21);
 
+        logActivity('Successfully', 'Visited', 'Favorite Page');
+
         return view('favoritePage', compact('vendors'));
     }
     public function favorite(String $id)
@@ -42,6 +44,7 @@ class FavoriteController extends Controller
             $user->favoriteVendors()->attach($id);
         }
 
+        logActivity('Successfully', 'Favorited', 'Catering');
         return response()->json(['favorited' => true]);
     }
 
@@ -49,6 +52,7 @@ class FavoriteController extends Controller
     {
         $user = Auth::check() ? Auth::user() : User::where('userId', '=', '5')->inRandomOrder()->first();
         $user->favoriteVendors()->detach($id);
+        logActivity('Successfully', 'Unfavorited', 'Catering');
         return response()->json(['favorited' => false]);
     }
 }

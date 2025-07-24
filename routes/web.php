@@ -20,8 +20,10 @@ use App\Http\Controllers\OrderVendorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Socialite\ProviderCallbackController;
 use App\Http\Controllers\Socialite\ProviderRedirectController;
+use App\Http\Controllers\VendorPreviewController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use App\Http\Middleware\RoleMiddleware;
+use Illuminate\Support\Facades\Auth;
 
 Route::post('/lang', LanguageController::class);
 
@@ -34,6 +36,9 @@ Route::middleware(['guest'])->group(function () {
     })->name('landingPage')->middleware('guest');
 
     Route::get('/about-us', function () {
+        if (Auth::check()) {
+            logActivity('Successfully', 'Visited', 'About Us Page');
+        }
         return view('aboutUs');
     });
 
@@ -73,16 +78,18 @@ Route::middleware(['role:customer'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::post('/topup', [UserController::class, 'topUpWellPay'])->name('wellpay.topup');
 
-    Route::post('/logout', [SessionController::class, 'destroy'])->name('logout');
+    // Route::post('/logout', [SessionController::class, 'destroy'])->name('logout');
 
     // Favorite
     Route::post('favorite/{vendorId}', [FavoriteController::class, 'favorite'])->name('favorite');
     Route::post('unfavorite/{vendorId}', [FavoriteController::class, 'unfavorite'])->name('unfavorite');
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorite.show')->middleware('auth');
 
-    Route::get('/manage-profile', function () {
-        return view('manageProfile');
-    })->name('manage-profile');
+    // Route::get('/manage-profile', function () {
+    //     return view('manageProfile');
+    // })->name('manage-profile');
+    Route::get('/manage-profile', [UserController::class, 'showProfile'])->name('manage-profile');
+    Route::patch('/manage-profile', [UserController::class, 'updateProfile'])->name('manage-profile.update');
 
     // Search Caterings
     Route::get('/caterings', [VendorController::class, 'search'])->name('search');
@@ -94,6 +101,11 @@ Route::middleware(['role:customer'])->group(function () {
     Route::post('/update-order-summary', [CartController::class, 'updateOrderSummary'])->name('update.order.summary');
     Route::get('/load-cart', [CartController::class, 'loadCart'])->name('load.cart');
 
+    // Route::get('/catering-detail/rating-and-review', function () {
+    //     logActivity('Successfully', 'Visited', 'Rating and Review Page');
+    //     return view('ratingAndReview');
+    // })->name('rate-and-review');
+
     // Order History
     Route::get('/orders', [OrderController::class, 'index'])->name('order-history');
 
@@ -101,6 +113,10 @@ Route::middleware(['role:customer'])->group(function () {
     // Route::get('/order-detail', [OrderController::class, 'show'])->name('order-detail');
 
     // Order Payment
+    // Route::get('/payment', function () {
+    //     logActivity('Successfully', 'Visited', 'Payment Page');
+    //     return view('payment');
+    // });
     // Route::get('/payment', function () {
     //     return view('payment');
     // });
@@ -126,6 +142,15 @@ Route::middleware(['role:customer'])->group(function () {
     Route::patch('/edit-address/{address}', [AddressController::class, 'update'])->name('update-address');
 
     Route::delete('/delete-address/{address}', [AddressController::class, 'destroy'])->name('delete-address');
+    // Route::get('/manage-address', function () {
+    //     logActivity('Successfully', 'Visited', 'Manage Address Page');
+    //     return view('ManageAddress');
+    // });
+
+    // Route::get('/add-address', function () {
+    //     logActivity('Successfully', 'Visited', 'Add Address Page');
+    //     return view('addAddress');
+    // });
 
     Route::fallback(function () {
         return redirect()->route('home');
@@ -139,7 +164,13 @@ Route::middleware(['role:customer'])->group(function () {
 Route::middleware(['role:vendor'])->group(function () {
     // Catering dashboard
     Route::get('/cateringHomePage', [OrderVendorController::class, 'totalOrder']);
-    Route::post('/cateringHomePage', [SessionController::class, 'destroy'])->name('logout.vendor');
+    // Route::get('/cateringHomePage', function () {
+    //     // untuk yang log activity, kalau suatu saat buat controllernya mohon dimasukan
+    //     // masukan sebelum returen view / return redirect
+    //     logActivity('Successfully', 'Visited', 'Catering Home Page');
+    //     return view('cateringHomePage');
+    // });
+    // Route::post('/cateringHomePage', [SessionController::class, 'destroy'])->name('logout.vendor');
 
     // Manage Packages
     Route::get('/manageCateringPackage', [PackageController::class, 'index'])->name('manageCateringPackage');
@@ -168,10 +199,25 @@ Route::middleware(['role:vendor'])->group(function () {
     )
         ->name('orders.cancel');
 
+    // Route::get('/manageOrder', function () {
+    //     logActivity('Successfully', 'Visited', 'Manage Order Page');
+    //     return view('manageOrder');
+    // });
+    Route::get('/manage-profile-vendor', [VendorController::class, 'manageProfile'])->name('manage-profile-vendor');
+    Route::patch('/manage-profile-vendor', [VendorController::class, 'updateProfile'])->name('manage-profile-vendor.update');
 
     Route::fallback(function () {
         return redirect()->route('cateringHomePage');
     });
+
+    Route::get('/vendor-previews', [VendorPreviewController::class, 'index']);
+
+    Route::delete('/vendor-previews/{id}', [VendorPreviewController::class, 'destroy']);
+
+    Route::post('/vendor-previews/upload', [VendorPreviewController::class, 'upload']);
+    Route::put('/vendor-previews/{id}', [VendorPreviewController::class, 'update']);
+
+    Route::get('/vendor-manage', [VendorPreviewController::class, 'showVendorDetail']);
 });
 /* ---------------------
      ADMIN ROUTES
@@ -210,7 +256,7 @@ Route::middleware(['role:admin'])->group(function () {
     Route::post('/view-all-payment', [AdminController::class, 'add_new_payment'])
         ->name('add-new-payment');
 
-    Route::post('/admin-dashboard', [SessionController::class, 'destroy'])->name('logout.admin');
+    // Route::post('/admin-dashboard', [SessionController::class, 'destroy'])->name('logout.admin');
 
     Route::get('/view-order-history', [AdminController::class, 'view_order_history'])
         ->name('view-order-history')

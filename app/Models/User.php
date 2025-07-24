@@ -29,6 +29,7 @@ class User extends Authenticatable
         'password',
         'role',
         'enabled2FA',
+        'profilePath',
         'remember_token',
         'dateOfBirth',
         'genderMale',

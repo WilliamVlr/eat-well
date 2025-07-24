@@ -22,6 +22,8 @@ class LogUserActivity
         // Sebelum request diteruskan, catat login atau akses
         $status = Auth::check() ? 'LOGIN' : 'GUEST';
         Log::info("User status: $status | URL: {$request->fullUrl()}");
+
+        $description = Auth::user()->name . ' ' . Auth::user()->role;
         
         if (Auth::check()) {
             UserActivity::create([
@@ -29,15 +31,12 @@ class LogUserActivity
                 'name'        => Auth::user()->name,
                 'role'        => Auth::user()->role ?? '-',
                 'url'         => $request->fullUrl(),
+                'description' => $description ,
                 'method'      => $request->method(),
                 'ip_address'  => $request->ip(),
                 'accessed_at' => now(),
             ]);
         }
-
-
-
-
         return $next($request);
     }
 }

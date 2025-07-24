@@ -27,7 +27,7 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $userId = Auth::user();
+        $userId = Auth::id();
         $status = $request->query('status', 'all');
         $query = $request->query('query');
         $now = Carbon::now();
@@ -63,7 +63,9 @@ class OrderController extends Controller
             })
             ->orderByDesc('endDate')
             ->get();
+        // dd($orders);
 
+        logActivity('Successfully', 'Visited', 'Order History Page');
         return view('customer.orderHistory', compact('orders', 'status'));
     }
 
@@ -149,6 +151,7 @@ class OrderController extends Controller
             return redirect()->back()->with('error', 'Alamat pengiriman tidak valid atau tidak dipilih.');
         }
 
+        logActivity('Successfully', 'Visited', 'Vendor Payment Page');
         return view('payment', compact('vendor', 'cart', 'cartDetails', 'totalOrderPrice', 'startDate', 'endDate', 'selectedAddress'));
     }
 
@@ -158,6 +161,7 @@ class OrderController extends Controller
         if (!$user) {
             return response()->json(['message' => 'User not authenticated.'], 401);
         }
+        logActivity('Successfully', 'Viewed', 'Wellpay Balance');
         return response()->json(['wellpay' => $user->wellpay]); // <-- Menggunakan 'wellpay'
     }
 
@@ -232,6 +236,8 @@ class OrderController extends Controller
                 if (!Hash::check($password, $user->getAuthPassword())) {
                     DB::rollBack();
                     // Throw ValidationException for password error
+                    logActivity('Failed', 'Processed', 'Checkout due to incorrect password');
+
                     throw ValidationException::withMessages([
                         'password' => ['Incorrect password.'],
                     ]);
@@ -242,6 +248,7 @@ class OrderController extends Controller
                     DB::rollBack();
                     // This is a specific business logic error, not a validation error on input format.
                     // Returning a 402 is appropriate here.
+                    logActivity('Failed', 'Processed', 'Checkout due to insufficient Wellpay balance');
                     return response()->json(['message' => 'Insufficient Wellpay balance. Please top up.'], 402);
                 }
 
@@ -344,6 +351,8 @@ class OrderController extends Controller
 
             DB::commit();
 
+            logActivity('Successfully', 'Processed', 'Checkout for Order ID: ' . $order->orderId);
+
             return response()->json(['message' => 'Checkout successful!', 'orderId' => $order->orderId], 200);
 
         } catch (ValidationException $e) {
@@ -351,11 +360,13 @@ class OrderController extends Controller
             // OR the specific ValidationException thrown for incorrect password
             DB::rollBack(); // Rollback if validation failed AFTER transaction began
             Log::error('Validation failed for checkout:', $e->errors());
+            logActivity('Failed', 'Process', 'Checkout');
             return response()->json(['message' => 'Validation Error', 'errors' => $e->errors()], 422);
         } catch (\Exception $e) {
             // This catches any other unexpected errors (database issues, server errors, etc.)
             DB::rollBack();
             Log::error('Checkout failed (General Error): ' . $e->getMessage(), ['exception' => $e]);
+            logActivity('Failed', 'Processed', 'Checkout');
             return response()->json(['message' => 'Checkout failed. Please try again.', 'error' => $e->getMessage()], 500);
         }
     }
@@ -401,6 +412,8 @@ class OrderController extends Controller
             $statusesBySlot[$slotKey][$dateKey] = $status;
         }
         // dd($statusesBySlot);
+
+        logActivity('Successfully', 'Visited', 'Order Detail Page');
 
         return view('customer.orderDetail', compact('order', 'paymentMethod', 'slots', 'statusesBySlot'));
     }
