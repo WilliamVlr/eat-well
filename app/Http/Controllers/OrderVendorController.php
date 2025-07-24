@@ -216,26 +216,26 @@ class OrderVendorController extends Controller
                 'message' => 'Delivery status not found for this order and slot.'
             ], 404);
         }
-        dd('true');
         $ds->status = $request->status;
         $ds->save();
 
-        #Note: Get the order and the user
+        #Note: Get the order, user and status
         $order = Order::find($orderId);
         $userId = $order->userId;
         $user = User::find($userId);
+        $orderStatus = $request->status;
 
         #Note: generating appropriate notification to be sent based on the status;
         $toBeNotified = null;
-        if($ds->status === 'Prepared')
+        if($orderStatus === 'Prepared')
         {
            $toBeNotified = new OrderPrepared($order);
         }
-        else if($ds->status === 'Delivered')
+        else if($orderStatus === 'Delivered')
         {
             $toBeNotified = new OrderDelivered($order);
         }
-        else if($ds->status === 'Arrived')
+        else if($orderStatus === 'Arrived')
         {
             $toBeNotified = new OrderArrived($order);
         }

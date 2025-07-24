@@ -11,8 +11,8 @@ use App\Models\Order;
 class OrderArrived extends Notification
 {
     use Queueable;
+    protected Order $order;
 
-    protected $order;
     /**
      * Create a new notification instance.
      */
@@ -37,11 +37,10 @@ class OrderArrived extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->subject("Order #{{$order->orderId}} has arrived.")
+                    ->subject("Order #{{$this->order->orderId}} has arrived")
                     ->greeting('Hello!')
-                    ->line('Your order ')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->line("Status update of Order #{{$this->order->orderId}}. Enjoy your food while it's hot!")
+                    ->line('Thank you for your patience. Eat Well!');
     }
 
     /**
@@ -52,7 +51,7 @@ class OrderArrived extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'orderId' => $this->order->orderId
+            'order_id' => $this->order->orderId
         ];
     }
 }

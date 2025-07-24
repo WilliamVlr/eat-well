@@ -52,7 +52,7 @@ class OrderPrepared extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'orderId' => $this->order->orderId
+            'order_id' => $this->order->orderId
         ];
     }
 }

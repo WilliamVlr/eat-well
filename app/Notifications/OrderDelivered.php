@@ -11,7 +11,6 @@ use App\Models\Order;
 class OrderDelivered extends Notification
 {
     use Queueable;
-    
     protected Order $order;
 
     /**
@@ -53,7 +52,7 @@ class OrderDelivered extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'orderId' => $this->order->orderId
+            'order_id' => $this->order->orderId
         ];
     }
 }
