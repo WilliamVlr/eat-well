@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
+use App\Http\Requests\VendorStoreRequest;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Order;
@@ -15,13 +16,28 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
-class VendorController extends Controller
+class 
+
+VendorController extends Controller
 {
+
+    public function display()
+    {
+            return view('cateringHomePage');
+    }
+
+
     public function index()
     {
-        $vendors = Vendor::all();
-        $categories = PackageCategory::all();
+        // dd(Auth()->user);
+        // $vendors = Vendor::all();
+        // $categories = PackageCategory::all();
+
+        // if(!$vendors->name){
+        //     return redirect('cateringHomePage');
+        // }
         return view('vendors.index', compact('vendors', 'categories'));
     }
 
@@ -294,5 +310,65 @@ class VendorController extends Controller
             logActivity('Failed', 'Updated', 'Vendor Profile, Due to Validation Error: ' . $e->getMessage());
             return redirect()->back()->withErrors(['error' => 'Failed to update profile.']);
         }
+    }
+
+    public function store(VendorStoreRequest $request){
+        // validating
+        $userId = Auth::id();
+
+        $vendor = Vendor::create([
+            'userId' => $userId
+        ]);
+
+        // upload logo
+        $logoPath = null;
+        
+        $file = $request->file('logo');
+
+        $filename = time().'_'.$file->getClientOriginalName();
+
+        $file->storeAs('public/vendor_logos', $filename);
+
+        $logoPath = 'vendor_logos/'.$filename;
+
+        $vendor->update([
+            'logo' => $logoPath,
+        ]);
+        
+       // Convert and combine delivery times from 12-hour format (like "05:30 PM") to "HH:MM-HH:MM"
+        $breakfast = $request->startBreakfast && $request->closeBreakfast
+            ? $request->startBreakfast. '-' .$request->closeBreakfast
+            : null;
+
+        $lunch = $request->startLunch && $request->closeLunch
+            ? $request->startLunch. '-' .$request->closeLunch
+            : null;
+
+        $dinner = $request->startDinner && $request->closeDinner
+            ? $request->startDinner . '-' . $request->closeDinner
+            : null;
+
+        /** @var User|Authenticable $user */
+        
+        // Store the vendor
+        $vendor->update([
+            'name'=> $request['name'],
+            'logo' => $logoPath, 
+            'phone_number'=> $request['phone_number'],
+            'breakfast_delivery'=> $breakfast,
+            'lunch_delivery'=> $lunch,
+            'dinner_delivery'=> $dinner,
+            'provinsi'=> $request['provinsi'],
+            'kota'=> $request['kota'],
+            'kabupaten'=> $request['kota'],
+            'kecamatan'=> $request['kecamatan'],
+            'kelurahan'=> $request['kelurahan'],
+            'kode_pos' => $request['kode_pos'],
+            'jalan' => $request['jalan'],
+            'rating' => 0.0,
+        ]);
+        // ]);
+
+        return redirect('cateringHomePage');
     }
 }

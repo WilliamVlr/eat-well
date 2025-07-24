@@ -9,7 +9,7 @@
 
 @section('content')
     <div class="container container-custom">
-        <div class="left-panel outer-panel">
+        <div class="left-panel outer-panel d-flex flex-column h-100">
             <div class="lexend font-medium manage-profile">
                 <div class="left-panel-in photo-prof">
                     <img src="{{ asset($user->profilePath) }}" alt="Profile Picture" class="prof-pict">
@@ -50,7 +50,7 @@
                     <a class="menu-link inter font-regular" href="/manage-address">Manage Address</a>
                 </li>
             </ul>
-            <div class="logout">
+            <div class="logout d-none d-md-flex">
                 <form method="POST" action="{{ route('logout') }}" class="logout-form">
                     @csrf
                     <button type="submit" class="logout-btn inter font-regular">
@@ -260,6 +260,15 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="logout-mobile d-flex d-md-none justify-content-center">
+                <form method="POST" action="{{ route('logout') }}" class="logout-form">
+                    @csrf
+                    <button type="submit" class="logout-btn inter font-regular">
+                        Log out
+                    </button>
+                </form>
             </div>
         </div>
     </div>

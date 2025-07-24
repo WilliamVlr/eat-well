@@ -44,7 +44,6 @@ class SessionController extends Controller
     {
         logActivity('Successfully', 'Logged out', 'Eat-well');
         Auth::logout();
-
         return redirect('/');
     }
 }

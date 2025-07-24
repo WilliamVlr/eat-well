@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Socialite\ProviderCallbackController;
 use App\Http\Controllers\Socialite\ProviderRedirectController;
 use App\Http\Controllers\VendorPreviewController;
+use App\Http\Middleware\EnsureVendor;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +32,7 @@ Route::post('/lang', LanguageController::class);
 /* --------------------
      GUEST ROUTES
 -------------------- */
+
 Route::middleware(['guest'])->group(function () {
     Route::get('/', function () {
         return view('landingPage');
@@ -64,6 +66,10 @@ Route::middleware(['guest'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/manage-profile', [SessionController::class, 'destroy'])->name('logout');
+
+    Route::get('/manage-profile', function () {
+        return view('manageProfile');
+    })->name('manage-profile');
 });
 /* ---------------------
     CUSTOMER ROUTES
@@ -110,7 +116,8 @@ Route::middleware(['role:customer'])->group(function () {
     // Order History
     Route::get('/orders', [OrderController::class, 'index'])->name('order-history');
     Route::get('/orders/{id}', [OrderController::class, 'show'])->name('order-detail');
-    Route::post('/orders/{order}/review', [CustomerRatingController::class, 'store'])->middleware('auth');;
+    Route::post('/orders/{order}/review', [CustomerRatingController::class, 'store'])->middleware('auth');
+    ;
 
     // Order Payment
     // Route::get('/payment', function () {
@@ -155,69 +162,75 @@ Route::middleware(['role:customer'])->group(function () {
     Route::fallback(function () {
         return redirect()->route('home');
     });
-
 });
 
 /* ---------------------
      VENDOR ROUTES
 ---------------------- */
 Route::middleware(['role:vendor'])->group(function () {
-    // Catering dashboard
-    Route::get('/cateringHomePage', [OrderVendorController::class, 'totalOrder']);
-    // Route::get('/cateringHomePage', function () {
-    //     // untuk yang log activity, kalau suatu saat buat controllernya mohon dimasukan
-    //     // masukan sebelum returen view / return redirect
-    //     logActivity('Successfully', 'Visited', 'Catering Home Page');
-    //     return view('cateringHomePage');
-    // });
-    // Route::post('/cateringHomePage', [SessionController::class, 'destroy'])->name('logout.vendor');
+    Route::get('/vendor-first-page', function () {
+        return view('vendorFirstPage');
+    })->name('vendor.first.page');
+    Route::post('/new-vendor', [VendorController::class, 'store'])->name('vendor.store');
 
-    // Manage Packages
-    Route::get('/manageCateringPackage', [PackageController::class, 'index'])->name('manageCateringPackage');
-    Route::post('/manageCateringPackage', [PackageController::class, 'store'])->name('packages.store');
-    Route::put('/packages/{id}', [PackageController::class, 'update'])->name('packages.update');
-    Route::delete('/packages/{id}', [PackageController::class, 'destroy'])->name('packages.destroy');
-    Route::post('/packages/import', [PackageController::class, 'import'])->name('packages.import');
+    Route::middleware(EnsureVendor::class)->group(function () {
+        // Catering dashboard
+        Route::get('/cateringHomePage', [OrderVendorController::class, 'totalOrder']);
+        // Route::get('/cateringHomePage', function () {
+        //     // untuk yang log activity, kalau suatu saat buat controllernya mohon dimasukan
+        //     // masukan sebelum returen view / return redirect
+        //     logActivity('Successfully', 'Visited', 'Catering Home Page');
+        //     return view('cateringHomePage');
+        // });
+        // Route::post('/cateringHomePage', [SessionController::class, 'destroy'])->name('logout.vendor');
 
-    // Manage Order
-    Route::get('/manageOrder', [OrderVendorController::class, 'index'])
-        ->name('orders.index');
+        // Manage Packages
+        Route::get('/manageCateringPackage', [PackageController::class, 'index'])->name('manageCateringPackage');
+        Route::post('/manageCateringPackage', [PackageController::class, 'store'])->name('packages.store');
+        Route::put('/packages/{id}', [PackageController::class, 'update'])->name('packages.update');
+        Route::delete('/packages/{id}', [PackageController::class, 'destroy'])->name('packages.destroy');
+        Route::post('/packages/import', [PackageController::class, 'import'])->name('packages.import');
 
-    // daftar/pengelolaan order
-    // Route::get('/vendor/orders', [OrderVendorController::class, 'index'])
-    //     ->name('vendor.orders');
+        // Manage Order
+        Route::get('/manageOrder', [OrderVendorController::class, 'index'])
+            ->name('orders.index');
 
-    Route::post(
-        '/delivery-status/{orderId}/{slot}',
-        [OrderVendorController::class, 'updateStatus']
-    )->name('delivery-status.update');
+        // daftar/pengelolaan order
+        // Route::get('/vendor/orders', [OrderVendorController::class, 'index'])
+        //     ->name('vendor.orders');
+
+        Route::post(
+            '/delivery-status/{orderId}/{slot}',
+            [OrderVendorController::class, 'updateStatus']
+        )->name('delivery-status.update');
 
 
-    Route::post(
-        '/orders/{order}/cancel',
-        [OrderVendorController::class, 'cancel']
-    )
-        ->name('orders.cancel');
+        Route::post(
+            '/orders/{order}/cancel',
+            [OrderVendorController::class, 'cancel']
+        )
+            ->name('orders.cancel');
 
-    // Route::get('/manageOrder', function () {
-    //     logActivity('Successfully', 'Visited', 'Manage Order Page');
-    //     return view('manageOrder');
-    // });
-    Route::get('/manage-profile-vendor', [VendorController::class, 'manageProfile'])->name('manage-profile-vendor');
-    Route::patch('/manage-profile-vendor', [VendorController::class, 'updateProfile'])->name('manage-profile-vendor.update');
+        // Route::get('/manageOrder', function () {
+        //     logActivity('Successfully', 'Visited', 'Manage Order Page');
+        //     return view('manageOrder');
+        // });
+        Route::get('/manage-profile-vendor', [VendorController::class, 'manageProfile'])->name('manage-profile-vendor');
+        Route::patch('/manage-profile-vendor', [VendorController::class, 'updateProfile'])->name('manage-profile-vendor.update');
+
+        Route::get('/vendor-previews', [VendorPreviewController::class, 'index']);
+
+        Route::delete('/vendor-previews/{id}', [VendorPreviewController::class, 'destroy']);
+
+        Route::post('/vendor-previews/upload', [VendorPreviewController::class, 'upload']);
+        Route::put('/vendor-previews/{id}', [VendorPreviewController::class, 'update']);
+
+        Route::get('/vendor-manage', [VendorPreviewController::class, 'showVendorDetail']);
+    });
 
     Route::fallback(function () {
         return redirect()->route('cateringHomePage');
     });
-
-    Route::get('/vendor-previews', [VendorPreviewController::class, 'index']);
-
-    Route::delete('/vendor-previews/{id}', [VendorPreviewController::class, 'destroy']);
-
-    Route::post('/vendor-previews/upload', [VendorPreviewController::class, 'upload']);
-    Route::put('/vendor-previews/{id}', [VendorPreviewController::class, 'update']);
-
-    Route::get('/vendor-manage', [VendorPreviewController::class, 'showVendorDetail']);
 });
 /* ---------------------
      ADMIN ROUTES
@@ -265,5 +278,4 @@ Route::middleware(['role:admin'])->group(function () {
     Route::fallback(function () {
         return redirect()->route('admin-dashboard');
     });
-
 });
