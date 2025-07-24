@@ -32,6 +32,7 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'profilePath' => fake()->randomElement(['asset/profile/profil.jpg', 'asset/profile/user-profile.jpg', 'asset/profile/anya.jpg', 'asset/profile/anya-2.jpg']),
             'role' => 'Customer', // Default role
             'enabled2FA' => false,
             'remember_token' => Str::random(10),
@@ -46,8 +47,14 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    public function defaultAddress()
+    {
+        return $this->hasOne(\App\Models\Address::class, 'userId', 'userId')
+            ->where('is_default', true);
     }
 }

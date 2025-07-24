@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('user_activities', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('userId'); // sesuaikan dengan tabel 'users'
-            $table->string('name');
-            $table->string('role');
-            $table->string('url');
-            $table->string('method');
-            $table->ipAddress('ip_address');
-            $table->timestamp('accessed_at');
+            $table->unsignedBigInteger('userId')->nullable(); // sesuaikan dengan tabel 'users'
+            $table->string('name')->nullable();
+            $table->string('role')->nullable();
+            $table->string('url')->nullable();
+            $table->text('description')->nullable();
+            $table->string('method')->nullable();
+            $table->ipAddress('ip_address')->nullable();
+            $table->timestamp('accessed_at')->nullable();
             $table->timestamps();
 
             $table->foreign('userId')->references('userId')->on('users')->onDelete('cascade');

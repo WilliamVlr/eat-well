@@ -8,12 +8,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Admin Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    @section('css')
-        <link rel="stylesheet" href="{{ asset('css/admin/dashboard.css') }}">
-    @endsection
+    <link rel="stylesheet" href="{{ asset('css/admin/dashboard.css') }}">
 
 
 
@@ -25,25 +23,25 @@
 
     <div style="margin: 2vw">
         {{-- Untuk button ini jangan dihapus, untuk sementara button logout disini, menunggu UI logout beneran dibuat --}}
-        <form action="{{ route('logout.admin') }}" method="post">
+        <form action="{{ route('logout') }}" method="post">
             @csrf
             <button type="submit"></button>
         </form>
-        <h1 class="text-center mt-3 fw-bold">EAT-WELL</h1>
-        <div class="" style="margin: 4vw">
+        <h1 class="text-center mt-3 fw-bold lexend">EAT-WELL</h1>
+        <div class="lexend" style="margin: 4vw">
             <div class="row mt-5">
                 <div class="col-lg-6" style="">
 
                     <div class="row d-flex flex-direction-column p-4"
                         style="background-color: white; margin-right:0px; border-radius: 30px; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);">
-                        <h4 class="mt-0 mb-3 fw-bold">Preview</h4>
+                        <h4 class="mt-0 mb-3 fw-bold">This Month Summary</h4>
                         <div class="col-lg-6 mb-2">
                             <div class="card"
                                 style="background-image: url('asset/admin/card.png'); background-size: cover; background-position: center">
                                 <div class="card-body">
                                     {{-- keuntungan ambil data di order aja dari total price lalu anggap saja kita kasih pajak 5% --}}
                                     <h5 class="card-title text-center fw-bolder mt-2 fs-4 mb-3" style="color: white">
-                                        Keuntungan</h5>
+                                        Profit</h5>
                                     <p class="card-text text-center fs-5" style="color: rgb(255, 255, 255)"> Rp.
                                         {{ $profit }}, 00 </p>
 
@@ -94,7 +92,7 @@
 
                 </div>
 
-                <div class="col-lg-5"
+                <div class="col-lg-5 table-responsive"
                     style="background-color: white; margin-right:0px; border-radius: 30px; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); padding:10px">
                     <h1 class="fw-bold mt-3" style="margin-left: 1vw">Recent Logs</h1>
                     <hr>
@@ -104,80 +102,31 @@
                                 <th scope="col">No. </th>
                                 <th scope="col">Username</th>
                                 <th scope="col">Role</th>
-                                <th scope="col">Activity</th>
+                                <th scope="col">URL</th>
+                                <th scope="col">Method</th>
                                 <th scope="col">Time</th>
                                 
                                 
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach($logs as $log)
                             <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
+                                <th scope="row">{{ $loop->iteration }}</th>
+                                <td>{{ $log->name }}</td>
+                                <td>{{ $log->role }}</td>
+                                <td>{{ $log->url }}</td>
+                                <td>{{ $log->method }}</td>
+                                <td>{{ $log->accessed_at }}</td>
+                                {{-- <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td> --}}
                             </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>John</td>
-                                <td>Doe</td>
-                                <td>@social</td>
-                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">4</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">5</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">6</th>
-                                <td>John</td>
-                                <td>Doe</td>
-                                <td>@social</td>
-                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">7</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">8</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">9</th>
-                                <td>John</td>
-                                <td>Doe</td>
-                                <td>@social</td>
-                                <td><a type="button" class="btn btn-info fs-6 text-center p-1" style="height: 30px; width:50px">Detail</a></td>
-                            </tr>
+                            @endforeach
+                            
+                            
                         </tbody>
                     </table>
                     <div class="view-all-logsbtn">
-                        <a href="" type="button" class="btn btn-primary">View All Logs</a>
+                        <a href="view-all-logs" type="button" class="btn btn-primary">View All Logs</a>
                     </div>
                 </div>
             </div>
@@ -191,7 +140,7 @@
 
     <script src="{{ asset('js/admin/dashboard.js') }}"></script>
 
-
+    <x-admin-footer></x-admin-footer>
 </body>
 
 </html>
