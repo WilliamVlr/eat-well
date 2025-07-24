@@ -15,6 +15,16 @@
 @endsection
 
 @section('content')
+    <div id="translation-data"
+        data-breakfast-text="{{ __('catering-detail.breakfast') }}"
+        data-lunch-text="{{ __('catering-detail.lunch') }}" 
+        data-dinner-text="{{ __('catering-detail.dinner') }}"
+        data-package-text="{{ __('catering-detail.package') }}"
+        data-packages-text="{{ __('catering-detail.packages') }}"
+        data-items-text="{{ __('catering-detail.items') }}"
+        data-no-package-selected-yet="{{ __('catering-detail.no_package_selected_yet') }}">
+    </div>
+
     <div class="profile-container">
         <div class="container daun-container">
             <img src="{{ asset('asset/catering-detail/daun1.png') }}" alt="Catering Image" class="daun1">
@@ -39,7 +49,7 @@
                         <span class="material-symbols-outlined location-icon">pin_drop</span>
                         <span class="inter address">{{ $vendor->jalan }}, {{ $vendor->kelurahan }},
                             {{ $vendor->kecamatan }}, {{ $vendor->kota }}, {{ $vendor->provinsi }},
-                            {{ $vendor->kode_pos }} {{ __('catering-detail.order') }}</span>
+                            {{ $vendor->kode_pos }}</span>
                     </div>
 
                     <div class="rating-and-number-sold-wrapper">
@@ -47,7 +57,7 @@
                             <div class="rating-container">
                                 <span class="material-symbols-outlined star-icon">star</span>
                                 @if ($vendor->rating > 0)
-                                    <span class="inter rating-and-sold">{{ $vendor->rating }}</span>   
+                                    <span class="inter rating-and-sold">{{ $vendor->rating }}</span>
                                 @endif
                             </div>
                         </a>
@@ -74,10 +84,11 @@
     </div>
 
     <div class="food-preview-container">
-        <h1 class="lexend">From Our Kitchen to Your Table</h1>
+        <h1 class="lexend">{{ __('catering-detail.food_preview') }}</h1>
 
         <div class="carousel-wrapper">
-            <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" data-bs-touch="true" data-bs-interval="2500">
+            <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" data-bs-touch="true"
+                data-bs-interval="2500">
                 <div class="carousel-indicators">
                     @foreach ($vendor->previews as $key => $preview)
                         <button type="button" data-bs-target="#carouselExampleAutoplaying"
@@ -111,7 +122,7 @@
 
     <div class="price-and-shipping-container">
         <div class="weekly-price-wrapper">
-            <h1 class="lexend">Weekly Price</h1>
+            <h1 class="lexend">{{ __('catering-detail.weekly_price') }}</h1>
             <div class="price-container">
                 <div class="price-bulet">
                     {{-- <h1 class="lexend">625k</h1> --}}
@@ -149,23 +160,23 @@
             </div>
         </div>
         <div class="shipping-wrapper">
-            <h1 class="lexend">Shipping Time</h1>
-            <p class="inter text-white schedule-dipake">Monday - Sunday</p>
+            <h1 class="lexend text-center">{{ __('catering-detail.shipping_time') }}</h1>
+            <p class="inter text-white schedule-dipake">{{ __('catering-detail.monday-sunday') }}</p>
             @if ($vendor->breakfast_delivery)
                 <div class="section-makan">
-                    <h3 class="inter">Breakfast</h3>
+                    <h3 class="inter">{{ __('catering-detail.breakfast') }}</h3>
                     <p class="inter">{{ $vendor->breakfast_delivery }}</p>
                 </div>
             @endif
             @if ($vendor->lunch_delivery)
                 <div class="section-makan">
-                    <h3 class="inter">Lunch</h3>
+                    <h3 class="inter">{{ __('catering-detail.lunch') }}</h3>
                     <p class="inter">{{ $vendor->lunch_delivery }}</p>
                 </div>
             @endif
             @if ($vendor->dinner_delivery)
                 <div class="section-makan">
-                    <h3 class="inter">Dinner</h3>
+                    <h3 class="inter">{{ __('catering-detail.dinner') }}</h3>
                     <p class="inter">{{ $vendor->dinner_delivery }}</p>
                 </div>
             @endif
@@ -174,7 +185,7 @@
 
     <section id="packages">
         <div class="container packages">
-            <h1 class="lexend">Our Packages</h1>
+            <h1 class="lexend">{{ __('catering-detail.our-packages') }}</h1>
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
@@ -206,10 +217,12 @@
                                                     </div>
                                                 </div>
                                                 <div class="category-cuisine-wrapper">
-                                                    <span class="category-cuisine-bold">Category:</span>
+                                                    <span
+                                                        class="category-cuisine-bold">{{ __('catering-detail.category') }}:</span>
                                                     <span>{{ $package->category->categoryName ?? 'N/A' }}</span>
                                                     <div></div>
-                                                    <span class="category-cuisine-bold">Cuisine Type:</span>
+                                                    <span
+                                                        class="category-cuisine-bold">{{ __('catering-detail.cuisine_type') }}:</span>
                                                     <span>
                                                         @forelse ($package->cuisineTypes as $cuisine)
                                                             {{ $cuisine->cuisineName }}{{ !$loop->last ? ', ' : '' }}
@@ -224,10 +237,10 @@
                                             {{-- <p class="view-menu-text inter" data-pdf="{{ asset('asset/catering-detail/pdf/vegetarian-package-menu.pdf') }}"> --}}
                                             <p class="view-menu-text inter"
                                                 data-pdf="{{ asset($package->menuPDFPath) }}">
-                                                View Package's Menu
+                                                {{ __('catering-detail.view_menu') }}
                                             </p>
                                             <div class="add-button" data-tab="item{{ $package->packageId }}">
-                                                <p class="add-text inter">Add</p>
+                                                <p class="add-text inter">{{ __('catering-detail.add') }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -236,7 +249,7 @@
                                         <div class="menu-item">
                                             @if (!is_null($package->breakfastPrice))
                                                 <div class="item-row">
-                                                    <span>Breakfast</span>
+                                                    <span data-meal-type="breakfast">{{ __('catering-detail.breakfast') }}</span>
                                                     <span class="price" data-price="{{ $package->breakfastPrice }}">Rp
                                                         {{ number_format($package->breakfastPrice, 0, ',', '.') }}</span>
                                                     <div class="qty-control">
@@ -249,7 +262,7 @@
 
                                             @if (!is_null($package->lunchPrice))
                                                 <div class="item-row">
-                                                    <span>Lunch</span>
+                                                    <span data-meal-type="lunch">{{ __('catering-detail.lunch') }}</span>
                                                     <span class="price" data-price="{{ $package->lunchPrice }}">Rp
                                                         {{ number_format($package->lunchPrice, 0, ',', '.') }}</span>
                                                     <div class="qty-control">
@@ -262,7 +275,7 @@
 
                                             @if (!is_null($package->dinnerPrice))
                                                 <div class="item-row">
-                                                    <span>Dinner</span>
+                                                    <span data-meal-type="dinner">{{ __('catering-detail.dinner') }}</span>
                                                     <span class="price" data-price="{{ $package->dinnerPrice }}">Rp
                                                         {{ number_format($package->dinnerPrice, 0, ',', '.') }}</span>
                                                     <div class="qty-control">
@@ -292,10 +305,11 @@
             <p>Debug: Selected Address ID = {{ $selectedAddress->addressId ?? 'N/A' }}</p>
             <p>Debug: Selected Address Jalan = {{ $selectedAddress->jalan ?? 'N/A' }}</p>
         </div> --}}
-    
-        <a href="{{ route('payment.show', ['vendor' => $vendor->vendorId, 'address_id' => $selectedAddress->addressId]) }}" class="button-order inter"
-            id="proceedToPaymentLink" style="cursor: default; pointer-events: none; text-decoration: none;">
-            <span class="order-message">No Package Selected Yet.</span>
+
+        <a href="{{ route('payment.show', ['vendor' => $vendor->vendorId, 'address_id' => $selectedAddress->addressId]) }}"
+            class="button-order inter" id="proceedToPaymentLink"
+            style="cursor: default; pointer-events: none; text-decoration: none;">
+            <span class="order-message">{{ __('catering-detail.no_package_selected_yet') }}</span>
             <span class="package-count" style="display:none;"></span>
             <span class="item-count" style="display:none;"></span>
             <span class="price-total" style="display:none;"></span>
