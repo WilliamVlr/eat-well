@@ -9,6 +9,7 @@ use App\Http\Controllers\PackageController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\VendorController;
+use App\Http\Middleware\NoCateringDataMiddleware;
 use App\Models\Order;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AuthManager;
@@ -168,10 +169,12 @@ Route::middleware(['role:customer'])->group(function () {
      VENDOR ROUTES
 ---------------------- */
 Route::middleware(['role:vendor'])->group(function () {
-    Route::get('/vendor-first-page', function () {
-        return view('vendorFirstPage');
-    })->name('vendor.first.page');
-    Route::post('/new-vendor', [VendorController::class, 'store'])->name('vendor.store');
+    Route::middleware(NoCateringDataMiddleware::class)->group(function () {
+        Route::get('/vendor-first-page', function () {
+            return view('vendorFirstPage');
+        })->name('vendor.first.page');
+        Route::post('/new-vendor', [VendorController::class, 'store'])->name('vendor.store');
+    });
 
     Route::middleware(EnsureVendor::class)->group(function () {
         // Catering dashboard
