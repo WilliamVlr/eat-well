@@ -25,12 +25,14 @@ class SessionController extends Controller
 
 
         if(!Auth::attempt($attrs, $remember)){
+            loginLog($request->email, ' Login Failed : Error, credentials do not match');
             throw ValidationException::withMessages([
                 'email' => 'Credentials do not match',
                 'password' => 'Credentials do not match'
             ]);
         }
         else{
+            loginLog($request->email, 'Successfully');
             request()->session()->regenerate();
             return redirect('/home');
         }
@@ -40,8 +42,8 @@ class SessionController extends Controller
 
     public function destroy()
     {
+        logActivity('Successfully', 'Logged out', 'Eat-well');
         Auth::logout();
-
         return redirect('/');
     }
 }

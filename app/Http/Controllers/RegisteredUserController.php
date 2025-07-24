@@ -34,13 +34,14 @@ class RegisteredUserController extends Controller
         $user = User::create($attrs);
 
 
-        if($role == 'vendor')
-        {
-            Vendor::create([
-                'userId' => $user->userId,
-            ]);
-        }
+        // if($role == 'vendor')
+        // {
+        //     Vendor::create([
+        //         'userId' => $user->userId,
+        //     ]);
+        // }
 
+        logActivity('Successfully', 'Registered', $role . ' Account');
         Auth::login($user);
         return redirect('/home');
     }
