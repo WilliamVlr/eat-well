@@ -20,7 +20,9 @@ class SalesController extends Controller
 
         $validated = $request->validate([
             'startDate' => 'nullable|date_format:Y-m-d',
-            'endDate' => 'nullable|date_format:Y-m-d',
+            'endDate' => 'nullable|date_format:Y-m-d|after:startDate',
+        ], [
+            'endDate.after' => 'endDate must be after start date.',
         ]);
 
         $startDate = $validated['startDate'] ?? null;
