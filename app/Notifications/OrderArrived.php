@@ -37,10 +37,10 @@ class OrderArrived extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->subject("Order #{{$this->order->orderId}} has arrived")
-                    ->greeting('Hello!')
-                    ->line("Status update of Order #{{$this->order->orderId}}. Enjoy your food while it's hot!")
-                    ->line('Thank you for your patience. Eat Well!');
+                    ->subject(__('mail.order_arrived.subject', ['order_id' => $this->order->orderId]))
+                    ->greeting(__('mail.order_arrived.greeting'))
+                    ->line(__('mail.order_arrived.content', ['order_id' => $this->order->orderId]))
+                    ->line(__('mail.order_arrived.outro'));
     }
 
     /**

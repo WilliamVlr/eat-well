@@ -37,11 +37,10 @@ class OrderPrepared extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->subject("Order #{{$this->order->orderId}} is being prepared.")
-                    ->greeting('Hello!')
-                    ->line("Status update of Order #{{$this->order->orderId}}.
-                        Your food is being prepared right on! Please kindly wait.")
-                    ->line('Thank you for your patience.');
+                    ->subject(__('mail.order_prepared.subject', ['order_id' => $this->order->orderId]))
+                    ->greeting(__('mail.order_prepared.greeting'))
+                    ->line(__('mail.order_prepared.content', ['order_id' => $this->order->orderId]))
+                    ->line(__('mail.order_prepared.outro'));
     }
 
     /**
