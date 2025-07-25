@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('components.vendor-nav')
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Catering Home Page</title>
+@section('title', 'EatWell | Vendor Dashboard')
+
+@section('css')
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
@@ -13,9 +10,8 @@
         body {
             background-color: #064e3b;
             /* hijau tua */
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Lexend', sans-serif;
             color: #f0fdf4;
-            padding-bottom: 4rem;
         }
 
         .card-img-top {
@@ -313,13 +309,11 @@
 
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+@endsection
 
-</head>
-
-<body>
+@section('content')
     {{-- Untuk button ini jangan dihapus, untuk sementara button logout disini, menunggu UI logout beneran dibuat --}}
-    <form action="{{ route('logout.vendor') }}" method="post">
+    <form action="{{ route('logout') }}" method="post">
         @csrf
         <button type="submit"></button>
     </form>
@@ -328,95 +322,109 @@
             <img src="asset/catering/homePage/logoCatering.png" alt="Logo" />
         </div>
         <div class="welcome-text">
-            <h2>Welcome, Aldenaire Catering!</h2>
+            <h2>{{ __('catering-home-page.welcome') }}, {{ $vendor->name }}!</h2>
             <p style="text-align: justify; color:black;">
-                Eat Well is a smart platform that connects users with healthy meal catering services.
-                Discover, compare, and subscribe to trusted catering providers based on your dietary needs
-                and preferences—all in one place.
+                {{ __('catering-home-page.intro') }}
             </p>
         </div>
     </div>
-    <div class="heading-title">Analyze Your Sales</div>
-    <div class="text-muted-subheading text-center" style="font-family: 'Roboto', sans-serif;">You can download the whole
-        report of your sales</div>
+    <div class="heading-title">{{ __('catering-home-page.analyze_sales') }}</div>
+    <div class="text-muted-subheading text-center" style="font-family: 'Roboto', sans-serif;">
+        {{ __('catering-home-page.download_report_desc') }}</div>
 
     <div class="container my-5">
         <div class="chart-container text-center">
-            <h2 class="chart-title">Statistic of Your Income on April 2025</h2>
+            <h2 class="chart-title">{{ __('catering-home-page.income_statistics') }} {{ $salesMonth }} </h2>
             <canvas id="salesChart"></canvas>
-            <button class="btn-download mt-4">DOWNLOAD REPORT</button>
+            <button class="btn-download mt-4">{{ __('catering-home-page.download_report') }}</button>
         </div>
     </div>
 
-    <p class="heading-title">Today’s Catering Orders!</p>
+    <p class="heading-title">{{ __('catering-home-page.todays_orders') }}</p>
+    @php
+        $slotMeta = [
+            'breakfast' => [
+                'title' => __('catering-home-page.breakfast'),
+                'img' => asset('asset/catering/homePage/breakfastPreview.png'),
+                'time' => $vendor->breakfast_delivery ?? '-',
+            ],
+            'lunch' => [
+                'title' => __('catering-home-page.lunch'),
+                'img' => asset('asset/catering/homePage/lunchPreview.png'),
+                'time' => $vendor->lunch_delivery ?? '-',
+            ],
+            'dinner' => [
+                'title' => __('catering-home-page.dinner'),
+                'img' => asset('asset/catering/homePage/dinnerPreview.png'),
+                'time' => $vendor->dinner_delivery ?? '-',
+            ],
+        ];
+    @endphp
+
+
+
     <div class="card-deck">
-        <!-- Breakfast Card -->
-        <div class="card">
-            <img class="card-img-top" src="asset/catering/homePage/breakfastPreview.png" alt="Breakfast Preview" />
-            <div class="card-body">
-                <h5 class="card-title">Breakfast</h5>
-                <p class="card-text" style="text-align: justify">
-                    30 x Paket A <br /> 20 x Paket B <br /> 3 x Paket C
-                </p>
-            </div>
-            <div class="card-footer">
-                <small class="text-muted">Served from 08.00 to 10.00 AM</small>
-            </div>
-        </div>
+        @foreach ($slotMeta as $slotKey => $meta)
+            <div class="card">
+                <img class="card-img-top" src="{{ $meta['img'] }}" alt="{{ $meta['title'] }} Preview" />
 
-        <!-- Lunch Card -->
-        <div class="card">
-            <img class="card-img-top" src="asset/catering/homePage/lunchPreview.png" alt="Lunch Preview" />
-            <div class="card-body">
-                <h5 class="card-title">Lunch</h5>
-                <p class="card-text" style="text-align: justify">
-                    5 x Paket A <br /> 6 x Paket B <br /> 1 x Paket C
-                </p>
-            </div>
-            <div class="card-footer">
-                <small class="text-muted">Served from 12.00 to 02.00 PM</small>
-            </div>
-        </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ $meta['title'] }}</h5>
 
-        <!-- Dinner Card -->
-        <div class="card">
-            <img class="card-img-top" src="asset/catering/homePage/dinnerPreview.png" alt="Dinner Preview" />
-            <div class="card-body">
-                <h5 class="card-title">Dinner</h5>
-                <p class="card-text" style="text-align: justify">
-                    3 x Paket A <br /> 8 x Paket B <br /> 10 x Paket C
-                </p>
+                    {{-- daftar paket & qty --}}
+                    @forelse ($slotCounts[$slotKey] ?? [] as $pkg => $qty)
+                        <p class="card-text m-0" style="text-align: left">
+                            {{ $qty }} × {{ $pkg }}
+                        </p>
+                    @empty
+                        <p class="card-text text-muted">{{ __('catering-home-page.no_orders') }}</p>
+                    @endforelse
+                </div>
+
+                <div class="card-footer">
+                    <small class="text-muted">{{ __('catering-home-page.served_from') }} {{ $meta['time'] }}</small>
+                </div>
             </div>
-            <div class="card-footer">
-                <small class="text-muted">Served from 05.00 to 08.00 PM</small>
-            </div>
-        </div>
+        @endforeach
     </div>
+@endsection
 
+@section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous">
     </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        /* ambil <canvas> */
         const ctx = document.getElementById('salesChart').getContext('2d');
 
-        const salesChart = new Chart(ctx, {
+        /* data mingguan  – datang dari controller                       */
+        /* $salesData sudah berisi array 4 elemen → [week1, week2, …]    */
+        const chartData = @json($salesData);
+
+        /* build chart */
+        new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                labels: [
+                    '{{ __('catering-home-page.week_1') }}',
+                    '{{ __('catering-home-page.week_2') }}',
+                    '{{ __('catering-home-page.week_3') }}',
+                    '{{ __('catering-home-page.week_4') }}',
+                ],
                 datasets: [{
-                    data: [1000000, 2000000, 1500000, 3500000],
-                    borderColor: 'black',
+                    data: chartData, // ⬅️ pakai data dinamis
+                    borderColor: '#000',
                     backgroundColor: 'transparent',
-                    pointBackgroundColor: 'rgba(0, 128, 0, 1)',
+                    pointBackgroundColor: 'rgba(0,128,0,1)',
                     pointRadius: 6,
                 }]
             },
             options: {
                 animation: {
                     duration: 1500,
-                    easing: 'easeOutQuart' // ← diperbaiki dari 'easeOutQuert'
-                }, // animasi dimatikan
+                    easing: 'easeOutQuart'
+                },
                 scales: {
                     y: {
                         beginAtZero: true,
@@ -424,8 +432,8 @@
                             display: false
                         },
                         ticks: {
-                            color: 'rgba(0, 128, 0, 0.7)',
-                            callback: value => 'Rp' + value.toLocaleString('id-ID')
+                            color: 'rgba(0,128,0,.7)',
+                            callback: v => 'Rp' + v.toLocaleString('id-ID')
                         }
                     },
                     x: {
@@ -433,13 +441,13 @@
                             display: false
                         },
                         ticks: {
-                            color: 'rgba(0, 128, 0, 0.7)'
+                            color: 'rgba(0,128,0,.7)'
                         }
                     }
                 },
                 plugins: {
                     legend: {
-                        display: false // legend disembunyikan
+                        display: false
                     }
                 },
                 responsive: true,
@@ -460,7 +468,4 @@
             document.body.appendChild(leaf);
         }
     </script>
-
-</body>
-
-</html>
+@endsection

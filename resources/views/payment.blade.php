@@ -13,16 +13,31 @@
         <h1 class="lexend font-semi-bold text-white your-order mt-3">Your Order</h1>
         <h4 class= "jalan mb-1">
             <span class="material-symbols-outlined location-icon">pin_drop</span>
-            <span class="lexend font-regular text-white">Jalan Mangga Rumah Maya Selendang</span>
+            <span class="lexend font-regular text-white">{{ $selectedAddress->jalan }}, {{ $selectedAddress->kelurahan }}, {{ $selectedAddress->kecamatan }}, {{ $selectedAddress->kota }}, {{ $selectedAddress->provinsi }}, {{ $selectedAddress->kode_pos }}</span>
         </h4>
-        <p class="lexend font-regular text-white">
-            Notes alamat disini
-        </p>
+        @if ($selectedAddress->notes)
+            <p class="lexend font-regular text-white">
+                {{ $selectedAddress->notes }}
+            </p> 
+        @endif
         <div class="container-sm isi">
             <input type="hidden" id="hiddenVendorId" value="{{ $vendor->vendorId }}">
             <input type="hidden" id="hiddenStartDate" value="{{ $startDate }}">
             <input type="hidden" id="hiddenEndDate" value="{{ $endDate }}">
             <input type="hidden" id="hiddenCartTotalPrice" value="{{ $totalOrderPrice }}">
+            <input type="hidden" id="hiddenSelectedAddressProvinsi" value="{{ $selectedAddress->provinsi }}">
+            <input type="hidden" id="hiddenSelectedAddressKota" value="{{ $selectedAddress->kota }}">
+            <input type="hidden" id="hiddenSelectedAddressKabupaten" value="{{ $selectedAddress->kota }}">
+            <input type="hidden" id="hiddenSelectedAddressKecamatan" value="{{ $selectedAddress->kecamatan }}">
+            <input type="hidden" id="hiddenSelectedAddressKelurahan" value="{{ $selectedAddress->kelurahan }}">
+            <input type="hidden" id="hiddenSelectedAddressKodePos" value="{{ $selectedAddress->kode_pos }}">
+            <input type="hidden" id="hiddenSelectedAddressJalan" value="{{ $selectedAddress->jalan }}">
+            <input type="hidden" id="hiddenSelectedAddressRecipientName" value="{{ $selectedAddress->recipient_name }}">
+            <input type="hidden" id="hiddenSelectedAddressRecipientPhone" value="{{ $selectedAddress->recipient_phone}}">
+            <input type="hidden" id="hiddenSelectedAddressNotes" value="{{ $selectedAddress->notes }}">
+
+            {{-- Ini akan dieksekusi oleh Blade Engine Laravel --}}
+
             {{-- Pastikan juga ada CSRF token untuk AJAX POST request --}}
             <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -202,7 +217,6 @@
 @endsection
 
 @section('scripts')
-    {{-- Ini akan dieksekusi oleh Blade Engine Laravel --}}
     <script>
         // Pastikan objek global App ada
         window.App = window.App || {};

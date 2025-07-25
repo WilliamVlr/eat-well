@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}">
+
+{{-- @php
+    app()->setLocale(session()->get('lang', 'en'));
+@endphp --}}
 
 <head>
     <meta charset="UTF-8">
@@ -14,8 +18,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
-
-
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -40,14 +42,22 @@
                 </ul>
             </div> --}}
 
-            <div class="dropdown-wrapper">
+            {{-- <div class="dropdown-wrapper">
                 <select id="languageSelector" style="text-align: center; margin-left: 30px">
                     <option value="en">EN</option>
                     <option value="id">ID</option>
                 </select>
-            </div>
+            </div> --}}
 
-
+            <form action="/lang" method="post">
+                @csrf
+                <div class="dropdown-wrapper">
+                    <select name="lang" id="languageSelector" style="text-align: center; margin-left: 30px;" onchange="this.form.submit()">
+                        <option value="en" @if (app()->getLocale() === 'en') selected @endif>EN</option>
+                        <option value="id" @if (app()->getLocale() === 'id') selected @endif>ID</option>
+                    </select>
+                </div>
+            </form>
 
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
                 aria-labelledby="offcanvasNavbarLabel">
@@ -60,22 +70,22 @@
                     <ul class="navbar-nav flex-grow-1 pe-3">
                         <li class="nav-item">
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('home') ? 'active' : '' }}"
-                                href="/home">Home</a>
+                                href="/home">{{ __('navigation.home') }}</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('search') ? 'active' : '' }}"
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('caterings') ? 'active' : '' }}"
                                 href="{{ route('search') }}">Search Vendor</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('search') ? 'active' : '' }}"
-                                href="{{ route('search') }}">Favorited Catering</a>
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('favorites') ? 'active' : '' }}"
+                                href="{{ route('favorite.show') }}">Favorited Catering</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('search') ? 'active' : '' }}"
-                                href="{{ route('search') }}">Orders</a>
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('orders') ? 'active' : '' }}"
+                                href="{{ route('order-history') }}">Orders</a>
                         </li>
 
 
@@ -109,9 +119,9 @@
                     </a>
                 </div> --}}
                 <a href="/manage-profile">
-                    <div class="imgstyle m-2" style="border-radius:100%; width:50px; height:50px margin-right:20px">
-                        <img class="img-fluid" src="{{ asset('asset/catering/homepage/breakfastPreview.jpg') }}"
-                            alt="Card image " width="120px" style="border-radius: 100%">
+                    <div class="imgstyle m-2" style="border-radius:100%; margin-right:20px">
+                        <img class="" src="{{ asset('asset/profile/' . Auth::user()->profilePath) }}"
+                            alt="Card image " width="50px" height="50px" style="border-radius: 100%">
                     </div>
                 </a>
             @else
@@ -128,7 +138,6 @@
                 aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
         </div>
     </nav>
 

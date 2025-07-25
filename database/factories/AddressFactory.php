@@ -27,12 +27,13 @@ class AddressFactory extends Factory
             'kabupaten' => fake()->city(),
             'kecamatan' => fake()->streetName(),
             'kelurahan' => fake()->streetName(),
-            'kode_pos' => fake()->postcode(),
+            'kode_pos' => fake()->numerify('#####'),
             'jalan' => fake()->streetAddress(),
             'recipient_name' => fake()->name(),
-            'recipient_phone' => fake()->phoneNumber(),
+            'recipient_phone' => fake()->regexify('[0-9]{10,15}'),
             'is_default' => false,
-            'userId' => User::factory(),
+            // 'userId' => User::factory(),
+            'notes' => fake()->optional()->sentence(10),
         ];
     }
 }

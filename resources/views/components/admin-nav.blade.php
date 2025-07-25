@@ -10,7 +10,12 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
     <link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
     @yield('css')
+
+
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -24,7 +29,7 @@
             </a>
 
             <div class="dropdown-wrapper">
-                <select id="languageSelector" style="text-align: center; margin-left: 30px">
+                <select id="languageSelector" style="text-align: center; margin-left: 15px">
                     <option value="en">EN</option>
                     <option value="id">ID</option>
                 </select>
@@ -48,8 +53,8 @@
                                 href="/view-all-orders">Transactions</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('view-all-packages-category') ? 'active' : '' }}"
-                                href="/view-all-packages-category">Category</a>
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('categories') ? 'active' : '' }}"
+                                href="{{route('categories.show')}}">Packages Category</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('view-all-packages-cuisine') ? 'active' : '' }}"
@@ -75,7 +80,7 @@
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('view-order-history') ? 'active' : '' }}"
                                 href="/view-order-history">Order History</a>
                         </li>
-                        
+
 
                     </ul>
                 </div>
@@ -112,6 +117,7 @@
     </nav>
 
     {{-- ===== PAGE CONTENT ===== --}}
+    @yield('content')
 
     {{-- ===== FOOTER ===== --}}
     {{-- <footer class="bg-dark text-white py-0 mt-auto">
@@ -149,6 +155,7 @@
     </footer> --}}
 
     {{-- Scripts --}}
+    @yield(section: 'scripts')
 </body>
 
 </html>

@@ -90,8 +90,9 @@ class DashboardController extends Controller
 
 
         // $logs = UserActivity::all();
-        $logs = UserActivity::limit(10)->get();
+        $logs = UserActivity::query()->orderBy('accessed_at', 'desc')->limit(10)->get();
 
+        logActivity('Successfully', 'Visited', 'Admin Dashboard Page');
 
         return view('adminDashboard', compact('totalPrice', 'percentage', 'profit', 'increment', 'percentageprofit', 'chartData', 'labels', 'logs'));
     }
