@@ -7,6 +7,7 @@
 @endphp
 
 @section('css')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/js/app.js', 'resources/sass/app.scss'])
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -85,9 +86,37 @@
                                 <p class="recipient-address">
                                     {{ $order->jalan . ', ' . $order->kelurahan . ', ' . $order->kecamatan . ', ' . $order->kabupaten . ', ' . $order->provinsi . ', ' . $order->kode_pos }}
                                 </p>
-                                <p class="recipient-address">
-                                    Notes: {{ $order->notes }}
-                                </p>
+                                @if ($order->notes)
+                                    <p class="recipient-address">
+                                        Notes: {{ $order->notes }}
+                                    </p>
+                                @endif
+                            </div>
+                            <div class="rating-container mt-3">
+                                <span class="cds-address-title">
+                                    @if ($order->vendorReview)
+                                        Your review
+                                    @else
+                                        Rate this catering
+                                    @endif
+                                </span>
+                                @if ($order->vendorReview)
+                                    <div class="container-fluid m-0 mt-1 p-2 rounded-2 d-flex flex-column gap-1" style="background-color: #ecedec;">
+                                        <div class="d-flex flex-row align-items-center gap-1">
+                                            <span class="material-symbols-outlined star-icon choosen }}"
+                                                style="cursor:default; font-size: 24px;">star</span> 
+                                            <span style="font-size: 16px;">{{$order->vendorReview->rating}}</span>
+                                        </div>
+                                        <span style="font-size: 14px;">{{$order->vendorReview->review}}</span>
+                                    </div>
+                                @else
+                                    <div class="rating-icon-list">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <button type="button" class="material-symbols-outlined star-icon-btn"
+                                                data-index="{{ $i }}">star</button>
+                                        @endfor
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         {{-- RIGHT: Day Filter, Date, Carousel/Slider --}}
@@ -191,7 +220,7 @@
             </div>
             {{-- Order Items --}}
             <section class="card-detail-items mb-4">
-                <div class="card-order">
+                <div class="card-order" data-order-id="{{ $order->orderId }}">
                     <div class="card-header">
                         <div class="left-container">
                             <div class="text-wrapper vendor-name-wrapper">
@@ -244,7 +273,6 @@
                     </a>
                     <div class="card-bottom">
                         <div class="left-container">
-
                         </div>
                         <div class="right-container">
                             <div class="total-container">
@@ -262,6 +290,56 @@
                     </div>
                 </div>
             </section>
+        </div>
+        <!-- Manual Rate & Review Modal -->
+        <div id="rateReviewModal" class="custom-modal-overlay" style="display:none;">
+            <div class="custom-modal-content">
+                <div class="modal-header d-flex justify-content-between align-items-center pb-1">
+                    <h5 class="modal-title">Rate & Review</h5>
+                    <button type="button" class="btn-close" id="closeRateReviewModal" aria-label="Close">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="rating-icon-list-modal d-flex gap-1 mb-3">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <button type="button" class="material-symbols-outlined star-icon-modal"
+                                data-index="{{ $i }}">star</button>
+                        @endfor
+                    </div>
+                    <div class="mb-3">
+                        <label for="reviewText" class="form-label">Your Review</label>
+                        <textarea class="form-control" id="reviewText" rows="3" placeholder="Write your comment here..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-secondary" id="cancelRateReviewModal">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="successModal" class="custom-modal-overlay" style="display:none;">
+            <div class="custom-modal-content text-center">
+                <div class="modal-header d-flex justify-content-between align-items-center pb-1">
+                    <h5 class="modal-title w-100">Thank You!</h5>
+                    <button type="button" class="btn-close" id="closeSuccessModal" aria-label="Close">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <span class="material-symbols-outlined" style="font-size:48px;color:#ffc107;">star</span>
+                    </div>
+                    <div class="mb-2">
+                        <strong>Your review has been submitted successfully.</strong>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-primary" id="okSuccessModal">OK</button>
+                </div>
+            </div>
         </div>
     </main>
 @endsection

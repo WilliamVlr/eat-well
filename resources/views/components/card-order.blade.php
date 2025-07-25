@@ -2,7 +2,7 @@
     use Carbon\Carbon;
 @endphp
 
-<div class="card-order">
+<div class="card-order" data-order-id="{{ $order->orderId }}">
     <div class="card-header">
         <div class="left-container">
             <div class="text-wrapper vendor-name-wrapper">
@@ -30,7 +30,8 @@
             <div class="card-content">
                 <div class="image-wrapper">
                     {{-- <img src="{{$item->package->imgPath ? asset($item->package->imgPath) : asset('asset/catering-detail/logo-packages.png')}}" alt="Gambar Paket"> --}}
-                    <img src="{{ asset('asset/catering-detail/logo-packages.png') }}" alt="gambar paket">
+                    <img src="{{ $item->package->imgPath ? asset('asset/menus/' . $item->package->imgPath) : asset('asset/menus/logo-packages.png') }}"
+                        alt="gambar paket">
                 </div>
                 <div class="right-container">
                     <div class="package-detail">
@@ -71,6 +72,28 @@
                             <button type="button" class="material-symbols-outlined star-icon"
                                 data-index="{{ $i }}">star</button>
                         @endfor
+                    </div>
+                </div>
+            @elseif ($status == 'cancelled')
+                <div class="rating-container">
+                    @if ($order->vendorReview)
+                        <span class="detail-primary">You rated: </span>
+                    @else
+                        <span class="detail-primary">Rate this catering </span>
+                    @endif
+                    <div class="rating-icon-list">
+                        @if ($order->vendorReview)
+                            @for ($i = 1; $i <= 5; $i++)
+                                <span
+                                    class="material-symbols-outlined star-icon{{ $i <= $order->vendorReview->rating ? ' choosen' : '' }}"
+                                    style="cursor:default;">star</span>
+                            @endfor
+                        @else
+                            @for ($i = 1; $i <= 5; $i++)
+                                <button type="button" class="material-symbols-outlined star-icon-btn"
+                                    data-index="{{ $i }}">star</button>
+                            @endfor
+                        @endif
                     </div>
                 </div>
             @endif

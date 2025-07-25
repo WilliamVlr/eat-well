@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProfileRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -63,6 +64,7 @@ class UserController extends Controller
             $maxAllowedBalance = 1000000000;
 
             if ($newBalance > $maxAllowedBalance) {
+                logActivity('Failed', 'top-up', 'WellPay, Error : Balance cannot exceed Rp ' . number_format($maxAllowedBalance, 0, ',', '.') . '.');
                 return response()->json(['message' => 'Your balance cannot exceed Rp ' . number_format($maxAllowedBalance, 0, ',', '.') . '.'], 400);
             }
 
@@ -70,21 +72,65 @@ class UserController extends Controller
             $user->wellpay = $newBalance;
             $user->save();
 
+            logActivity('successfully', 'top-up', 'WellPay');
+
             // Berikan respons sukses
             return response()->json([
                 'message' => 'Top-up of Rp ' . number_format($amount, 0, ',', '.') . ' successful!',
                 'new_balance' => $newBalance, // Kirim saldo baru kembali ke frontend
             ], 200);
-
         } catch (ValidationException $e) {
             // Tangkap error validasi dan kirimkan ke frontend
+            logActivity('Failed', 'top-up', 'WellPay, Error : ' . $e->getMessage());
             return response()->json([
                 'message' => 'Validation Error',
                 'errors' => $e->errors()
             ], 422); // Status code 422 Unprocessable Entity
         } catch (\Exception $e) {
             // Tangkap error lainnya (misalnya error database)
+            logActivity('Failed', 'top-up', 'WellPay, Error : ' . $e->getMessage());
             return response()->json(['message' => 'An error occurred: ' . $e->getMessage()], 500);
         }
+    }
+
+    public function showProfile()
+    {
+        // Mengambil user yang sedang login
+        $user = Auth::user();
+
+
+        logActivity('Successfully', 'Visited', 'Manage Profile Page');
+        return view('manageProfile', compact('user'));
+    }
+
+
+
+    public function updateProfile(ProfileRequest $request)
+    {
+        $user = Auth::user();
+        $userId = $user->userId;
+
+        $updated_user = User::find($userId);
+
+        $updated_user->name = $request->nameInput;
+
+        if ($request->filled('dateOfBirth')) {
+            $updated_user->dateOfBirth = $request->input('dateOfBirth');
+        }
+
+        if ($request->hasFile('profilePicInput')) {
+            $file = $request->file('profilePicInput');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('asset/profile'), $filename);
+            $updated_user->profilePath = 'asset/profile/' . $filename;
+        }
+
+        $updated_user->genderMale = ($request->gender === 'male') ? 1 : 0;
+
+        $updated_user->save();
+
+        logActivity('Successfully', 'Updated', "Profile to {$updated_user->name}");
+
+        return redirect()->route('manage-profile');
     }
 }

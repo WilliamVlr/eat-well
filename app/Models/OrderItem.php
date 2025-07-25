@@ -23,7 +23,7 @@ class OrderItem extends Model
     ];
 
     protected $casts = [
-        'packageTimeSlot' => TimeSlot::class,
+        'packageTimeSlot' => 'string',
         'price' => 'decimal:2',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
