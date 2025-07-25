@@ -8,7 +8,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Enums\UserRole;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -43,7 +42,8 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         'provider_refresh_token',
         'otp',
         'otp_expires_at',
-        'enabled_2fa'
+        'enabled_2fa',
+        'locale'
     ];
 
     /**

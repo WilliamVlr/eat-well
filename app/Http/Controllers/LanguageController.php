@@ -6,6 +6,8 @@ use App\Http\Requests\LanguageRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class LanguageController extends Controller
 {
@@ -15,7 +17,19 @@ class LanguageController extends Controller
     public function __invoke(LanguageRequest $request)
     {
         $lang = $request->validated()['lang'];
-        Session::put('lang', $lang);
+        
+        $user = Auth::user();
+        if($user)
+        {
+            $userId = $user->userId;
+            $user = User::find($userId);
+            $user->locale = $lang;
+            $user->save();
+        }
+        else
+        {
+            Session::put('lang', $lang);
+        }
         
         return redirect()->back();
     }
