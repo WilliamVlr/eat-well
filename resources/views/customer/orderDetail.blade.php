@@ -92,7 +92,7 @@
                                     </p>
                                 @endif
                             </div>
-                            <div class="rating-container mt-3">
+                            <div class="rating-container mt-3" data-order-id="{{ $order->orderId }}">
                                 <span class="cds-address-title">
                                     @if ($order->vendorReview)
                                         Your review
@@ -313,7 +313,7 @@
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-end gap-2">
-                    <button type="button" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-primary" id="submitRateReviewModal">Submit</button>
                     <button type="button" class="btn btn-secondary" id="cancelRateReviewModal">Cancel</button>
                 </div>
             </div>

@@ -35,9 +35,10 @@ document.addEventListener("DOMContentLoaded", function () {
     let lastOrderId = null;
 
     // Card stars
-    document.querySelectorAll(".card-delivery-status").forEach(function (card) {
-        const stars = card.querySelectorAll(".star-icon-btn");
+    document.querySelectorAll(".rating-container").forEach(function (container) {
+        const stars = container.querySelectorAll(".star-icon-btn");
         let selected = -1;
+        const orderId = container.dataset.orderId; // <-- Get orderId from data attribute
 
         stars.forEach((star, idx) => {
             star.addEventListener("click", function () {
@@ -45,19 +46,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 updateStars(idx);
                 lastCardStars = stars;
                 lastCardStarsIdx = idx;
-                lastOrderId = card.dataset.orderId; // Make sure you set data-order-id on .card-order
+                lastOrderId = orderId; // <-- Set lastOrderId for use in submit
                 openRateReviewModal(idx + 1);
             });
             star.addEventListener("mouseenter", function () {
                 updateStars(idx);
             });
         });
-        card.querySelector(".rating-icon-list").addEventListener(
-            "mouseleave",
-            function () {
+        const ratingIconList = container.querySelector(".rating-icon-list");
+        if (ratingIconList) {
+            ratingIconList.addEventListener("mouseleave", function () {
                 updateStars(selected);
-            }
-        );
+            });
+        }
         function updateStars(activeIdx) {
             stars.forEach((s, i) => {
                 if (i <= activeIdx) {
@@ -151,11 +152,12 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("okSuccessModal").onclick = closeSuccessModal;
 
     // Submit review
-    modal.querySelector(".btn-primary").onclick = function () {
+    modal.querySelector("#submitRateReviewModal").onclick = function () {
         const rating = modalSelected + 1;
         const review = modal.querySelector("#reviewText").value;
         const orderId = lastOrderId;
         if (!orderId) return;
+        console.log("Masuk");
 
         fetch(`/orders/${orderId}/review`, {
             method: "POST",

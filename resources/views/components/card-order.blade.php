@@ -60,21 +60,11 @@
         <div class="left-container">
             @if ($status == 'upcoming')
                 <div class="d-flex flex-row">
-                    <button class="btn btn-danger open-cancel-modal" data-order-id="{{ $order->orderId }}">
+                    <button class="btn btn-danger open-cancel-modal" id="open-cancel-modal" data-order-id="{{ $order->orderId }}">
                         Cancel
                     </button>
                 </div>
             @elseif ($status == 'finished')
-                <div class="rating-container">
-                    <span class="detail-primary">Rate this catering</span>
-                    <div class="rating-icon-list">
-                        @for ($i = 1; $i <= 5; $i++)
-                            <button type="button" class="material-symbols-outlined star-icon"
-                                data-index="{{ $i }}">star</button>
-                        @endfor
-                    </div>
-                </div>
-            @elseif ($status == 'cancelled')
                 <div class="rating-container">
                     @if ($order->vendorReview)
                         <span class="detail-primary">You rated: </span>

@@ -165,7 +165,7 @@
                 @csrf
                 @method('put')
                 <div class="modal-actions">
-                    <button type="submit" class="btn-confirm">Yes, Cancel</button>
+                    <button type="submit" id="submitCancelOrderBtn" class="btn-confirm">Yes, Cancel</button>
                     <button type="button" id="closeModalBtn" class="btn-cancel">No, Go Back</button>
                 </div>
             </form>
