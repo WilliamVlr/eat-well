@@ -22,7 +22,11 @@ class VendorReviewSeeder extends Seeder
             // Pastikan setiap vendor memiliki setidaknya 3 review
             for ($i = 0; $i < 3; $i++) {
                 // Cari order yang terkait dengan vendor ini. Review hanya bisa diberikan jika ada order yang selesai.
-                $order = Order::getAllFinishedOrderForSpecificVendor($vendor->vendorId);
+                $order = $this->getAllFinishedOrderForSpecificVendor($vendor->vendorId);
+
+                if(!$order){
+                    continue;
+                }
 
                 $user = User::find($order->userId);
 
@@ -39,5 +43,17 @@ class VendorReviewSeeder extends Seeder
 
         // Buat beberapa review acak tambahan. Ini akan mengambil vendor, user, dan order secara acak dari yang sudah ada.
         VendorReview::factory()->count(30)->create();
+    }
+
+    public function getAllFinishedOrderForSpecificVendor(String $id)
+    {
+        $order = Order::query()
+            ->where('vendorId', $id)
+            ->where('isCancelled', 0)
+            ->where('endDate', '<', now())
+            ->inRandomOrder()
+            ->first();
+
+        return $order;
     }
 }
