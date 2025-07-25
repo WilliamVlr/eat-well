@@ -24,11 +24,17 @@
 
 @section('content')
     <main>
+        @if (session('message'))
+            <div id="flash-message" class="alert alert-success"
+                style="position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:2000;min-width:250px;text-align:center;">
+                {{ session('message') }}
+            </div>
+        @endif
         <div class="container mt-4">
             <section class="">
                 <div class="row">
                     @foreach ($tabs as $key => $label)
-                        <div class="{{$loop->first ? 'col-12' : 'col-6'}} col-md-2 mb-3 ps-0 pe-3">
+                        <div class="{{ $loop->first ? 'col-12' : 'col-6' }} col-md-2 mb-3 ps-0 pe-3">
                             <a href="{{ route('order-history', ['status' => $key]) }}"
                                 class="btn filter-order {{ $status === $key ? 'active' : '' }}" style="width: 100%;">
                                 <span class="tab-control-text">{{ $label }}</span>
@@ -154,6 +160,24 @@
             </div>
         </div>
     </main>
+
+    <!-- Modal Confirmation -->
+    <div id="cancelModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h4>Confirm Cancellation</h4>
+            <p style="font-size: 16px;">Are you sure to cancel this order?</p>
+
+            <form method="POST" id="cancelForm">
+                @csrf
+                @method('put')
+                <div class="modal-actions">
+                    <button type="submit" id="submitCancelOrderBtn" class="btn-confirm">Yes, Cancel</button>
+                    <button type="button" id="closeModalBtn" class="btn-cancel">No, Go Back</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 @endsection
 
 @section('scripts')

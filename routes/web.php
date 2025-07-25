@@ -124,6 +124,8 @@ Route::middleware(['role:customer'])->group(function () {
     // Order History
     Route::get('/orders', [OrderController::class, 'index'])->name('order-history');
     Route::get('/orders/{id}', [OrderController::class, 'show'])->name('order-detail');
+    Route::put('/orders/{id}/cancel', [OrderController::class, 'cancelOrder'])->name('order.cancel');
+    // Route::get('/order-detail', [OrderController::class, 'show'])->name('order-detail');
     Route::post('/orders/{order}/review', [CustomerRatingController::class, 'store'])->middleware('auth');
     ;
 

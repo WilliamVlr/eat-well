@@ -27,7 +27,15 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
+        // validate request
+        $validated = $request->validate([
+            'status' => 'nullable|string|in:all,active,upcoming,cancelled,finished',
+            'query' => 'nullable|string|max:255'
+        ]);
+
+        // get userId
         $userId = Auth::id();
+
         $status = $request->query('status', 'all');
         $query = $request->query('query');
         $now = Carbon::now();
@@ -412,10 +420,28 @@ class OrderController extends Controller
             $statusesBySlot[$slotKey][$dateKey] = $status;
         }
         // dd($statusesBySlot);
+        $status = '';
+        if($order->isCancelled == 1) {
+            $status = 'cancelled';
+        } else if (Carbon::now()->greaterThan($order->endDate)){
+            $status = 'finished';
+        } else if (Carbon::now()->lessThan($order->startDate)){
+            $status = 'upcoming';
+        } else {
+            $status = 'active';
+        }
 
-        logActivity('Successfully', 'Visited', 'Order Detail Page');
+        logActivity('Successfully', 'Visited', "Order #{$order->orderId} Detail Page");
+        return view('customer.orderDetail', compact('order', 'paymentMethod', 'slots', 'statusesBySlot', 'status'));
+    }
 
-        return view('customer.orderDetail', compact('order', 'paymentMethod', 'slots', 'statusesBySlot'));
+    public function cancelOrder(string $id)
+    {
+        $order = Order::findOrFail($id);
+        $order->isCancelled = true;
+        $order->save();
+
+        return redirect()->back()->with('message', 'Success cancelling order!');
     }
 
     /**

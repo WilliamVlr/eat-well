@@ -18,23 +18,9 @@
                 <p class="date">-</p>
                 <p class="date">{{ Carbon::parse($order->endDate)->format('d/m/Y') }}</p>
             </div>
-            @if ($order->isCancelled == 1)
-                <div class="text-wrapper label-status status-cancelled">
-                    Cancelled
-                </div>
-            @elseif (Carbon::now()->between(Carbon::parse($order->startDate), Carbon::parse($order->endDate)))
-                <div class="text-wrapper label-status status-active">
-                    Active
-                </div>
-            @elseif (Carbon::now()->addWeek()->between(Carbon::parse($order->startDate), Carbon::parse($order->endDate)))
-                <div class="text-wrapper label-status status-active">
-                    Upcoming
-                </div>
-            @else
-                <div class="text-wrapper label-status status-finished">
-                    Finished
-                </div>
-            @endif
+            <div class="text-wrapper label-status status-{{ $status }}">
+                {{ ucfirst($status) }}
+            </div>
         </div>
     </div>
 
@@ -44,7 +30,8 @@
             <div class="card-content">
                 <div class="image-wrapper">
                     {{-- <img src="{{$item->package->imgPath ? asset($item->package->imgPath) : asset('asset/catering-detail/logo-packages.png')}}" alt="Gambar Paket"> --}}
-                    <img src="{{ $item->package->imgPath ? asset('asset/menus/' . $item->package->imgPath) : asset('asset/menus/logo-packages.png') }}" alt="gambar paket">
+                    <img src="{{ $item->package->imgPath ? asset('asset/menus/' . $item->package->imgPath) : asset('asset/menus/logo-packages.png') }}"
+                        alt="gambar paket">
                 </div>
                 <div class="right-container">
                     <div class="package-detail">
@@ -71,27 +58,35 @@
     </a>
     <div class="card-bottom">
         <div class="left-container">
-            <div class="rating-container">
-                @if ($order->vendorReview)
-                    <span class="detail-primary">You rated: </span>
-                @else
-                    <span class="detail-primary">Rate this catering </span>
-                @endif
-                <div class="rating-icon-list">
-                    @if ($order->vendorReview)
-                        @for ($i = 1; $i <= 5; $i++)
-                            <span
-                                class="material-symbols-outlined star-icon{{ $i <= $order->vendorReview->rating ? ' choosen' : '' }}"
-                                style="cursor:default;">star</span>
-                        @endfor
-                    @else
-                        @for ($i = 1; $i <= 5; $i++)
-                            <button type="button" class="material-symbols-outlined star-icon-btn"
-                                data-index="{{ $i }}">star</button>
-                        @endfor
-                    @endif
+            @if ($status == 'upcoming')
+                <div class="d-flex flex-row">
+                    <button class="btn btn-danger open-cancel-modal" id="open-cancel-modal" data-order-id="{{ $order->orderId }}">
+                        Cancel
+                    </button>
                 </div>
-            </div>
+            @elseif ($status == 'finished')
+                <div class="rating-container">
+                    @if ($order->vendorReview)
+                        <span class="detail-primary">You rated: </span>
+                    @else
+                        <span class="detail-primary">Rate this catering </span>
+                    @endif
+                    <div class="rating-icon-list">
+                        @if ($order->vendorReview)
+                            @for ($i = 1; $i <= 5; $i++)
+                                <span
+                                    class="material-symbols-outlined star-icon{{ $i <= $order->vendorReview->rating ? ' choosen' : '' }}"
+                                    style="cursor:default;">star</span>
+                            @endfor
+                        @else
+                            @for ($i = 1; $i <= 5; $i++)
+                                <button type="button" class="material-symbols-outlined star-icon-btn"
+                                    data-index="{{ $i }}">star</button>
+                            @endfor
+                        @endif
+                    </div>
+                </div>
+            @endif
         </div>
         <div class="right-container">
             <div class="total-container">
