@@ -39,6 +39,7 @@ class UserFactory extends Factory
             'dateOfBirth' => fake()->dateTimeBetween('-30 years', '-18 years'),
             'genderMale' => fake()->boolean(),
             'wellpay' => $this->faker->randomFloat(2, 0, 10000000),
+            'locale' => fake()->randomElement(['en', 'id'])
         ];
     }
 
