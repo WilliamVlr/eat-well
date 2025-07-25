@@ -32,7 +32,7 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
-            'profilePath' => fake()->randomElement(['asset/profile/profil.jpg', 'asset/profile/user-profile.jpg', 'asset/profile/anya.jpg', 'asset/profile/anya-2.jpg']),
+            'profilePath' => fake()->randomElement(['profil.jpg', 'user-profile.jpg', 'anya.jpg', 'anya-2.jpg']),
             'role' => 'Customer', // Default role
             'enabled2FA' => false,
             'remember_token' => Str::random(10),

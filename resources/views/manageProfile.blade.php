@@ -12,7 +12,7 @@
         <div class="left-panel outer-panel d-flex flex-column h-100">
             <div class="lexend font-medium manage-profile">
                 <div class="left-panel-in photo-prof">
-                    <img src="{{ asset($user->profilePath) }}" alt="Profile Picture" class="prof-pict">
+                    <img src="{{ asset('asset/profile/' . $user->profilePath) }}" alt="Profile Picture" class="prof-pict">
                 </div>
                 <div class="right-panel-in data-prof">
                     <p class="profile-name text-white lexend font-regular">{{ $user->name }}</p>
@@ -175,7 +175,7 @@
                                 </div>
                                 <div class="photo-data">
                                     <div class="profile-image-wrapper">
-                                        <img src="{{ asset($user->profilePath) }}" alt="Profile Picture"
+                                        <img src="{{ asset('asset/profile/' . $user->profilePath) }}" alt="Profile Picture"
                                             class="profile-picture" id="profilePicPreview">
                                         <label for="profilePicInput" class="change-image-label">
                                             <span class="material-symbols-outlined change-image-icon">

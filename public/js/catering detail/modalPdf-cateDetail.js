@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Handle semua tombol View
     document.querySelectorAll(".view-menu-text").forEach((viewBtn) => {
         viewBtn.addEventListener("click", function () {
-            const pdfUrl = this.dataset.pdf;
+            const pdfUrl = this.dataset.pdf;  
             iframe.src = pdfUrl;
             modal.style.display = "flex";
         });

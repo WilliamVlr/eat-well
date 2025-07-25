@@ -75,25 +75,12 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link mx-lg-2 navigationcustlink {{ request()->routeIs('sales.show') ? 'active' : '' }}"
-                                href="/manageCateringPackage">Sales</a>
+                                href="{{route('sales.show')}}">Sales</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('manageOrder') ? 'active' : '' }}"
                                 href="/manageOrder">{{ __('navigation.orders') }}</a>
                         </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('search') ? 'active' : '' }}"
-                                href="/search">Search</a>
-                        </li>
-
-
-
-                        {{-- <li class="nav-item">
-                            <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('') ? 'active' : '' }}"
-                                href="/about-us">Active Subscription</a>
-                        </li> --}}
-
                     </ul>
                 </div>
             </div>
