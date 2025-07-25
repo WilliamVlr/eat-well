@@ -117,6 +117,7 @@
     </nav>
 
     {{-- ===== PAGE CONTENT ===== --}}
+    @yield('content')
 
     {{-- ===== FOOTER ===== --}}
     {{-- <footer class="bg-dark text-white py-0 mt-auto">
@@ -154,6 +155,7 @@
     </footer> --}}
 
     {{-- Scripts --}}
+    @yield(section: 'scripts')
 </body>
 
 </html>
