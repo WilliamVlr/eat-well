@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Enums\UserRole;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable, SoftDeletes;
 
@@ -29,6 +30,7 @@ class User extends Authenticatable
         'password',
         'role',
         'enabled2FA',
+        'profilePath',
         'remember_token',
         'dateOfBirth',
         'genderMale',
@@ -36,7 +38,10 @@ class User extends Authenticatable
         'provider_id',
         'provider_name',
         'provider_token',
-        'provider_refresh_token'
+        'provider_refresh_token',
+        'otp',
+        'otp_expires_at',
+        'enabled_2fa'
     ];
 
     /**
@@ -105,7 +110,6 @@ class User extends Authenticatable
 
     public function vendor()
     {
-        // return $this->hasMany(Vendor::class, 'userId', 'userId');
         return $this->hasOne(Vendor::class, 'userId', 'userId');
     }
 
@@ -128,5 +132,11 @@ class User extends Authenticatable
     public function vendorReviews()
     {
         return $this->hasMany(VendorReview::class, 'userId', 'userId');
+    }
+
+    public function defaultAddress()
+    {
+        return $this->hasOne(\App\Models\Address::class, 'userId', 'userId')
+            ->where('is_default', true);
     }
 }

@@ -212,10 +212,22 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        
+
         const methodId = selectedMethod.value;
         const vendorId = document.getElementById("hiddenVendorId")?.value;
         const startDate = document.getElementById("hiddenStartDate")?.value;
         const endDate = document.getElementById("hiddenEndDate")?.value;
+        const provinsi = document.getElementById("hiddenSelectedAddressProvinsi")?.value;
+        const kota = document.getElementById("hiddenSelectedAddressKota")?.value;
+        const kabupaten = document.getElementById("hiddenSelectedAddressKabupaten")?.value;
+        const kecamatan = document.getElementById("hiddenSelectedAddressKecamatan")?.value;
+        const kelurahan = document.getElementById("hiddenSelectedAddressKelurahan")?.value;
+        const kode_pos = document.getElementById("hiddenSelectedAddressKodePos")?.value;
+        const jalan = document.getElementById("hiddenSelectedAddressJalan")?.value;
+        const recipient_name = document.getElementById("hiddenSelectedAddressRecipientName")?.value;
+        const recipient_phone = document.getElementById("hiddenSelectedAddressRecipientPhone")?.value;
+        const notes = document.getElementById("hiddenSelectedAddressNotes")?.value;
 
         if (!vendorId || !startDate || !endDate) {
             showMessage(
@@ -235,6 +247,16 @@ document.addEventListener("DOMContentLoaded", function () {
             vendor_id: vendorId,
             start_date: startDate,
             end_date: endDate,
+            provinsi: provinsi,
+            kota: kota,
+            kabupaten: kabupaten,
+            kecamatan: kecamatan,
+            kelurahan: kelurahan,
+            kode_pos: kode_pos,
+            jalan: jalan,
+            recipient_name: recipient_name,
+            recipient_phone: recipient_phone,
+            notes: notes,
             // recipient_name: '...', // Isi dengan data alamat sebenarnya
             // recipient_phone: '...', // Isi dengan data alamat sebenarnya
             // notes: '...', // Isi dengan data alamat sebenarnya

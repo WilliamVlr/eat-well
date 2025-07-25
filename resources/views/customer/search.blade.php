@@ -25,28 +25,36 @@
                                 type="button" id="location-dropdown-button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                                 <span class="material-symbols-outlined icon-md me-1"> location_on</span>
-                                <span class="location-text"id="location-txt">Jl. Jendral Sudirman No.1 Blok D17</span>
+                                <span class="location-text"id="location-txt">{{ $mainAddress->jalan }}</span>
                             </button>
                             <ul class="dropdown-menu w-100" aria-labelledby="locationDropdown">
-                                <li><a class="dropdown-item location-text" href="#">Jl. Jendral Sudirman No. 1 Blok
+                                @if ($user && $user->addresses)
+                                    @foreach ($user->addresses as $address)
+                                        <li><a class="dropdown-item location-text" href="#"
+                                                data-address-id="{{ $address->addressId }}"
+                                                data-jalan="{{ $address->jalan }}">{{ $address->jalan }}</a></li>
+                                    @endforeach
+                                @endif
+                                {{-- <li><a class="dropdown-item location-text" href="#">Jl. Jendral Sudirman No. 1 Blok
                                         D17</a></li>
                                 <li><a class="dropdown-item location-text" href="#">Jl. Melati Raya No. 5</a></li>
                                 <li><a class="dropdown-item location-text" href="#">Jl. Mawar Indah No. 12</a></li>
                                 <li><a class="dropdown-item location-text" href="#">Jl. Kenanga No. 8</a></li>
-                                <li><a class="dropdown-item location-text" href="#">Jl. Anggrek No. 3</a></li>
+                                <li><a class="dropdown-item location-text" href="#">Jl. Anggrek No. 3</a></li> --}}
                             </ul>
                         </div>
 
                         <!-- Hidden input to hold selected value for form submission -->
-                        <input type="hidden" name="selected-address" id="selected-location"
-                            value="Jl. Jendral Sudirman No.1 Blok D17">
+                        <input type="hidden" id="selected-address-for-vendor" value="{{ $mainAddress->addressId ?? '' }}">
                     </div>
+
                     {{-- Search Container --}}
                     <div class="search-container col-sm">
                         <div class="search-wrapper search-style-1 d-flex align-items-center">
                             <form action="{{ route('search') }}" method="GET"
                                 class="d-flex align-items-center w-100 h-100">
                                 @csrf
+                                <input type="hidden" name="address_id" id="searchFormAddressId" value="{{ $mainAddress->addressId ?? '' }}">
                                 <div class="input-group">
                                     <button type="submit" class="input-group-text search-button border-end-0 p-0"
                                         title="Search">
@@ -54,9 +62,9 @@
                                     </button>
                                     <input type="text" name="query"
                                         class="form-control border-start-0 input-text-style-1"
-                                        placeholder="Search for vendor, category, etc."
-                                        aria-label="Search for vendor, category, etc." value="{{ request('query') }}"
-                                        required>
+                                        placeholder="{{ __('customer/search.search_placeholder') }}"
+                                        aria-label="{{__('customer/search.search_placeholder')}}" value="{{ request('query') }}"
+                                        >
                                 </div>
                             </form>
                         </div>
@@ -74,9 +82,10 @@
                         <h4 class="mb-1">Filter</h4>
                         <form action="{{ route('search') }}" method="GET">
                             @csrf
+                            <input type="hidden" name="address_id" id="desktopFilterAddressId" value="{{ $mainAddress->addressId ?? '' }}">
                             {{-- Price Range --}}
                             <div class="mb-4">
-                                <label class="form-label label-filter">Price Range</label>
+                                <label class="form-label label-filter">{{__('customer/search.filter_price_label')}}</label>
                                 <div class="row g-2">
                                     <div class="col">
                                         <input type="number" class="form-control" placeholder="Min" min="0"
@@ -86,7 +95,7 @@
                                         <span>to</span>
                                     </div>
                                     <div class="col">
-                                        <input type="number" class="form-control" placeholder="Max" min="0"
+                                        <input type="number" class="form-control" placeholder={{__('customer/search.filter_price_max')}} min="0"
                                             name="max_price" value="{{ request('max_price') }}">
                                     </div>
                                 </div>
@@ -126,7 +135,7 @@
                             </div>
                             {{-- Category Filter --}}
                             <div class="mb-4">
-                                <label class="form-label label-filter">Category</label>
+                                <label class="form-label label-filter">{{__('customer/search.category')}}</label>
                                 <div class="row row-cols-2">
                                     @foreach ($all_categories as $cat)
                                         <div class="col">
@@ -145,7 +154,7 @@
                             </div>
                             {{-- Apply Button --}}
                             <div class="text-start">
-                                <button type="submit" class="btn btn-orange">Apply Filter</button>
+                                <button type="submit" class="btn btn-orange">{{__('customer/search.apply')}}</button>
                             </div>
                         </form>
                     </div>
@@ -190,8 +199,8 @@
                         {{-- No Results Message (visible only when no results found) --}}
                         @if ($vendors->isEmpty())
                             <div class="no-results text-center mt-5">
-                                <h5 class="text-muted">No results found</h5>
-                                <p class="text-muted">Try adjusting your search or filter options.</p>
+                                <h5 class="text-muted">{{__('customer/search.no_result')}}</h5>
+                                <p class="text-muted">{{__('customer/search.no_result_sub')}}</p>
                             </div>
                         @endif
                     </div>
@@ -208,9 +217,10 @@
                 </div>
                 <form action="{{ route('search') }}" method="GET">
                     @csrf
+                    <input type="hidden" name="address_id" id="mobileFilterAddressId" value="{{ $mainAddress->addressId ?? '' }}">
                     {{-- Price Range --}}
                     <div class="mb-4">
-                        <label class="form-label label-filter">Price Range</label>
+                        <label class="form-label label-filter">{{__('customer/search.filter_price_label')}}</label>
                         <div class="row g-2">
                             <div class="col">
                                 <input type="number" class="form-control" placeholder="Min" min="0"
@@ -220,7 +230,7 @@
                                 <span>to</span>
                             </div>
                             <div class="col">
-                                <input type="number" class="form-control" placeholder="Max" min="0"
+                                <input type="number" class="form-control" placeholder={{__('customer/search.filter_price_max')}} min="0"
                                     name="max_price" value="{{ request('max_price') }}">
                             </div>
                         </div>
@@ -258,7 +268,7 @@
                     </div>
                     {{-- Category Filter --}}
                     <div class="mb-4">
-                        <label class="form-label label-filter">Category</label>
+                        <label class="form-label label-filter">{{__('customer/search.category')}}</label>
                         <div class="row row-cols-2">
                             @foreach ($all_categories as $cat)
                                 <div class="col">
@@ -275,7 +285,7 @@
                         </div>
                     </div>
                     <div class="text-start">
-                        <button type="submit" class="btn btn-orange w-100">Apply Filter</button>
+                        <button type="submit" class="btn btn-orange w-100">{{__('customer/search.apply')}}</button>
                     </div>
                 </form>
             </div>
@@ -284,6 +294,92 @@
 @endsection
 
 @section('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('js/customer/searchCatering.js') }}"></script>
     <script src="{{ asset('js/customer/favoriteCatering.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            const selectedAddressHiddenInput = $('#selected-address-for-vendor');
+            const searchFormAddressIdInput = $('#searchFormAddressId');
+            const desktopFilterAddressIdInput = $('#desktopFilterAddressId');
+            const mobileFilterAddressIdInput = $('#mobileFilterAddressId');
+
+            // Sinkronkan hidden input di SEMUA form dengan hidden input utama
+            // Ini akan memastikan nilai address_id di form selalu update sebelum submit
+            function updateAllFormAddressIds() {
+                const currentSelectedAddressId = selectedAddressHiddenInput.val();
+                searchFormAddressIdInput.val(currentSelectedAddressId);
+                desktopFilterAddressIdInput.val(currentSelectedAddressId);
+                mobileFilterAddressIdInput.val(currentSelectedAddressId);
+                // console.log('All form address_id inputs updated to:', currentSelectedAddressId);
+            }
+
+            // Panggil fungsi ini saat halaman dimuat
+            updateAllFormAddressIds();
+
+            // Script untuk menambahkan address_id ke link detail vendor saat diklik
+            $('body').on('click', '.catering-card-link', function(e) {
+                e.preventDefault(); 
+                
+                const selectedAddressId = selectedAddressHiddenInput.val(); 
+                let originalHref = $(this).attr('href');
+
+                // console.log('Clicked vendor card link. Original Href:', originalHref);
+                // console.log('Selected Address ID from hidden input (at click):', selectedAddressId);
+
+                if (originalHref) {
+                    const url = new URL(originalHref, window.location.origin);
+                    if (selectedAddressId) {
+                        url.searchParams.set('address_id', selectedAddressId);
+                    } else {
+                        url.searchParams.delete('address_id'); 
+                    }
+                    originalHref = url.toString();
+                } else {
+                    console.warn('Original Href is missing for catering-card-link.');
+                }
+                
+                // console.log('Final URL for redirect:', originalHref);
+                
+                window.location.href = originalHref;
+            });
+
+            // Handle pagination links to preserve address_id
+            $('body').on('click', '.catering-pagination a.page-link', function(e) {
+                e.preventDefault();
+                const selectedAddressId = selectedAddressHiddenInput.val(); 
+                let paginationUrl = $(this).attr('href');
+
+                if (paginationUrl) {
+                    const url = new URL(paginationUrl);
+                    if (selectedAddressId) {
+                        url.searchParams.set('address_id', selectedAddressId);
+                    } else {
+                        url.searchParams.delete('address_id');
+                    }
+                    paginationUrl = url.toString();
+                }
+                window.location.href = paginationUrl;
+            });
+
+            // Panggil updateAllFormAddressIds saat form filter disubmit
+            // Ini sebenarnya sudah tercakup oleh updateAllFormAddressIds() yang dipanggil saat DOM ready,
+            // dan Laravel akan membaca dari URL query string saat GET request.
+            // Namun, untuk memastikan, kita bisa tambahkan lagi pada event submit
+            $('form[action="{{ route('search') }}"]').submit(function() {
+                 // Pastikan nilai hidden input di form ini diperbarui sebelum submit
+                 const currentSelectedAddressId = selectedAddressHiddenInput.val();
+                 $(this).find('input[name="address_id"]').val(currentSelectedAddressId);
+                //  console.log('Form submitted:', $(this).attr('action'), 'with address_id:', currentSelectedAddressId);
+            });
+
+            // PENTING: Tangani perubahan pada dropdown lokasi di searchCatering.js
+            // searchCatering.js yang akan me-reload halaman setelah dropdown lokasi dipilih.
+            // Karena itu, saat reload, $(document).ready ini akan dijalankan lagi,
+            // dan inisialisasi awal ($mainAddress dari controller) akan memastikan
+            // $('#selected-address-for-vendor') memiliki nilai yang benar.
+            // Kemudian updateAllFormAddressIds() akan menyinkronkan nilai ini ke semua form.
+        });
+    </script>
 @endsection

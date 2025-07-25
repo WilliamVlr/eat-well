@@ -1,15 +1,30 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const items = document.querySelectorAll(".dropdown-item");
+//   const items = document.querySelectorAll(".dropdown-item");
   const addresText = document.getElementById("location-txt");
-  const hiddenInput = document.getElementById("selected-location");
+  const hiddenInput = document.getElementById("selected-address-for-vendor");
 
-  items.forEach(item => {
-    item.addEventListener("click", function () {
-      const selectedText = this.textContent;
-      addresText.textContent = selectedText;
-      hiddenInput.value = selectedText;
+  document.querySelector('.location-dropdown .dropdown-menu').addEventListener('click', function(e) {
+        const item = e.target.closest('.dropdown-item.location-text');
+        if (item) {
+            e.preventDefault();
+
+            const selectedText = item.textContent.trim(); // Gunakan trim() untuk membersihkan spasi
+            const selectedAddressId = item.dataset.addressId; // Ambil data-address-id
+
+            addresText.textContent = selectedText; // Update teks yang terlihat
+            hiddenInput.value = selectedAddressId; // Update hidden input
+
+            // console.log('Dropdown item clicked.');
+            // console.log('Selected address ID:', selectedAddressId);
+            // console.log('Updated location text:', selectedText);
+
+            // Perbarui URL saat lokasi dipilih
+            const url = new URL(window.location.href);
+            url.searchParams.set('address_id', selectedAddressId);
+            window.location.href = url.toString();
+        }
     });
-  });
+
 });
 
 document.querySelectorAll('input[name="rating"]').forEach(function(radio) {
