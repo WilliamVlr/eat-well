@@ -211,3 +211,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const flash = document.getElementById('flash-message');
+    if (flash) {
+        setTimeout(() => {
+            flash.classList.add('fade-out');
+            setTimeout(() => flash.remove(), 500);
+        }, 3000);
+    }
+});

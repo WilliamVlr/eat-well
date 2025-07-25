@@ -18,12 +18,18 @@
 
 @section('content')
     <main>
+        @if (session('message'))
+            <div id="flash-message" class="alert alert-success"
+                style="position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:2000;min-width:250px;text-align:center;">
+                {{ session('message') }}
+            </div>
+        @endif
         <div class="container">
             <div class="order-detail-card">
                 {{-- Card Header --}}
                 <section class="card-header">
                     <div class="left-container">
-                        <a href="{{route('order-history')}}" class="btn-back">
+                        <a href="{{ route('order-history') }}" class="btn-back">
                             <span class="icon">&lt;</span>
                             <span class="">Back</span>
                         </a>

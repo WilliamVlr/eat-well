@@ -24,6 +24,12 @@
 
 @section('content')
     <main>
+        @if (session('message'))
+            <div id="flash-message" class="alert alert-success"
+                style="position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:2000;min-width:250px;text-align:center;">
+                {{ session('message') }}
+            </div>
+        @endif
         <div class="container mt-4">
             <section class="">
                 <div class="row">
