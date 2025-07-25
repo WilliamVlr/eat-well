@@ -164,18 +164,18 @@ class SalesController extends Controller
     private function getVendorSalesRanged($vendorId, $startDate = null, $endDate = null)
     {
         $orders = Order::where('vendorId', $vendorId)
-        ->whereHas('payment', function ($query) use ($startDate, $endDate) {
-            $query->whereNotNull('paid_at');
+            ->whereHas('payment', function ($query) use ($startDate, $endDate) {
+                $query->whereNotNull('paid_at');
 
-            if ($startDate) {
-                $query->whereDate('paid_at', '>=', $startDate);
-            }
+                if ($startDate) {
+                    $query->whereDate('paid_at', '>=', $startDate);
+                }
 
-            if ($endDate) {
-                $query->whereDate('paid_at', '<=', $endDate);
-            }
-        })
-        ->get();
+                if ($endDate) {
+                    $query->whereDate('paid_at', '<=', $endDate);
+                }
+            })
+            ->get();
 
         $orders->load(['user', 'orderItems.package', 'payment']);
 
@@ -183,21 +183,21 @@ class SalesController extends Controller
 
         foreach ($orders as $order) {
             $grouped = $order->orderItems
-                ->groupBy('packageId')
+                ->groupBy(function ($item) {
+                    return $item->packageId . '|' . strtolower($item->packageTimeSlot); // group by both packageId & timeSlot
+                })
                 ->map(function ($items) {
                     $first = $items->first();
                     return [
                         'packageName' => $first->package->name,
+                        'timeSlots' => ucfirst(strtolower($first->packageTimeSlot)),
                         'quantity' => $items->sum('quantity'),
-                        'timeSlots' => $items->pluck('packageTimeSlot')
-                            ->map(fn($ts) => ucfirst(strtolower($ts->name)))
-                            ->unique()
-                            ->join(', '),
                     ];
                 });
 
             $order->groupedPackages = $grouped->values();
         }
+
 
         return [$orders, $totalSales];
     }
