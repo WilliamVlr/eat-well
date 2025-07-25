@@ -23,10 +23,10 @@
                 {{-- Card Header --}}
                 <section class="card-header">
                     <div class="left-container">
-                        <button onclick="window.history.back()" class="btn-back">
+                        <a href="{{route('order-history')}}" class="btn-back">
                             <span class="icon">&lt;</span>
                             <span class="">Back</span>
-                        </button>
+                        </a>
                     </div>
                     <div class="right-container">
                         <div class="text-wrapper">
@@ -92,32 +92,35 @@
                                     </p>
                                 @endif
                             </div>
-                            <div class="rating-container mt-3" data-order-id="{{ $order->orderId }}">
-                                <span class="cds-address-title">
+                            @if ($status == 'finished')
+                                <div class="rating-container mt-3" data-order-id="{{ $order->orderId }}">
+                                    <span class="cds-address-title">
+                                        @if ($order->vendorReview)
+                                            Your review
+                                        @else
+                                            Rate this catering
+                                        @endif
+                                    </span>
                                     @if ($order->vendorReview)
-                                        Your review
-                                    @else
-                                        Rate this catering
-                                    @endif
-                                </span>
-                                @if ($order->vendorReview)
-                                    <div class="container-fluid m-0 mt-1 p-2 rounded-2 d-flex flex-column gap-1" style="background-color: #ecedec;">
-                                        <div class="d-flex flex-row align-items-center gap-1">
-                                            <span class="material-symbols-outlined star-icon choosen }}"
-                                                style="cursor:default; font-size: 24px;">star</span> 
-                                            <span style="font-size: 16px;">{{$order->vendorReview->rating}}</span>
+                                        <div class="container-fluid m-0 mt-1 p-2 rounded-2 d-flex flex-column gap-1"
+                                            style="background-color: #ecedec;">
+                                            <div class="d-flex flex-row align-items-center gap-1">
+                                                <span class="material-symbols-outlined star-icon choosen }}"
+                                                    style="cursor:default; font-size: 24px;">star</span>
+                                                <span style="font-size: 16px;">{{ $order->vendorReview->rating }}</span>
+                                            </div>
+                                            <span style="font-size: 14px;">{{ $order->vendorReview->review }}</span>
                                         </div>
-                                        <span style="font-size: 14px;">{{$order->vendorReview->review}}</span>
-                                    </div>
-                                @else
-                                    <div class="rating-icon-list">
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <button type="button" class="material-symbols-outlined star-icon-btn"
-                                                data-index="{{ $i }}">star</button>
-                                        @endfor
-                                    </div>
-                                @endif
-                            </div>
+                                    @else
+                                        <div class="rating-icon-list">
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <button type="button" class="material-symbols-outlined star-icon-btn"
+                                                    data-index="{{ $i }}">star</button>
+                                            @endfor
+                                        </div>
+                                    @endif
+                                </div>
+                            @endif
                         </div>
                         {{-- RIGHT: Day Filter, Date, Carousel/Slider --}}
                         <div class="cds-status-right-container flex-grow-2">
@@ -146,25 +149,25 @@
                                                         <div class="cds-slot-title text-center mb-2">{{ $slot['label'] }}
                                                         </div>
                                                         <div class="cds-slot-status-list">
-                                                            @foreach ($statusesBySlot[$slot['key']] as $date => $status)
+                                                            @foreach ($statusesBySlot[$slot['key']] as $date => $deli_status)
                                                                 <div
-                                                                    class="cds-slot-status-row {{ $status->status->value ?? $status->status }}">
+                                                                    class="cds-slot-status-row {{ $deli_status->status->value ?? $deli_status->status }}">
                                                                     <div
                                                                         class="cds-circle-icon d-flex align-items-center justify-content-center">
                                                                         {{-- Choose icon based on status --}}
                                                                         <span
                                                                             class="material-symbols-outlined status-icon-sm">
-                                                                            @if ($status->status->value ?? $status->status === 'preparing')
+                                                                            @if ($deli_status->status->value ?? $deli_status->status === 'preparing')
                                                                                 restaurant
-                                                                            @elseif ($status->status->value ?? $status->status === 'delivering')
+                                                                            @elseif ($deli_status->status->value ?? $deli_status->status === 'delivering')
                                                                                 local_shipping
-                                                                            @elseif ($status->status->value ?? $status->status === 'arrived')
+                                                                            @elseif ($deli_status->status->value ?? $deli_status->status === 'arrived')
                                                                                 check_circle
                                                                             @endif
                                                                         </span>
                                                                     </div>
                                                                     <div class="cds-status-label">
-                                                                        {{ ucfirst($status->status->value ?? $status->status) }}
+                                                                        {{ ucfirst($deli_status->status->value ?? $deli_status->status) }}
                                                                         <span
                                                                             class="ms-2 small text-muted">{{ $date }}</span>
                                                                     </div>
@@ -187,22 +190,22 @@
                                             <div class="cds-delivery-slot-card">
                                                 <div class="cds-slot-title text-center mb-2">{{ $slot['label'] }}</div>
                                                 <div class="cds-slot-status-list">
-                                                    @foreach ($statusesBySlot[$slot['key']] as $date => $status)
-                                                        <div class="cds-slot-status-row {{ $status->status->value }}">
+                                                    @foreach ($statusesBySlot[$slot['key']] as $date => $deli_status)
+                                                        <div class="cds-slot-status-row {{ $deli_status->status->value }}">
                                                             <div
                                                                 class="cds-circle-icon d-flex align-items-center justify-content-center">
                                                                 <span class="material-symbols-outlined status-icon-sm">
-                                                                    @if ($status->status->value === 'Prepared')
+                                                                    @if ($deli_status->status->value === 'Prepared')
                                                                         restaurant
-                                                                    @elseif ($status->status->value === 'Delivered')
+                                                                    @elseif ($deli_status->status->value === 'Delivered')
                                                                         local_shipping
-                                                                    @elseif ($status->status->value === 'Arrived')
+                                                                    @elseif ($deli_status->status->value === 'Arrived')
                                                                         check_circle
                                                                     @endif
                                                                 </span>
                                                             </div>
                                                             <div class="cds-status-label">
-                                                                {{ ucfirst($status->status->value) }}
+                                                                {{ ucfirst($deli_status->status->value) }}
                                                                 <span
                                                                     class="ms-2 small text-muted">{{ $date }}</span>
                                                             </div>
@@ -239,14 +242,15 @@
                         </div>
                     </div>
 
-                    {{-- Redirect ke catering pagenya langsung scroll ke packagenya --}}
+                    {{-- Redirect ke catering pagenya --}}
                     <a href="{{ route('catering-detail', $order->vendorId) }}"
                         class="card-content-wrapper text-decoration-none">
                         @foreach ($order->orderItems as $item)
                             <div class="card-content">
                                 <div class="image-wrapper">
                                     {{-- <img src="{{$item->package->imgPath ? asset($item->package->imgPath) : asset('asset/catering-detail/logo-packages.png')}}" alt="Gambar Paket"> --}}
-                                    <img src="{{ asset('asset/catering-detail/logo-packages.png') }}" alt="gambar paket">
+                                    <img src="{{ $item->package->imgPath ? asset('asset/menus/' . $item->package->imgPath) : asset('asset/menus/logo-packages.png') }}"
+                                        alt="gambar paket">
                                 </div>
                                 <div class="right-container">
                                     <div class="package-detail">
@@ -273,6 +277,14 @@
                     </a>
                     <div class="card-bottom">
                         <div class="left-container">
+                            @if ($status === 'upcoming')
+                                <div class="d-flex flex-row">
+                                    <button class="btn btn-danger open-cancel-modal" id="open-cancel-modal"
+                                        data-order-id="{{ $order->orderId }}">
+                                        Cancel
+                                    </button>
+                                </div>
+                            @endif
                         </div>
                         <div class="right-container">
                             <div class="total-container">
@@ -339,6 +351,23 @@
                 <div class="modal-footer d-flex justify-content-end gap-2">
                     <button type="button" class="btn btn-primary" id="okSuccessModal">OK</button>
                 </div>
+            </div>
+        </div>
+
+        <!-- Modal Confirmation -->
+        <div id="cancelModal" class="modal-overlay hidden">
+            <div class="modal-content">
+                <h4>Confirm Cancellation</h4>
+                <p style="font-size: 16px;">Are you sure to cancel this order?</p>
+
+                <form method="POST" id="cancelForm">
+                    @csrf
+                    @method('put')
+                    <div class="modal-actions">
+                        <button type="submit" id="submitCancelOrderBtn" class="btn-confirm">Yes, Cancel</button>
+                        <button type="button" id="closeModalBtn" class="btn-cancel">No, Go Back</button>
+                    </div>
+                </form>
             </div>
         </div>
     </main>

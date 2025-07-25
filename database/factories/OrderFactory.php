@@ -21,7 +21,7 @@ class OrderFactory extends Factory
      */
     public function definition(): array
     {
-        $start = $this->faker->dateTimeBetween("-1 month", "+2 week");
+        $start = $this->faker->dateTimeBetween("-2 week", "+1 week");
         $start = Carbon::parse($start)->startOfWeek(Carbon::MONDAY);
         $end = (clone $start)->modify("+6 days");
 

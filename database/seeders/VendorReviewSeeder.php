@@ -21,18 +21,8 @@ class VendorReviewSeeder extends Seeder
         foreach ($vendors as $vendor) {
             // Pastikan setiap vendor memiliki setidaknya 3 review
             for ($i = 0; $i < 3; $i++) {
-                // Cari order yang terkait dengan vendor ini. Review hanya bisa diberikan jika ada order.
-                $order = Order::where('vendorId', $vendor->vendorId)->inRandomOrder()->first();
-
-                // Jika tidak ada order untuk vendor ini, kita tidak bisa membuat review terkait.
-                // Anda mungkin perlu memastikan OrderSeeder membuat cukup order untuk setiap vendor.
-                if (!$order) {
-                    // Opsional: Buat satu order dummy jika tidak ada, agar bisa di-review
-                    // Atau lewati saja jika memang tidak ada order untuk vendor ini.
-                    // Jika Anda ingin memastikan setiap vendor punya order sebelum review,
-                    // Anda harus modifikasi OrderSeeder juga.
-                    continue; // Lewati vendor ini jika tidak ada order
-                }
+                // Cari order yang terkait dengan vendor ini. Review hanya bisa diberikan jika ada order yang selesai.
+                $order = Order::getAllFinishedOrderForSpecificVendor($vendor->vendorId);
 
                 $user = User::find($order->userId);
 

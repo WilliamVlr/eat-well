@@ -70,4 +70,25 @@ class Order extends Model
     {
         return $this->hasOne(VendorReview::class, 'orderId', 'orderId');
     }
+
+    public function getAllFinishedOrder()
+    {
+        $orders = Order::query()
+            ->where('isCancelled', 0)
+            ->where('endDate', '<', now())
+            ->get();
+
+        return $orders;
+    }
+
+    public function getAllFinishedOrderForSpecificVendor(String $id)
+    {
+        $orders = Order::query()
+            ->where('vendorId', $id)
+            ->where('isCancelled', 0)
+            ->where('endDate', '<', now())
+            ->get();
+
+        return $orders;
+    }
 }

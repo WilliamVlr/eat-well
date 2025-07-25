@@ -431,7 +431,7 @@ class OrderController extends Controller
             $status = 'active';
         }
 
-        logActivity('Successfully', 'Visited', 'Order Detail Page');
+        logActivity('Successfully', 'Visited', "Order #{$order->orderId} Detail Page");
         return view('customer.orderDetail', compact('order', 'paymentMethod', 'slots', 'statusesBySlot', 'status'));
     }
 
