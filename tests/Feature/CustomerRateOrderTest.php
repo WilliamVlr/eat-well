@@ -359,7 +359,7 @@ class CustomerRateOrderTest extends TestCase
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['rating']);
         $response->assertJsonFragment([
-            'rating' => ['The rating field must be at least 1.'],
+            'rating' => ['The rating must be at least 1.'],
         ]);
     }
 
