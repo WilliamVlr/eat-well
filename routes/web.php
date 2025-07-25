@@ -15,6 +15,7 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AuthManager;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerRatingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DeliveryStatusController;
@@ -255,9 +256,10 @@ Route::middleware(['role:admin'])->group(function () {
     Route::get('/view-all-logs', [AdminController::class, 'view_all_logs'])
         ->name('view-all-logs');
 
-    Route::get('/view-all-packages-category', function () {
-        return view('view-all-packages-category');
-    });
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.show');
+    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+    Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('category.delete');
+
 
     Route::get('/view-all-packages-cuisine', function () {
         return view('view-all-packages-cuisine');
