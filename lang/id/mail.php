@@ -9,7 +9,7 @@ return [
         'outro' => 'Terima kasih karena telah menunggu.'
     ],
     'order_delivered' => [
-        'subject' => 'Pesanan #order_id sedang dikirim',
+        'subject' => 'Pesanan #:order_id sedang dikirim',
         'greeting' =>  'Halo!',
         'content' => 'Perubahan status Pesanan #:order_id. 
                         Vendor sedang mengirim makanan anda. Mohon kesediannya untuk menunggu',
