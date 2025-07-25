@@ -22,4 +22,6 @@ return [
     'download_menu' => 'Unduh Menu',
     'no_reviews' => 'Belum ada ulasan untuk vendor ini.',
     'ordered_on' => 'Dipesan pada',
+    'avg_calories' => 'Kalori',
+    'kkal' => 'kkal',
 ];

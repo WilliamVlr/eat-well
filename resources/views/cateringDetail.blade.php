@@ -74,7 +74,7 @@
                         <div class="cokelat-lingkaran">
                             <div>
                                 {{-- <img src="{{ asset('asset/catering-detail/logo-aldenaire-catering.jpg') }}" alt="Catering Image" class="logo-catering"> --}}
-                                <img src="{{ asset($vendor->logo) }}" alt="Catering Image" class="logo-catering">
+                                <img src="{{ asset('asset/vendorLogo/' . $vendor->logo) }}" alt="Catering Image" class="logo-catering">
                             </div>
                         </div>
                     </div>
@@ -100,7 +100,7 @@
                 <div class="carousel-inner">
                     @foreach ($vendor->previews as $key => $preview)
                         <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                            <img src="{{ asset($preview->previewPicturePath) }}" class="d-block w-100"
+                            <img src="{{ asset('asset/catering-preview/' . $preview->previewPicturePath) }}" class="d-block w-100"
                                 alt="Food Preview {{ $key + 1 }}">
                         </div>
                     @endforeach
@@ -196,12 +196,12 @@
                                         <div class="left-card-wrapper">
                                             @if ($package->imgPath)
                                                 <div>
-                                                    <img src="{{ asset($package->imgPath) }}"
+                                                    <img src="{{ asset('asset/menus/' . $package->imgPath) }}"
                                                         alt="{{ $package->name }} Image" class="package-image">
                                                 </div>
                                             @else
                                                 <div>
-                                                    <img src="{{ asset('asset/catering-detail/logo-packages.png') }}"
+                                                    <img src="{{ asset('asset/menus/logo-packages.png') }}"
                                                         alt="Packages Image" class="package-image">
                                                 </div>
                                             @endif
@@ -214,36 +214,55 @@
                                                             download
                                                         </span>
                                                     </div> --}}
+                                                    @if ($package->menuPDFPath)
+                                                        {{-- <div class="download-wrapper" data-pdf="{{ asset('asset/menus/' . $package->menuPDFPath) }}">
+                                                            <span class="material-symbols-outlined download-icon ms-1">
+                                                                download
+                                                            </span>
+                                                            <span class="me-2 inter">{{ __('catering-detail.download_menu') }}</span>
+                                                        </div> --}}
+                                                        <div class="download-wrapper ms-2" data-pdf="{{ asset('asset/menus/' . $package->menuPDFPath) }}">
+                                                            <span class="material-symbols-outlined download-icon">
+                                                                download
+                                                            </span>
+                                                        </div>
+                                                    @endif
                                                 </div>
                                                 <div class="category-cuisine-wrapper">
                                                     <span
                                                         class="category-cuisine-bold">{{ __('catering-detail.category') }}:</span>
                                                     <span>{{ $package->category->categoryName ?? 'N/A' }}</span>
-                                                    {{-- <div></div>
+                                                    <div></div>
                                                     <span
-                                                        class="category-cuisine-bold">{{ __('catering-detail.cuisine_type') }}:</span>
+                                                        {{-- class="category-cuisine-bold">{{ __('catering-detail.cuisine_type') }}:</span> --}}
+                                                        class="category-cuisine-bold">{{ __('catering-detail.avg_calories') }}:</span>
                                                     <span>
-                                                        @forelse ($package->cuisineTypes as $cuisine)
+                                                        {{-- @forelse ($package->cuisineTypes as $cuisine)
                                                             {{ $cuisine->cuisineName }}{{ !$loop->last ? ', ' : '' }}
                                                         @empty
                                                             N/A
-                                                        @endforelse
-                                                    </span> --}}
-                                                    <div class="download-wrapper" data-pdf="{{ asset($package->menuPDFPath) }}">
-                                                        <span class="material-symbols-outlined download-icon ms-1">
-                                                            download
-                                                        </span>
-                                                        <span class="me-2 inter">{{ __('catering-detail.download_menu') }}</span>
-                                                    </div>
+                                                        @endforelse --}}
+                                                        ± {{ $package->averageCalories }} {{ __('catering-detail.kkal') }}
+                                                    </span>
+                                                    {{-- @if ($package->menuPDFPath)
+                                                        <div class="download-wrapper" data-pdf="{{ asset('asset/menus/' . $package->menuPDFPath) }}">
+                                                            <span class="material-symbols-outlined download-icon ms-1">
+                                                                download
+                                                            </span>
+                                                            <span class="me-2 inter">{{ __('catering-detail.download_menu') }}</span>
+                                                        </div>
+                                                    @endif --}}
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="right-card-wrapper">
-                                            {{-- <p class="view-menu-text inter" data-pdf="{{ asset('asset/catering-detail/pdf/vegetarian-package-menu.pdf') }}"> --}}
-                                            <p class="view-menu-text inter"
-                                                data-pdf="{{ asset($package->menuPDFPath) }}">
-                                                {{ __('catering-detail.view_menu') }}
-                                            </p>
+                                            @if ($package->menuPDFPath)
+                                                {{-- <p class="view-menu-text inter" data-pdf="{{ asset('asset/catering-detail/pdf/vegetarian-package-menu.pdf') }}"> --}}
+                                                <p class="view-menu-text inter"
+                                                    data-pdf="{{ asset('asset/menus/' . $package->menuPDFPath) }}">
+                                                    {{ __('catering-detail.view_menu') }}
+                                                </p>
+                                            @endif
                                             <div class="add-button" data-tab="item{{ $package->packageId }}">
                                                 <p class="add-text inter">{{ __('catering-detail.add') }}</p>
                                             </div>

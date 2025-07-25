@@ -8,6 +8,7 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\SalesController;
 use App\Http\Controllers\VendorController;
 use App\Http\Middleware\NoCateringDataMiddleware;
 use App\Models\Order;
@@ -236,6 +237,10 @@ Route::middleware(['role:vendor'])->group(function () {
 
         Route::get('/vendor-manage', [VendorPreviewController::class, 'showVendorDetail']);
     });
+
+    // Catering Sales
+    Route::get('/vendor/sales', [SalesController::class,'index'])->name('sales.show');
+    Route::get('/vendor/sales/export', [SalesController::class,'export_sales'])->name('sales.export');
 
     Route::fallback(function () {
         return redirect()->route('cateringHomePage');

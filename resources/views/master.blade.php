@@ -120,7 +120,7 @@
                 </div> --}}
                 <a href="/manage-profile">
                     <div class="imgstyle m-2" style="border-radius:100%; margin-right:20px">
-                        <img class="" src="{{ asset(Auth::user()->profilePath) }}"
+                        <img class="" src="{{ asset('asset/profile/' . Auth::user()->profilePath) }}"
                             alt="Card image " width="50px" height="50px" style="border-radius: 100%">
                     </div>
                 </a>
@@ -138,7 +138,6 @@
                 aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
         </div>
     </nav>
 

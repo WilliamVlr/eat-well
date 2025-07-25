@@ -22,4 +22,6 @@ return [
     'download_menu' => 'Download Menu',
     'no_reviews' => 'No reviews for this vendor yet.',
     'ordered_on' => 'Ordered on',
+    'avg_calories' => 'Calories',
+    'kkal' => 'kcal',
 ];
