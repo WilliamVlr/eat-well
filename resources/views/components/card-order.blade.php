@@ -44,7 +44,7 @@
             <div class="card-content">
                 <div class="image-wrapper">
                     {{-- <img src="{{$item->package->imgPath ? asset($item->package->imgPath) : asset('asset/catering-detail/logo-packages.png')}}" alt="Gambar Paket"> --}}
-                    <img src="{{ asset('asset/catering-detail/logo-packages.png') }}" alt="gambar paket">
+                    <img src="{{ $item->package->imgPath ? asset('asset/menus/' . $item->package->imgPath) : asset('asset/menus/logo-packages.png') }}" alt="gambar paket">
                 </div>
                 <div class="right-container">
                     <div class="package-detail">
