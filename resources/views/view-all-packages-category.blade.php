@@ -61,7 +61,7 @@
                                     <button type="button" class="btn btn-danger btn-sm d-flex gap-1 align-items-center"
                                         onclick="handleDeleteClick('{{ $cat->categoryId }}', {{ $cat->packages()->count() }})">
                                         <span class="material-symbols-outlined">delete</span>
-                                        Delete
+                                        {{__('admin/package_category.delete')}}
                                     </button>
                                 </td>
                             </tr>
@@ -78,12 +78,12 @@
             <form action="{{ route('categories.store') }}" method="POST">
                 @csrf
                 <div class="custom-modal-header">
-                    <h5 class="modal-title">Add New Category</h5>
+                    <h5 class="modal-title">{{__('admin/package_category.add_cat')}}</h5>
                     <button type="button" class="close-modal-btn" onclick="closeModal()">×</button>
                 </div>
                 <div class="custom-modal-body">
                     <div class="mb-3">
-                        <label for="categoryName" class="form-label">Category Name</label>
+                        <label for="categoryName" class="form-label">{{__('admin/package_category.cat_name')}}</label>
                         <input type="text" name="categoryName" id="categoryName"
                             class="form-control @error('categoryName') is-invalid @enderror"
                             value="{{ old('categoryName') }}" required>
@@ -95,8 +95,8 @@
                     </div>
                 </div>
                 <div class="custom-modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-                    <button type="submit" class="btn btn-success">Add Category</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">{{__('admin/package_category.cancel')}}</button>
+                    <button type="submit" class="btn btn-success">{{__('admin/package_category.submit')}}</button>
                 </div>
             </form>
         </div>
@@ -111,15 +111,15 @@
                 @csrf
                 @method('DELETE')
                 <div class="custom-modal-header">
-                    <h5 class="modal-title text-danger">Confirm Delete</h5>
+                    <h5 class="modal-title text-danger">{{__('admin/package_category.del_header')}}</h5>
                     <button type="button" class="close-modal-btn" onclick="closeDeleteModal()">×</button>
                 </div>
                 <div class="custom-modal-body mt-0">
-                    <p style="font-size: 14px;">Are you sure you want to delete this category?</p>
+                    <p style="font-size: 14px;">{{__('admin/package_category.del_body')}}</p>
                 </div>
                 <div class="custom-modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">{{__('admin/package_category.cancel')}}</button>
+                    <button type="submit" class="btn btn-danger">{{__('admin/package_category.del_submit')}}</button>
                 </div>
             </form>
         </div>
@@ -131,11 +131,11 @@
     <div id="cannotDeleteModal" class="custom-modal hidden">
         <div class="custom-modal-content">
             <div class="custom-modal-header">
-                <h5 class="modal-title text-danger">Action Not Allowed</h5>
+                <h5 class="modal-title text-danger">{{__('admin/package_category.canotdel_header')}}</h5>
                 <button type="button" class="close-modal-btn" onclick="closeCannotDeleteModal()">×</button>
             </div>
             <div class="custom-modal-body mt-0">
-                <p style="font-size: 14px;">This category cannot be deleted because it still has associated packages.</p>
+                <p style="font-size: 14px;">{{__('admin/package_category.canotdel_body')}}</p>
             </div>
             <div class="custom-modal-footer">
                 <button type="button" class="btn btn-danger" onclick="closeCannotDeleteModal()">OK</button>
