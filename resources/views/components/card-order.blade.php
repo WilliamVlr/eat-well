@@ -9,7 +9,7 @@
                 <h5 class="">{{ $order->vendor->name }}</h5>
             </div>
             <a href="{{ route('catering-detail', $order->vendor) }}" class="text-wrapper btn-view">
-                <p>View Catering</p>
+                <p>{{__('customer/order.card_view')}}</p>
             </a>
         </div>
         <div class="right-container">
@@ -19,7 +19,7 @@
                 <p class="date">{{ Carbon::parse($order->endDate)->format('d/m/Y') }}</p>
             </div>
             <div class="text-wrapper label-status status-{{ $status }}">
-                {{ ucfirst($status) }}
+                {{ ucfirst(__('customer/order.' . $status)) }}
             </div>
         </div>
     </div>
@@ -38,7 +38,7 @@
                         <div class="text-container detail-primary">{{ $item->package->name }}</div>
                         <div class="text-container d-flex flex-row flex-md-column column-gap-2">
                             <div class="text-wrapper detail-secondary">
-                                Variant: {{ $item->packageTimeSlot }}
+                                {{__('customer/order.card_variant')}}: {{ __('customer/order.' . $item->packageTimeSlot) }}
                             </div>
                             <div class="text-wrapper detail-secondary">
                                 x{{ $item->quantity }}
@@ -61,15 +61,15 @@
             @if ($status == 'upcoming')
                 <div class="d-flex flex-row">
                     <button class="btn btn-danger open-cancel-modal" id="open-cancel-modal" data-order-id="{{ $order->orderId }}">
-                        Cancel
+                        {{__('customer/order.cancel')}}
                     </button>
                 </div>
             @elseif ($status == 'finished')
                 <div class="rating-container">
                     @if ($order->vendorReview)
-                        <span class="detail-primary">You rated: </span>
+                        <span class="detail-primary">{{__('customer/order.rated')}}: </span>
                     @else
-                        <span class="detail-primary">Rate this catering </span>
+                        <span class="detail-primary">{{__('customer/order.rate')}} </span>
                     @endif
                     <div class="rating-icon-list">
                         @if ($order->vendorReview)
@@ -90,7 +90,7 @@
         </div>
         <div class="right-container">
             <div class="total-container">
-                <span class="detail-primary">Total {{ count($order->orderItems) }} packages: </span>
+                <span class="detail-primary">Total {{ count($order->orderItems) }} {{__('customer/order.packages')}}: </span>
                 <span class="detail-highlight">Rp
                     {{ number_format($order->totalPrice, 2, ',', '.') }}</span>
             </div>

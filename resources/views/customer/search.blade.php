@@ -62,7 +62,7 @@
                                     @foreach (request('category') as $cat)
                                         <input type="hidden" name="category[]" value="{{ $cat }}">
                                     @endforeach
-                                @endifz
+                                @endif
                                 <input type="hidden" name="address_id" id="searchFormAddressId" value="{{ $mainAddress->addressId ?? '' }}">
                                 <div class="input-group">
                                     <button type="submit" class="input-group-text search-button border-end-0 p-0"
