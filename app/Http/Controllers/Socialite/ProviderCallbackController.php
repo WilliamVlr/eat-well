@@ -35,15 +35,6 @@ class ProviderCallbackController extends Controller
             'role' => Str::ucfirst($role)
         ]);
 
-        if($user->role = UserRole::Vendor)
-        {
-            Vendor::firstOrCreate([
-                'userId' => $user->userId,
-            ]);
-        }
-
-
-
         Auth::login($user, true);
 
 
