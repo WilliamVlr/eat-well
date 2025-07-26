@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Enums\UserRole;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasLocalePreference, MustVerifyEmail
 {
     use HasFactory, Notifiable, SoftDeletes;
 
@@ -29,6 +31,7 @@ class User extends Authenticatable
         'password',
         'role',
         'enabled2FA',
+        'profilePath',
         'remember_token',
         'dateOfBirth',
         'genderMale',
@@ -36,7 +39,11 @@ class User extends Authenticatable
         'provider_id',
         'provider_name',
         'provider_token',
-        'provider_refresh_token'
+        'provider_refresh_token',
+        'otp',
+        'otp_expires_at',
+        'enabled_2fa',
+        'locale'
     ];
 
     /**
@@ -72,6 +79,16 @@ class User extends Authenticatable
         'role' => UserRole::class,
         'wellpay' => 'decimal:2',
     ];
+    
+    public function preferredLocale() : string
+    {
+        return $this->locale;
+    }
+
+    public function setLocale(string $lang)
+    {
+        $this->locale = $lang;
+    }
 
     public function addresses()
     {

@@ -16,20 +16,9 @@ class FavoriteController extends Controller
          * @var User|null $user
          */
         $user = Auth::user();
-
-        if(!$user) {
-            return redirect('login')->with("error");
-        }
-
-        if($user->role === UserRole::Vendor) {
-            return redirect("/cateringHomePage")->with("error");
-        }
-
-        if($user->role === UserRole::Admin) {
-            return redirect("/admin-dashboard")->with("error");
-        }
-
         $vendors = $user->favoriteVendors()->paginate(21);
+
+        logActivity('Successfully', 'Visited', 'Favorite Page');
 
         return view('favoritePage', compact('vendors'));
     }
@@ -42,6 +31,7 @@ class FavoriteController extends Controller
             $user->favoriteVendors()->attach($id);
         }
 
+        logActivity('Successfully', 'Favorited', 'Catering');
         return response()->json(['favorited' => true]);
     }
 
@@ -49,6 +39,7 @@ class FavoriteController extends Controller
     {
         $user = Auth::check() ? Auth::user() : User::where('userId', '=', '5')->inRandomOrder()->first();
         $user->favoriteVendors()->detach($id);
+        logActivity('Successfully', 'Unfavorited', 'Catering');
         return response()->json(['favorited' => false]);
     }
 }

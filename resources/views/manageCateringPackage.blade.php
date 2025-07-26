@@ -104,8 +104,8 @@
                                         'dinnerPrice' => $package->dinnerPrice,
                                         'averageCalories' => $package->averageCalories,
                                         'cuisines' => $package->cuisineTypes->pluck('cuisineId'),
-                                        'menuPDFPath' => $package->menuPDFPath, // 👈 baru
-                                        'imgPath' => $package->imgPath, // 👈 baru
+                                        'menuPDFPath' => $package->menuPDFPath,
+                                        'imgPath' => $package->imgPath,
                                     ]),
                                     ENT_QUOTES,
                                     'UTF-8',

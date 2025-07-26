@@ -56,8 +56,6 @@
                 </div>
             </form>
 
-
-
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
                 aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header">
@@ -75,7 +73,10 @@
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('manageCateringPackage') ? 'active' : '' }}"
                                 href="/manageCateringPackage">{{ __('navigation.my_packages') }}</a>
                         </li>
-
+                        <li class="nav-item">
+                            <a class="nav-link mx-lg-2 navigationcustlink {{ request()->routeIs('sales.show') ? 'active' : '' }}"
+                                href="{{route('sales.show')}}">Sales</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link mx-lg-2 navigationcustlink {{ Request::is('manageOrder') ? 'active' : '' }}"
                                 href="/manageOrder">{{ __('navigation.orders') }}</a>
@@ -96,13 +97,15 @@
 
 
             @auth
-                <a href="/manage-profile">
-                    <div class="imgstyle m-2" style="border-radius:100%; width:50px; height:50px margin-right:20px">
-                        <img class="img-fluid" src="{{ asset('asset/catering/homepage/breakfastPreview.jpg') }}"
-                            alt="Card image " width="120px" style="border-radius: 100%">
+                <a href="/manage-profile-vendor">
+                    <div class="imgstyle m-2" style="border-radius:100%; width:50px; height:50px; margin-right:20px;">
+                        <img class="img-fluid"
+                            src="{{ $vendorLogo ?? asset('asset/catering/homepage/breakfastPreview.jpg') }}"
+                            alt="Vendor Logo" width="120px" style="border-radius: 100%">
                     </div>
                 </a>
             @endauth
+
 
 
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"

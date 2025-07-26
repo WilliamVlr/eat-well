@@ -23,7 +23,7 @@
 
     <div style="margin: 2vw">
         {{-- Untuk button ini jangan dihapus, untuk sementara button logout disini, menunggu UI logout beneran dibuat --}}
-        <form action="{{ route('logout.admin') }}" method="post">
+        <form action="{{ route('logout') }}" method="post">
             @csrf
             <button type="submit"></button>
         </form>

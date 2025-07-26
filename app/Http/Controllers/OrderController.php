@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
+use App\Notifications\CustomerSubscribed;
 
 class OrderController extends Controller
 {
@@ -27,12 +28,20 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $userId = Auth::user();
+        // validate request
+        $validated = $request->validate([
+            'status' => 'nullable|string|in:all,active,upcoming,cancelled,finished',
+            'query' => 'nullable|string|max:255'
+        ]);
+
+        // get userId
+        $userId = Auth::id();
+
         $status = $request->query('status', 'all');
         $query = $request->query('query');
         $now = Carbon::now();
 
-        $orders = Order::with(['orderItems.package', 'vendor'])
+        $orders = Order::with(['orderItems.package', 'vendor', 'vendorReview'])
             ->where('userId', $userId)
             ->when($status === 'active', function ($q) use ($now) {
                 $q->where('isCancelled', 0)
@@ -63,7 +72,9 @@ class OrderController extends Controller
             })
             ->orderByDesc('endDate')
             ->get();
+        // dd($orders);
 
+        logActivity('Successfully', 'Visited', 'Order History Page');
         return view('customer.orderHistory', compact('orders', 'status'));
     }
 
@@ -149,6 +160,7 @@ class OrderController extends Controller
             return redirect()->back()->with('error', 'Alamat pengiriman tidak valid atau tidak dipilih.');
         }
 
+        logActivity('Successfully', 'Visited', 'Vendor Payment Page');
         return view('payment', compact('vendor', 'cart', 'cartDetails', 'totalOrderPrice', 'startDate', 'endDate', 'selectedAddress'));
     }
 
@@ -158,6 +170,7 @@ class OrderController extends Controller
         if (!$user) {
             return response()->json(['message' => 'User not authenticated.'], 401);
         }
+        logActivity('Successfully', 'Viewed', 'Wellpay Balance');
         return response()->json(['wellpay' => $user->wellpay]); // <-- Menggunakan 'wellpay'
     }
 
@@ -232,6 +245,8 @@ class OrderController extends Controller
                 if (!Hash::check($password, $user->getAuthPassword())) {
                     DB::rollBack();
                     // Throw ValidationException for password error
+                    logActivity('Failed', 'Processed', 'Checkout due to incorrect password');
+
                     throw ValidationException::withMessages([
                         'password' => ['Incorrect password.'],
                     ]);
@@ -242,6 +257,7 @@ class OrderController extends Controller
                     DB::rollBack();
                     // This is a specific business logic error, not a validation error on input format.
                     // Returning a 402 is appropriate here.
+                    logActivity('Failed', 'Processed', 'Checkout due to insufficient Wellpay balance');
                     return response()->json(['message' => 'Insufficient Wellpay balance. Please top up.'], 402);
                 }
 
@@ -342,7 +358,18 @@ class OrderController extends Controller
             $cart->delete();
             Log::info('Cart ' . $cart->cartId . ' deleted after successful checkout.');
 
+            // 5. Notify vendor
+            $vendor = Vendor::find($vendorId);
+            $vendorUserId = $vendor->userId;
+            $vendorUser = User::find($vendorUserId);
+
+            if($vendorUser)
+            {
+                $vendorUser->notify(new CustomerSubscribed($order));
+            }
             DB::commit();
+
+            logActivity('Successfully', 'Processed', 'Checkout for Order ID: ' . $order->orderId);
 
             return response()->json(['message' => 'Checkout successful!', 'orderId' => $order->orderId], 200);
 
@@ -351,11 +378,13 @@ class OrderController extends Controller
             // OR the specific ValidationException thrown for incorrect password
             DB::rollBack(); // Rollback if validation failed AFTER transaction began
             Log::error('Validation failed for checkout:', $e->errors());
+            logActivity('Failed', 'Process', 'Checkout');
             return response()->json(['message' => 'Validation Error', 'errors' => $e->errors()], 422);
         } catch (\Exception $e) {
             // This catches any other unexpected errors (database issues, server errors, etc.)
             DB::rollBack();
             Log::error('Checkout failed (General Error): ' . $e->getMessage(), ['exception' => $e]);
+            logActivity('Failed', 'Processed', 'Checkout');
             return response()->json(['message' => 'Checkout failed. Please try again.', 'error' => $e->getMessage()], 500);
         }
     }
@@ -382,7 +411,7 @@ class OrderController extends Controller
     public function show(string $id)
     {
         $order = Order::findOrFail($id)
-            ->load(['payment', 'deliveryStatuses', 'orderItems.package', 'vendor']);
+            ->load(['payment', 'deliveryStatuses', 'orderItems.package', 'vendor', 'vendorReview']);
 
         $paymentMethod = $order->payment ? PaymentMethod::find($order->payment->methodId) : null;
 
@@ -401,8 +430,28 @@ class OrderController extends Controller
             $statusesBySlot[$slotKey][$dateKey] = $status;
         }
         // dd($statusesBySlot);
+        $status = '';
+        if($order->isCancelled == 1) {
+            $status = 'cancelled';
+        } else if (Carbon::now()->greaterThan($order->endDate)){
+            $status = 'finished';
+        } else if (Carbon::now()->lessThan($order->startDate)){
+            $status = 'upcoming';
+        } else {
+            $status = 'active';
+        }
 
-        return view('customer.orderDetail', compact('order', 'paymentMethod', 'slots', 'statusesBySlot'));
+        logActivity('Successfully', 'Visited', "Order #{$order->orderId} Detail Page");
+        return view('customer.orderDetail', compact('order', 'paymentMethod', 'slots', 'statusesBySlot', 'status'));
+    }
+
+    public function cancelOrder(string $id)
+    {
+        $order = Order::findOrFail($id);
+        $order->isCancelled = true;
+        $order->save();
+
+        return redirect()->back()->with('message', 'Success cancelling order!');
     }
 
     /**
