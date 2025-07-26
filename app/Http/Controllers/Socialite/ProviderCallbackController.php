@@ -9,6 +9,7 @@ use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Vendor;
+use Exception;
 use Illuminate\Support\Str;
 
 class ProviderCallbackController extends Controller
@@ -22,30 +23,40 @@ class ProviderCallbackController extends Controller
         if(!in_array($provider, ['google'])){
             return redirect(route('register'))->withErrors(['provider'=>'Invalid provider']);
         }
-        $socialUser = Socialite::driver($provider)->user();
 
-        $user = User::updateOrCreate([
-            'provider_id' => $socialUser->id,
-            'provider_name' => $provider,
-        ], [
-            'name' => $socialUser->name,
-            'email' => $socialUser->email,
-            'provider_token' => $socialUser->token,
-            'provider_refresh_token' => $socialUser->refreshToken,
-            'role' => Str::ucfirst($role)
-        ]);
+        try{
+            $socialUser = Socialite::driver($provider)->user();
+        }catch(\Exception $e){
+            return redirect()->route('login');
+        }
 
-        if($user->role = UserRole::Vendor)
+        $user = User::where('email', $socialUser->email);
+
+        if(!$user)
         {
-            Vendor::firstOrCreate([
-                'userId' => $user->userId,
+            $user = User::create([
+                'email' => $socialUser->email,
+                'name' => $socialUser->name,
+                'provider_id' => $socialUser->id,
+                'provider_name' => $provider,
+                'provider_token' => $socialUser->token,
+                'provider_refresh_token' => $socialUser->refreshToken,
+            ]);
+        }
+        
+        if($user)
+        {
+            $user = User::updateOrCreate([
+                'email' => $socialUser->email,
+            ], [
+                'provider_id' => $socialUser->id,
+                'provider_name' => $provider,
+                'provider_token' => $socialUser->token,
+                'provider_refresh_token' => $socialUser->refreshToken,
             ]);
         }
 
-
-
         Auth::login($user, true);
-
 
         return redirect('/home');
     }
