@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProcessCheckoutRequest;
 use App\Http\Requests\ShowPaymentPageRequest;
 use App\Models\Address;
 use App\Models\Cart;
@@ -180,52 +181,31 @@ class OrderController extends Controller
     /**
      * Proses Checkout: Memindahkan data dari Cart ke Order dan OrderItems, termasuk validasi Wellpay.
      */
-    public function processCheckout(Request $request)
+    public function processCheckout(ProcessCheckoutRequest $request)
     {
         $userId = Auth::id();
         /** @var \App\Models\User $user */
         $user = Auth::user();
-        $vendorId = $request->input('vendor_id');
-        $paymentMethodId = $request->input('payment_method_id');
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-        $password = $request->input('password');
-        $provinsi = $request->input('provinsi');
-        $kota = $request->input('kota');
-        $kabupaten = $request->input('kabupaten');
-        $kecamatan = $request->input('kecamatan');
-        $kelurahan = $request->input('kelurahan');
-        $kode_pos = $request->input('kode_pos');
-        $jalan = $request->input('jalan');
-        $recipient_name = $request->input('recipient_name');
-        $recipient_phone = $request->input('recipient_phone'); 
-        $notes = $request->input('notes');
+
+        $validatedData = $request->validated();
+
+        $vendorId = $validatedData['vendor_id'];
+        $paymentMethodId = $validatedData['payment_method_id'];
+        $startDate = $validatedData['start_date'];
+        $endDate = $validatedData['end_date'];
+        $password = $validatedData['password'] ?? null; // Null if not Wellpay
+        $provinsi = $validatedData['provinsi'];
+        $kota = $validatedData['kota'];
+        $kabupaten = $validatedData['kabupaten'];
+        $kecamatan = $validatedData['kecamatan'];
+        $kelurahan = $validatedData['kelurahan'];
+        $kode_pos = $validatedData['kode_pos'];
+        $jalan = $validatedData['jalan'];
+        $recipient_name = $validatedData['recipient_name'];
+        $recipient_phone = $validatedData['recipient_phone'];
+        $notes = $validatedData['notes'] ?? null; // Nullable field
 
         try {
-            // Initial validation for all incoming request data
-            $request->validate([
-                'vendor_id' => 'required|exists:vendors,vendorId',
-                'payment_method_id' => 'required|exists:payment_methods,methodId',
-                'start_date' => 'required|date_format:Y-m-d',
-                'end_date' => 'required|date_format:Y-m-d|after_or_equal:start_date',
-                // 'password' is required only if payment_method_id is 1
-                'password' => 'required_if:payment_method_id,1|string',
-                'provinsi' => 'required|string|max:255',
-                'kota' => 'required|string|max:255',
-                'kabupaten' => 'required|string|max:255',
-                'kecamatan' => 'required|string|max:255',
-                'kelurahan' => 'required|string|max:255',
-                'kode_pos' => 'required|string|digits:5',
-                'jalan' => 'required|string|max:255',
-                'recipient_name' => 'required|string|max:255',
-                'recipient_phone' => 'required|string|min:10|max:15|regex:/^[0-9]+$/',
-                'notes' => 'nullable|string|max:255',
-            ]);
-
-            if (!$user) {
-                return response()->json(['message' => 'User not authenticated.'], 401);
-            }
-
             DB::beginTransaction();
 
             $cart = Cart::with('cartItems.package')
