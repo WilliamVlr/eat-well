@@ -20,6 +20,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerRatingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DeliveryStatusController;
+use App\Http\Controllers\ManageTwoFactorController;
 use App\Http\Controllers\OrderVendorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Socialite\ProviderCallbackController;
@@ -78,6 +79,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/manage-profile', function () {
         return view('manageProfile');
     })->name('manage-profile');
+
+    Route::post('/manage-two-factor', [ManageTwoFactorController::class, 'index'])->name('manage-two-factor');
 });
 /* ---------------------
     CUSTOMER ROUTES
