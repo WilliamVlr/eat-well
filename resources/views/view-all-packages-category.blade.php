@@ -18,7 +18,7 @@
             <span class="material-symbols-outlined">
                 add
             </span>
-            Category
+            {{__('admin/package_category.category')}}
         </button>
     </section>
     @if (session('success'))
