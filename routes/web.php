@@ -142,6 +142,7 @@ Route::middleware(['role:vendor'])->group(function () {
     // Catering dashboard
     Route::get('/cateringHomePage', [OrderVendorController::class, 'totalOrder']);
     Route::post('/cateringHomePage', [SessionController::class, 'destroy'])->name('logout.vendor');
+    Route::get('/catering-detail', [VendorController::class, 'reviewVendor'])->name('catering-detail');
 
     // Manage Packages
     Route::get('/manageCateringPackage', [PackageController::class, 'index'])->name('manageCateringPackage');

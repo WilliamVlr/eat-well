@@ -47,7 +47,7 @@
                             <div class="rating-container">
                                 <span class="material-symbols-outlined star-icon">star</span>
                                 @if ($vendor->rating > 0)
-                                    <span class="inter rating-and-sold">{{ $vendor->rating }}</span>   
+                                    <span class="inter rating-and-sold">{{ $vendor->rating }}</span>
                                 @endif
                             </div>
                         </a>
@@ -292,7 +292,7 @@
             <p>Debug: Selected Address ID = {{ $selectedAddress->addressId ?? 'N/A' }}</p>
             <p>Debug: Selected Address Jalan = {{ $selectedAddress->jalan ?? 'N/A' }}</p>
         </div> --}}
-    
+
         <a href="{{ route('payment.show', ['vendor' => $vendor->vendorId, 'address_id' => $selectedAddress->addressId]) }}" class="button-order inter"
             id="proceedToPaymentLink" style="cursor: default; pointer-events: none; text-decoration: none;">
             <span class="order-message">No Package Selected Yet.</span>
