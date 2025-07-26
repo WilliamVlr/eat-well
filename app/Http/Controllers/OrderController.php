@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ShowPaymentPageRequest;
 use App\Models\Address;
 use App\Models\Cart;
 use App\Models\DeliveryStatus;
@@ -78,10 +79,9 @@ class OrderController extends Controller
         return view('customer.orderHistory', compact('orders', 'status'));
     }
 
-    public function showPaymentPage(Request $request, Vendor $vendor) // Menggunakan Route Model Binding untuk Vendor
+    public function showPaymentPage(ShowPaymentPageRequest $request, Vendor $vendor) // Menggunakan Route Model Binding untuk Vendor
     {
         $userId = Auth::id();
-        // $userId = 1;
         if (!$userId) {
             // Arahkan ke halaman login atau tampilkan error
             // return redirect()->route('login')->with('error', 'Please log in to view your cart.');
@@ -131,7 +131,8 @@ class OrderController extends Controller
             }
         }
 
-        $selectedAddressId = $request->query('address_id');
+        // $selectedAddressId = $request->query('address_id');
+        $selectedAddressId = $request->validated('address_id');
         $selectedAddress = null;
 
         if ($selectedAddressId) {
@@ -139,8 +140,10 @@ class OrderController extends Controller
             // Opsional: Pastikan alamat ini milik user yang sedang login
             if ($selectedAddress && Auth::check() && $selectedAddress->userId !== Auth::id()) {
                 $selectedAddress = null; // Abaikan jika bukan milik user
+                return redirect()->back()->with('error', 'The selected address does not belong to your account.');
             }
-        }
+            // $selectedAddress = Address::find($selectedAddressId);
+        } 
 
         // Fallback jika tidak ada address_id di query string atau tidak valid
         if (!$selectedAddress && Auth::check()) {
