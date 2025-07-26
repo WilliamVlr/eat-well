@@ -17,7 +17,11 @@ class ProviderCallbackController extends Controller
         if(!in_array($provider, ['google'])){
             return redirect(route('register'))->withErrors(['provider'=>'Invalid provider']);
         }
-        $socialUser = Socialite::driver($provider)->user();
+        try{
+            $socialUser = Socialite::driver($provider)->user();
+        }catch(\Exception $e){
+            return redirect()->route('login');
+        }
         
         $role = session()->get('role');
         $user = User::updateOrCreate([
