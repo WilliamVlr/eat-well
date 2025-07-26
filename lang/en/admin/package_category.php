@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'header' => 'Category List',
     'category' => 'Category',
     'no_category' => 'No categories available',
 

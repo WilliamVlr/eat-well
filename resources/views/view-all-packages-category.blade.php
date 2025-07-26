@@ -1,5 +1,6 @@
 @php
     use Carbon\Carbon;
+    Carbon::setLocale(app()->getLocale());
 @endphp
 
 @extends('components.admin-nav')
@@ -13,7 +14,7 @@
 
 @section('content')
     <section class="container-fluid pt-3 pt-sm-4 px-sm-5 d-flex justify-content-between align-items-center">
-        <h1 class="text-center m-0">Category List</h1>
+        <h1 class="text-center m-0">{{__('admin/package_category.header')}}</h1>
         <button type="button" onclick="openModal()" class="btn btn-success d-flex gap-1 align-items-center">
             <span class="material-symbols-outlined">
                 add
@@ -32,17 +33,17 @@
 
     <section class="container-fluid px-sm-5 pb-sm-4">
         @if ($categories->isEmpty())
-            <h4>No categories available</h4>
+            <h4>{{__('admin/package_category.no_category')}}</h4>
         @else
             <div class="table-responsive">
                 <table class="table custom-table mt-3">
                     <thead class="table-dark">
                         <tr>
                             <th scope="col">No</th>
-                            <th scope="col">Category Name</th>
-                            <th scope="col">Packages count</th>
-                            <th scope="col">Created at</th>
-                            <th scope="col">Action</th>
+                            <th scope="col">{{__('admin/package_category.th_cat')}}</th>
+                            <th scope="col">{{__('admin/package_category.th_pkgcount')}}</th>
+                            <th scope="col">{{__('admin/package_category.th_created')}}</th>
+                            <th scope="col">{{__('admin/package_category.th_action')}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,7 +52,7 @@
                                 <td>{{ $cat->categoryId }}</td>
                                 <td>{{ $cat->categoryName }}</td>
                                 <td>{{ $cat->packages()->count() }}</td>
-                                <td>{{ Carbon::parse($cat->created_at)->format('d M Y') }}</td>
+                                <td>{{ Carbon::parse($cat->created_at)->translatedFormat('d F Y') }}</td>
                                 <td class="d-flex flex-wrap gap-1">
                                     {{-- <a href="#" class="btn btn-primary btn-sm d-flex gap-1 align-items-center"
                                     onclick="openUpdateModal('{{ $cat->categoryId }}', '{{ $cat->categoryName }}')">
