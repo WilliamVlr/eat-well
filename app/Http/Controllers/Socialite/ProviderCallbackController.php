@@ -43,8 +43,7 @@ class ProviderCallbackController extends Controller
                 'provider_refresh_token' => $socialUser->refreshToken,
             ]);
         }
-        
-        if($user)
+        else
         {
             $user = User::updateOrCreate([
                 'email' => $socialUser->email,
