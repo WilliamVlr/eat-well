@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
+use App\Notifications\CustomerSubscribed;
 
 class OrderController extends Controller
 {
@@ -357,6 +358,15 @@ class OrderController extends Controller
             $cart->delete();
             Log::info('Cart ' . $cart->cartId . ' deleted after successful checkout.');
 
+            // 5. Notify vendor
+            $vendor = Vendor::find($vendorId);
+            $vendorUserId = $vendor->userId;
+            $vendorUser = User::find($vendorUserId);
+
+            if($vendorUser)
+            {
+                $vendorUser->notify(new CustomerSubscribed($order));
+            }
             DB::commit();
 
             logActivity('Successfully', 'Processed', 'Checkout for Order ID: ' . $order->orderId);
