@@ -22,7 +22,7 @@ class CustomerRatingController extends Controller
 
         $order = Order::findOrFail($orderId);
 
-        if($order->isCancelled == 0 && Carbon::now()->greaterThan($order->endDate)) {
+        if($order->isCancelled == 0 && Carbon::now()->lessThan($order->endDate)) {
             return response()->json(['message' => 'You can only rate finished orders.'], 403);
         }
 
