@@ -11,7 +11,7 @@ class ProviderRedirectController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(string $provider, ?string $role = 'customer')
+    public function __invoke(string $provider, ?string $role)
     {
         session()->put('role', $role);
         if(!in_array($provider, ['google'])){

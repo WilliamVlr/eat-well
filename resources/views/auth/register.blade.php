@@ -51,7 +51,7 @@
                             </button>
                         </form>
 
-                        <a href="{{ route('auth.redirect', ['provider'=>'google']) }}">
+                        <a href="{{ route('auth.redirect', ['provider'=>'google', 'role'=>'customer']) }}">
                             <button class="gsi-material-button w-100">
                                 <div class="gsi-material-button-state"></div>
                                 <div class="gsi-material-button-content-wrapper">
