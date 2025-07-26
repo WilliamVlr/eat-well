@@ -113,7 +113,7 @@
         <div id="rateReviewModal" class="custom-modal-overlay" style="display:none;">
             <div class="custom-modal-content">
                 <div class="modal-header d-flex justify-content-between align-items-center pb-1">
-                    <h5 class="modal-title">Rate & Review</h5>
+                    <h5 class="modal-title">{{__('customer/order.rmod_header')}}</h5>
                     <button type="button" class="btn-close" id="closeRateReviewModal" aria-label="Close">
                         <span class="material-symbols-outlined">close</span>
                     </button>

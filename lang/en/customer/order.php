@@ -43,4 +43,25 @@ return [
     'cancelmod_body' => 'Are you sure to cancel this order?',
     'cancelmod_yes' => 'Yes, cancel',
     'cancelmod_no' => 'No, go back',
+
+    // Order Detail
+    'back' => 'Back',
+
+    // order status
+    'ostat_placed' => 'Order Placed',
+    'ostat_paid' => 'Order Paid',
+    'ostat_active' => 'Order Active',
+    'ostat_finished' => 'Order Finished',
+
+    // address
+    'adr_header' => 'Delivery Address',
+
+    // delivery status
+    'Prepared' => 'Prepared',
+    'Delivered' => 'Deliverd',
+    'Arrived' => 'Arrived',
+
+    // detail item card
+    'total_order' => 'Total order',
+    'payment_method' => 'Payment method'
 ];

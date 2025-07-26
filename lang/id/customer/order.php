@@ -43,4 +43,25 @@ return [
     'cancelmod_body' => 'Apakah Anda yakin membatalkan pesanan ini?',
     'cancelmod_yes' => 'Ya, batalkan',
     'cancelmod_no' => 'Tidak, kembali',
+
+    // Order Detail
+    'back' => 'Kembali',
+
+    // order status
+    'ostat_placed' => 'Pesanan dibuat',
+    'ostat_paid' => 'Pesanan dibayar',
+    'ostat_active' => 'Pesanan aktif',
+    'ostat_finished' => 'Pesanan selesai',
+
+    // address
+    'adr_header' => 'Alamat Penerima',
+
+    // delivery status
+    'Prepared' => 'Disiapkan',
+    'Delivered' => 'Dikirim',
+    'Arrived' => 'Tiba',
+
+    // detail item card
+    'total_order' => 'Total pesanan',
+    'payment_method' => 'Metode pembayaran'
 ];
