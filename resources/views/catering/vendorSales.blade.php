@@ -21,6 +21,7 @@
     {{-- FILTER CONTAINER --}}
     <section class="container d-flex flex-row flex-wrap justify-content-between align-items-end gap-2">
         <form action="{{ route('sales.show') }}" method="GET" class="d-flex flex-row flex-wrap gap-2 align-items-end">
+            @csrf
             <div>
                 <label for="startDate" class="form-label mb-0">Start Date</label>
                 <input type="date" name="startDate" id="startDate" class="form-control"
@@ -51,6 +52,9 @@
 
     {{-- SALES TABLE --}}
     <div class="container px-2 my-1 my-sm-3">
+        @if ($errors->has('endDate'))
+            <div class="text-danger">{{ $errors->first('endDate') }}</div>
+        @endif
         @if (!$orders->isEmpty())
             @include('catering.salesTable', [$orders, $totalSales, $startDate, $endDate])
         @else
