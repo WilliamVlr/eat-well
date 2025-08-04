@@ -103,7 +103,7 @@ class SearchCateringController extends Controller
             ->orderByDesc('province_priority')
             ->orderBy('name')
 
-            ->with(['packages.category', 'packages.cuisineTypes'])
+            ->with(['packages.category'])
 
             ->distinct()
             ->paginate(9)

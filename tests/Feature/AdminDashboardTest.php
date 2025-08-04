@@ -12,17 +12,6 @@ use Tests\TestCase;
 class AdminDashboardTest extends TestCase
 {
     /**
-     * Seed all required data before each test.
-     */
-    // protected function setUp(): void
-    // {
-    //     parent::setUp();
-
-    //     $this->artisan('migrate:fresh');
-    //     $this->seed();
-    // }
-
-    /**
      * Authenticate as an Admin user.
      */
     protected function authenticateAsAdmin()
@@ -30,28 +19,6 @@ class AdminDashboardTest extends TestCase
         $admin = User::where('role', 'Admin')->first();
         $this->actingAs($admin);
     }
-
-    /**
-     * TC 1 - Preview on Profit is correctly displayed
-     * @test
-     */
-    // public function tc1_preview_on_profit_is_correctly_displayed()
-    // {
-    //     $this->authenticateAsAdmin();
-
-    //     $totalSalesThisMonth = DB::table('orders')
-    //         ->join('payments', 'orders.orderId', '=', 'payments.orderId')
-    //         ->whereNotNull('payments.paid_at')
-    //         ->whereMonth('payments.paid_at', now()->month)
-    //         ->sum('orders.totalPrice');
-
-    //     $expectedProfit = round($totalSalesThisMonth * 0.05, 2);
-    //     dump($expectedProfit);
-
-    //     $response = $this->get('/admin-dashboard');
-    //     $response->assertStatus(200);
-    //     $response->assertSee((string) number_format($expectedProfit, 0, ',', '.'));
-    // }
 
     /** @test */
     public function tc1_preview_on_profit_is_correctly_displayed()

@@ -7,8 +7,6 @@ use App\Http\Requests\StorePackageRequest;
 use App\Http\Requests\UpdatePackageRequest;
 use Illuminate\Http\Request;
 use App\Models\Package;
-use App\Models\CuisineType;
-use App\Models\PackageCuisine;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\PackagesImport;
 use Illuminate\Support\Facades\Auth;
@@ -21,12 +19,11 @@ class PackageController extends Controller
     {
         $vendorId = Auth::user()->vendor->vendorId;
 
-        $packages = Package::with('cuisineTypes', 'category')
+        $packages = Package::with( 'category')
             ->where('vendorId', $vendorId)
             ->get();
 
-        $cuisines = CuisineType::all();
-        return view('manageCateringPackage', compact('packages', 'cuisines', 'vendorId'));
+        return view('manageCateringPackage', compact('packages', 'vendorId'));
     }
 
     // Menyimpan data package baru
@@ -53,7 +50,6 @@ class PackageController extends Controller
             $validated['imgPath'] = $imgFileName;
         }
 
-        // Simpan ke database (tanpa cuisine_types)
         logActivity('Successfully', 'Added', 'Catering Package with Name : ' . $validated['name']);
         $newpackage = Package::create($validated);
 

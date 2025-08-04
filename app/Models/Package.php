@@ -53,10 +53,4 @@ class Package extends Model
     {
         return $this->hasMany(OrderItem::class, 'packageId', 'packageId');
     }
-
-    public function cuisineTypes()
-    {
-        return $this->belongsToMany(CuisineType::class, 'package_cuisine', 'packageId', 'cuisineId');
-    }
-
 }

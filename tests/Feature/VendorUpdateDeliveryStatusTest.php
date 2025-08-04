@@ -12,7 +12,6 @@ use App\Models\Payment;
 use App\Models\User;
 use App\Models\Vendor;
 use Carbon\Carbon;
-use Database\Seeders\CuisineTypeSeeder;
 use Database\Seeders\PackageCategorySeeder;
 use Database\Seeders\PaymentMethodSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -35,7 +34,6 @@ class VendorUpdateDeliveryStatusTest extends TestCase
 
         // Seed supporting data
         $this->seed([
-            CuisineTypeSeeder::class,
             PackageCategorySeeder::class,
             PaymentMethodSeeder::class,
         ]);

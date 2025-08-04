@@ -2,12 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Models\CuisineType;
 use App\Models\Package;
 use App\Models\PackageCategory;
 use App\Models\User;
 use App\Models\Vendor;
-use Database\Seeders\CuisineTypeSeeder;
 use Database\Seeders\PackageCategorySeeder;
 use Database\Seeders\PaymentMethodSeeder;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -39,7 +37,6 @@ class VendorManagePackageTest extends TestCase
         $this->artisan('migrate:fresh');
 
         $this->seed([
-            CuisineTypeSeeder::class,
             PackageCategorySeeder::class,
         ]);
 
@@ -172,7 +169,7 @@ class VendorManagePackageTest extends TestCase
     {
         $this->actingAs($this->vendorAUser);
 
-        // Create a dummy category and cuisine types
+        // Create a dummy category
         $category = PackageCategory::create(['categoryName' => 'Cat A']);
 
         // Simulate file uploads

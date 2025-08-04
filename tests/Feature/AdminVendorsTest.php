@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Models\Vendor;
 use Database\Seeders\AddressSeeder;
-use Database\Seeders\CuisineTypeSeeder;
 use Database\Seeders\PackageCategorySeeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\VendorSeeder;
@@ -27,7 +26,6 @@ class AdminVendorsTest extends TestCase
 
         // Seed only required classes
         $this->seed(PackageCategorySeeder::class);
-        $this->seed(CuisineTypeSeeder::class);
     }
     
     /** @test */

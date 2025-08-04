@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\CuisineType;
 use App\Models\Package;
 use App\Models\PackageCategory;
 use App\Models\Vendor;
@@ -46,25 +45,6 @@ class PackageFactory extends Factory
 
                 $package->{$chosenPrice} = $this->faker->randomFloat(2, 100000, 1000000);
             }
-        // })->afterCreating(function (Package $package) { 
-        //     $cuisineIds = CuisineType::pluck('cuisineId')->toArray();
-
-        //     // Fallback jika tidak ada cuisine (hanya untuk mencegah error di development)
-        //     if (empty($cuisineIds)) {
-        //         $cuisineIds = [CuisineType::factory()->create()->cuisineId];
-        //     }
-
-        //     // Pilih jumlah cuisine yang akan dikaitkan (1 hingga 3)
-        //     $numCuisinesToAttach = $this->faker->numberBetween(1, min(3, count($cuisineIds)));
-
-        //     // Ambil cuisine IDs secara acak tanpa duplikasi
-        //     $randomCuisineIds = collect($cuisineIds)
-        //         ->shuffle()
-        //         ->take($numCuisinesToAttach)
-        //         ->toArray();
-
-        //     // Attach cuisine(s) to the package using sync()
-        //     $package->cuisineTypes()->sync($randomCuisineIds);
         });
     }
 }

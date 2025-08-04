@@ -12,7 +12,6 @@ use App\Models\Province;
 use App\Models\User;
 use App\Models\Village;
 use Database\Seeders\AddressSeeder;
-use Database\Seeders\CuisineTypeSeeder;
 use Database\Seeders\PackageCategorySeeder;
 use Database\Seeders\PaymentMethodSeeder;
 use Database\Seeders\VendorSeeder;
@@ -38,7 +37,6 @@ class AdminManageCategoryTest extends TestCase
             AddressSeeder::class,
             PackageCategorySeeder::class,
             PaymentMethodSeeder::class,
-            CuisineTypeSeeder::class,
             VendorSeeder::class,
         ]);
     }

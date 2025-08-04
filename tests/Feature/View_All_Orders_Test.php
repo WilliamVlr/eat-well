@@ -92,7 +92,9 @@ class View_All_Orders_Test extends TestCase
 
     public function test_admin_can_filter_orders_by_date_range()
     {
-        // Buat admin user
+        /**
+         * @var User | \Illuminate\Auth\Authenticatable $admin
+         */
         $admin = User::factory()->create(['role' => 'Admin']);
         $this->actingAs($admin);
 
@@ -120,6 +122,9 @@ class View_All_Orders_Test extends TestCase
 
     public function test_admin_can_reset_filter_to_see_all_orders()
     {
+        /**
+         * @var User | \Illuminate\Auth\Authenticatable $admin
+         */
         $admin = User::factory()->create(['role' => 'Admin']);
         $this->actingAs($admin);
 

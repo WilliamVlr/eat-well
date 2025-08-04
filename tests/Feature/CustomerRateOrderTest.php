@@ -10,7 +10,6 @@ use App\Models\User;
 use App\Models\Village;
 use Database\Seeders\AddressSeeder;
 use Database\Seeders\CitySeeder;
-use Database\Seeders\CuisineTypeSeeder;
 use Database\Seeders\DistrictSeeder;
 use Database\Seeders\OrderItemSeeder;
 use Database\Seeders\OrderSeeder;
@@ -44,11 +43,9 @@ class CustomerRateOrderTest extends TestCase
             UserSeeder::class,
             AddressSeeder::class,
             PackageCategorySeeder::class,
-            CuisineTypeSeeder::class,
             PaymentMethodSeeder::class,
             VendorSeeder::class,
             PackageSeeder::class,
-            PackageCuisineSeeder::class,
             OrderSeeder::class,
             OrderItemSeeder::class,
             VendorPreviewSeeder::class,

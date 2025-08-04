@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\Address;
-use App\Models\CuisineType;
 use App\Models\DeliveryStatus;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -14,7 +13,6 @@ use App\Models\PaymentMethod;
 use App\Models\User;
 use App\Models\Vendor;
 use Carbon\Carbon;
-use Database\Seeders\CuisineTypeSeeder;
 use Database\Seeders\PackageCategorySeeder;
 use Database\Seeders\PaymentMethodSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -38,7 +36,6 @@ class VendorCancelOrderTest extends TestCase
 
         // Seed supporting data
         $this->seed([
-            CuisineTypeSeeder::class,
             PackageCategorySeeder::class,
             PaymentMethodSeeder::class,
         ]);

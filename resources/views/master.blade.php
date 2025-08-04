@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 
-{{-- @php
-    app()->setLocale(session()->get('lang', 'en'));
-@endphp --}}
-
 <head>
     <meta charset="UTF-8">
     <title>@yield('title')</title>

@@ -41,9 +41,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\VillageController;
 use App\Http\Middleware\CheckNoPasswordExist;
 use App\Models\User;
-
-Route::post('/lang', LanguageController::class);
-
 use App\Http\Controllers\VerifyOtpController;
 use App\Http\Controllers\illageController;
 use App\Http\Middleware\AccountSetup\EnsureAddressExists;
@@ -55,8 +52,9 @@ use App\Http\Middleware\EnsurePasswordExists;
 use App\Notifications\OneTimePassword;
 
 /* --------------------
-     GUEST ROUTES
+GUEST ROUTES
 -------------------- */
+Route::post('/lang', LanguageController::class);
 Route::post('/forgot-password', [ForgotPasswordController::class, 'email'])->name('password.email');
 Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'reset'])->middleware([
     CheckAuthenticatedUserPasswordResetToken::class,

@@ -12,7 +12,6 @@ use App\Models\Province;
 use App\Models\User;
 use App\Models\Vendor;
 use App\Models\Village;
-use Database\Seeders\CuisineTypeSeeder;
 use Database\Seeders\PackageCategorySeeder;
 use Database\Seeders\PackageSeeder;
 use Database\Seeders\PaymentMethodSeeder;
@@ -40,7 +39,6 @@ class UserLoggingTest extends TestCase
         $this->seed(UserSeeder::class);
         $this->seed(PackageCategorySeeder::class);
         $this->seed(PaymentMethodSeeder::class);
-        $this->seed(CuisineTypeSeeder::class);
         $this->seed(VendorSeeder::class);
         $this->seed(PackageSeeder::class);
     }
@@ -153,7 +151,6 @@ class UserLoggingTest extends TestCase
         // Prepare the request
         $categoryId = DB::table('package_categories')->first()->categoryId;
         $vendorId = $catering->vendorId;
-        $cuisineType = DB::table('cuisine_types')->first();
 
         // Perform POST request
         $response = $this->post('/manageCateringPackage', [

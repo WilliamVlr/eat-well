@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\City;
-use App\Models\CuisineType;
 use App\Models\District;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -18,7 +17,6 @@ use App\Models\Village;
 use Carbon\Carbon;
 use Database\Seeders\AddressSeeder;
 use Database\Seeders\CitySeeder;
-use Database\Seeders\CuisineTypeSeeder;
 use Database\Seeders\DistrictSeeder;
 use Database\Seeders\PackageCategorySeeder;
 use Database\Seeders\PaymentMethodSeeder;
@@ -60,7 +58,6 @@ class VendorExportSalesTest extends TestCase
         $this->seed(AddressSeeder::class);
         $this->seed(PackageCategorySeeder::class);
         $this->seed(PaymentMethodSeeder::class);
-        $this->seed(CuisineTypeSeeder::class);
 
         $this->vendorAUser = User::factory()->create([
             'email' => 'vendor1@mail.com',
@@ -88,7 +85,6 @@ class VendorExportSalesTest extends TestCase
         $this->customer = User::first();
 
         $category = PackageCategory::first();
-        $cuisine = CuisineType::first();
         $wellPay = PaymentMethod::where('name', 'WellPay')->first();
         $virtualAccount = PaymentMethod::where('name', 'Virtual Account')->first();
 

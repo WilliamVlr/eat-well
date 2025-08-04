@@ -26,9 +26,6 @@ class UpdatePackageRequest extends FormRequest
 
             'menuPDFPath' => 'nullable|file|mimes:pdf',
             'imgPath' => 'nullable|image|mimes:jpeg,png,jpg',
-
-            'cuisine_types' => 'nullable|array',
-            'cuisine_types.*' => 'exists:cuisine_types,cuisineId',
         ];
     }
 

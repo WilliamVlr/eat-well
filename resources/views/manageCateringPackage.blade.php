@@ -18,7 +18,6 @@
 @endsection
 
 @section('content')
-    {{-- <x-vendor-nav></x-vendor-nav> --}}
     <div class="heading-title w-50 text-center mx-auto">{{ __('manage-catering-package.find_package') }}</div>
     <div class="text-muted-subheading w-75 text-center mx-auto">{{ __('manage-catering-package.find_package_desc') }}</div>
 
@@ -45,9 +44,6 @@
                     </div>
                 </div>
             </div>
-
-
-
         </div>
 
         <div class="table-responsive">
@@ -103,7 +99,6 @@
                                         'lunchPrice' => $package->lunchPrice,
                                         'dinnerPrice' => $package->dinnerPrice,
                                         'averageCalories' => $package->averageCalories,
-                                        'cuisines' => $package->cuisineTypes->pluck('cuisineId'),
                                         'menuPDFPath' => $package->menuPDFPath,
                                         'imgPath' => $package->imgPath,
                                     ]),
@@ -118,16 +113,15 @@
                                     title="Delete">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#packageModal"
+                onclick="openAddModal()">{{ __('manage-catering-package.add_package') }}
+            </button>
         </div>
-        </td>
-        </tr>
-        @endforeach
-        </tbody>
-        </table>
-    </div>
-    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#packageModal"
-        onclick="openAddModal()">{{ __('manage-catering-package.add_package') }}</button>
-
     </div>
 
     <!-- Modal -->
@@ -201,7 +195,8 @@
                             <div class="col">
                                 <label for="averageCalories"
                                     class="form-label">{{ __('manage-catering-package.average_calory') }}</label>
-                                <input type="number" name="averageCalories" id="averageCalories" class="form-control" step="0.01" min="1" required>
+                                <input type="number" name="averageCalories" id="averageCalories" class="form-control"
+                                    step="0.01" min="1" required>
                             </div>
                         </div>
                         <div class="mt-3">

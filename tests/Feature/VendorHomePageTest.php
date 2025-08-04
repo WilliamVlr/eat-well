@@ -17,7 +17,6 @@ use App\Models\Vendor;
 use App\Models\Village;
 use Carbon\Carbon;
 use Database\Seeders\AddressSeeder;
-use Database\Seeders\CuisineTypeSeeder;
 use Database\Seeders\PackageCategorySeeder;
 use Database\Seeders\PaymentMethodSeeder;
 use Database\Seeders\UserSeeder;
@@ -83,7 +82,6 @@ class VendorHomePageTest extends TestCase
 
         $this->seed([
             AddressSeeder::class,
-            CuisineTypeSeeder::class,
             PackageCategorySeeder::class,
             PaymentMethodSeeder::class
         ]);

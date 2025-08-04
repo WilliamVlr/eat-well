@@ -8,6 +8,7 @@ return [
     'manage_profile' => 'Kelola Profil',
     'manage_security' => 'Kelola Keamanan',
     'manage_address' => 'Kelola Alamat',
+    'address' => 'Alamat',
     'edit_catering' => 'Edit Info Catering',
     'name' => 'Nama',
     'date_of_birth' => 'Tanggal Lahir',

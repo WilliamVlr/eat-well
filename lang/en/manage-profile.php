@@ -8,6 +8,7 @@ return [
     'manage_profile' => 'Manage Profile',
     'manage_security' => 'Manage Security',
     'manage_address' => 'Manage Address',
+    'address' => 'Address',
     'edit_catering' => 'Edit Catering Info',
     'name' => 'Name',
     'date_of_birth' => 'Date of Birth',

@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\PaymentMethod;
 use App\Models\User;
-use Database\Seeders\CuisineTypeSeeder;
 use Database\Seeders\PackageCategorySeeder;
 use Database\Seeders\PackageSeeder;
 use Database\Seeders\PaymentMethodSeeder;
@@ -26,7 +25,6 @@ class AdminManagePaymentMethodTest extends TestCase
         $this->seed(UserSeeder::class);
         $this->seed(PackageCategorySeeder::class);
         $this->seed(PaymentMethodSeeder::class);
-        $this->seed(CuisineTypeSeeder::class);
         $this->seed(VendorSeeder::class);
         $this->seed(PackageSeeder::class);
     }
