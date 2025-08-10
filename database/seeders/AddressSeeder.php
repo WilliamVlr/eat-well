@@ -46,6 +46,7 @@ class AddressSeeder extends Seeder
             // 1 alamat utama per user
             Address::factory()->create([
                 'userId' => $user->userId,
+                'recipient_name' => $user->name,
                 'is_default' => true,
                 'provinsi' => $province->name,
                 'kota' => $city->name,
@@ -74,6 +75,7 @@ class AddressSeeder extends Seeder
 
                 Address::factory()->create([
                     'userId' => $user->userId,
+                    'recipient_name' => $user->name,
                     'is_default' => false,
                     'provinsi' => $province->name,
                     'kota' => $city->name,

@@ -69,9 +69,9 @@
                             </div>
                             <div class="label">{{ __('customer/order.ostat_active') }}</div>
                         </div>
-                        <div class="status-line {{ now()->gt($order->endDate) ? 'active' : '' }}"></div>
+                        <div class="status-line {{ $status == 'finished' ? 'active' : '' }}"></div>
                         {{-- Subscription Finished --}}
-                        <div class="status-step {{ now()->gt($order->endDate) ? 'active' : '' }}">
+                        <div class="status-step {{ $status == 'finished' ? 'active' : '' }}">
                             <div class="circle">
                                 <span class="material-symbols-outlined">check_circle</span>
                             </div>
@@ -159,7 +159,7 @@
                                             @if (!empty($statusesBySlot[$slot['key']]))
                                                 <div class="carousel-item {{ $slotIdx === 0 ? 'active' : '' }}">
                                                     <div class="cds-delivery-slot-card mx-auto">
-                                                        <div class="cds-slot-title text-center mb-2">{{ $slot['label'] }}
+                                                        <div class="cds-slot-title text-center mb-2">{{ __('customer/order.' . $slot['label']) }}
                                                         </div>
                                                         <div class="cds-slot-status-list">
                                                             @foreach ($statusesBySlot[$slot['key']] as $date => $deli_status)
@@ -203,7 +203,7 @@
                                     @foreach ($slots as $slotKey => $slot)
                                         @if (!empty($statusesBySlot[$slot['key']]))
                                             <div class="cds-delivery-slot-card">
-                                                <div class="cds-slot-title text-center mb-2">{{ $slot['label'] }}</div>
+                                                <div class="cds-slot-title text-center mb-2">{{ __('customer/order.' . $slot['label']) }}</div>
                                                 <div class="cds-slot-status-list">
                                                     @foreach ($statusesBySlot[$slot['key']] as $date => $deli_status)
                                                         <div
