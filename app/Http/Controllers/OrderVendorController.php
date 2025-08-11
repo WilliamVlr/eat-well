@@ -50,7 +50,7 @@ class OrderVendorController extends Controller
      * ---------------------------------------------------------- */
     private function weekBounds(string $which = 'current'): array
     {
-        $monday = Carbon::now('Asia/Jakarta')->startOfWeek(Carbon::MONDAY); // Senin
+        $monday = Carbon::now()->startOfWeek(Carbon::MONDAY); // Senin
 
         return $which === 'next'
             ? [$monday->copy()->addWeek(), $monday->copy()->endOfWeek()->addWeek()]
@@ -123,7 +123,7 @@ class OrderVendorController extends Controller
     {
         $vendor = Auth::user()->vendor ?? Vendor::find(39);
         $vendorId = Auth::user()->vendor->vendorId ?? 39;
-        $today = Carbon::today('Asia/Jakarta');
+        $today = Carbon::now();
 
         $orders = Order::with([
             'orderItems.package',
@@ -208,7 +208,7 @@ class OrderVendorController extends Controller
         $order = Order::find($orderId);
         $userId = $order->userId;
         $user = User::find($userId);
-        $orderStatus = $request->status;
+        $orderStatus = $ds->status->value;
 
         #Note: generating appropriate notification to be sent based on the status;
         $toBeNotified = null;

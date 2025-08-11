@@ -12,31 +12,31 @@ class Order extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'orders';
-    protected $primaryKey = 'orderId'; 
+    protected $primaryKey = 'orderId';
 
     protected $fillable = [
         'userId',
         'vendorId',
-        'totalPrice', 
-        'startDate', 
-        'endDate', 
-        'isCancelled', 
-        'provinsi', 
+        'totalPrice',
+        'startDate',
+        'endDate',
+        'isCancelled',
+        'provinsi',
         'kota',
         'kecamatan',
         'kelurahan',
         'kode_pos',
         'jalan',
-        'recipient_name', 
-        'recipient_phone', 
+        'recipient_name',
+        'recipient_phone',
         'notes',
     ];
 
     protected $casts = [
-        'totalPrice' => 'decimal:2', 
-        'startDate' => 'datetime', 
-        'endDate' => 'datetime', 
-        'isCancelled' => 'boolean', 
+        'totalPrice' => 'decimal:2',
+        'startDate' => 'datetime',
+        'endDate' => 'datetime',
+        'isCancelled' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
@@ -73,14 +73,27 @@ class Order extends Model
 
     public function getOrderStatus()
     {
-        if($this->isCancelled == 1) {
+        if ($this->isCancelled == 1) {
             return 'cancelled';
-        } else if (Carbon::now()->greaterThan($this->endDate)){
-            return 'finished';
-        } else if (Carbon::now()->lessThan($this->startDate)){
+        } else if (Carbon::now()->lessThan($this->startDate)) {
             return 'upcoming';
+        } else if (Carbon::now()->greaterThan($this->endDate) && $this->checkAllDeliveryDone()) {
+            return 'finished';
         } else {
             return 'active';
         }
+    }
+
+    public function checkAllDeliveryDone()
+    {
+        // Return false if there are no delivery statuses at all
+        if ($this->deliveryStatuses()->count() === 0) {
+            return false;
+        }
+
+        // Check if all deliveries have status 'arrived'
+        return !$this->deliveryStatuses()
+            ->where('status', '!=', 'arrived')
+            ->exists();
     }
 }

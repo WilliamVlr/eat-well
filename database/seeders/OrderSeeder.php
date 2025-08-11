@@ -37,7 +37,7 @@ class OrderSeeder extends Seeder
 
                 $order = Order::factory()->create([
                     'vendorId' => $vendor->vendorId,
-                    'userId' => User::where('role', 'Customer')->inRandomOrder()->first()->userId,
+                    'userId' => User::where('role', 'Customer')->first()->userId,
                     'startDate' => $dates['start'],
                     'endDate' => $dates['end'],
                     'isCancelled' => $isCancelled,
@@ -70,6 +70,11 @@ class OrderSeeder extends Seeder
                         'orderId' => $order->orderId,
                         'paid_at' => $startDate->copy()->subDays(5),
                     ]);
+                } else {
+                    Payment::create([
+                        'methodId' => 1,
+                        'orderId' => $order->orderId,
+                    ]);
                 }
 
                 $slots = $order->orderItems->pluck('packageTimeSlot')->unique()->toArray();
@@ -77,10 +82,22 @@ class OrderSeeder extends Seeder
                 foreach ($slots as $slot) {
                     for ($j = 0; $j < 7; $j++) {
                         $deliveryDate = Carbon::parse($order->startDate)->addDays($j);
+
+                        if ($type === 'finished') {
+                            $status = 'Arrived';
+                        } elseif ($type === 'upcoming') {
+                            $status = 'Prepared';
+                        } elseif ($type === 'active') {
+                            $status = $deliveryDate->lessThanOrEqualTo(Carbon::today()->subDay()) ? 'Arrived' : 'Prepared';
+                        } else {
+                            $status = 'Cancelled';
+                        }
+
                         DeliveryStatus::factory()->create([
                             'orderId' => $order->orderId,
                             'deliveryDate' => $deliveryDate,
                             'slot' => $slot,
+                            'status' => $status,
                         ]);
                     }
                 }
